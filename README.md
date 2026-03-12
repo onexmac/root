@@ -5,6 +5,17 @@ Sistema de diseño centralizado para todas las aplicaciones internas de Adelante
 Este repositorio define los estándares visuales y componentes reutilizables que deben utilizarse en todos los desarrollos para mantener consistencia visual y mejorar la velocidad de desarrollo.
 
 ---
+# Component Status
+
+| Component | Design | Development | Status |
+|----------|--------|-------------|--------|
+| Button | Figma | React | 🟡 In Design |
+| Input | Figma | React | 🟡 In Design |
+| Card | Figma | React | 🟡 In Design |
+| Search Bar | Figma | React | 🟡 In Design |
+| Table | - | - | ⏳ Planned |
+| Modal | - | - | ⏳ Planned |
+| Dropdown | - | - | ⏳ Planned |
 
 # Figma Design Source
 
