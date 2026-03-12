@@ -16,6 +16,8 @@ Este repositorio define los estándares visuales y componentes reutilizables que
 | Table | - | - | ⏳ Planned |
 | Modal | - | - | ⏳ Planned |
 | Dropdown | - | - | ⏳ Planned |
+| Sidebar | - | - | ⏳ Planned |
+| Navbar | - | - | ⏳ Planned |
 
 # Figma Design Source
 
