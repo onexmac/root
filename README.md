@@ -4,13 +4,26 @@ Sistema de diseño centralizado para todas las aplicaciones internas de Adelante
 
 Este repositorio define los estándares visuales y componentes reutilizables que deben utilizarse en todos los desarrollos para mantener consistencia visual y mejorar la velocidad de desarrollo.
 
-Este sistema de diseño se utiliza en:
+---
 
-- Aplicaciones web
-- Aplicaciones en React
-- Power Apps (componentes PCF)
-- Portales internos
-- Sistemas conectados a Business Central
+# Figma Design Source
+
+Archivo principal del sistema de diseño en Figma:
+
+https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante
+
+Aquí el equipo UX/UI define:
+
+- Colores del sistema
+- Tipografía
+- Layouts
+- Componentes UI
+- Botones
+- Inputs
+- Cards
+- Iconos
+
+Los desarrolladores deben consultar este archivo antes de implementar componentes.
 
 ---
 
@@ -65,8 +78,9 @@ Antes de crear un nuevo componente:
 
 1. Revisar la carpeta **components**
 2. Revisar los **tokens de diseño**
-3. Utilizar los **assets oficiales**
-4. Seguir las **guidelines UX/UI**
+3. Consultar el archivo de **Figma**
+4. Utilizar los **assets oficiales**
+5. Seguir las **guidelines UX/UI**
 
 ---
 
