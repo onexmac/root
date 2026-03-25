@@ -8,132 +8,123 @@ interface SkllAssistantProps {
 }
 
 function SkllFace({ emotion, size = 64 }: { emotion: SkllEmotion; size: number }) {
+  // Pixel skull character — square head with jaw notches
   const s = size;
-  const pad = s * 0.1;
-  const headW = s * 0.8;
-  const headH = s * 0.7;
-  const headX = (s - headW) / 2;
-  const headY = s * 0.25;
+  const u = s / 16; // pixel unit for grid-based design
+  const headX = u * 2;
+  const headY = u * 1;
+  const headW = u * 12;
+  const headH = u * 10;
+  const jawY = headY + headH;
+  const jawH = u * 4;
+  const notchW = u * 2;
 
-  // Eye positions
-  const eyeY = headY + headH * 0.35;
+  // Eye positions (centered in upper half of head)
+  const eyeY = headY + headH * 0.38;
   const leftEyeX = headX + headW * 0.28;
   const rightEyeX = headX + headW * 0.72;
+  const eyeR = u * 1.1;
 
   // Mouth position
-  const mouthY = headY + headH * 0.7;
+  const mouthY = jawY - u * 1.5;
   const mouthX = s / 2;
 
   const renderEyes = () => {
-    const ew = headW * 0.16;
+    const ew = u * 1.4;
     switch (emotion) {
       case 'greeting':
-        // Happy curved-up eyes (arcs)
+        // >< squinting happy eyes
         return (
           <>
-            <path
-              d={`M ${leftEyeX - ew} ${eyeY} Q ${leftEyeX} ${eyeY - ew * 1.2} ${leftEyeX + ew} ${eyeY}`}
-              stroke="currentColor" strokeWidth={2} fill="none"
-            />
-            <path
-              d={`M ${rightEyeX - ew} ${eyeY} Q ${rightEyeX} ${eyeY - ew * 1.2} ${rightEyeX + ew} ${eyeY}`}
-              stroke="currentColor" strokeWidth={2} fill="none"
-            />
+            <line x1={leftEyeX - ew} y1={eyeY - ew} x2={leftEyeX} y2={eyeY} stroke="currentColor" strokeWidth={u * 0.6} strokeLinecap="round" />
+            <line x1={leftEyeX} y1={eyeY} x2={leftEyeX - ew} y2={eyeY + ew} stroke="currentColor" strokeWidth={u * 0.6} strokeLinecap="round" />
+            <line x1={rightEyeX + ew} y1={eyeY - ew} x2={rightEyeX} y2={eyeY} stroke="currentColor" strokeWidth={u * 0.6} strokeLinecap="round" />
+            <line x1={rightEyeX} y1={eyeY} x2={rightEyeX + ew} y2={eyeY + ew} stroke="currentColor" strokeWidth={u * 0.6} strokeLinecap="round" />
           </>
         );
       case 'approving':
-        // Narrow squint eyes
+        // Narrow horizontal line eyes
         return (
           <>
-            <rect x={leftEyeX - ew} y={eyeY - 1} width={ew * 2} height={2.5} rx={1} fill="currentColor" />
-            <rect x={rightEyeX - ew} y={eyeY - 1} width={ew * 2} height={2.5} rx={1} fill="currentColor" />
+            <line x1={leftEyeX - ew} y1={eyeY} x2={leftEyeX + ew} y2={eyeY} stroke="currentColor" strokeWidth={u * 0.6} strokeLinecap="round" />
+            <line x1={rightEyeX - ew} y1={eyeY} x2={rightEyeX + ew} y2={eyeY} stroke="currentColor" strokeWidth={u * 0.6} strokeLinecap="round" />
           </>
         );
       case 'impressed':
-        // Wide tall eyes
+        // Big round eyes
         return (
           <>
-            <rect x={leftEyeX - ew * 0.7} y={eyeY - ew * 1.2} width={ew * 1.4} height={ew * 2.4} rx={1} fill="currentColor" />
-            <rect x={rightEyeX - ew * 0.7} y={eyeY - ew * 1.2} width={ew * 1.4} height={ew * 2.4} rx={1} fill="currentColor" />
+            <circle cx={leftEyeX} cy={eyeY} r={eyeR * 1.5} fill="currentColor" />
+            <circle cx={rightEyeX} cy={eyeY} r={eyeR * 1.5} fill="currentColor" />
           </>
         );
       case 'disappointed':
-        // Angled-down eyes
+        // X X dead eyes
         return (
           <>
-            <line
-              x1={leftEyeX - ew} y1={eyeY - ew * 0.4}
-              x2={leftEyeX + ew} y2={eyeY + ew * 0.4}
-              stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"
-            />
-            <line
-              x1={rightEyeX + ew} y1={eyeY - ew * 0.4}
-              x2={rightEyeX - ew} y2={eyeY + ew * 0.4}
-              stroke="currentColor" strokeWidth={2.5} strokeLinecap="round"
-            />
+            <line x1={leftEyeX - ew} y1={eyeY - ew} x2={leftEyeX + ew} y2={eyeY + ew} stroke="currentColor" strokeWidth={u * 0.6} strokeLinecap="round" />
+            <line x1={leftEyeX + ew} y1={eyeY - ew} x2={leftEyeX - ew} y2={eyeY + ew} stroke="currentColor" strokeWidth={u * 0.6} strokeLinecap="round" />
+            <line x1={rightEyeX - ew} y1={eyeY - ew} x2={rightEyeX + ew} y2={eyeY + ew} stroke="currentColor" strokeWidth={u * 0.6} strokeLinecap="round" />
+            <line x1={rightEyeX + ew} y1={eyeY - ew} x2={rightEyeX - ew} y2={eyeY + ew} stroke="currentColor" strokeWidth={u * 0.6} strokeLinecap="round" />
           </>
         );
       case 'alert':
-        // Exclamation mark eyes
+        // Wide open eyes (tall rects)
         return (
           <>
-            <rect x={leftEyeX - 1.5} y={eyeY - ew * 1.2} width={3} height={ew * 1.6} rx={1} fill="currentColor" />
-            <circle cx={leftEyeX} cy={eyeY + ew * 0.8} r={1.5} fill="currentColor" />
-            <rect x={rightEyeX - 1.5} y={eyeY - ew * 1.2} width={3} height={ew * 1.6} rx={1} fill="currentColor" />
-            <circle cx={rightEyeX} cy={eyeY + ew * 0.8} r={1.5} fill="currentColor" />
+            <rect x={leftEyeX - ew * 0.6} y={eyeY - ew * 1.2} width={ew * 1.2} height={ew * 2.4} fill="currentColor" />
+            <rect x={rightEyeX - ew * 0.6} y={eyeY - ew * 1.2} width={ew * 1.2} height={ew * 2.4} fill="currentColor" />
           </>
         );
-      default: // idle
-        // Normal horizontal rectangles
+      default: // idle — dot eyes like the reference image
         return (
           <>
-            <rect x={leftEyeX - ew} y={eyeY - ew * 0.35} width={ew * 2} height={ew * 0.7} rx={1} fill="currentColor" />
-            <rect x={rightEyeX - ew} y={eyeY - ew * 0.35} width={ew * 2} height={ew * 0.7} rx={1} fill="currentColor" />
+            <circle cx={leftEyeX} cy={eyeY} r={eyeR} fill="currentColor" />
+            <circle cx={rightEyeX} cy={eyeY} r={eyeR} fill="currentColor" />
           </>
         );
     }
   };
 
   const renderMouth = () => {
-    const mw = headW * 0.2;
+    const mw = u * 2;
     switch (emotion) {
       case 'greeting':
-        // Slight curve up
+        // Wide smile
         return (
           <path
-            d={`M ${mouthX - mw} ${mouthY} Q ${mouthX} ${mouthY + mw * 0.7} ${mouthX + mw} ${mouthY}`}
-            stroke="currentColor" strokeWidth={2} fill="none" strokeLinecap="round"
+            d={`M ${mouthX - mw * 1.5} ${mouthY - mw * 0.3} Q ${mouthX} ${mouthY + mw * 1.2} ${mouthX + mw * 1.5} ${mouthY - mw * 0.3}`}
+            stroke="currentColor" strokeWidth={u * 0.5} fill="none" strokeLinecap="round"
           />
         );
       case 'impressed':
-        // Open rectangle
+        // Open mouth (small square)
         return (
           <rect
-            x={mouthX - mw * 0.6} y={mouthY - mw * 0.3}
-            width={mw * 1.2} height={mw * 0.8}
-            rx={1} stroke="currentColor" strokeWidth={1.5} fill="none"
+            x={mouthX - mw * 0.6} y={mouthY - mw * 0.4}
+            width={mw * 1.2} height={mw * 0.9}
+            fill="currentColor"
           />
         );
       case 'disappointed':
-        // Curve down
+        // Frown
         return (
           <path
-            d={`M ${mouthX - mw} ${mouthY} Q ${mouthX} ${mouthY - mw * 0.7} ${mouthX + mw} ${mouthY}`}
-            stroke="currentColor" strokeWidth={2} fill="none" strokeLinecap="round"
+            d={`M ${mouthX - mw} ${mouthY + mw * 0.2} Q ${mouthX} ${mouthY - mw * 0.8} ${mouthX + mw} ${mouthY + mw * 0.2}`}
+            stroke="currentColor" strokeWidth={u * 0.5} fill="none" strokeLinecap="round"
           />
         );
       case 'alert':
-        // Small circle
+        // Small O
         return (
-          <circle cx={mouthX} cy={mouthY} r={mw * 0.35} stroke="currentColor" strokeWidth={1.5} fill="none" />
+          <circle cx={mouthX} cy={mouthY} r={mw * 0.4} fill="currentColor" />
         );
-      default: // idle, approving
-        // Straight line
+      default: // idle, approving — straight line
         return (
           <line
             x1={mouthX - mw} y1={mouthY}
             x2={mouthX + mw} y2={mouthY}
-            stroke="currentColor" strokeWidth={2} strokeLinecap="round"
+            stroke="currentColor" strokeWidth={u * 0.5} strokeLinecap="round"
           />
         );
     }
@@ -141,20 +132,23 @@ function SkllFace({ emotion, size = 64 }: { emotion: SkllEmotion; size: number }
 
   return (
     <svg width={s} height={s} viewBox={`0 0 ${s} ${s}`} fill="none">
-      {/* Antenna */}
-      <line
-        x1={s / 2} y1={headY - pad * 0.2}
-        x2={s / 2} y2={headY - pad * 1.8}
-        stroke="currentColor" strokeWidth={2} strokeLinecap="round"
-      />
-      <circle cx={s / 2} cy={headY - pad * 2} r={2.5} fill="currentColor" />
-
-      {/* Head */}
+      {/* Skull head — square top */}
       <rect
         x={headX} y={headY}
         width={headW} height={headH}
-        rx={headW * 0.12}
-        stroke="currentColor" strokeWidth={2} fill="none"
+        fill="currentColor"
+      />
+
+      {/* Jaw with notches — 3 teeth-like sections */}
+      <rect x={headX} y={jawY} width={notchW * 1.5} height={jawH} fill="currentColor" />
+      <rect x={headX + notchW * 2.5} y={jawY} width={notchW * 3.5} height={jawH} fill="currentColor" />
+      <rect x={headX + headW - notchW * 1.5} y={jawY} width={notchW * 1.5} height={jawH} fill="currentColor" />
+
+      {/* Face cutout (dark inset for eyes & mouth area) */}
+      <rect
+        x={headX + u * 1.5} y={headY + u * 1.5}
+        width={headW - u * 3} height={headH - u * 1.5 + jawH - u * 1}
+        fill="var(--corp-bg, #0a0a0f)"
       />
 
       {/* Eyes */}
