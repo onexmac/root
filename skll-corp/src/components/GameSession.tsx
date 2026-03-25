@@ -18,7 +18,8 @@ export default function GameSession() {
 
   return (
     <motion.div
-      className="flex flex-col h-full w-full bg-corp-bg"
+      className="flex flex-col h-full w-full"
+      style={{ background: 'var(--corp-bg)' }}
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: 'spring', stiffness: 300, damping: 28 }}
@@ -27,23 +28,33 @@ export default function GameSession() {
       <HUD />
 
       {/* Middle: Game Grid */}
-      <div className="flex-1 flex items-center justify-center overflow-hidden px-2">
+      <div className="flex-1 flex items-center justify-center overflow-hidden px-1">
         <GameGrid />
       </div>
 
-      {/* Bottom: Session info bar */}
-      <div className="flex items-center justify-between bg-corp-surface/80 backdrop-blur-md border-t border-corp-border px-4 py-3">
+      {/* Bottom bar */}
+      <div
+        className="flex items-center justify-between border-t px-4 py-2.5"
+        style={{
+          background: 'var(--corp-surface)',
+          borderColor: 'var(--corp-border)',
+        }}
+      >
         <div className="flex items-center gap-2">
-          <span className="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          <span className="font-mono text-[10px] uppercase tracking-widest text-corp-muted">
+          <span className="inline-block w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--corp-accent)' }} />
+          <span className="font-mono text-[9px] uppercase tracking-widest text-corp-muted">
             SESSION ACTIVE
           </span>
         </div>
         <button
           onClick={handleForceQuit}
-          className="font-mono text-[10px] uppercase tracking-widest px-3 py-1.5 rounded border border-red-500/40 text-red-400 hover:bg-red-500/10 hover:border-red-500/70 active:bg-red-500/20 transition-colors"
+          className="font-mono text-[9px] uppercase tracking-widest px-2.5 py-1 rounded border transition-colors"
+          style={{
+            borderColor: 'var(--corp-danger)',
+            color: 'var(--corp-danger)',
+          }}
         >
-          FORCE QUIT
+          QUIT
         </button>
       </div>
     </motion.div>

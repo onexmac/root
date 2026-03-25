@@ -1,7 +1,7 @@
 import type { Tile, TileType, Quota } from './types';
 
-export const GRID_ROWS = 7;
-export const GRID_COLS = 5;
+export const GRID_ROWS = 8;
+export const GRID_COLS = 6;
 export const TILE_TYPES: TileType[] = ['email', 'chart', 'briefcase', 'clock', 'folder', 'gear'];
 
 let tileIdCounter = 0;
@@ -42,7 +42,8 @@ export function createGrid(): Tile[][] {
 export function areAdjacent(a: Tile, b: Tile): boolean {
   const dr = Math.abs(a.row - b.row);
   const dc = Math.abs(a.col - b.col);
-  return (dr === 1 && dc === 0) || (dr === 0 && dc === 1);
+  // Allow diagonal adjacency for easier dragging
+  return dr <= 1 && dc <= 1 && (dr + dc > 0);
 }
 
 export function isValidPath(path: Tile[]): boolean {

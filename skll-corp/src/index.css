@@ -3,29 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --corp-bg: #f0f1f5;
+  --corp-bg: #f5f5f0;
   --corp-surface: #ffffff;
-  --corp-elevated: #f8f9fb;
-  --corp-border: #d1d5db;
-  --corp-text: #111827;
-  --corp-muted: #6b7280;
-  --corp-accent: #00c07f;
-  --corp-success: #10b981;
-  --corp-warning: #f59e0b;
-  --corp-danger: #ef4444;
+  --corp-elevated: #fafaf7;
+  --corp-border: #e0e0da;
+  --corp-text: #1a1a1a;
+  --corp-muted: #8a8a80;
+  --corp-accent: #c04000;
+  --corp-success: #2d8a4e;
+  --corp-warning: #c07000;
+  --corp-danger: #c03030;
 }
 
 .dark {
-  --corp-bg: #0a0a0f;
-  --corp-surface: #12121a;
-  --corp-elevated: #1a1a26;
-  --corp-border: #2a2a3a;
-  --corp-text: #e4e4ef;
-  --corp-muted: #6b6b80;
-  --corp-accent: #00ffa3;
-  --corp-success: #00ffa3;
-  --corp-warning: #ffb800;
-  --corp-danger: #ff4060;
+  --corp-bg: #0a0a0e;
+  --corp-surface: #111118;
+  --corp-elevated: #18182a;
+  --corp-border: #222236;
+  --corp-text: #d8d8e8;
+  --corp-muted: #5a5a70;
+  --corp-accent: #00e8ff;
+  --corp-success: #00e8ff;
+  --corp-warning: #ff8800;
+  --corp-danger: #ff3050;
 }
 
 * {

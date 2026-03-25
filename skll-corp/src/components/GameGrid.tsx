@@ -61,7 +61,7 @@ export default function GameGrid() {
 
     const gridEl = gridRef.current;
     const gridRect = gridEl.getBoundingClientRect();
-    const gap = 6; // gap-1.5 = 6px
+    const gap = 4; // gap-1 = 4px
     const cellWidth = (gridRect.width - gap * (GRID_COLS - 1)) / GRID_COLS;
     const cellHeight = (gridRect.height - gap * (GRID_ROWS - 1)) / GRID_ROWS;
 
@@ -125,7 +125,7 @@ export default function GameGrid() {
       {/* Grid */}
       <div
         ref={gridRef}
-        className="grid gap-1.5 p-2"
+        className="grid gap-1 p-1.5"
         style={{
           gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`,
           gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)`,

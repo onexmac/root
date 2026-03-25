@@ -32,7 +32,7 @@ export default function GameTile({
       initial={{ opacity: 0, scale: 0.6 }}
       animate={{
         opacity: tile.matched ? 0 : 1,
-        scale: tile.matched ? 0 : active ? 1.08 : 1,
+        scale: tile.matched ? 0 : active ? 1.06 : 1,
       }}
       exit={{ opacity: 0, scale: 0.4 }}
       onPointerDown={(e) => {
@@ -40,15 +40,14 @@ export default function GameTile({
         onTileDown(tile);
       }}
       onPointerEnter={() => onTileEnter(tile)}
-      className="relative aspect-square w-full rounded-lg border select-none cursor-pointer"
+      className="relative aspect-square w-full select-none cursor-pointer"
       style={{
-        backgroundColor: active ? `${color}30` : `${color}12`,
-        borderColor: active ? `${color}90` : `${color}25`,
+        backgroundColor: active ? `${color}25` : 'var(--corp-surface)',
+        border: active ? `1.5px solid ${color}` : '1px solid var(--corp-border)',
+        borderRadius: '4px',
         boxShadow: active
-          ? `0 0 12px ${color}50, inset 0 0 8px ${color}15`
+          ? `0 0 10px ${color}40, inset 0 0 6px ${color}10`
           : 'none',
-        backdropFilter: active ? 'blur(8px)' : 'none',
-        WebkitBackdropFilter: active ? 'blur(8px)' : 'none',
         touchAction: 'none',
       }}
     >
@@ -56,10 +55,10 @@ export default function GameTile({
         <div
           style={{
             color,
-            filter: active ? `drop-shadow(0 0 6px ${color})` : 'none',
+            filter: active ? `drop-shadow(0 0 4px ${color})` : 'none',
           }}
         >
-          <Icon size={28} />
+          <Icon size={20} />
         </div>
       </div>
 
@@ -69,7 +68,7 @@ export default function GameTile({
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={springTransition}
-          className="absolute -top-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-mono font-bold"
+          className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full flex items-center justify-center text-[7px] font-mono font-bold"
           style={{
             backgroundColor: color,
             color: '#0a0a0f',

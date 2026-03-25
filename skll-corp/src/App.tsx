@@ -50,9 +50,23 @@ export default function App() {
   const theme = useThemeStore()
   const [loading, setLoading] = useState(true)
 
-  // Initialize theme on mount
+  // Initialize theme on mount and listen for system changes
   useEffect(() => {
-    document.documentElement.classList.add('dark')
+    const stored = localStorage.getItem('skll-theme');
+    if (!stored && window.matchMedia) {
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      const handler = (e: MediaQueryListEvent) => {
+        if (!localStorage.getItem('skll-theme')) {
+          if (e.matches) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        }
+      };
+      mq.addEventListener('change', handler);
+      return () => mq.removeEventListener('change', handler);
+    }
   }, [])
 
   // Prevent context menu and double-tap zoom
@@ -120,7 +134,7 @@ export default function App() {
   }
 
   return (
-    <div className="relative w-screen h-screen bg-neutral-950 text-neutral-100 overflow-hidden select-none">
+    <div className="relative w-screen h-screen overflow-hidden select-none" style={{ background: 'var(--corp-bg)', color: 'var(--corp-text)' }}>
       <AnimatePresence mode="wait">
         {loading ? (
           <ScreenWrapper screenKey="loading">
