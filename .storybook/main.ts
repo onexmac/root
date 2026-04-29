@@ -13,6 +13,15 @@ const config: StorybookConfig = {
     "@storybook/addon-docs",
     "@storybook/addon-onboarding"
   ],
-  "framework": "@storybook/react-vite"
+  "framework": "@storybook/react-vite",
+  async viteFinal(config) {
+    const basePath = process.env.STORYBOOK_BASE_PATH;
+
+    if (basePath) {
+      config.base = basePath;
+    }
+
+    return config;
+  }
 };
 export default config;
