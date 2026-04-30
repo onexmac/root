@@ -3,7 +3,7 @@ import { Icon } from "./Icon";
 
 figma.connect(
   Icon,
-  "https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=620-2342",
+  "https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=639-2191",
   {
     props: {
       name: figma.string("name"),

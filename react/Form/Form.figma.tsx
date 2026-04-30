@@ -3,7 +3,7 @@ import { FormField } from "./Form";
 
 figma.connect(
   FormField,
-  "https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=1014-3345",
+  "https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=763-2791",
   {
     props: {
       label: figma.string("label"),
