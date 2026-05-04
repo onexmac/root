@@ -3,11 +3,11 @@ import { Button } from "./Button";
 
 /**
  * Vincula el componente Button de React con su nodo en Figma.
- * Nodo: https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=434-2434
+ * Nodo: https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=1153-2937
  */
 figma.connect(
   Button,
-  "https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=434-2434",
+  "https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=1153-2937",
   {
     props: {
       label: figma.string("label"),
