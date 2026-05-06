@@ -21,7 +21,9 @@ const meta: Meta<typeof Boletas> = {
 export default meta;
 type Story = StoryObj<typeof Boletas>;
 
-/** Vista en marco de navegador desktop */
+/**
+ * 🖥️ Vista en marco de navegador desktop — para presentaciones y docs.
+ */
 export const Desktop: Story = {
   name: "🖥️ Desktop — Navegador",
   decorators: [
@@ -33,7 +35,9 @@ export const Desktop: Story = {
   ],
 };
 
-/** Vista en marco de iPad */
+/**
+ * 🪟 Vista en marco de iPad.
+ */
 export const Tablet: Story = {
   name: "🪟 Tablet — iPad",
   decorators: [
@@ -45,8 +49,40 @@ export const Tablet: Story = {
   ],
 };
 
-/** Componente sin marco — útil para inspeccionar */
+/**
+ * 🧪 Prueba de usuario — comparte este link para pruebas en desktop real.
+ * Se ve a pantalla completa como una app web.
+ */
+export const UserTest: Story = {
+  name: "🧪 Prueba de Usuario (link)",
+  parameters: {
+    layout: "fullscreen",
+    backgrounds: { disable: true },
+    viewport: { defaultViewport: "desktop" },
+  },
+  decorators: [
+    (Story) => (
+      <div style={{
+        width: "100vw",
+        minHeight: "100vh",
+        background: "#f3f3f3",
+        display: "flex",
+        alignItems: "flex-start",
+        justifyContent: "center",
+      }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/**
+ * 🔍 Sin marco — útil para inspeccionar estilos.
+ */
 export const Bare: Story = {
   name: "🔍 Sin marco",
-  parameters: { backgrounds: { default: "light" }, layout: "fullscreen" },
+  parameters: {
+    layout: "fullscreen",
+    backgrounds: { default: "light" },
+  },
 };
