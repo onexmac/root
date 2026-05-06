@@ -1,6 +1,7 @@
 {
   "codeConnect": {
     "parser": "react",
-    "include": ["react/**/*.tsx"]
+    "include": ["react/**/*.tsx"],
+    "teamId": "1611797504384027246"
   }
 }

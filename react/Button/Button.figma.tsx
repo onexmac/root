@@ -3,27 +3,18 @@ import { Button } from "./Button";
 
 /**
  * Vincula el componente Button de React con su nodo en Figma.
- * Nodo: https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=1153-2937
+ * Nodo: https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=434-2434
+ *
+ * Props reales en Figma (para referencia):
+ *   color: green | red | gray | white | black
+ *   layout: Label | Icon | Icon Left | Icon Right
+ *   mode: normal | disabled
+ *   state: primary_standard | primary_pressed | secundary_standard | secundary_pressed
  */
 figma.connect(
   Button,
-  "https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=1153-2937",
+  "https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante?node-id=434-2434",
   {
-    props: {
-      label: figma.string("label"),
-      variant: figma.enum("variant", {
-        primary: "primary",
-        secondary: "secondary",
-        disabled: "disabled",
-      }),
-      state: figma.enum("state", {
-        standard: "standard",
-        pressed: "pressed",
-        disabled: "disabled",
-      }),
-    },
-    example: ({ label, variant, state }) => (
-      <Button label={label} variant={variant} state={state} />
-    ),
+    example: () => <Button label="label" variant="primary" state="standard" />,
   }
 );
