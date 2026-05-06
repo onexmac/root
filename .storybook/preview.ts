@@ -6,20 +6,15 @@ import { adelanteTheme } from './theme'
 
 const preview: Preview = {
   parameters: {
-    // ── Tema global (docs, fondo de controles) ──────────────────────────────
     docs: {
       theme: adelanteTheme,
     },
-
-    // ── Controles ───────────────────────────────────────────────────────────
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date:  /Date$/i,
       },
     },
-
-    // ── Backgrounds por defecto ─────────────────────────────────────────────
     backgrounds: {
       default: "dark",
       values: [
@@ -28,8 +23,6 @@ const preview: Preview = {
         { name: "white",   value: "#ffffff" },
       ],
     },
-
-    // ── Viewports predefinidos ──────────────────────────────────────────────
     viewport: {
       viewports: {
         iphone16: {
@@ -47,18 +40,9 @@ const preview: Preview = {
           styles: { width: "1366px", height: "768px" },
           type: "desktop",
         },
-        desktopWide: {
-          name: "Desktop 1920",
-          styles: { width: "1920px", height: "1080px" },
-          type: "desktop",
-        },
       },
     },
-
-    // ── A11y ────────────────────────────────────────────────────────────────
-    a11y: {
-      test: "todo",
-    },
+    a11y: { test: "todo" },
   },
 };
 

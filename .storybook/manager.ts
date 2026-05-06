@@ -3,15 +3,7 @@ import { adelanteTheme } from "./theme";
 
 addons.setConfig({
   theme: adelanteTheme,
-
-  // Sidebar organizada: primero Screens, luego Core
-  sidebar: {
-    showRoots: true,
-  },
-
-  // Ocultar el panel inferior por defecto para más espacio al canvas
+  sidebar: { showRoots: true },
   panelPosition: "bottom",
-
-  // Toolbar visible
   isToolshown: true,
 });
