@@ -1,0 +1,137 @@
+{/* Introduction.mdx */}
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Adelante / Introducción" />
+
+<div style={{
+  fontFamily: '"Roboto", "Segoe UI", sans-serif',
+  maxWidth: '860px',
+  margin: '0 auto',
+  padding: '48px 24px',
+}}>
+
+<div style={{
+  display: 'flex',
+  alignItems: 'center',
+  gap: '16px',
+  marginBottom: '48px',
+}}>
+  <div style={{
+    width: '48px',
+    height: '48px',
+    background: '#ADD010',
+    borderRadius: '12px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '24px',
+    fontWeight: '700',
+    color: '#000',
+  }}>A</div>
+  <div>
+    <div style={{ fontSize: '13px', color: '#5d636c', letterSpacing: '1px', textTransform: 'uppercase' }}>Adelante</div>
+    <div style={{ fontSize: '20px', fontWeight: '600', color: '#e8e8e8' }}>Design System</div>
+  </div>
+</div>
+
+<h1 style={{
+  fontSize: '40px',
+  fontWeight: '600',
+  color: '#ffffff',
+  lineHeight: '1.2',
+  marginBottom: '16px',
+  letterSpacing: '-0.5px',
+}}>
+  Un sistema de diseño para construir<br/>
+  <span style={{ color: '#ADD010' }}>interfaces nativas en la web.</span>
+</h1>
+
+<p style={{
+  fontSize: '16px',
+  color: '#8a8a8a',
+  lineHeight: '1.7',
+  marginBottom: '48px',
+  maxWidth: '600px',
+}}>
+  Componentes, tokens y patrones de interacción que unifican todas las aplicaciones de Adelante.
+  Construido con React 19, CSS custom properties y semántica de diseño primero.
+</p>
+
+---
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+  gap: '16px',
+  marginTop: '32px',
+}}>
+
+{[
+  { emoji: '🎨', title: 'Tokens de diseño', desc: 'Colores, tipografía, espaciado y sombras como variables CSS.', href: '?path=/docs/adelante-tokens--docs' },
+  { emoji: '🔘', title: 'Button', desc: 'Primary, secondary y disabled. Con soporte para iconos.', href: '?path=/story/core-button--primary' },
+  { emoji: '🔍', title: 'SearchBar', desc: 'Tres layouts: label, icon y normal.', href: '?path=/story/core-searchbar--label' },
+  { emoji: '📑', title: 'TabsMenu', desc: 'Navegación por tabs con estados standard y pressed.', href: '?path=/story/core-tabsmenu--standard' },
+  { emoji: '📱', title: 'Slab Screen', desc: 'Pantalla móvil de solicitudes con slide-to-confirm.', href: '?path=/story/screens-slab--mobile' },
+  { emoji: '🖥️', title: 'Boletas Screen', desc: 'Registro de boletas — layout web 1366px.', href: '?path=/story/screens-boletas--desktop' },
+].map(card => (
+  <a
+    key={card.title}
+    href={card.href}
+    style={{
+      display: 'block',
+      background: '#1a1a1a',
+      border: '1px solid #2a2a2a',
+      borderRadius: '12px',
+      padding: '20px',
+      textDecoration: 'none',
+      transition: 'border-color 150ms ease, transform 150ms ease',
+      cursor: 'pointer',
+    }}
+    onMouseEnter={e => {
+      e.currentTarget.style.borderColor = '#ADD010';
+      e.currentTarget.style.transform = 'translateY(-2px)';
+    }}
+    onMouseLeave={e => {
+      e.currentTarget.style.borderColor = '#2a2a2a';
+      e.currentTarget.style.transform = 'translateY(0)';
+    }}
+  >
+    <div style={{ fontSize: '28px', marginBottom: '10px' }}>{card.emoji}</div>
+    <div style={{ fontSize: '14px', fontWeight: '600', color: '#e8e8e8', marginBottom: '6px' }}>{card.title}</div>
+    <div style={{ fontSize: '12px', color: '#5d636c', lineHeight: '1.5' }}>{card.desc}</div>
+  </a>
+))}
+
+</div>
+
+---
+
+<div style={{ marginTop: '40px', display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+
+<div>
+  <div style={{ fontSize: '11px', color: '#5d636c', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>Repositorio</div>
+  <a href="https://github.com/DavidpcAD/adelante-design-system" target="_blank"
+    style={{ color: '#ADD010', fontSize: '14px', textDecoration: 'none', fontWeight: '600' }}>
+    GitHub →
+  </a>
+</div>
+
+<div>
+  <div style={{ fontSize: '11px', color: '#5d636c', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>Aplicación</div>
+  <a href="https://adelante-web.vercel.app" target="_blank"
+    style={{ color: '#ADD010', fontSize: '14px', textDecoration: 'none', fontWeight: '600' }}>
+    Vercel →
+  </a>
+</div>
+
+<div>
+  <div style={{ fontSize: '11px', color: '#5d636c', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px' }}>Figma</div>
+  <a href="https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante" target="_blank"
+    style={{ color: '#ADD010', fontSize: '14px', textDecoration: 'none', fontWeight: '600' }}>
+    Losa Flotante →
+  </a>
+</div>
+
+</div>
+
+</div>
