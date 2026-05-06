@@ -1,5 +1,7 @@
 import type { Preview } from '@storybook/react-vite'
 import '../react/design-system.css'
+import '../react/screens/Slab/Slab.css'
+import '../react/screens/Boletas/Boletas.css'
 
 const preview: Preview = {
   parameters: {
