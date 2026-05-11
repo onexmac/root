@@ -16,12 +16,6 @@
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
-  /* Drop shadow base — aplicado a todos los modos (standard + pressed) per Figma spec.
-     Uso `filter: drop-shadow` (no box-shadow) para que la sombra siga la forma circular
-     del outer, no la bbox cuadrada del wrapper. */
-  filter:
-    drop-shadow(0 0 3px rgba(0, 0, 0, 0.16))
-    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.16));
 }
 
 button.ds-qty-selector {
