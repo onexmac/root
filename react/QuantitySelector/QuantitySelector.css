@@ -51,6 +51,12 @@ button.ds-qty-selector {
   inset: 0;
   border-radius: 50%;
   background: var(--ds-color-gray-200);
+  /* Drop shadow base — box-shadow en el __outer (que ya es border-radius: 50%)
+     en lugar de `filter: drop-shadow` en el wrapper, porque WebKit a veces
+     proyecta la sombra cuadrada en lugar de seguir el alpha circular. */
+  box-shadow:
+    0 0 3px rgba(0, 0, 0, 0.16),
+    0 2px 2px rgba(0, 0, 0, 0.16);
 }
 
 /* ============================================================
