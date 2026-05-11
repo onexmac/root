@@ -1,0 +1,113 @@
+/* SlideButton — alineado al Figma. Knob sticks out -13px, pressed state con ring green-200. */
+
+.ds-slide {
+  position: relative;
+  width: 352px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  /* No bg/overflow on outer — the knob sticks out and we need it visible */
+}
+
+.ds-slide--disabled {
+  opacity: 0.55;
+}
+
+/* Inner track: black bar that holds the label and the green fill.
+   13px shorter top/bottom than the outer (matches Figma's inset 16.25%). */
+.ds-slide__track {
+  position: relative;
+  flex: 1;
+  height: 54px;
+  background: var(--ds-color-black);
+  border-radius: var(--ds-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--ds-shadow-03-big);
+}
+
+.ds-slide__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--ds-color-green-200);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.ds-slide__label {
+  /* Centered within the visible area to the right of the knob (knob covers 0..75) */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 75px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-white);
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Confirm overlay covers the whole component (track + knob area) */
+.ds-slide__confirm {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ds-space-2);
+  background: var(--ds-color-green-100);
+  color: var(--ds-color-black);
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  text-transform: uppercase;
+  border-radius: var(--ds-radius-lg);
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Knob — standard: 64x54 (cabe dentro del inner track, 13px de aire arriba/abajo).
+   Pressed: 88x80 (sale -13px a la izquierda y llena todo el alto del wrapper outer)
+   con anillo green-200 de 8px. Al :active o data-dragging, crece + agrega anillo. */
+.ds-slide__knob {
+  position: absolute;
+  left: 0;
+  top: 13px;
+  z-index: 3;
+  width: 64px;
+  height: 54px;
+  border: 0;
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-color-green-100);
+  color: var(--ds-color-black);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  box-shadow: var(--ds-shadow-03-big);
+  touch-action: none;
+  transition: width 160ms ease, height 160ms ease, top 160ms ease, left 160ms ease, box-shadow 160ms ease;
+}
+
+.ds-slide__knob:active,
+.ds-slide__knob[data-dragging="true"] {
+  cursor: grabbing;
+  width: 88px;
+  height: 80px;
+  top: 0;
+  left: -13px;
+  box-shadow:
+    0 0 0 8px var(--ds-color-green-200),
+    var(--ds-shadow-03-big);
+}
+
+.ds-slide__knob:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}

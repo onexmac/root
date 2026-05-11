@@ -18,10 +18,19 @@ export type IconName =
   | "stock"
   | "arrow-right";
 
+/** Alias map: lets external callers use friendly names that resolve to canonical ones. */
+const ALIASES: Record<string, IconName> = {
+  arrow: "arrow-right",
+  chevron: "chevron-down",
+  "chevron-left": "back",
+  cart: "stock",
+};
+
 export type IconSize = "sm" | "md" | "lg";
 
 export interface IconProps {
-  name: IconName;
+  /** Canonical icon name or alias. Unknown strings render an empty box. */
+  name: IconName | string;
   size?: IconSize;
   color?: string;
   className?: string;
@@ -184,16 +193,17 @@ const PATHS: Record<IconName, React.ReactNode> = {
 
 export function Icon({ name, size = "md", color = "currentColor", className }: IconProps) {
   const px = SIZE_MAP[size];
+  const resolved = (ALIASES[name as string] ?? name) as IconName;
   return (
     <svg
-      className={`ds-icon ds-icon--${name} ds-icon--${size}${className ? " " + className : ""}`}
+      className={`ds-icon ds-icon--${resolved} ds-icon--${size}${className ? " " + className : ""}`}
       width={px}
       height={px}
       viewBox="0 0 24 24"
       fill={color}
       aria-hidden="true"
     >
-      {PATHS[name]}
+      {PATHS[resolved]}
     </svg>
   );
 }

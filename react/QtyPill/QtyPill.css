@@ -1,0 +1,168 @@
+/* QtyPill — mirror del Figma quantitySelector. Solo tokens var(--ds-*).
+ *
+ * Estructura: 3 capas posicionadas absolute dentro del wrapper:
+ *   __outer = disco gray-200 (background "vacío")
+ *   __ring  = border colorido por variant — overlay sobre el outer (clip para half-ring)
+ *   __inner = círculo negro centrado, contiene el número
+ */
+
+.ds-qtypill {
+  position: relative;
+  flex-shrink: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button.ds-qtypill {
+  cursor: pointer;
+}
+
+.ds-qtypill:focus-visible {
+  outline: 2px solid var(--ds-color-yellow);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+/* ============================================================
+ * Sizes — mirror del Figma 49x49 (sm). md/lg escalan proporcionalmente.
+ * ============================================================ */
+
+.ds-qtypill--sm { width: 49px; height: 49px; }
+.ds-qtypill--md { width: 64px; height: 64px; }
+.ds-qtypill--lg { width: 96px; height: 96px; }
+
+/* ============================================================
+ * Layer 1 — Outer disk (gray-200 background)
+ * ============================================================ */
+
+.ds-qtypill__outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--ds-color-gray-200);
+}
+
+/* ============================================================
+ * Layer 2 — Ring overlay (colored border per variant)
+ * ============================================================ */
+
+/* Ring fills el espacio completo entre outer (49) y inner (35) = 7px de anillo
+   en sm, escala proporcional en md/lg. box-sizing: border-box para que el border
+   no expanda el tamaño del elemento. */
+.ds-qtypill__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 7px solid transparent;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.ds-qtypill--md .ds-qtypill__ring {
+  border-width: 9px;
+}
+
+.ds-qtypill--lg .ds-qtypill__ring {
+  border-width: 13px;
+}
+
+/* CSS var --pill-color por variant — usado por el ring interior y el outer halo del pressed.
+   Pendiente no tiene color "intrínseco" (cae a gray-300 para que el halo de pressed sea visible). */
+.ds-qtypill--pendiente { --pill-color: var(--ds-color-gray-300); }
+.ds-qtypill--incompleto { --pill-color: var(--ds-color-yellow); }
+.ds-qtypill--completo { --pill-color: var(--ds-color-green-100); }
+.ds-qtypill--sin-stock { --pill-color: var(--ds-color-red-100); }
+
+/* Variant: pendiente → sin anillo (transparente, default) */
+
+/* Variant: incompleto → anillo amarillo, mitad derecha (clip-path).
+   Replica el SVG ellipse39 del Figma posicionado en x>=50%. */
+.ds-qtypill--incompleto .ds-qtypill__ring {
+  border-color: var(--pill-color);
+  clip-path: inset(0 0 0 50%);
+}
+
+/* Variant: completo → anillo verde completo */
+.ds-qtypill--completo .ds-qtypill__ring {
+  border-color: var(--pill-color);
+}
+
+/* Variant: sin-stock → anillo rojo completo */
+.ds-qtypill--sin-stock .ds-qtypill__ring {
+  border-color: var(--pill-color);
+}
+
+/* ============================================================
+ * Layer 3 — Inner black circle con el número
+ * ============================================================ */
+
+/* Inner se alinea exacto con el inside-edge del ring (inset = grosor del anillo).
+   sm: 7px → inner 35x35; md: 9px → inner 46x46; lg: 13px → inner 70x70. */
+.ds-qtypill__inner {
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: var(--ds-color-black);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.ds-qtypill--md .ds-qtypill__inner {
+  inset: 9px;
+}
+
+.ds-qtypill--lg .ds-qtypill__inner {
+  inset: 13px;
+}
+
+/* ============================================================
+ * Value — número centrado en el inner negro
+ * ============================================================ */
+
+.ds-qtypill__value {
+  position: relative;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: 0.4px;
+  color: var(--ds-color-white);
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-qtypill--md .ds-qtypill__value {
+  font-size: 22px;
+  letter-spacing: var(--ds-letter-spacing-wide);
+}
+
+.ds-qtypill--lg .ds-qtypill__value {
+  font-size: 32px;
+  letter-spacing: var(--ds-letter-spacing-wide);
+}
+
+/* ============================================================
+ * Pressed mode — dos efectos visuales mirror del Figma:
+ *   1. Anillo OUTER del color de la variant alrededor del disco gray-200
+ *      (box-shadow con spread, sin offset, color = --pill-color de la variant)
+ *   2. Drop-shadow sutil debajo (0 0 3px + 0 2px 2px rgba(0,0,0,.16))
+ * Se aplica explícitamente con prop mode="pressed", o automáticamente al
+ * :active cuando es interactivo (button.ds-qtypill).
+ * ============================================================ */
+
+.ds-qtypill--pressed .ds-qtypill__outer,
+button.ds-qtypill:not(:disabled):active .ds-qtypill__outer {
+  box-shadow: 0 0 0 4px var(--pill-color);
+}
+
+.ds-qtypill--pressed,
+button.ds-qtypill:not(:disabled):active {
+  filter:
+    drop-shadow(0 0 3px rgba(0, 0, 0, 0.16))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.16));
+}

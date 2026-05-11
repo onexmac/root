@@ -1,0 +1,183 @@
+/* SelectionDropdown — trigger + panel buscable. Solo tokens var(--ds-*). */
+
+.ds-dd {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.ds-dd__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  width: 100%;
+  height: 64px;
+  padding: 0 var(--ds-space-4);
+  border: 0;
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  font-family: inherit;
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  cursor: pointer;
+  box-shadow: var(--ds-shadow-03-big);
+}
+
+.ds-dd__trigger-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ds-color-yellow);
+  color: var(--ds-color-black);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ds-dd__trigger-label {
+  flex: 1;
+  text-align: left;
+}
+
+.ds-dd__caret {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-white);
+  opacity: 0.7;
+}
+
+.ds-dd--open .ds-dd__trigger {
+  background: var(--ds-color-gray-500);
+}
+
+.ds-dd__panel {
+  position: absolute;
+  bottom: calc(100% + var(--ds-space-2));
+  left: 0;
+  right: 0;
+  max-height: 360px;
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-03-big);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.ds-dd__search {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  margin: var(--ds-space-3);
+  padding: 0 var(--ds-space-4);
+  height: 48px;
+  border-radius: var(--ds-radius-xl);
+  background: var(--ds-color-surface);
+  color: var(--ds-color-gray-500);
+  flex-shrink: 0;
+}
+
+.ds-dd__search-input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  font-family: inherit;
+  font-size: var(--ds-font-size-body-md);
+  background: transparent;
+  color: var(--ds-color-black);
+  height: 100%;
+}
+
+.ds-dd__search-input::placeholder {
+  color: var(--ds-color-gray-400);
+}
+
+.ds-dd__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--ds-space-2) var(--ds-space-2);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.ds-dd__list > li {
+  list-style: none;
+}
+
+.ds-dd__list > li + li {
+  border-top: 1px solid var(--ds-color-gray-100);
+}
+
+.ds-dd__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  width: 100%;
+  padding: var(--ds-space-3) var(--ds-space-2);
+  border: 0;
+  background: transparent;
+  border-radius: var(--ds-radius-md);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.ds-dd__item:hover {
+  background: var(--ds-color-surface);
+}
+
+.ds-dd__item-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  height: 32px;
+  padding: 0 var(--ds-space-2);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-color-yellow);
+  color: var(--ds-color-black);
+  font-size: var(--ds-font-size-body-sm);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+}
+
+.ds-dd__item-name {
+  flex: 1;
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  color: var(--ds-color-black);
+  font-weight: var(--ds-font-weight-regular);
+  word-break: break-word;
+}
+
+.ds-dd__item-add {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ds-color-green-100);
+  color: var(--ds-color-black);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--ds-shadow-01);
+}
+
+.ds-dd__item:hover .ds-dd__item-add {
+  background: var(--ds-color-green-200);
+  color: var(--ds-color-white);
+}
+
+.ds-dd__empty {
+  padding: var(--ds-space-5) var(--ds-space-4);
+  text-align: center;
+  font-size: var(--ds-font-size-body-sm);
+  color: var(--ds-color-gray-500);
+}
