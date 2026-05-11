@@ -102,7 +102,8 @@ button.ds-qty-selector {
  * ============================================================ */
 
 /* Inner se alinea exacto con el inside-edge del ring (inset = grosor del anillo).
-   sm: 7px → inner 35x35; md: 9px → inner 46x46; lg: 13px → inner 70x70. */
+   sm: 7px → inner 35x35; md: 9px → inner 46x46; lg: 13px → inner 70x70.
+   Transition para que el grow del pressed sea suave. */
 .ds-qty-selector__inner {
   position: absolute;
   inset: 7px;
@@ -112,6 +113,7 @@ button.ds-qty-selector {
   align-items: center;
   justify-content: center;
   z-index: 1;
+  transition: inset 120ms ease;
 }
 
 .ds-qty-selector--md .ds-qty-selector__inner {
@@ -147,17 +149,27 @@ button.ds-qty-selector {
 }
 
 /* ============================================================
- * Pressed mode — dos efectos visuales mirror del Figma:
- *   1. Anillo OUTER del color de la variant alrededor del disco gray-200
- *      (box-shadow con spread, sin offset, color = --pill-color de la variant)
+ * Pressed mode — mirror del Figma:
+ *   1. El círculo INTERIOR negro crece (sm: 35→37, md: 46→48, lg: 70→72)
+ *      reduciendo el inset 1px de cada lado. El ring de color queda detrás.
  *   2. Drop-shadow sutil debajo (0 0 3px + 0 2px 2px rgba(0,0,0,.16))
  * Se aplica explícitamente con prop mode="pressed", o automáticamente al
  * :active cuando es interactivo (button.ds-qty-selector).
  * ============================================================ */
 
-.ds-qty-selector--pressed .ds-qty-selector__outer,
-button.ds-qty-selector:not(:disabled):active .ds-qty-selector__outer {
-  box-shadow: 0 0 0 4px var(--pill-color);
+.ds-qty-selector--pressed .ds-qty-selector__inner,
+button.ds-qty-selector:not(:disabled):active .ds-qty-selector__inner {
+  inset: 6px;
+}
+
+.ds-qty-selector--md.ds-qty-selector--pressed .ds-qty-selector__inner,
+button.ds-qty-selector.ds-qty-selector--md:not(:disabled):active .ds-qty-selector__inner {
+  inset: 8px;
+}
+
+.ds-qty-selector--lg.ds-qty-selector--pressed .ds-qty-selector__inner,
+button.ds-qty-selector.ds-qty-selector--lg:not(:disabled):active .ds-qty-selector__inner {
+  inset: 12px;
 }
 
 .ds-qty-selector--pressed,
