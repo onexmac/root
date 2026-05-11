@@ -1,0 +1,267 @@
+/* Test1 — prototipo test screen 1+2. Solo tokens var(--ds-*). */
+
+.test1 {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--ds-space-6) var(--ds-space-4);
+  background: var(--ds-color-surface);
+  font-family: var(--ds-font-family);
+}
+
+.test1__viewport {
+  position: relative;
+  width: 402px;
+  min-height: 874px;
+  padding: var(--ds-space-5) var(--ds-space-3);
+  background: var(--ds-color-surface);
+  border-radius: var(--ds-radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+}
+
+/* ============================================================
+ * BoletaCard
+ * ============================================================ */
+
+.test1-card {
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-03-big);
+  padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-3) var(--ds-space-5);
+  overflow: hidden;
+}
+
+.test1-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+
+.test1-card__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  flex: 1;
+}
+
+.test1-card__code {
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-gray-500);
+}
+
+.test1-card__number {
+  margin: 0;
+  font-size: 24px;
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  color: var(--ds-color-gray-500);
+}
+
+.test1-card__ref {
+  margin: 0;
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-black);
+}
+
+.test1-card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  font-size: var(--ds-font-size-body-sm);
+  line-height: var(--ds-line-height-body-sm);
+  color: var(--ds-color-gray-500);
+  font-weight: var(--ds-font-weight-regular);
+}
+
+.test1-card__info-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ds-color-gray-500);
+  position: relative;
+  display: inline-block;
+}
+
+.test1-card__info-dot::after {
+  content: "i";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-style: italic;
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-gray-500);
+}
+
+.test1-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+
+.test1-card__check {
+  color: var(--ds-color-black);
+  display: inline-flex;
+}
+
+/* Card body / items */
+
+.test1-card__body {
+  overflow: hidden;
+}
+
+.test1-card__divider {
+  height: 1px;
+  background: var(--ds-color-gray-100);
+  margin: var(--ds-space-3) 0 var(--ds-space-2);
+}
+
+.test1-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-2) 0;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.test1-row__name {
+  flex: 1;
+  margin: 0;
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-regular);
+  color: var(--ds-color-black);
+}
+
+/* ============================================================
+ * Bottom row — slide button on top, search below
+ * ============================================================ */
+
+.test1__bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-4) 0;
+}
+
+/* SearchBar wrapper — el SearchBar viene de /react/SearchBar/, acá solo el suggestions panel y el close */
+
+.test1-search-wrap {
+  position: relative;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.test1-search-bar {
+  align-self: flex-end;
+  overflow: hidden;
+  border-radius: var(--ds-radius-xl);
+}
+
+.test1-search__close {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ds-color-gray-100);
+  color: var(--ds-color-black);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Suggestions panel — flota sobre el bottom row */
+
+.test1-search__panel {
+  position: absolute;
+  bottom: calc(100% + var(--ds-space-2));
+  right: 0;
+  width: 352px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-03-big);
+  padding: var(--ds-space-1);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 10;
+}
+
+.test1-search__hit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-3);
+  border: 0;
+  background: transparent;
+  border-radius: var(--ds-radius-md);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  color: var(--ds-color-black);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.test1-search__hit:hover {
+  background: var(--ds-color-surface);
+}
+
+.test1-search__hit-name {
+  flex: 1;
+  font-weight: var(--ds-font-weight-regular);
+  word-break: break-word;
+}
+
+.test1-search__match {
+  background: var(--ds-color-yellow);
+  color: var(--ds-color-black);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.test1-search__hit-tag {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: var(--ds-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 4px 8px;
+  border-radius: var(--ds-radius-xl);
+}
+
+.test1-search__hit-tag--boleta {
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+}
+
+.test1-search__hit-tag--catalog {
+  background: var(--ds-color-gray-100);
+  color: var(--ds-color-gray-500);
+}

@@ -19,7 +19,7 @@ figma.connect(
       }),
       visibility: figma.enum("visibility", {
         open: "open",
-        close: "hidden",
+        close: "close",
       }),
     },
     example: ({ state, visibility }) => (

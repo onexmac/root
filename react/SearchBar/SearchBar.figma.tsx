@@ -14,6 +14,7 @@ figma.connect(
         label: "label",
         normal: "normal",
         icon: "icon",
+        expanded: "expanded",
       }),
     },
     example: ({ state, layout }) => (

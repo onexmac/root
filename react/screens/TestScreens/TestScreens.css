@@ -1,0 +1,354 @@
+/* TestScreens — prototipo test screen 1–4. Solo tokens var(--ds-*). */
+
+.ts {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--ds-space-6) var(--ds-space-4);
+  background: var(--ds-color-surface);
+  font-family: var(--ds-font-family);
+}
+
+.ts__viewport {
+  position: relative;
+  width: 402px;
+  min-height: 874px;
+  padding: var(--ds-space-5) var(--ds-space-3);
+  background: var(--ds-color-surface);
+  border-radius: var(--ds-radius-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+}
+
+/* ============================================================
+ * Boleta card — list (screens 1, 2)
+ * ============================================================ */
+
+.ts-card {
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-03-big);
+  padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-3) var(--ds-space-5);
+  overflow: hidden;
+}
+
+.ts-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+
+.ts-card__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  flex: 1;
+}
+
+.ts-card__code {
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-gray-500);
+}
+
+.ts-card__number {
+  margin: 0;
+  font-size: 24px;
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  color: var(--ds-color-gray-500);
+}
+
+.ts-card__ref {
+  margin: 0;
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-black);
+}
+
+.ts-card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-1);
+  font-size: var(--ds-font-size-body-sm);
+  line-height: var(--ds-line-height-body-sm);
+  color: var(--ds-color-gray-500);
+  font-weight: var(--ds-font-weight-regular);
+}
+
+.ts-card__info-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ds-color-gray-500);
+  position: relative;
+  display: inline-block;
+}
+
+.ts-card__info-dot::after {
+  content: "i";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-style: italic;
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-gray-500);
+}
+
+.ts-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+
+.ts-card__check {
+  color: var(--ds-color-black);
+  display: inline-flex;
+}
+
+.ts-card__body {
+  overflow: hidden;
+}
+
+.ts-card__divider {
+  height: 1px;
+  background: var(--ds-color-gray-100);
+  margin: var(--ds-space-3) 0 var(--ds-space-2);
+  transform-origin: left center;
+}
+
+/* Row container — solo layout, no interactivo. El QtyPill al final es el botón. */
+.ts-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-2) 0;
+}
+
+.ts-row__name {
+  flex: 1;
+  margin: 0;
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-regular);
+  color: var(--ds-color-black);
+}
+
+/* ============================================================
+ * List bottom — verified toggle + search FAB
+ * ============================================================ */
+
+.ts__bottom {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-4) 0;
+}
+
+.ts__verified-toggle {
+  border: 0;
+  background: transparent;
+  color: var(--ds-color-gray-500);
+  font-family: inherit;
+  font-size: var(--ds-font-size-body-sm);
+  font-weight: var(--ds-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: var(--ds-space-2) var(--ds-space-3);
+  border-radius: var(--ds-radius-xl);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ts__verified-toggle:hover {
+  background: var(--ds-color-gray-100);
+}
+
+/* SearchButton wrapper — anclado al fondo del viewport con el mismo ancho que las cards
+   (left/right igualan el padding horizontal del viewport, var(--ds-space-3)).
+   Es transparente a clicks salvo en sus children, así el verified-toggle queda interactivo
+   por debajo cuando la barra está cerrada. */
+
+.ts-search-wrap {
+  position: absolute;
+  left: var(--ds-space-3);
+  right: var(--ds-space-3);
+  bottom: var(--ds-space-4);
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.ts-search-wrap > * {
+  pointer-events: auto;
+}
+
+/* Cerrado: el ícono se queda chico en la esquina derecha */
+.ts-search-wrap > .ds-search--icon {
+  align-self: flex-end;
+}
+
+/* Abierto: el shell del DS toma el ancho completo (= ancho de las cards) y el panel
+   de sugerencias crece hacia arriba (porque la barra está en la base del screen). */
+.ts-search-wrap > .ds-search-shell--expanded {
+  width: 100%;
+  flex-direction: column-reverse;
+}
+
+/* ============================================================
+ * Detail — screens 3, 4
+ * ============================================================ */
+
+.ts-material {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-5);
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-03-big);
+  padding: var(--ds-space-2) var(--ds-space-5);
+  min-height: 88px;
+}
+
+.ts-material__name {
+  flex: 1;
+  margin: 0;
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-regular);
+  color: var(--ds-color-black);
+}
+
+/* Label dropdown trigger — combobox: pill blanco con <input> + ToggleCards a la derecha.
+   El input mismo es el campo de búsqueda; tipear filtra las opciones del panel. */
+
+.ts-label-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  /* No width: 100% — el flex stretch del .ts__viewport (default align-items: stretch)
+     lo hace ocupar el mismo ancho que los demás children (material card, etc.).
+     width: 100% + padding desbordaba en content-box mode. */
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-3) var(--ds-space-5);
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ts-label-trigger__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  font-weight: var(--ds-font-weight-regular);
+  color: var(--ds-color-black);
+  padding: 0;
+}
+
+.ts-label-trigger__input::placeholder {
+  color: var(--ds-color-gray-300);
+}
+
+/* Cuando hay un label seleccionado y el dropdown está cerrado: semibold en negro */
+.ts-label-trigger__input--filled {
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+/* Panel del dropdown — search input arriba + lista scrolleable de TabsMenu.
+   Outer container con overflow:hidden para que la animación de height (AnimatePresence)
+   recorte cleanly. La lista interna toma el resto del alto y scrollea. */
+
+.ts-label-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  overflow: hidden;
+}
+
+.ts-label-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  /* Scroll vertical cuando la lista supera ~5 items.
+     56px (item) + 12px (gap) ≈ 68px por fila → 5 filas + padding ≈ 360px. */
+  max-height: 360px;
+  overflow-y: auto;
+  /* Scroll-behavior nativo iOS-like (momentum) en webkit */
+  -webkit-overflow-scrolling: touch;
+  /* Scrollbar overlay-style: no toma ancho del layout (Firefox + iOS).
+     En Chrome/Safari el ::-webkit-scrollbar custom de abajo es overlay también
+     porque no usa scrollbar-gutter. Resultado: items alineados al trigger. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--ds-color-gray-200) transparent;
+}
+
+/* Custom scrollbar discreto en webkit — 4px, overlay sobre el contenido */
+.ts-label-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ts-label-list::-webkit-scrollbar-thumb {
+  background: var(--ds-color-gray-200);
+  border-radius: var(--ds-radius-xl);
+}
+
+.ts-label-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ts-label-list__item {
+  display: flex;
+  flex-shrink: 0;
+}
+
+/* TabsMenu por defecto tiene min-width 180px; en este flujo lo queremos full-width.
+   box-sizing: border-box para que width: 100% incluya el padding y no desborde. */
+.ts-label-list__item .tabs-menu {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 56px;
+  padding: var(--ds-space-3) var(--ds-space-5);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: 0.4px;
+}
+
+/* Estado vacío cuando la búsqueda no tiene matches */
+.ts-label-list__empty {
+  padding: var(--ds-space-5) var(--ds-space-3);
+  text-align: center;
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  color: var(--ds-color-gray-500);
+  font-weight: var(--ds-font-weight-regular);
+}
+
+/* ============================================================
+ * Detail CTA — SlideButton anclado al fondo del viewport
+ * ============================================================ */
+
+.ts-detail__cta {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  padding: var(--ds-space-4) 0 var(--ds-space-2);
+}
