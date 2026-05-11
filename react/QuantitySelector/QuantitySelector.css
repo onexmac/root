@@ -16,6 +16,12 @@
   align-items: center;
   justify-content: center;
   -webkit-tap-highlight-color: transparent;
+  /* Drop shadow base — aplicado a todos los modos (standard + pressed) per Figma spec.
+     Uso `filter: drop-shadow` (no box-shadow) para que la sombra siga la forma circular
+     del outer, no la bbox cuadrada del wrapper. */
+  filter:
+    drop-shadow(0 0 3px rgba(0, 0, 0, 0.16))
+    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.16));
 }
 
 button.ds-qty-selector {
@@ -150,9 +156,9 @@ button.ds-qty-selector {
 
 /* ============================================================
  * Pressed mode — mirror del Figma:
- *   1. El círculo INTERIOR negro crece (sm: 35→37, md: 46→48, lg: 70→72)
- *      reduciendo el inset 1px de cada lado. El ring de color queda detrás.
- *   2. Drop-shadow sutil debajo (0 0 3px + 0 2px 2px rgba(0,0,0,.16))
+ *   El círculo INTERIOR negro crece (sm: 35→37, md: 46→48, lg: 70→72)
+ *   reduciendo el inset 1px de cada lado. El ring de color queda detrás.
+ *   El drop-shadow base ya está en `.ds-qty-selector` (aplica a standard también).
  * Se aplica explícitamente con prop mode="pressed", o automáticamente al
  * :active cuando es interactivo (button.ds-qty-selector).
  * ============================================================ */
@@ -170,11 +176,4 @@ button.ds-qty-selector.ds-qty-selector--md:not(:disabled):active .ds-qty-selecto
 .ds-qty-selector--lg.ds-qty-selector--pressed .ds-qty-selector__inner,
 button.ds-qty-selector.ds-qty-selector--lg:not(:disabled):active .ds-qty-selector__inner {
   inset: 12px;
-}
-
-.ds-qty-selector--pressed,
-button.ds-qty-selector:not(:disabled):active {
-  filter:
-    drop-shadow(0 0 3px rgba(0, 0, 0, 0.16))
-    drop-shadow(0 2px 2px rgba(0, 0, 0, 0.16));
 }
