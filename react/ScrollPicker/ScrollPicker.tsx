@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { springs } from "../springs";
 import { haptic } from "../haptic";
-import { QtyPill, type QtyVariant } from "../QtyPill/QtyPill";
+import { QuantitySelector, type QuantitySelectorState } from "../QuantitySelector/QuantitySelector";
 
 
 const ITEM_HEIGHT = 48;
@@ -16,7 +16,7 @@ export interface ScrollPickerProps {
   /** Texto contextual mostrado en el header (ej. nombre del material) */
   contextLabel?: string;
   /** Variante de color para el pill grande y la banda del wheel */
-  variant?: QtyVariant;
+  variant?: QuantitySelectorState;
   /** Mínimo. Default 0 */
   min?: number;
   /** Máximo. Default 999 */
@@ -211,7 +211,7 @@ export function ScrollPicker({
                   onClick={startEdit}
                   aria-label={`Cantidad ${value}, tocá para escribir`}
                 >
-                  <QtyPill value={value} variant={variant} size="lg" />
+                  <QuantitySelector value={value} state={variant} size="lg" />
                 </button>
               )}
               <span className="ds-sp__value-hint">

@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { springs } from "../../springs";
 import { haptic } from "../../haptic";
-import { QtyPill, type QtyVariant } from "../../QtyPill/QtyPill";
+import { QuantitySelector, type QuantitySelectorState } from "../../QuantitySelector/QuantitySelector";
 import { SearchBar } from "../../SearchBar/SearchBar";
 import { ToggleCards } from "../../ToggleCards/ToggleCards";
 import { Test1Detail, DEFAULT_CATALOG, computeVariant, type Material } from "./Test1Detail";
@@ -205,7 +205,7 @@ function BoletaCard({
 
 function ItemRow({ item, onTap }: { item: Item | Material; onTap: () => void }) {
   const requested = (item as Item).requested ?? (item as Material).requested;
-  const variant: QtyVariant = computeVariant(item.qty, requested);
+  const variant: QuantitySelectorState = computeVariant(item.qty, requested);
   return (
     <motion.button
       type="button"
@@ -216,7 +216,7 @@ function ItemRow({ item, onTap }: { item: Item | Material; onTap: () => void }) 
       aria-label={`${item.name} — cantidad ${item.qty}, tocá para editar`}
     >
       <p className="test1-row__name">{item.name}</p>
-      <QtyPill value={item.qty} variant={variant} />
+      <QuantitySelector value={item.qty} state={variant} />
     </motion.button>
   );
 }

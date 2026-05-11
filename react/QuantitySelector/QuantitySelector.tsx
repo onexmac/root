@@ -13,7 +13,7 @@ import { springs } from "../springs";
  * Aliases backward-compatible (mapean a los nombres viejos del DS):
  *   - default → incompleto, ok → completo, alert → sin-stock
  */
-export type QtyVariant =
+export type QuantitySelectorState =
   | "pendiente"
   | "incompleto"
   | "completo"
@@ -22,15 +22,15 @@ export type QtyVariant =
   | "ok"
   | "alert";
 
-export type QtyMode = "standard" | "pressed";
+export type QuantitySelectorMode = "standard" | "pressed";
 
-export interface QtyPillProps {
+export interface QuantitySelectorProps {
   /** Cantidad a mostrar dentro del círculo */
   value: number;
-  /** Variante visual del anillo. Default "pendiente" (sin anillo). */
-  variant?: QtyVariant;
+  /** Estado visual del anillo (mirror del Figma `quantitySelector.state`). Default "pendiente" (sin anillo). */
+  state?: QuantitySelectorState;
   /** Modo visual. "pressed" agrega halo; también se aplica auto en :active si onTap se da. */
-  mode?: QtyMode;
+  mode?: QuantitySelectorMode;
   /** Tamaño: sm=49px (default), md=64px, lg=96px */
   size?: "sm" | "md" | "lg";
   /** Si se pasa, el pill es tappable y dispara este callback */
@@ -41,7 +41,7 @@ export interface QtyPillProps {
 }
 
 /** Mapping del nombre viejo al nuevo. La CSS solo tiene clases para los 4 nuevos. */
-const VARIANT_RESOLVED: Record<QtyVariant, string> = {
+const STATE_RESOLVED: Record<QuantitySelectorState, string> = {
   pendiente: "pendiente",
   incompleto: "incompleto",
   completo: "completo",
@@ -52,7 +52,7 @@ const VARIANT_RESOLVED: Record<QtyVariant, string> = {
 };
 
 /**
- * QtyPill — pill circular con anillo de variante + número, mirror del Figma quantitySelector.
+ * QuantitySelector — pill circular con anillo de variante + número, mirror del Figma quantitySelector.
  *
  * Estructura visual (3 capas):
  *   __outer:  disco gray-200 (49x49 en sm)
@@ -62,27 +62,27 @@ const VARIANT_RESOLVED: Record<QtyVariant, string> = {
  * Si se pasa `onTap`, es interactivo (botón con press animation y halo en :active).
  * Si no, es decorativo (span).
  */
-export function QtyPill({
+export function QuantitySelector({
   value,
-  variant = "pendiente",
+  state = "pendiente",
   mode = "standard",
   size = "sm",
   onTap,
   ariaLabel,
   className,
-}: QtyPillProps) {
-  const resolved = VARIANT_RESOLVED[variant];
-  const classes = `ds-qtypill ds-qtypill--${resolved} ds-qtypill--${mode} ds-qtypill--${size}${className ? ` ${className}` : ""}`;
+}: QuantitySelectorProps) {
+  const resolved = STATE_RESOLVED[state];
+  const classes = `ds-qty-selector ds-qty-selector--${resolved} ds-qty-selector--${mode} ds-qty-selector--${size}${className ? ` ${className}` : ""}`;
 
   const inner = (
     <>
-      <span className="ds-qtypill__outer" aria-hidden />
-      <span className="ds-qtypill__ring" aria-hidden />
-      <span className="ds-qtypill__inner">
+      <span className="ds-qty-selector__outer" aria-hidden />
+      <span className="ds-qty-selector__ring" aria-hidden />
+      <span className="ds-qty-selector__inner">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span
             key={value}
-            className="ds-qtypill__value"
+            className="ds-qty-selector__value"
             initial={{ y: 12, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -12, opacity: 0 }}

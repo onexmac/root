@@ -1,6 +1,6 @@
 import React from "react";
 import { Icon } from "../Icon/Icon";
-import { QuantitySelector, QuantitySelectorState } from "../Button/QuantitySelector";
+import { QuantityStepper, QuantityStepperState } from "../Button/QuantityStepper";
 
 // ─── SummaryCard ──────────────────────────────────────────────────────────────
 
@@ -60,7 +60,7 @@ export interface MaterialListProps {
   /** Material description */
   description: string;
   /** Quantity selector state */
-  qtyState?: QuantitySelectorState;
+  qtyState?: QuantityStepperState;
   /** Quantity value */
   qty?: number;
   onQtyChange?: (qty: number) => void;
@@ -75,7 +75,7 @@ export function MaterialList({
   return (
     <div className="ds-material-list">
       <p className="ds-material-list__desc">{description}</p>
-      <QuantitySelector
+      <QuantityStepper
         state={qtyState}
         qty={qty}
         onQtyChange={onQtyChange}

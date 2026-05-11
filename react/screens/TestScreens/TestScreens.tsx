@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { springs } from "../../springs";
 import { haptic } from "../../haptic";
-import { QtyPill, type QtyVariant } from "../../QtyPill/QtyPill";
+import { QuantitySelector, type QuantitySelectorState } from "../../QuantitySelector/QuantitySelector";
 import { SearchBar, type SearchSuggestion } from "../../SearchBar/SearchBar";
 import { ToggleCards } from "../../ToggleCards/ToggleCards";
 import { TabsMenu } from "../../TabsMenu/TabsMenu";
@@ -74,7 +74,7 @@ const LABEL_OPTIONS = [
 ];
 
 /** entregada vs solicitada → variante visual del anillo del pill (per Figma quantitySelector) */
-function variantFor(qty: number, requested?: number): QtyVariant {
+function variantFor(qty: number, requested?: number): QuantitySelectorState {
   if (requested == null) return "pendiente";    // no se ha registrado
   if (qty > requested) return "sin-stock";      // excede lo solicitado (anomalía)
   if (qty === requested) return "completo";     // están todos
@@ -386,7 +386,7 @@ function BoletaCard({
               >
                 <ItemRow
                   item={item}
-                  variant={verified ? variantFor(item.qty, item.requested) : "pendiente"}
+                  state={verified ? variantFor(item.qty, item.requested) : "pendiente"}
                   onTap={() => onItemTap(item)}
                 />
               </motion.div>
@@ -400,21 +400,21 @@ function BoletaCard({
 
 function ItemRow({
   item,
-  variant,
+  state,
   onTap,
 }: {
   item: Item;
-  variant: QtyVariant;
+  state: QuantitySelectorState;
   onTap: () => void;
 }) {
   return (
     <div className="ts-row">
       <p className="ts-row__name">{item.name}</p>
-      {/* Solo el QtyPill es interactivo. Al mantenerlo presionado, su :active
+      {/* Solo el QuantitySelector es interactivo. Al mantenerlo presionado, su :active
        *  dispara el halo + anillo outer del color de la variant (DS-level). */}
-      <QtyPill
+      <QuantitySelector
         value={item.qty}
-        variant={variant}
+        state={state}
         onTap={onTap}
         ariaLabel={`${item.name} — cantidad ${item.qty}, tocá para ver detalle`}
       />
@@ -477,7 +477,7 @@ function DetailView({
       {/* Material card */}
       <div className="ts-material">
         <p className="ts-material__name">{item.name}</p>
-        <QtyPill value={item.qty} variant="incompleto" />
+        <QuantitySelector value={item.qty} state="incompleto" />
       </div>
 
       {/* Trigger combobox — el input ES el área de búsqueda. Tipear filtra; el ToggleCards

@@ -1,18 +1,18 @@
 import React from "react";
 
-export type QuantitySelectorState =
+export type QuantityStepperState =
   | "incompleto"
   | "pendiente"
   | "completo"
   | "sin-stock";
 
-export type QuantitySelectorMode = "standard" | "pressed";
+export type QuantityStepperMode = "standard" | "pressed";
 
-export interface QuantitySelectorProps {
+export interface QuantityStepperProps {
   /** Stock / completion state — controls background color */
-  state?: QuantitySelectorState;
+  state?: QuantityStepperState;
   /** Interaction mode */
-  mode?: QuantitySelectorMode;
+  mode?: QuantityStepperMode;
   /** Current quantity */
   qty?: number;
   onQtyChange?: (qty: number) => void;
@@ -20,20 +20,20 @@ export interface QuantitySelectorProps {
   readOnly?: boolean;
 }
 
-const STATE_COLORS: Record<QuantitySelectorState, string> = {
+const STATE_COLORS: Record<QuantityStepperState, string> = {
   incompleto:  "var(--ds-color-yellow)",
   pendiente:   "var(--ds-color-gray-200)",
   completo:    "var(--ds-color-green-100)",
   "sin-stock": "var(--ds-color-red-100)",
 };
 
-export function QuantitySelector({
+export function QuantityStepper({
   state = "pendiente",
   mode = "standard",
   qty = 0,
   onQtyChange,
   readOnly = false,
-}: QuantitySelectorProps) {
+}: QuantityStepperProps) {
   const bg = STATE_COLORS[state];
 
   const decrement = () => onQtyChange && onQtyChange(Math.max(0, qty - 1));

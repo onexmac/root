@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { QtyPill } from "./QtyPill";
+import { QuantitySelector } from "./QuantitySelector";
 
-const meta: Meta<typeof QtyPill> = {
-  title: "Components/QtyPill",
-  component: QtyPill,
+const meta: Meta<typeof QuantitySelector> = {
+  title: "Components/QuantitySelector",
+  component: QuantitySelector,
   parameters: { layout: "centered" },
   argTypes: {
-    variant: {
+    state: {
       control: { type: "inline-radio" },
       options: ["pendiente", "incompleto", "completo", "sin-stock"],
     },
@@ -17,45 +17,45 @@ const meta: Meta<typeof QtyPill> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof QtyPill>;
+type Story = StoryObj<typeof QuantitySelector>;
 
 /** Pendiente — gris, sin anillo. No se ha registrado. */
-export const Pendiente: Story = { args: { value: 3, variant: "pendiente", size: "sm" } };
+export const Pendiente: Story = { args: { value: 3, state: "pendiente", size: "sm" } };
 
 /** Incompleto — anillo amarillo a la mitad derecha. Faltan materiales. */
-export const Incompleto: Story = { args: { value: 3, variant: "incompleto", size: "sm" } };
+export const Incompleto: Story = { args: { value: 3, state: "incompleto", size: "sm" } };
 
 /** Completo — anillo verde completo. Están todos. */
-export const Completo: Story = { args: { value: 3, variant: "completo", size: "sm" } };
+export const Completo: Story = { args: { value: 3, state: "completo", size: "sm" } };
 
 /** Sin stock — anillo rojo completo. No hay disponible. */
-export const SinStock: Story = { args: { value: 3, variant: "sin-stock", size: "sm" } };
+export const SinStock: Story = { args: { value: 3, state: "sin-stock", size: "sm" } };
 
 /** Pressed (estado fijo) — halo shadow alrededor. También se aplica auto al :active de un Tappable. */
 export const PendientePressed: Story = {
-  args: { value: 3, variant: "pendiente", mode: "pressed", size: "sm" },
+  args: { value: 3, state: "pendiente", mode: "pressed", size: "sm" },
 };
 
 export const IncompletoPressed: Story = {
-  args: { value: 3, variant: "incompleto", mode: "pressed", size: "sm" },
+  args: { value: 3, state: "incompleto", mode: "pressed", size: "sm" },
 };
 
 export const CompletoPressed: Story = {
-  args: { value: 3, variant: "completo", mode: "pressed", size: "sm" },
+  args: { value: 3, state: "completo", mode: "pressed", size: "sm" },
 };
 
 export const SinStockPressed: Story = {
-  args: { value: 3, variant: "sin-stock", mode: "pressed", size: "sm" },
+  args: { value: 3, state: "sin-stock", mode: "pressed", size: "sm" },
 };
 
 /** Tappable — botón interactivo, halo automático en :active al mantener presionado. */
 export const Tappable: Story = {
   args: {
     value: 5,
-    variant: "incompleto",
+    state: "incompleto",
     size: "md",
     onTap: () => console.log("tap"),
   },
 };
 
-export const Large: Story = { args: { value: 120, variant: "completo", size: "lg" } };
+export const Large: Story = { args: { value: 120, state: "completo", size: "lg" } };

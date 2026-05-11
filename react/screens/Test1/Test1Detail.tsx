@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AnimatePresence, motion, useAnimationControls, useMotionValue, useTransform } from "motion/react";
 import { springs } from "../../springs";
 import { haptic } from "../../haptic";
-import { QtyPill, type QtyVariant as DSQtyVariant } from "../../QtyPill/QtyPill";
+import { QuantitySelector, type QuantitySelectorState as DSQuantitySelectorState } from "../../QuantitySelector/QuantitySelector";
 import { ScrollPicker } from "../../ScrollPicker/ScrollPicker";
 import { SelectionDropdown, type SelectionItem } from "../../SelectionDropdown/SelectionDropdown";
 import { SlideButton } from "../../SlideButton/SlideButton";
@@ -18,7 +18,7 @@ import "./Test1Detail.css";
  *  - agregar nuevos via SelectionDropdown (catálogo buscable)
  */
 
-export type QtyVariant = DSQtyVariant;
+export type QuantitySelectorState = DSQuantitySelectorState;
 export type CatalogItem = SelectionItem;
 
 export interface Material {
@@ -31,7 +31,7 @@ export interface Material {
   /** Cantidad solicitada al proveedor */
   requested?: number;
   /** Override manual; si no se da, se computa de entregada vs solicitada */
-  variant?: QtyVariant;
+  variant?: QuantitySelectorState;
 }
 
 /**
@@ -40,7 +40,7 @@ export interface Material {
  *  - entregada > solicitada  → alert (rojo, sobrepasa)
  *  - entregada < solicitada  → default (amarillo, pendiente)
  */
-export function computeVariant(qty: number, requested?: number): QtyVariant {
+export function computeVariant(qty: number, requested?: number): QuantitySelectorState {
   if (requested == null) return "default";
   if (qty > requested) return "alert";
   if (qty === requested) return "ok";
@@ -264,7 +264,7 @@ function MaterialRow({
           <p className="td-row__name">{material.name}</p>
 
           <div className="td-row__right">
-            <QtyPill value={material.qty} variant={variant} />
+            <QuantitySelector value={material.qty} state={variant} />
             {(hasRequested || hasBudget) && (
               <div className="td-row__mini-stats" aria-hidden>
                 {hasRequested && (

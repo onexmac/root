@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/react-vite'
 import '../react/design-system.css'
-import '../react/QtyPill/QtyPill.css'
+import '../react/QuantitySelector/QuantitySelector.css'
 import '../react/ScrollPicker/ScrollPicker.css'
 import '../react/SearchBar/SearchBar.css'
 import '../react/SelectionDropdown/SelectionDropdown.css'

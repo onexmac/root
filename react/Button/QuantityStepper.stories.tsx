@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import React, { useState } from "react";
-import { QuantitySelector } from "./QuantitySelector";
+import { QuantityStepper } from "./QuantityStepper";
 
-const meta: Meta<typeof QuantitySelector> = {
-  title: "Core/Button/QuantitySelector",
-  component: QuantitySelector,
+const meta: Meta<typeof QuantityStepper> = {
+  title: "Core/Button/QuantityStepper",
+  component: QuantityStepper,
   tags: ["autodocs"],
   argTypes: {
     state: { control: "select", options: ["incompleto", "pendiente", "completo", "sin-stock"] },
@@ -13,7 +13,7 @@ const meta: Meta<typeof QuantitySelector> = {
   args: { state: "pendiente", qty: 1 },
 };
 export default meta;
-type Story = StoryObj<typeof QuantitySelector>;
+type Story = StoryObj<typeof QuantityStepper>;
 
 export const Incompleto: Story = { args: { state: "incompleto", qty: 2 } };
 export const Pendiente:  Story = { args: { state: "pendiente",  qty: 0 } };
@@ -24,17 +24,17 @@ export const Interactive: Story = {
   render: () => {
     const [qty, setQty] = useState(2);
     const state = qty === 0 ? "sin-stock" : qty < 3 ? "incompleto" : qty < 5 ? "pendiente" : "completo";
-    return <QuantitySelector qty={qty} onQtyChange={setQty} state={state} />;
+    return <QuantityStepper qty={qty} onQtyChange={setQty} state={state} />;
   },
 };
 
 export const AllStates: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 16, padding: 16 }}>
-      <QuantitySelector state="incompleto" qty={2} />
-      <QuantitySelector state="pendiente" qty={0} />
-      <QuantitySelector state="completo" qty={5} />
-      <QuantitySelector state="sin-stock" qty={0} />
+      <QuantityStepper state="incompleto" qty={2} />
+      <QuantityStepper state="pendiente" qty={0} />
+      <QuantityStepper state="completo" qty={5} />
+      <QuantityStepper state="sin-stock" qty={0} />
     </div>
   ),
 };
