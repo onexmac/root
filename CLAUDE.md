@@ -1,21 +1,73 @@
 # CLAUDE.md — Adelante Design System
 
-> Este archivo es leído automáticamente por Claude Code. Define cómo trabajar con este repositorio.
+> Este archivo es leído automáticamente por Claude Code al abrir esta carpeta.
 
-## Misión
+## Archivos de Figma
 
-Cuando el usuario te dé una pantalla de Figma, debes:
-1. Leer el diseño usando el **Figma MCP**
-2. Generar un prototipo funcional usando los **componentes de este design system**
-3. Respetar los **tokens de diseño** (`react/design-system.css`) — nunca valores hardcodeados
+| Archivo | Key | URL |
+|---|---|---|
+| **Losa Flotante** (design system) | `oRDLRL9OUNcTQ0k6G5MBPS` | https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante |
+| **Prototype Screens** (pantallas de app) | _(agregar key cuando esté disponible)_ | — |
 
 ---
 
-## Repositorio
+## Flujos de trabajo
 
+### Flujo 1 — Actualizar un componente del Design System
+
+Cuando el usuario diga: *"actualiza el Button según Figma"* o comparta un nodo de Losa Flotante:
+
+1. **Leer el nodo en Figma** usando el MCP:
+   - Herramienta: `get_figma_data`
+   - fileKey: `oRDLRL9OUNcTQ0k6G5MBPS`
+   - nodeId: el que aparezca en la URL (`?node-id=XXX-XXX`)
+
+2. **Identificar qué cambió** (colores, tipografía, tamaños, variantes)
+
+3. **Actualizar el componente** en `react/<Componente>/<Componente>.tsx`
+   - Usar tokens de `react/design-system.css` — nunca valores hardcodeados
+   - Actualizar también `<Componente>.stories.tsx` si cambian variantes
+
+4. **Hacer commit y push** — el Storybook se despliega automáticamente en GitHub Pages
+
+---
+
+### Flujo 2 — Generar una pantalla desde Prototype Screens
+
+Cuando el usuario comparta una URL de pantalla de Figma:
+
+1. **Leer la pantalla** usando el MCP:
+   - Herramienta: `get_figma_data` con el fileKey y nodeId de la pantalla
+
+2. **Mapear elementos visuales a componentes existentes**:
+
+| Elemento en Figma | Componente React |
+|---|---|
+| Botón / `setButtons` | `import { Button } from "../Button/Button"` |
+| Barra de búsqueda / `searchField` | `import { SearchBar } from "../SearchBar/SearchBar"` |
+| Tabs / navegación | `import { TabsMenu } from "../TabsMenu/TabsMenu"` |
+| Toggle colapsable | `import { ToggleCards } from "../ToggleCards/ToggleCards"` |
+| Nav bar | `import { Nav } from "../Nav/Nav"` |
+| Tarjeta de resumen | `import { Card } from "../Card/Card"` |
+| Campo de formulario | `import { FormField } from "../Form/Form"` |
+| Ícono | `import { Icon } from "../Icon/Icon"` |
+
+3. **Crear la pantalla** en `react/screens/<NombrePantalla>/<NombrePantalla>.tsx`
+   - Reutilizar componentes existentes — no reinventar
+   - Layout con CSS (flexbox/grid) usando tokens `var(--ds-*)`
+   - Animaciones con `motion/react` cuando aplique
+
+4. **Agregar story** en `react/screens/<NombrePantalla>/<NombrePantalla>.stories.tsx`
+
+5. **Commit y push** → deploy automático
+
+---
+
+## Links del proyecto
+
+- **Storybook live:** https://davidpcad.github.io/adelante-design-system/
 - **GitHub:** https://github.com/DavidpcAD/adelante-design-system
 - **Figma:** https://www.figma.com/design/oRDLRL9OUNcTQ0k6G5MBPS/Losa-Flotante
-- **Storybook:** https://davidpcad.github.io/adelante-design-system/
 
 ---
 
@@ -26,42 +78,13 @@ Cuando el usuario te dé una pantalla de Figma, debes:
 | Framework | React 19 + TypeScript |
 | Styling | CSS custom properties (`react/design-system.css`) |
 | Motion | `motion/react` (Framer Motion) |
-| Data fetching | TanStack Query (`@tanstack/react-query`) |
-| Drag & Drop | `@dnd-kit/core` + `@dnd-kit/sortable` |
 | Build | Vite |
 | Testing | Vitest |
-| Docs | Storybook |
+| Docs | Storybook 10 (React Vite) |
+| Deploy | GitHub Pages — auto en push a `main` |
+| Figma sync | MCP de Figma (`mcp.figma.com`) |
 
-> **No usar Tailwind.** Todos los estilos van con `var(--ds-*)` tokens.
-
----
-
-## Flujo de trabajo: Figma → Código
-
-Cuando el usuario comparta una URL de Figma:
-
-### Paso 1 — Leer el diseño
-Usa la herramienta `mcp_figma_get_design_context` con el `fileKey` y `nodeId` de la URL.
-
-### Paso 2 — Identificar componentes
-Mapea los elementos visuales a los componentes existentes:
-
-| Elemento en Figma | Componente React |
-|---|---|
-| `setButtons` / botón | `import { Button } from "./react/Button/Button"` |
-| `searchField` / barra de búsqueda | `import { SearchBar } from "./react/SearchBar/SearchBar"` |
-| `tabs` / navegación por tabs | `import { TabsMenu } from "./react/TabsMenu/TabsMenu"` |
-| `toggleCards` / toggle colapsable | `import { ToggleCards } from "./react/ToggleCards/ToggleCards"` |
-| `navigationControls` / nav bar | `import { Nav } from "./react/Nav/Nav"` |
-| `summaryCard` / tarjeta de resumen | `import { Card } from "./react/Card/Card"` |
-| `formField` / campo de formulario | `import { FormField } from "./react/Form/Form"` |
-| `home` / ícono | `import { Icon } from "./react/Icon/Icon"` |
-
-### Paso 3 — Generar el prototipo
-- Crear el archivo en `react/screens/<NombrePantalla>/<NombrePantalla>.tsx`
-- Importar componentes existentes — **no reinventar**
-- Aplicar layout con CSS (flexbox/grid) usando tokens
-- Agregar animaciones con `motion/react` cuando aplique
+> **Regla:** No usar Tailwind. Todo con `var(--ds-*)` tokens.
 
 ---
 
@@ -69,80 +92,79 @@ Mapea los elementos visuales a los componentes existentes:
 
 ### Button
 ```tsx
-import { Button } from "./react/Button/Button";
+import { Button } from "../Button/Button";
 
-<Button label="Confirmar" variant="primary" state="standard" onClick={() => {}} />
-<Button label="Cancelar" variant="secondary" state="standard" />
-<Button label="No disponible" variant="disabled" state="disabled" />
+<Button label="Confirmar" color="green" state="standard" />
+<Button label="Cancelar" color="black" state="standard" />
+<Button label="Eliminar" color="red" state="standard" />
+<Button label="Desactivado" color="gray" state="disabled" />
+<Button label="Buscar" color="green" layout="icon-left" icon="search" />
 ```
-Props: `label: string`, `variant: primary|secondary|disabled`, `state: standard|pressed|disabled`
+Props: `color: green|red|white|black|gray`, `layout: label|icon-left|icon-right|icon`, `state: standard|pressed|disabled`
 
 ### SearchBar
 ```tsx
-import { SearchBar } from "./react/SearchBar/SearchBar";
+import { SearchBar } from "../SearchBar/SearchBar";
 
-<SearchBar layout="label" state="standard" />   // con texto
-<SearchBar layout="icon" state="standard" />    // solo ícono
-<SearchBar layout="normal" state="standard" />  // sin label
+<SearchBar layout="label" state="standard" />
+<SearchBar layout="icon" state="standard" />
 ```
-Props: `layout: label|normal|icon`, `state: standard|pressed`
 
 ### TabsMenu
 ```tsx
-import { TabsMenu } from "./react/TabsMenu/TabsMenu";
+import { TabsMenu } from "../TabsMenu/TabsMenu";
 
 <TabsMenu label="Boleta" layout="label+icon" state="standard" />
 <TabsMenu label="Opciones" layout="label" state="pressed" />
 ```
-Props: `label: string`, `layout: label|label+icon`, `state: standard|pressed`
-
-### ToggleCards
-```tsx
-import { ToggleCards } from "./react/ToggleCards/ToggleCards";
-
-<ToggleCards state="standard" mode="normal" visibility="open" />
-<ToggleCards state="standard" mode="disabled" visibility="hidden" />
-```
-Props: `state: standard|pressed`, `mode: normal|disabled`, `visibility: open|hidden`
-
-### Nav
-```tsx
-import { Nav } from "./react/Nav/Nav";
-```
 
 ### Card
 ```tsx
-import { Card } from "./react/Card/Card";
+import { Card } from "../Card/Card";
 ```
 
-### FormField / Form
+### Nav
 ```tsx
-import { FormField } from "./react/Form/Form";
+import { Nav } from "../Nav/Nav";
+```
+
+### FormField
+```tsx
+import { FormField } from "../Form/Form";
 ```
 
 ### Icon
 ```tsx
-import { Icon } from "./react/Icon/Icon";
+import { Icon } from "../Icon/Icon";
+// Íconos disponibles: search, back, forward, close, menu, check, alert, plus, minus, edit, delete, home, user, settings, arrow-up, arrow-down
+```
+
+### ToggleCards
+```tsx
+import { ToggleCards } from "../ToggleCards/ToggleCards";
+
+<ToggleCards state="standard" mode="normal" visibility="open" />
 ```
 
 ---
 
-## Tokens de diseño
-
-Siempre usar `var(--ds-*)`. El archivo está en `react/design-system.css`.
+## Tokens de diseño (`react/design-system.css`)
 
 ### Colores
 ```css
---ds-color-green-100: #add010    /* Primary CTA */
---ds-color-green-200: #88a024    /* Primary pressed */
+--ds-color-green-100: #add010    /* CTA principal */
+--ds-color-green-200: #88a024    /* CTA pressed */
 --ds-color-red-100:   #c96c6c    /* Danger */
---ds-color-gray-500:  #5d636c    /* Text secondary */
---ds-color-gray-200:  #d9d9d9    /* Disabled bg */
---ds-color-gray-100:  #ebebeb    /* Borders */
---ds-color-black:     #000000    /* Primary text, secondary btn bg */
---ds-color-white:     #ffffff    /* Backgrounds, secondary btn text */
---ds-color-surface:   #f3f3f3    /* Page background */
---ds-color-yellow:    #f0c802    /* Accent / badge */
+--ds-color-red-200:   #bb4a4a    /* Danger pressed */
+--ds-color-gray-500:  #5d636c    /* Texto secundario */
+--ds-color-gray-400:  #747b86    /* Placeholder */
+--ds-color-gray-300:  #aaafb6    /* Bordes suaves */
+--ds-color-gray-200:  #d9d9d9    /* Bordes */
+--ds-color-gray-100:  #ebebeb    /* Fondo hover */
+--ds-color-black:     #000000    /* Texto principal */
+--ds-color-white:     #ffffff    /* Fondo claro */
+--ds-color-surface:   #f3f3f3    /* Fondo de página */
+--ds-color-yellow:    #f0c802    /* Advertencia */
 ```
 
 ### Spacing
@@ -153,103 +175,49 @@ Siempre usar `var(--ds-*)`. El archivo está en `react/design-system.css`.
 
 ### Border Radius
 ```css
---ds-radius-sm: 4px   --ds-radius-md: 8px
---ds-radius-lg: 16px  --ds-radius-xl: 32px  /* botones, pills */
+--ds-radius-sm: 4px    /* inputs pequeños */
+--ds-radius-md: 8px    /* cards, inputs */
+--ds-radius-lg: 16px   /* modales, cards grandes */
+--ds-radius-xl: 32px   /* botones, pills */
 ```
 
 ### Sombras
 ```css
---ds-shadow-01:      0 4px 8px rgba(170,175,182,.25)            /* cards, inputs */
---ds-shadow-03-big:  0 2px 4px rgba(0,0,0,.16), 0 0 6px ...    /* botones */
+--ds-shadow-01:      0 4px 8px rgba(170,175,182,.25)   /* cards, tablas */
+--ds-shadow-02-soft: 0 6px 0 rgba(0,0,0,.16)           /* botones */
+--ds-shadow-03-big:  0 2px 4px rgba(0,0,0,.16), 0 0 6px rgba(0,0,0,.16)
 ```
 
 ### Tipografía
 ```css
---ds-font-family: "Roboto", "Segoe UI", sans-serif
---ds-font-size-body-sm: 12px    --ds-font-weight-regular:  400
---ds-font-size-body-md: 16px    --ds-font-weight-semibold: 600
---ds-font-size-heading: 32px
+--ds-font-family:          "Roboto", "Segoe UI", sans-serif
+--ds-font-size-body-sm:    12px   --ds-font-weight-regular:  400
+--ds-font-size-body-md:    16px   --ds-font-weight-semibold: 600
+--ds-font-size-subtitle:   20px
+--ds-font-size-heading:    32px
 ```
 
 ---
 
 ## Animaciones con motion/react
 
-```ts
-// springs.ts — importar desde aquí, nunca inline
-export const springs = {
-  snappy:     { type: "spring", stiffness: 400, damping: 30 }, // respuesta rápida
-  completing: { type: "spring", stiffness: 300, damping: 28 }, // check, confirmar
-  deleting:   { type: "spring", stiffness: 500, damping: 25 }, // warning, remover
-  expanding:  { type: "spring", stiffness: 200, damping: 26 }, // card expand
-  settling:   { type: "spring", stiffness: 150, damping: 28 }, // retorno al reposo
-} as const;
-```
-
 ```tsx
 import { motion } from "motion/react";
-import { springs } from "./springs";
 
-// Transición de entrada
+// Entrada suave
 <motion.div
   initial={{ opacity: 0, y: 8 }}
   animate={{ opacity: 1, y: 0 }}
-  transition={springs.expanding}
-/>
-
-// Slide-to-confirm
-<motion.div
-  drag="x"
-  dragConstraints={{ left: 0, right: maxDrag }}
-  dragElastic={0.1}
-  onDragEnd={(_, info) => {
-    if (info.offset.x / maxDrag > 0.72) onConfirm();
-    else controls.start({ x: 0, transition: springs.snappy });
-  }}
+  transition={{ type: "spring", stiffness: 300, damping: 28 }}
 />
 ```
-
----
-
-## Optimistic UI con TanStack Query
-
-```ts
-const mutation = useMutation({
-  mutationFn: confirmPackage,
-  onMutate: async (id) => {
-    await queryClient.cancelQueries({ queryKey: ['packages'] });
-    const prev = queryClient.getQueryData(['packages']);
-    queryClient.setQueryData(['packages'], (old) =>
-      old.map(p => p.id === id ? { ...p, isConfirmed: true } : p)
-    );
-    return { prev };
-  },
-  onError: (_, __, ctx) => queryClient.setQueryData(['packages'], ctx?.prev),
-});
-```
-
----
-
-## Haptics
-
-```ts
-export const haptic = {
-  complete: () => navigator.vibrate([10, 30, 10]),
-  select:   () => navigator.vibrate(5),
-  drag:     () => navigator.vibrate(8),
-  delete:   () => navigator.vibrate([15, 10, 15]),
-};
-```
-> Solo funciona en Android Chrome. iOS Safari no expone Vibration API.
 
 ---
 
 ## Reglas
 
 1. **Nunca hardcodear colores** — siempre `var(--ds-color-*)`.
-2. **Nunca crear un componente nuevo** si ya existe en `react/`. Reutilizar.
+2. **Nunca crear componente nuevo** si ya existe en `react/`. Reutilizar.
 3. **Nunca usar Tailwind** — CSS custom properties únicamente.
-4. **Springs semánticos** — el nombre debe describir la interacción, no la velocidad.
-5. **Optimistic UI primero** — UI responde inmediato, el servidor confirma después.
-6. **Botones con radius-xl** (32px). Cards con radius-lg (16px).
-7. **Font Roboto semibold (600)** para labels de botones y títulos.
+4. **Siempre agregar story** cuando se crea o actualiza un componente.
+5. **Commit y push** para que el Storybook se actualice en vivo.
