@@ -19,7 +19,7 @@ const ALL_ICONS: IconName[] = [
   // Fila 7
   "delete", "place", "alert", "remove",
   // Fila 8
-  "calculator",
+  "calculator", "cuadrillas", "rol",
 ];
 
 // Labels del Figma para el gallery
@@ -31,7 +31,7 @@ const ICON_LABELS: Partial<Record<IconName, string>> = {
   pendiente: "Pendiente", "sin-autorizar": "Sin autorizar", filter: "Filter", close: "Close",
   edit: "Edit", info: "Info", plus: "Add", minus: "Minus",
   delete: "Delete", place: "Place", alert: "Warning", remove: "Remove",
-  calculator: "Calculator",
+  calculator: "Calculator", cuadrillas: "Cuadrillas", rol: "Rol",
 };
 
 const meta: Meta<typeof Icon> = {
