@@ -1,35 +1,95 @@
 import React from "react";
+import {
+  House,
+  User,
+  Folder,
+  Package,
+  ArrowRight,
+  ArrowLeft,
+  MagnifyingGlass,
+  ArrowCircleRight,
+  Check,
+  List,
+  Receipt,
+  ArrowsLeftRight,
+  Truck,
+  Prohibit,
+  CheckCircle,
+  CircleHalf,
+  Circle,
+  Clock,
+  Funnel,
+  X,
+  PencilSimple,
+  Info,
+  Plus,
+  Minus,
+  Trash,
+  MapPin,
+  Warning,
+  MinusCircle,
+  Calculator,
+  CaretUp,
+  CaretDown,
+  CaretRight,
+} from "@phosphor-icons/react";
+
+// ─── Catálogo de íconos — mirror exacto del nodo Figma 1153-3008 ──────────────
+// Nombres en kebab-case = nomenclatura del Figma "Losa Flotante"
 
 export type IconName =
-  | "search"
-  | "back"
-  | "forward"
-  | "close"
-  | "filter"
-  | "chevron-up"
-  | "chevron-down"
-  | "check"
+  // Figma icon set
   | "home"
+  | "user"
+  | "folder"
+  | "open"
+  | "arrow-right"
+  | "back"
+  | "search"
+  | "go"
+  | "check"
+  | "list"
+  | "boleta"
+  | "traslado"
+  | "entrega"
+  | "sin-stock"
+  | "completado"
+  | "incompleto"
+  | "pendiente"
+  | "sin-autorizar"
+  | "filter"
+  | "close"
+  | "edit"
+  | "info"
   | "plus"
   | "minus"
-  | "menu"
+  | "delete"
+  | "place"
   | "alert"
-  | "info"
+  | "remove"
+  | "calculator"
+  // extras usados internamente por otros componentes
+  | "chevron-up"
+  | "chevron-down"
+  | "forward"
+  | "menu"
   | "stock"
-  | "arrow-right";
+  | "arrow-left";
 
-/** Alias map: lets external callers use friendly names that resolve to canonical ones. */
+/** Alias backward-compatible para código existente. */
 const ALIASES: Record<string, IconName> = {
-  arrow: "arrow-right",
-  chevron: "chevron-down",
+  arrow:          "arrow-right",
+  chevron:        "chevron-down",
   "chevron-left": "back",
-  cart: "stock",
+  cart:           "list",
+  warning:        "alert",
+  "arrow-right":  "arrow-right",
 };
 
 export type IconSize = "sm" | "md" | "lg";
 
 export interface IconProps {
-  /** Canonical icon name or alias. Unknown strings render an empty box. */
+  /** Nombre del ícono (mirror del catálogo Figma). Nombres desconocidos no renderizan nada. */
   name: IconName | string;
   size?: IconSize;
   color?: string;
@@ -38,172 +98,59 @@ export interface IconProps {
 
 const SIZE_MAP: Record<IconSize, number> = { sm: 16, md: 20, lg: 24 };
 
-const PATHS: Record<IconName, React.ReactNode> = {
-  search: (
-    <path
-      d="M10.5 3a7.5 7.5 0 1 0 4.33 13.577l3.797 3.796a1 1 0 0 0 1.414-1.414l-3.796-3.797A7.5 7.5 0 0 0 10.5 3Zm-5.5 7.5a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z"
-      fillRule="evenodd"
-      clipRule="evenodd"
-    />
-  ),
-  back: (
-    <path
-      d="M15.5 3.5 7 12l8.5 8.5"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-    />
-  ),
-  forward: (
-    <path
-      d="M8.5 3.5 17 12l-8.5 8.5"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-    />
-  ),
-  close: (
-    <path
-      d="M6 6l12 12M18 6 6 18"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      fill="none"
-    />
-  ),
-  filter: (
-    <path
-      d="M3 6h18M7 12h10M11 18h2"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      fill="none"
-    />
-  ),
-  "chevron-up": (
-    <path
-      d="M5 15l7-7 7 7"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-    />
-  ),
-  "chevron-down": (
-    <path
-      d="M5 9l7 7 7-7"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-    />
-  ),
-  check: (
-    <path
-      d="M4 12l5.5 5.5L20 7"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-    />
-  ),
-  home: (
-    <path
-      d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V10.5Z M9 22V12h6v10"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-    />
-  ),
-  plus: (
-    <path
-      d="M12 5v14M5 12h14"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      fill="none"
-    />
-  ),
-  minus: (
-    <path
-      d="M5 12h14"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      fill="none"
-    />
-  ),
-  menu: (
-    <path
-      d="M3 6h18M3 12h18M3 18h18"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      fill="none"
-    />
-  ),
-  alert: (
-    <path
-      d="M12 2 2 20h20L12 2Zm0 6v6M12 17h.01"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-    />
-  ),
-  info: (
-    <path
-      d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Zm0 4v6M12 16h.01"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      fill="none"
-    />
-  ),
-  stock: (
-    <path
-      d="M4 4h16M4 12h16M4 20h16"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      fill="none"
-    />
-  ),
-  "arrow-right": (
-    <path
-      d="M5 12h14M13 6l6 6-6 6"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-    />
-  ),
+// Mapa nombre DS → componente Phosphor
+const ICON_MAP: Record<IconName, React.ElementType> = {
+  home:           House,
+  user:           User,
+  folder:         Folder,
+  open:           Package,
+  "arrow-right":  ArrowRight,
+  "arrow-left":   ArrowLeft,
+  back:           ArrowLeft,
+  forward:        CaretRight,
+  search:         MagnifyingGlass,
+  go:             ArrowCircleRight,
+  check:          Check,
+  list:           List,
+  menu:           List,
+  stock:          List,
+  boleta:         Receipt,
+  traslado:       ArrowsLeftRight,
+  entrega:        Truck,
+  "sin-stock":    Prohibit,
+  completado:     CheckCircle,
+  incompleto:     CircleHalf,
+  pendiente:      Circle,
+  "sin-autorizar": Clock,
+  filter:         Funnel,
+  close:          X,
+  edit:           PencilSimple,
+  info:           Info,
+  plus:           Plus,
+  minus:          Minus,
+  delete:         Trash,
+  place:          MapPin,
+  alert:          Warning,
+  remove:         MinusCircle,
+  calculator:     Calculator,
+  "chevron-up":   CaretUp,
+  "chevron-down": CaretDown,
 };
 
 export function Icon({ name, size = "md", color = "currentColor", className }: IconProps) {
   const px = SIZE_MAP[size];
   const resolved = (ALIASES[name as string] ?? name) as IconName;
+  const PhosphorIcon = ICON_MAP[resolved];
+
+  if (!PhosphorIcon) return null;
+
   return (
-    <svg
+    <PhosphorIcon
+      weight="bold"
       className={`ds-icon ds-icon--${resolved} ds-icon--${size}${className ? " " + className : ""}`}
-      width={px}
-      height={px}
-      viewBox="0 0 24 24"
-      fill={color}
+      size={px}
+      color={color}
       aria-hidden="true"
-    >
-      {PATHS[resolved]}
-    </svg>
+    />
   );
 }

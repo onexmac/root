@@ -52,7 +52,7 @@
 
   /* ── Shadows ── */
   --ds-shadow-01:      0 4px 8px rgba(170, 175, 182, 0.25);
-  --ds-shadow-02-soft: 0 6px 0 rgba(0, 0, 0, 0.16);
+  --ds-shadow-02-soft: 0 0 6px rgba(0, 0, 0, 0.16);
   --ds-shadow-03-big:  0 2px 4px rgba(0, 0, 0, 0.16), 0 0 6px rgba(0, 0, 0, 0.16);
 }
 
@@ -397,59 +397,81 @@ body {
    ============================================================ */
 
 .ds-summary-card {
-  display:       flex;
-  flex-direction: column;
-  width:          362px;
-  min-height:     112px;
-  border-radius:  var(--ds-radius-lg);
-  background:     var(--ds-color-white);
-  box-shadow:     var(--ds-shadow-01);
-  overflow:       hidden;
-  cursor:         pointer;
-}
-
-.ds-summary-card__header {
   display:         flex;
   align-items:     center;
   justify-content: space-between;
-  gap:             var(--ds-space-3);
-  padding:         var(--ds-space-4) var(--ds-space-5);
-  flex: 1;
+  width:           362px;
+  padding:         var(--ds-space-1) var(--ds-space-3) var(--ds-space-1) var(--ds-space-5);
+  border-radius:   var(--ds-radius-lg);
+  background:      var(--ds-color-white);
+  box-shadow:      var(--ds-shadow-01);
+  cursor:          default;
 }
 
+/* Sección izquierda — info block (w=116px en Figma) */
 .ds-summary-card__info {
-  display:       flex;
+  display:        flex;
   flex-direction: column;
-  gap:            var(--ds-space-1);
+  gap:            var(--ds-space-2);
+  width:          116px;
 }
 
-.ds-summary-card__title {
+/* Company + code apilados verticalmente */
+.ds-summary-card__company-block {
+  display:        flex;
+  flex-direction: column;
+  width:          80px;
+}
+
+.ds-summary-card__company {
+  font-family: var(--ds-font-family);
   font-size:   var(--ds-font-size-body-md);
   font-weight: var(--ds-font-weight-semibold);
+  line-height: var(--ds-line-height-body-md);
+  color:       var(--ds-color-gray-500);
+}
+
+/* Subtitle/semibold 24px — el "C.01" grande del Figma */
+.ds-summary-card__code {
+  font-family:     var(--ds-font-family);
+  font-size:       24px;
+  font-weight:     var(--ds-font-weight-semibold);
+  line-height:     var(--ds-line-height-body-md);
+  letter-spacing:  var(--ds-letter-spacing-wide);
+  color:           var(--ds-color-gray-500);
+}
+
+/* Order number — "BS000095" */
+.ds-summary-card__order {
+  font-family: var(--ds-font-family);
+  font-size:   var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: var(--ds-line-height-body-md);
   color:       var(--ds-color-black);
 }
 
-.ds-summary-card__subtitle {
-  font-size:  var(--ds-font-size-body-sm);
-  color:      var(--ds-color-gray-500);
-}
-
-.ds-summary-card__right {
+/* Timestamp row — ícono reloj + texto */
+.ds-summary-card__timestamp {
   display:     flex;
   align-items: center;
-  gap:         var(--ds-space-2);
+  gap:         3px;
 }
 
-.ds-summary-card__status {
+.ds-summary-card__time {
+  font-family: var(--ds-font-family);
   font-size:   var(--ds-font-size-body-sm);
-  font-weight: var(--ds-font-weight-semibold);
+  font-weight: var(--ds-font-weight-regular);
+  line-height: var(--ds-line-height-body-sm);
   color:       var(--ds-color-gray-500);
   white-space: nowrap;
 }
 
-.ds-summary-card__body {
-  padding:  0 var(--ds-space-5) var(--ds-space-4);
-  border-top: 1px solid var(--ds-color-gray-100);
+/* Sección derecha — status icon + toggle button */
+.ds-summary-card__actions {
+  display:     flex;
+  align-items: center;
+  gap:         var(--ds-space-3);
+  flex-shrink: 0;
 }
 
 /* ============================================================

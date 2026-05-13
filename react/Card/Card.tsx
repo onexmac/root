@@ -1,31 +1,37 @@
 import React from "react";
 import { Icon } from "../Icon/Icon";
-import { QuantityStepper, QuantityStepperState } from "../Button/QuantityStepper";
+import { QuantitySelector, QuantitySelectorState } from "../QuantitySelector/QuantitySelector";
+import { ToggleCards } from "../ToggleCards/ToggleCards";
+import "../QuantitySelector/QuantitySelector.css";
 
 // ─── SummaryCard ──────────────────────────────────────────────────────────────
 
 export type SummaryCardVisibility = "open" | "close";
 
 export interface SummaryCardProps {
-  /** Card title / solicitud number */
-  title?: string;
-  /** Subtitle / location */
-  subtitle?: string;
-  /** Status label */
-  status?: string;
-  /** open = expanded (shows chevron up), close = collapsed (shows chevron down) */
+  /** Nombre de la empresa — e.g. "NOVARUM" */
+  company?: string;
+  /** Código de obra/centro — e.g. "C.01" */
+  code?: string;
+  /** Número de orden — e.g. "BS000095" */
+  orderNumber?: string;
+  /** Timestamp legible — e.g. "Ayer 10:25 am" */
+  timestamp?: string;
+  /** Estado visual del ícono de status (completado / incompleto / pendiente / sin-stock) */
+  statusState?: QuantitySelectorState;
+  /** open = card expandida (ToggleCards con chevrons), close = card colapsada (arrow down) */
   visibility?: SummaryCardVisibility;
   onClick?: () => void;
-  children?: React.ReactNode;
 }
 
 export function SummaryCard({
-  title = "Solicitud #001",
-  subtitle = "Bodega A",
-  status = "Pendiente",
+  company = "NOVARUM",
+  code = "C.01",
+  orderNumber = "BS000095",
+  timestamp = "Ayer 10:25 am",
+  statusState = "completo",
   visibility = "open",
   onClick,
-  children,
 }: SummaryCardProps) {
   return (
     <div
@@ -34,22 +40,37 @@ export function SummaryCard({
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
-      <div className="ds-summary-card__header">
-        <div className="ds-summary-card__info">
-          <span className="ds-summary-card__title">{title}</span>
-          <span className="ds-summary-card__subtitle">{subtitle}</span>
+      {/* Left — info block */}
+      <div className="ds-summary-card__info">
+        <div className="ds-summary-card__company-block">
+          <span className="ds-summary-card__company">{company}</span>
+          <span className="ds-summary-card__code">{code}</span>
         </div>
-        <div className="ds-summary-card__right">
-          <span className="ds-summary-card__status">{status}</span>
-          <Icon
-            name={visibility === "open" ? "chevron-up" : "chevron-down"}
-            size="md"
-          />
+        <span className="ds-summary-card__order">{orderNumber}</span>
+        <div className="ds-summary-card__timestamp">
+          <Icon name="sin-autorizar" size="sm" color="var(--ds-color-gray-500)" />
+          <span className="ds-summary-card__time">{timestamp}</span>
         </div>
       </div>
-      {visibility === "open" && children && (
-        <div className="ds-summary-card__body">{children}</div>
-      )}
+
+      {/* Right — status + toggle */}
+      <div className="ds-summary-card__actions">
+        <Icon
+          name={statusState === "completo" ? "completado" : statusState === "sin-stock" ? "sin-stock" : statusState === "incompleto" ? "incompleto" : "pendiente"}
+          size="lg"
+          color={
+            statusState === "completo"   ? "var(--ds-color-green-100)" :
+            statusState === "sin-stock"  ? "var(--ds-color-red-100)"   :
+            statusState === "incompleto" ? "var(--ds-color-yellow)"    :
+            "var(--ds-color-gray-300)"
+          }
+        />
+        <ToggleCards
+          size={visibility === "open" ? "big" : "small"}
+          visibility={visibility === "open" ? "open" : "close"}
+          onClick={onClick}
+        />
+      </div>
     </div>
   );
 }
@@ -57,17 +78,17 @@ export function SummaryCard({
 // ─── MaterialList ─────────────────────────────────────────────────────────────
 
 export interface MaterialListProps {
-  /** Material description */
+  /** Descripción del material */
   description: string;
-  /** Quantity selector state */
-  qtyState?: QuantityStepperState;
-  /** Quantity value */
+  /** Estado visual del QuantitySelector circular */
+  qtyState?: QuantitySelectorState;
+  /** Cantidad */
   qty?: number;
   onQtyChange?: (qty: number) => void;
 }
 
 export function MaterialList({
-  description = "CONECTOR ADAPTADOR HEMBRA EAGLE 110V",
+  description = "CONECTOR ADAPTADOR HEMBRA EAGLE 110V SALIDA MACHO EAGLE 220V",
   qtyState = "pendiente",
   qty = 1,
   onQtyChange,
@@ -75,10 +96,11 @@ export function MaterialList({
   return (
     <div className="ds-material-list">
       <p className="ds-material-list__desc">{description}</p>
-      <QuantityStepper
+      <QuantitySelector
+        value={qty}
         state={qtyState}
-        qty={qty}
-        onQtyChange={onQtyChange}
+        size="sm"
+        onTap={onQtyChange ? () => onQtyChange(qty) : undefined}
       />
     </div>
   );
@@ -87,24 +109,30 @@ export function MaterialList({
 // ─── DetailCard ───────────────────────────────────────────────────────────────
 
 export interface DetailCardProps {
-  title?: string;
-  subtitle?: string;
-  status?: string;
+  company?: string;
+  code?: string;
+  orderNumber?: string;
+  timestamp?: string;
+  statusState?: QuantitySelectorState;
   materials?: MaterialListProps[];
 }
 
 export function DetailCard({
-  title = "Solicitud #001",
-  subtitle = "Bodega A",
-  status = "Pendiente",
+  company = "NOVARUM",
+  code = "C.01",
+  orderNumber = "BS000095",
+  timestamp = "Ayer 10:25 am",
+  statusState = "completo",
   materials = [],
 }: DetailCardProps) {
   return (
     <div className="ds-detail-card">
       <SummaryCard
-        title={title}
-        subtitle={subtitle}
-        status={status}
+        company={company}
+        code={code}
+        orderNumber={orderNumber}
+        timestamp={timestamp}
+        statusState={statusState}
         visibility="open"
       />
       <div className="ds-detail-card__materials">
