@@ -3,7 +3,7 @@ import {
   House,
   User,
   Folder,
-  Package,
+  CaretUp,
   ArrowRight,
   ArrowLeft,
   MagnifyingGlass,
@@ -17,7 +17,7 @@ import {
   CheckCircle,
   CircleHalf,
   Circle,
-  Clock,
+  MinusCircle,
   Funnel,
   X,
   PencilSimple,
@@ -27,18 +27,15 @@ import {
   Trash,
   MapPin,
   Warning,
-  MinusCircle,
   Calculator,
-  CaretUp,
   CaretDown,
-  CaretRight,
 } from "@phosphor-icons/react";
 
 // ─── Catálogo de íconos — mirror exacto del nodo Figma 1153-3008 ──────────────
 // Nombres en kebab-case = nomenclatura del Figma "Losa Flotante"
 
+// Catálogo exacto del nodo Figma 1153-3008 — 29 íconos Phosphor Bold
 export type IconName =
-  // Figma icon set
   | "home"
   | "user"
   | "folder"
@@ -67,23 +64,14 @@ export type IconName =
   | "place"
   | "alert"
   | "remove"
-  | "calculator"
-  // extras usados internamente por otros componentes
-  | "chevron-up"
-  | "chevron-down"
-  | "forward"
-  | "menu"
-  | "stock"
-  | "arrow-left";
+  | "calculator";
 
 /** Alias backward-compatible para código existente. */
-const ALIASES: Record<string, IconName> = {
+const ALIASES: Record<string, string> = {
   arrow:          "arrow-right",
-  chevron:        "chevron-down",
+  chevron:        "chevron-down", // legacy — no está en Figma
   "chevron-left": "back",
-  cart:           "list",
   warning:        "alert",
-  "arrow-right":  "arrow-right",
 };
 
 export type IconSize = "sm" | "md" | "lg";
@@ -99,21 +87,19 @@ export interface IconProps {
 const SIZE_MAP: Record<IconSize, number> = { sm: 16, md: 20, lg: 24 };
 
 // Mapa nombre DS → componente Phosphor
-const ICON_MAP: Record<IconName, React.ElementType> = {
+// ICON_MAP usa Record<string, ...> para permitir alias legacy (chevron-down) sin romper el tipo IconName
+const ICON_MAP: Record<string, React.ElementType> = {
+  // ── 29 íconos oficiales Figma 1153-3008 ──
   home:           House,
   user:           User,
   folder:         Folder,
-  open:           Package,
+  open:           CaretUp,
   "arrow-right":  ArrowRight,
-  "arrow-left":   ArrowLeft,
   back:           ArrowLeft,
-  forward:        CaretRight,
   search:         MagnifyingGlass,
   go:             ArrowCircleRight,
   check:          Check,
   list:           List,
-  menu:           List,
-  stock:          List,
   boleta:         Receipt,
   traslado:       ArrowsLeftRight,
   entrega:        Truck,
@@ -121,7 +107,7 @@ const ICON_MAP: Record<IconName, React.ElementType> = {
   completado:     CheckCircle,
   incompleto:     CircleHalf,
   pendiente:      Circle,
-  "sin-autorizar": Clock,
+  "sin-autorizar": MinusCircle,
   filter:         Funnel,
   close:          X,
   edit:           PencilSimple,
@@ -133,7 +119,7 @@ const ICON_MAP: Record<IconName, React.ElementType> = {
   alert:          Warning,
   remove:         MinusCircle,
   calculator:     Calculator,
-  "chevron-up":   CaretUp,
+  // ── legacy (no está en Figma, solo para compat con pantallas) ──
   "chevron-down": CaretDown,
 };
 

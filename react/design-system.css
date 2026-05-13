@@ -48,8 +48,8 @@
   --ds-radius-sm: 4px;
   --ds-radius-md: 8px;
   --ds-radius-lg: 16px;
-  --ds-radius-xl: 20px;
-  --ds-radius-2xl: 32px;
+  --ds-radius-xl: 32px;
+  --ds-radius-2xl: var(--ds-radius-xl); /* alias — usa xl directamente */
 
   /* ── Shadows ── */
   --ds-shadow-01:      0 4px 8px rgba(170, 175, 182, 0.25);

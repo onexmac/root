@@ -20,8 +20,6 @@ const ALL_ICONS: IconName[] = [
   "delete", "place", "alert", "remove",
   // Fila 8
   "calculator",
-  // Extra (usados internamente)
-  "chevron-up", "chevron-down", "forward",
 ];
 
 // Labels del Figma para el gallery
