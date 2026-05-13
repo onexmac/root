@@ -27,7 +27,7 @@ export const Pressed:  Story = { args: { color: "green", state: "pressed",  labe
 export const Disabled: Story = { args: { state: "disabled", label: "Disabled" } };
 
 export const IconLeft:  Story = { args: { layout: "icon-left",  icon: "back",    label: "Volver" } };
-export const IconRight: Story = { args: { layout: "icon-right", icon: "forward", label: "Siguiente" } };
+export const IconRight: Story = { args: { layout: "icon-right", icon: "arrow-right", label: "Siguiente" } };
 export const IconOnly:  Story = { args: { layout: "icon",       icon: "plus" } };
 
 export const AllVariants: Story = {
