@@ -4,7 +4,7 @@ import { FormField, CheckBox, Tag, ProgressBar, OptionLabel } from "./Form";
 
 // ── FormField ──
 const meta: Meta<typeof FormField> = {
-  title: "Core/Form/FormField",
+  title: "Sistema de Diseño/Form",
   component: FormField,
   tags: ["autodocs"],
   argTypes: {

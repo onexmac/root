@@ -3,7 +3,7 @@ import React from "react";
 import { TabsMenu, TabFilterChip, FilterBar } from "./TabsMenu";
 
 const meta: Meta<typeof TabsMenu> = {
-  title: "Core/TabsMenu",
+  title: "Sistema de Diseño/TabsMenu",
   component: TabsMenu,
   tags: ["autodocs"],
   argTypes: {

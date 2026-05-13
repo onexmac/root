@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { QuantityStepper } from "./QuantityStepper";
 
 const meta: Meta<typeof QuantityStepper> = {
-  title: "Core/Button/QuantityStepper",
+  title: "Sistema de Diseño/Button/QuantityStepper",
   component: QuantityStepper,
   tags: ["autodocs"],
   argTypes: {

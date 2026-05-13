@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ScrollPicker } from "./ScrollPicker";
 
 const meta: Meta<typeof ScrollPicker> = {
-  title: "Components/ScrollPicker",
+  title: "Sistema de Diseño/ScrollPicker",
   component: ScrollPicker,
   parameters: { layout: "fullscreen" },
 };

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ToggleCards } from "./ToggleCards";
 
 const meta: Meta<typeof ToggleCards> = {
-  title: "Components/ToggleCards",
+  title: "Sistema de Diseño/ToggleCards",
   component: ToggleCards,
   parameters: { layout: "centered" },
   argTypes: {

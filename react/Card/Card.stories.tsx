@@ -3,7 +3,7 @@ import React from "react";
 import { SummaryCard, MaterialList, DetailCard } from "./Card";
 
 const meta: Meta<typeof SummaryCard> = {
-  title: "Core/Card/SummaryCard",
+  title: "Sistema de Diseño/Card",
   component: SummaryCard,
   tags: ["autodocs"],
   argTypes: {
