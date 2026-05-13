@@ -287,11 +287,11 @@ body {
 .ds-filter-chip {
   display:       inline-flex;
   align-items:   center;
-  gap:           var(--ds-space-2);
-  padding:       10px var(--ds-space-4);
-  height:        44px;
+  gap:           var(--ds-space-1);
+  padding:       var(--ds-space-3) var(--ds-space-4);
+  height:        48px;
   border:        none;
-  border-radius: var(--ds-radius-2xl);
+  border-radius: var(--ds-radius-xl);
   font-family:   var(--ds-font-family);
   font-size:     var(--ds-font-size-body-md);
   font-weight:   var(--ds-font-weight-semibold);
@@ -306,13 +306,12 @@ body {
 
 /* ── Filter Bar ── */
 .ds-filter-bar {
-  display:    flex;
-  gap:        var(--ds-space-2);
-  padding:    var(--ds-space-3) var(--ds-space-4);
-  background: var(--ds-color-white);
-  border-radius: var(--ds-radius-md);
-  box-shadow: var(--ds-shadow-01);
-  flex-wrap:  wrap;
+  display:       flex;
+  align-items:   center;
+  gap:           var(--ds-space-2);
+  padding:       var(--ds-space-3) var(--ds-space-2);
+  background:    var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
 }
 
 /* ============================================================

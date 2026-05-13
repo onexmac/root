@@ -66,7 +66,7 @@ export function TabFilterChip({
     >
       <Icon
         name={icon}
-        size="sm"
+        size="md"
         color={state === "active" ? "var(--ds-color-white)" : "var(--ds-color-gray-300)"}
       />
       <span className="ds-filter-chip__label">{label}</span>

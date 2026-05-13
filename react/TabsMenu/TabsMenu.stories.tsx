@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import React from "react";
-import { TabsMenu, TabFilterChip, FilterBar } from "./TabsMenu";
+import { TabsMenu } from "./TabsMenu";
 
 const meta: Meta<typeof TabsMenu> = {
   title: "Sistema de Diseño/TabsMenu",
@@ -28,27 +28,5 @@ export const All: Story = {
       <TabsMenu label="Opciones" state="standard" layout="label" />
       <TabsMenu label="Opciones" state="pressed"  layout="label" />
     </div>
-  ),
-};
-
-export const FilterChips: StoryObj = {
-  name: "TabFilterChip / All states",
-  render: () => (
-    <div style={{ display: "flex", gap: 12, padding: 16 }}>
-      <TabFilterChip label="Aprobado"  state="active"   icon="check" />
-      <TabFilterChip label="Denegado"  state="disabled" icon="close" />
-      <TabFilterChip label="Pendiente" state="disabled" icon="alert" />
-    </div>
-  ),
-};
-
-export const FilterBarExample: StoryObj = {
-  name: "FilterBar",
-  render: () => (
-    <FilterBar chips={[
-      { label: "Aprobado",  state: "active",   icon: "check" },
-      { label: "Denegado",  state: "disabled", icon: "close" },
-      { label: "Pendiente", state: "disabled", icon: "alert" },
-    ]} />
   ),
 };
