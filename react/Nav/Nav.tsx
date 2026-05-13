@@ -2,6 +2,8 @@ import React from "react";
 import { Icon, IconName } from "../Icon/Icon";
 
 // ─── NavigationControls ───────────────────────────────────────────────────────
+// Figma: 65×59 pill (radius 32), white bg standard, BLACK bg pressed
+// Icons: simple chevron-left (back) / chevron-right (go)
 
 export type NavControlState = "standard" | "pressed";
 export type NavControlNavigation = "back" | "go";
@@ -17,7 +19,8 @@ export function NavigationControls({
   navigation = "back",
   onClick,
 }: NavigationControlsProps) {
-  const iconName: IconName = navigation === "back" ? "back" : "go";
+  const iconName: IconName = navigation === "back" ? "chevron-left" : "chevron-right";
+  const iconColor = state === "pressed" ? "var(--ds-color-white)" : "var(--ds-color-black)";
 
   return (
     <button
@@ -26,12 +29,14 @@ export function NavigationControls({
       type="button"
       aria-label={navigation === "back" ? "Atrás" : "Adelante"}
     >
-      <Icon name={iconName} size="lg" color="var(--ds-color-black)" />
+      <Icon name={iconName} size="lg" color={iconColor} />
     </button>
   );
 }
 
 // ─── FilterOptions ────────────────────────────────────────────────────────────
+// Figma: 65×59 pill, white bg for normal, BLACK bg for close
+// Icons: "filter" for normal, chevron-down for close
 
 export type FilterOptionsState = "standard" | "pressed";
 export type FilterOptionsMode = "normal" | "close";
@@ -47,6 +52,9 @@ export function FilterOptions({
   mode = "normal",
   onClick,
 }: FilterOptionsProps) {
+  const iconName: IconName = mode === "close" ? "chevron-down" : "filter";
+  const iconColor = mode === "close" ? "var(--ds-color-white)" : "var(--ds-color-black)";
+
   return (
     <button
       className={`ds-filter-opt ds-filter-opt--${state} ds-filter-opt--${mode}`}
@@ -54,16 +62,14 @@ export function FilterOptions({
       type="button"
       aria-label={mode === "close" ? "Cerrar filtros" : "Filtros"}
     >
-      <Icon
-        name={mode === "close" ? "close" : "filter"}
-        size="lg"
-        color={mode === "close" ? "var(--ds-color-white)" : "var(--ds-color-black)"}
-      />
+      <Icon name={iconName} size="lg" color={iconColor} />
     </button>
   );
 }
 
 // ─── ToggleMenu ───────────────────────────────────────────────────────────────
+// Figma: 65×59 pill, white bg for open, BLACK bg for close
+// Icons: double chevrons (↕) for open, chevron-down for close
 
 export type ToggleMenuMode = "open" | "close";
 export type ToggleMenuState = "standard" | "pressed";
@@ -79,6 +85,9 @@ export function ToggleMenu({
   mode = "open",
   onClick,
 }: ToggleMenuProps) {
+  const iconName: IconName = mode === "close" ? "chevron-down" : "chevrons-up-down";
+  const iconColor = mode === "close" ? "var(--ds-color-white)" : "var(--ds-color-black)";
+
   return (
     <button
       className={`ds-toggle-menu ds-toggle-menu--${state} ds-toggle-menu--${mode}`}
@@ -87,11 +96,7 @@ export function ToggleMenu({
       aria-label={mode === "open" ? "Abrir menú" : "Cerrar menú"}
       aria-expanded={mode === "open"}
     >
-      <Icon
-        name={mode === "close" ? "close" : "list"}
-        size="lg"
-        color="var(--ds-color-black)"
-      />
+      <Icon name={iconName} size="lg" color={iconColor} />
     </button>
   );
 }

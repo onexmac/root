@@ -18,10 +18,12 @@
 
 .ds-toggle--big {
   height: 88px;
+  width: 60px;
 }
 
 .ds-toggle--small {
   height: 50px;
+  width: 60px;
 }
 
 /* Pressed — replica fiel del Figma:

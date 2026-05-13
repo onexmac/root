@@ -49,6 +49,7 @@ export const ToggleMenuAll: StoryObj = {
       <ToggleMenu mode="open"  state="standard" />
       <ToggleMenu mode="open"  state="pressed" />
       <ToggleMenu mode="close" state="standard" />
+      <ToggleMenu mode="close" state="pressed" />
     </div>
   ),
 };

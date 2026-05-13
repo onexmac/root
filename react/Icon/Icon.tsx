@@ -33,7 +33,12 @@ export type IconName =
   | "place"
   | "alert"
   | "remove"
-  | "calculator";
+  | "calculator"
+  | "chevron-left"
+  | "chevron-right"
+  | "chevron-down"
+  | "chevron-up"
+  | "chevrons-up-down";
 
 /** Alias backward-compatible para código existente. */
 const ALIASES: Record<string, string> = {
@@ -242,7 +247,17 @@ const ICON_PATHS: Record<string, () => React.ReactNode> = {
       <circle cx="15.5" cy="16.5" r="0.8" fill="currentColor" stroke="none" />
     </>
   ),
-  // legacy compat
+  // chevrons (used by NavigationControls, ToggleMenu, etc.)
+  "chevron-left": () => (
+    <>
+      <polyline points="15 6 9 12 15 18" />
+    </>
+  ),
+  "chevron-right": () => (
+    <>
+      <polyline points="9 6 15 12 9 18" />
+    </>
+  ),
   "chevron-down": () => (
     <>
       <polyline points="6 9 12 15 18 9" />
@@ -251,6 +266,12 @@ const ICON_PATHS: Record<string, () => React.ReactNode> = {
   "chevron-up": () => (
     <>
       <polyline points="6 15 12 9 18 15" />
+    </>
+  ),
+  "chevrons-up-down": () => (
+    <>
+      <polyline points="8 10 12 6 16 10" />
+      <polyline points="8 14 12 18 16 14" />
     </>
   ),
 };

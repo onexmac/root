@@ -251,7 +251,7 @@ body {
   align-items:     center;
   justify-content: flex-start;
   gap:             var(--ds-space-4);
-  width:           276px;
+  width:           300px;
   min-height:      76px;
   padding:         var(--ds-space-4) var(--ds-space-5);
   border:          none;
@@ -325,14 +325,17 @@ body {
   width:           65px;
   height:          59px;
   border:          none;
-  border-radius:   var(--ds-radius-md);
+  border-radius:   var(--ds-radius-xl);
   background:      var(--ds-color-white);
-  box-shadow:      var(--ds-shadow-01);
+  box-shadow:      var(--ds-shadow-03-big);
   cursor:          pointer;
-  transition:      box-shadow 120ms ease;
+  transition:      box-shadow 120ms ease, background 120ms ease;
 }
 
-.ds-nav-ctrl--pressed { box-shadow: var(--ds-shadow-03-big); }
+.ds-nav-ctrl--pressed {
+  background:      var(--ds-color-black);
+  box-shadow:      var(--ds-shadow-03-big);
+}
 
 /* ============================================================
    FILTER OPTIONS  (ds-filter-opt)
@@ -345,10 +348,11 @@ body {
   width:           65px;
   height:          59px;
   border:          none;
-  border-radius:   var(--ds-radius-md);
+  border-radius:   var(--ds-radius-xl);
   background:      var(--ds-color-white);
-  box-shadow:      var(--ds-shadow-01);
+  box-shadow:      var(--ds-shadow-03-big);
   cursor:          pointer;
+  transition:      box-shadow 120ms ease, background 120ms ease;
 }
 
 .ds-filter-opt--close { background: var(--ds-color-black); }
@@ -365,10 +369,15 @@ body {
   width:           65px;
   height:          59px;
   border:          none;
-  border-radius:   var(--ds-radius-md);
+  border-radius:   var(--ds-radius-xl);
   background:      var(--ds-color-white);
-  box-shadow:      var(--ds-shadow-01);
+  box-shadow:      var(--ds-shadow-03-big);
   cursor:          pointer;
+  transition:      box-shadow 120ms ease, background 120ms ease;
+}
+
+.ds-toggle-menu--close {
+  background:      var(--ds-color-black);
 }
 
 /* ============================================================
