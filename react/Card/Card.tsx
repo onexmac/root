@@ -48,7 +48,7 @@ export function SummaryCard({
         </div>
         <span className="ds-summary-card__order">{orderNumber}</span>
         <div className="ds-summary-card__timestamp">
-          <Icon name="sin-autorizar" size="sm" color="var(--ds-color-gray-500)" />
+          <Icon name="info" size="sm" color="var(--ds-color-gray-500)" />
           <span className="ds-summary-card__time">{timestamp}</span>
         </div>
       </div>
@@ -58,12 +58,6 @@ export function SummaryCard({
         <Icon
           name={statusState === "completo" ? "completado" : statusState === "sin-stock" ? "sin-stock" : statusState === "incompleto" ? "incompleto" : "pendiente"}
           size="lg"
-          color={
-            statusState === "completo"   ? "var(--ds-color-green-100)" :
-            statusState === "sin-stock"  ? "var(--ds-color-red-100)"   :
-            statusState === "incompleto" ? "var(--ds-color-yellow)"    :
-            "var(--ds-color-gray-300)"
-          }
         />
         <ToggleCards
           size={visibility === "open" ? "big" : "small"}
