@@ -15,7 +15,7 @@
   width: 100%;
   max-width: 402px;
   background: var(--ds-color-white);
-  border-radius: var(--ds-radius-xl) var(--ds-radius-xl) 0 0;
+  border-radius: var(--ds-radius-2xl) var(--ds-radius-2xl) 0 0;
   padding: var(--ds-space-3) var(--ds-space-4) var(--ds-space-5);
   box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.18);
   display: flex;
@@ -233,7 +233,7 @@
 .ds-sp__confirm {
   height: 56px;
   border: 0;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   background: var(--ds-color-green-100);
   color: var(--ds-color-black);
   font-family: inherit;
@@ -243,3 +243,4 @@
   cursor: pointer;
   box-shadow: var(--ds-shadow-03-big);
 }
+

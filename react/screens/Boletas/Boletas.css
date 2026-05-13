@@ -229,7 +229,7 @@
   font-weight: var(--ds-font-weight-semibold);
   color: var(--ds-color-black);
   background: var(--ds-color-gray-100);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   padding: var(--ds-space-1) var(--ds-space-3);
   white-space: nowrap;
 }
@@ -373,7 +373,7 @@
   height: 40px;
   padding: 0 var(--ds-space-6);
   border: none;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   background: var(--ds-color-black);
   color: var(--ds-color-white);
   font-family: var(--ds-font-family);
@@ -397,3 +397,4 @@
   color: var(--ds-color-black);
   transform: scale(0.97);
 }
+

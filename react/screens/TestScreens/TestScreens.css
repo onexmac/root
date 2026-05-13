@@ -15,7 +15,7 @@
   min-height: 874px;
   padding: var(--ds-space-5) var(--ds-space-3);
   background: var(--ds-color-surface);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-3);
@@ -166,7 +166,7 @@
   text-transform: uppercase;
   letter-spacing: 0.6px;
   padding: var(--ds-space-2) var(--ds-space-3);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -242,7 +242,7 @@
      lo hace ocupar el mismo ancho que los demás children (material card, etc.).
      width: 100% + padding desbordaba en content-box mode. */
   background: var(--ds-color-white);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   padding: var(--ds-space-3) var(--ds-space-3) var(--ds-space-3) var(--ds-space-5);
   font-family: inherit;
   -webkit-tap-highlight-color: transparent;
@@ -309,7 +309,7 @@
 
 .ts-label-list::-webkit-scrollbar-thumb {
   background: var(--ds-color-gray-200);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
 }
 
 .ts-label-list::-webkit-scrollbar-track {
@@ -352,3 +352,4 @@
   justify-content: center;
   padding: var(--ds-space-4) 0 var(--ds-space-2);
 }
+

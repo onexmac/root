@@ -16,7 +16,7 @@
   min-height: 874px;
   padding: var(--ds-space-4);
   background: var(--ds-color-white);
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   box-shadow: var(--ds-shadow-01);
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@
 .boleta-pedido__status-bar {
   width: 100%;
   height: 16px;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   background: var(--ds-color-gray-100);
   margin-bottom: var(--ds-space-4);
 }
@@ -107,7 +107,7 @@
   width: 60px;
   height: 40px;
   border: 0;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   background: var(--ds-color-black);
   color: var(--ds-color-white);
   display: inline-flex;
@@ -175,7 +175,7 @@
 .qty-pill {
   min-width: 54px;
   height: 40px;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -246,7 +246,7 @@
   width: 80px;
   height: 120px;
   border: 0;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   background: var(--ds-color-green-100);
   color: var(--ds-color-black);
   display: inline-flex;
@@ -275,7 +275,7 @@
   flex: 1;
   height: 80px;
   border: 0;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   background: var(--ds-color-green-100);
   color: var(--ds-color-black);
   display: inline-flex;
@@ -293,7 +293,7 @@
   width: 80px;
   height: 80px;
   border: 0;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   background: var(--ds-color-black);
   cursor: pointer;
 }
@@ -313,7 +313,7 @@
   height: 80px;
   padding: 0 var(--ds-space-5);
   border: 0;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   background: var(--ds-color-black);
   color: var(--ds-color-white);
   font-size: var(--ds-font-size-body-md);
@@ -327,7 +327,7 @@
   height: 40px;
   align-self: flex-start;
   border: 0;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   background: var(--ds-color-white);
   box-shadow: var(--ds-shadow-01);
   display: inline-flex;
@@ -347,3 +347,4 @@
   border-radius: var(--ds-radius-md);
   background: var(--ds-color-gray-100);
 }
+

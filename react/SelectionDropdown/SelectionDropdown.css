@@ -77,7 +77,7 @@
   margin: var(--ds-space-3);
   padding: 0 var(--ds-space-4);
   height: 48px;
-  border-radius: var(--ds-radius-xl);
+  border-radius: var(--ds-radius-2xl);
   background: var(--ds-color-surface);
   color: var(--ds-color-gray-500);
   flex-shrink: 0;
@@ -181,3 +181,4 @@
   font-size: var(--ds-font-size-body-sm);
   color: var(--ds-color-gray-500);
 }
+
