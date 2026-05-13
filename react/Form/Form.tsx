@@ -121,7 +121,7 @@ export function CheckBox({
           <Icon name="check" size="sm" color="var(--ds-color-white)" />
         )}
         {state === "remove" && (
-          <Icon name="minus" size="sm" color="var(--ds-color-black)" />
+          <Icon name="minus" size="sm" color="var(--ds-color-white)" />
         )}
       </span>
       <span className="ds-checkbox__label">{label}</span>
@@ -204,7 +204,7 @@ export function OptionLabel({
       onClick={onClick}
       type="button"
     >
-      <Icon name="home" size="md" />
+      <span className="ds-option-label__dot" aria-hidden="true" />
       <span className="ds-option-label__text">{label}</span>
     </button>
   );

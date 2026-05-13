@@ -17,7 +17,7 @@ export function NavigationControls({
   navigation = "back",
   onClick,
 }: NavigationControlsProps) {
-  const iconName: IconName = navigation === "back" ? "back" : "forward";
+  const iconName: IconName = navigation === "back" ? "back" : "go";
 
   return (
     <button
@@ -88,7 +88,7 @@ export function ToggleMenu({
       aria-expanded={mode === "open"}
     >
       <Icon
-        name={mode === "close" ? "close" : "menu"}
+        name={mode === "close" ? "close" : "list"}
         size="lg"
         color="var(--ds-color-black)"
       />
