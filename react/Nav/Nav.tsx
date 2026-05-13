@@ -19,7 +19,7 @@ export function NavigationControls({
   navigation = "back",
   onClick,
 }: NavigationControlsProps) {
-  const iconName: IconName = navigation === "back" ? "chevron-left" : "chevron-right";
+  const iconName = navigation === "back" ? "chevron-left" : "chevron-right";
   const iconColor = state === "pressed" ? "var(--ds-color-white)" : "var(--ds-color-black)";
 
   return (
@@ -52,7 +52,7 @@ export function FilterOptions({
   mode = "normal",
   onClick,
 }: FilterOptionsProps) {
-  const iconName: IconName = mode === "close" ? "chevron-down" : "filter";
+  const iconName = mode === "close" ? "chevron-down" : "filter";
   const iconColor = mode === "close" ? "var(--ds-color-white)" : "var(--ds-color-black)";
 
   return (
@@ -85,7 +85,7 @@ export function ToggleMenu({
   mode = "open",
   onClick,
 }: ToggleMenuProps) {
-  const iconName: IconName = mode === "close" ? "chevron-down" : "chevrons-up-down";
+  const iconName = mode === "close" ? "chevron-down" : "chevrons-up-down";
   const iconColor = mode === "close" ? "var(--ds-color-white)" : "var(--ds-color-black)";
 
   return (
