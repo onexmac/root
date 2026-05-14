@@ -1,5 +1,7 @@
 import React from "react";
+import { motion } from "motion/react";
 import { Icon } from "../Icon/Icon";
+import { springs } from "../springs";
 
 // ─── FormField ────────────────────────────────────────────────────────────────
 
@@ -141,13 +143,15 @@ export interface TagProps {
 
 export function Tag({ label = "Tag", state = "standard", onClick }: TagProps) {
   return (
-    <button
+    <motion.button
       className={`ds-tag ds-tag--${state}`}
       onClick={onClick}
       type="button"
+      whileTap={{ scale: 0.95 }}
+      transition={springs.snappy}
     >
       {label}
-    </button>
+    </motion.button>
   );
 }
 
@@ -198,14 +202,16 @@ export function OptionLabel({
   onClick,
 }: OptionLabelProps) {
   return (
-    <button
+    <motion.button
       className={`ds-option-label ds-option-label--${state}`}
       disabled={state === "disabled"}
       onClick={onClick}
       type="button"
+      whileTap={state === "disabled" ? undefined : { scale: 0.97 }}
+      transition={springs.snappy}
     >
       <span className="ds-option-label__dot" aria-hidden="true" />
       <span className="ds-option-label__text">{label}</span>
-    </button>
+    </motion.button>
   );
 }
