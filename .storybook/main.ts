@@ -21,6 +21,33 @@ const config: StorybookConfig = {
       config.base = basePath;
     }
 
+    // Plugin post-enforce: fija nombres estables (sin hash) en los chunks.
+    // Evita "Failed to fetch dynamically imported module" en GitHub Pages cuando
+    // el browser cachea iframe.html viejo con hashes que ya no existen en el servidor.
+    config.plugins = [
+      ...(Array.isArray(config.plugins) ? config.plugins : []),
+      {
+        name: 'stable-chunk-names',
+        enforce: 'post' as const,
+        configResolved(resolved) {
+          const patch = {
+            chunkFileNames: 'assets/[name].js',
+            entryFileNames: 'assets/[name].js',
+          };
+          const out = resolved.build?.rollupOptions?.output;
+          if (Array.isArray(out)) {
+            out.forEach(o => Object.assign(o, patch));
+          } else if (out && typeof out === 'object') {
+            Object.assign(out, patch);
+          } else {
+            resolved.build = resolved.build ?? {};
+            resolved.build.rollupOptions = resolved.build.rollupOptions ?? {};
+            (resolved.build.rollupOptions as Record<string, unknown>).output = patch;
+          }
+        },
+      },
+    ];
+
     return config;
   }
 };
