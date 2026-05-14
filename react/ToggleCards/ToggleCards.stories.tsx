@@ -18,7 +18,6 @@ type Story = StoryObj<typeof ToggleCards>;
 
 export const BigOpen: Story = { args: { size: "big", visibility: "open" } };
 export const BigOpenPressed: Story = { args: { size: "big", visibility: "open", state: "pressed" } };
-export const BigClose: Story = { args: { size: "big", visibility: "close" } };
 export const BigDisabled: Story = { args: { size: "big", visibility: "open", mode: "disabled" } };
 export const BigDisabledPressed: Story = { args: { size: "big", visibility: "open", state: "pressed", mode: "disabled" } };
 export const SmallOpen: Story = { args: { size: "small", visibility: "open" } };
