@@ -44,15 +44,15 @@
 .ds-sd__list-inner {
   display:        flex;
   flex-direction: column;
-  gap:            0;                    /* Figma: items se tocan (mb -12px overlap) */
-  padding:        0 var(--ds-space-3) var(--ds-space-3);
-  /* 0 top (justo bajo header), 12px lateral, 12px bottom */
+  gap:            0;
+  padding:        var(--ds-space-3);
+  /* 12px todos los lados — mismo que el wrapper de cada item en Figma */
 }
 
-/* Cada item: pill negro 80px tipo TabsMenu label */
+/* Cada item: pill negro 82px tipo TabsMenu label */
 .ds-sd__item {
   width:          100%;
-  height:         80px;
+  height:         82px;
   padding:        var(--ds-space-6) 40px;          /* 24px 40px */
   border:         none;
   border-radius:  var(--ds-radius-xl);             /* 32px */
@@ -72,6 +72,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Overlap entre items: el item siguiente tapa 12px del anterior (Figma: mb-[-12px]) */
+.ds-sd__item:not(:last-child) {
+  margin-bottom: -12px;
+}
 
 .ds-dd__trigger-icon {
   width: 36px;

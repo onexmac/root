@@ -18,11 +18,4 @@ export const Default: Story = {
   },
 };
 
-export const Disabled: Story = {
-  args: {
-    label: "Pedir",
-    disabled: true,
-    disabledLabel: "Agregá un material",
-    onConfirm: () => console.log("not callable"),
-  },
-};
+
