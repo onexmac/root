@@ -47,7 +47,7 @@
   font-size: var(--ds-font-size-body-md);
   line-height: var(--ds-line-height-body-md);
   font-weight: var(--ds-font-weight-semibold);
-  letter-spacing: var(--ds-letter-spacing-wide);
+  letter-spacing: 0;
   pointer-events: none;
   user-select: none;
 }
@@ -65,7 +65,7 @@
   font-size: var(--ds-font-size-body-md);
   line-height: var(--ds-line-height-body-md);
   font-weight: var(--ds-font-weight-semibold);
-  letter-spacing: var(--ds-letter-spacing-wide);
+  letter-spacing: 0;
   text-transform: uppercase;
   border-radius: var(--ds-radius-lg);
   z-index: 5;

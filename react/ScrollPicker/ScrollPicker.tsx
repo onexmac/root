@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { springs } from "../springs";
 import { haptic } from "../haptic";
 import { QuantitySelector, type QuantitySelectorState } from "../QuantitySelector/QuantitySelector";
+import { Icon } from "../Icon/Icon";
 
 
 const ITEM_HEIGHT = 48;
@@ -181,7 +182,7 @@ export function ScrollPicker({
                   transition={springs.snappy}
                   aria-label="Cerrar"
                 >
-                  <CloseIcon />
+                  <Icon name="delete" size="lg" color="currentColor" />
                 </motion.button>
               </header>
             )}
@@ -262,10 +263,3 @@ export function ScrollPicker({
   );
 }
 
-function CloseIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-    </svg>
-  );
-}

@@ -31,7 +31,7 @@ export function TabsMenu({
     >
       {showIcon && (
         <span className="ds-tabs-menu__icon">
-          <Icon name={icon} size="md" color="var(--ds-color-white)" />
+          <Icon name={icon} size="lg" color="var(--ds-color-white)" />
         </span>
       )}
       <span className="ds-tabs-menu__label">{label}</span>

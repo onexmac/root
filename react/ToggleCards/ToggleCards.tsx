@@ -1,6 +1,7 @@
 import React from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { springs } from "../springs";
+import { Icon } from "../Icon/Icon";
 import "./ToggleCards.css";
 
 export type ToggleCardsState = "standard" | "pressed";
@@ -52,25 +53,11 @@ export function ToggleCards({
           exit={{ opacity: 0, scale: 0.7 }}
           transition={springs.snappy}
         >
-          {visibility === "open" ? <ChevronsIcon /> : <ArrowDownIcon />}
+          {visibility === "open"
+            ? <Icon name="open" size="lg" color="currentColor" />
+            : <Icon name="close" size="lg" color="currentColor" />}
         </motion.span>
       </AnimatePresence>
     </motion.button>
-  );
-}
-
-function ChevronsIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M7 10l5-5 5 5M7 14l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function ArrowDownIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }

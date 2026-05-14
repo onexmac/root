@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import { springs } from "../springs";
+import { Icon } from "../Icon/Icon";
 import "./SearchBar.css";
 
 export type SearchBarLayout = "label" | "normal" | "icon" | "expanded";
@@ -73,7 +74,7 @@ export function SearchBar({
         transition={springs.snappy}
         aria-label={ariaLabel ?? "Abrir búsqueda"}
       >
-        <SearchIcon />
+        <Icon name="search" size="lg" color="currentColor" />
       </motion.button>
     );
   }
@@ -83,7 +84,7 @@ export function SearchBar({
   const pill = (
     <div className={`ds-search ds-search--${layout} ds-search--${state}`}>
       <span className="ds-search__icon" aria-hidden>
-        <SearchIcon />
+        <Icon name="search" size="lg" color="currentColor" />
       </span>
       <input
         ref={inputRef}
@@ -151,24 +152,7 @@ function CloseButton({ onClick }: { onClick: () => void }) {
       onClick={onClick}
       aria-label="Cerrar"
     >
-      <CloseIcon />
+      <Icon name="delete" size="sm" color="currentColor" />
     </button>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
-      <path d="M20 20l-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-    </svg>
   );
 }

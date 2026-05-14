@@ -78,8 +78,8 @@
   outline: 0;
   background: transparent;
   font-family: inherit;
-  font-size: var(--ds-font-size-body-md);
-  line-height: var(--ds-line-height-body-md);
+  font-size: 14px;
+  line-height: 20px;
   color: var(--ds-color-black);
   min-width: 0;
 }
@@ -118,13 +118,12 @@
 .ds-search__panel {
   list-style: none;
   margin: 0;
-  padding: var(--ds-space-2);
+  padding: var(--ds-space-4) var(--ds-space-6);
   background: var(--ds-color-white);
-  border-radius: var(--ds-radius-lg);
-  box-shadow: var(--ds-shadow-01);
+  border-radius: var(--ds-radius-2xl);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--ds-space-2);
   max-height: 320px;
   overflow-y: auto;
 }
@@ -140,8 +139,8 @@
   cursor: pointer;
   text-align: left;
   font-family: inherit;
-  font-size: var(--ds-font-size-body-md);
-  line-height: var(--ds-line-height-body-md);
+  font-size: var(--ds-font-size-body-sm);
+  line-height: var(--ds-line-height-body-sm);
   color: var(--ds-color-black);
   font-weight: var(--ds-font-weight-regular);
   -webkit-tap-highlight-color: transparent;
@@ -159,5 +158,6 @@
 /* Match resaltado: semibold (sin background, fiel al Figma) */
 .ds-search__match {
   font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
 }
 

@@ -1,30 +1,77 @@
-/* SelectionDropdown — trigger + panel buscable. Solo tokens var(--ds-*). */
+/* SelectionDropdown — terjeta blanca expandible (Figma: Nav » selectionDropdown). Solo var(--ds-*). */
 
-.ds-dd {
-  position: relative;
-  display: flex;
+/* Contenedor principal */
+.ds-sd {
+  position:      relative;
+  width:         372px;
+  background:    var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);      /* 32px */
+  box-shadow:    var(--ds-shadow-01);      /* only on header area visually */
+  overflow:      hidden;
+}
+
+/* Header: siempre visible. Label gris + ToggleCards small */
+.ds-sd__header {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  height:          70px;
+  padding:         var(--ds-space-3) var(--ds-space-3) var(--ds-space-3) var(--ds-space-5);
+  /* 12px right/top/bottom, 20px left */
+}
+
+/* Label gris del header (body/regular 16px, gray-300) */
+.ds-sd__label {
+  flex:           1 0 0;
+  min-width:      0;
+  font-family:    var(--ds-font-family);
+  font-size:      var(--ds-font-size-body-md);     /* 16px */
+  line-height:    var(--ds-line-height-body-md);   /* 24px */
+  font-weight:    var(--ds-font-weight-regular);   /* 400 */
+  color:          var(--ds-color-gray-300);        /* #aaafb6 */
+  letter-spacing: 0;
+  white-space:    nowrap;
+  overflow:       hidden;
+  text-overflow:  ellipsis;
+}
+
+/* Wrapper de la lista colapsable (height animada con motion) */
+.ds-sd__list {
+  overflow: hidden;
+}
+
+/* Inner padding de la lista de items */
+.ds-sd__list-inner {
+  display:        flex;
   flex-direction: column;
+  gap:            0;                    /* Figma: items se tocan (mb -12px overlap) */
+  padding:        0 var(--ds-space-3) var(--ds-space-3);
+  /* 0 top (justo bajo header), 12px lateral, 12px bottom */
 }
 
-.ds-dd__trigger {
-  display: flex;
-  align-items: center;
-  gap: var(--ds-space-3);
-  width: 100%;
-  height: 64px;
-  padding: 0 var(--ds-space-4);
-  border: 0;
-  border-radius: var(--ds-radius-lg);
-  background: var(--ds-color-black);
-  color: var(--ds-color-white);
-  font-family: inherit;
-  font-size: var(--ds-font-size-body-md);
-  line-height: var(--ds-line-height-body-md);
-  font-weight: var(--ds-font-weight-semibold);
-  letter-spacing: var(--ds-letter-spacing-wide);
-  cursor: pointer;
-  box-shadow: var(--ds-shadow-03-big);
+/* Cada item: pill negro 80px tipo TabsMenu label */
+.ds-sd__item {
+  width:          100%;
+  height:         80px;
+  padding:        var(--ds-space-6) 40px;          /* 24px 40px */
+  border:         none;
+  border-radius:  var(--ds-radius-xl);             /* 32px */
+  background:     var(--ds-color-black);
+  color:          var(--ds-color-white);
+  font-family:    var(--ds-font-family);
+  font-size:      var(--ds-font-size-body-md);     /* 16px */
+  line-height:    var(--ds-line-height-body-md);   /* 24px */
+  font-weight:    var(--ds-font-weight-semibold);  /* 600 */
+  letter-spacing: 0;
+  text-align:     center;
+  cursor:         pointer;
+  display:        flex;
+  align-items:    center;
+  justify-content: center;
+  flex-shrink:    0;
+  -webkit-tap-highlight-color: transparent;
 }
+
 
 .ds-dd__trigger-icon {
   width: 36px;

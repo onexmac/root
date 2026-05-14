@@ -1,3 +1,4 @@
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SelectionDropdown } from "./SelectionDropdown";
 
@@ -7,7 +8,7 @@ const meta: Meta<typeof SelectionDropdown> = {
   parameters: { layout: "centered" },
   decorators: [
     (Story) => (
-      <div style={{ width: 360, paddingTop: 320 }}>
+      <div style={{ width: 400, padding: 24, background: "#f3f3f3" }}>
         <Story />
       </div>
     ),
@@ -17,26 +18,33 @@ const meta: Meta<typeof SelectionDropdown> = {
 export default meta;
 type Story = StoryObj<typeof SelectionDropdown>;
 
-const SAMPLE_CATALOG = [
-  { code: "CON-110-220", name: "CONECTOR ADAPTADOR HEMBRA EAGLE 110V SALIDA MACHO EAGLE 220V" },
-  { code: "LAD-COMUN", name: "LADRILLO COMÚN" },
-  { code: "LAD-PERFO", name: "LADRILLO PERFORADO" },
-  { code: "CEM-50KG", name: "CEMENTO PORTLAND 50KG" },
-  { code: "VAR-12MM", name: "VARILLA DE HIERRO 12MM" },
+const SAMPLE_ITEMS = [
+  { label: "LADRILLO", onClick: () => console.log("Ladrillo") },
+  { label: "CEMENTO",  onClick: () => console.log("Cemento") },
+  { label: "VARILLA",  onClick: () => console.log("Varilla") },
+  { label: "ARENA",    onClick: () => console.log("Arena") },
 ];
 
-export const Default: Story = {
+export const Compressed: Story = {
   args: {
-    items: SAMPLE_CATALOG,
-    onSelect: (item) => console.log("selected", item),
+    label: "Tipo de material",
+    items: SAMPLE_ITEMS,
+    isOpen: false,
   },
 };
 
-export const CustomLabel: Story = {
+export const Expanded: Story = {
   args: {
-    items: SAMPLE_CATALOG,
-    triggerLabel: "Agregar material",
-    searchPlaceholder: "Buscar material…",
-    onSelect: (item) => console.log("selected", item),
+    label: "Tipo de material",
+    items: SAMPLE_ITEMS,
+    isOpen: true,
   },
 };
+
+export const Interactive: Story = {
+  args: {
+    label: "Seleccionar tipo",
+    items: SAMPLE_ITEMS,
+  },
+};
+
