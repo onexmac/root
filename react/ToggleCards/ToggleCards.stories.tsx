@@ -23,7 +23,3 @@ export const SmallOpen: Story = { args: { size: "small", visibility: "open" } };
 export const SmallOpenPressed: Story = { args: { size: "small", visibility: "open", state: "pressed" } };
 export const SmallClose: Story = { args: { size: "small", visibility: "close" } };
 export const SmallClosePressed: Story = { args: { size: "small", visibility: "close", state: "pressed" } };
-export const Disabled: Story = { args: { size: "big", visibility: "open", mode: "disabled" } };
-export const DisabledPressed: Story = {
-  args: { size: "big", visibility: "open", mode: "disabled", state: "pressed" },
-};

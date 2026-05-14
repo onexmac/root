@@ -18,14 +18,6 @@ export const Default: Story = {
   },
 };
 
-export const Save: Story = {
-  args: {
-    label: "Guardar",
-    confirmedLabel: "Guardado",
-    onConfirm: () => console.log("saved"),
-  },
-};
-
 export const Disabled: Story = {
   args: {
     label: "Pedir",

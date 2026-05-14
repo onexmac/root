@@ -74,12 +74,4 @@ export const Gallery: Story = {
   ),
 };
 
-export const Sizes: Story = {
-  render: () => (
-    <div style={{ display: "flex", alignItems: "center", gap: 24, padding: 16 }}>
-      <Icon name="home" size="sm" />
-      <Icon name="home" size="md" />
-      <Icon name="home" size="lg" />
-    </div>
-  ),
-};
+
