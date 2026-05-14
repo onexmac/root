@@ -47,6 +47,12 @@
   box-shadow: none;
 }
 
+/* Pressed + Disabled — Figma: mismo fondo gris-200, borde 2px gris-100, shadow restaurado */
+.ds-toggle--pressed.ds-toggle--disabled {
+  border: 2px solid var(--ds-color-gray-100);
+  box-shadow: var(--ds-shadow-03-big);
+}
+
 /* Icon wrapper para el crossfade en cambios de visibility (chevrons ↔ arrow). */
 .ds-toggle__icon {
   display: inline-flex;
