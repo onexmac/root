@@ -1,5 +1,7 @@
 import React from "react";
+import { motion } from "motion/react";
 import { Icon, IconName } from "../Icon/Icon";
+import { springs } from "../springs";
 
 // ─── NavigationControls ───────────────────────────────────────────────────────
 // Figma: 65×59 pill (radius 32), white bg standard, BLACK bg pressed
@@ -23,14 +25,16 @@ export function NavigationControls({
   const iconColor = state === "pressed" ? "var(--ds-color-white)" : "var(--ds-color-black)";
 
   return (
-    <button
+    <motion.button
       className={`ds-nav-ctrl ds-nav-ctrl--${state} ds-nav-ctrl--${navigation}`}
       onClick={onClick}
       type="button"
       aria-label={navigation === "back" ? "Atrás" : "Adelante"}
+      whileTap={{ scale: 0.94 }}
+      transition={springs.snappy}
     >
       <Icon name={iconName} size="lg" color={iconColor} />
-    </button>
+    </motion.button>
   );
 }
 
@@ -56,14 +60,16 @@ export function FilterOptions({
   const iconColor = mode === "close" ? "var(--ds-color-white)" : "var(--ds-color-black)";
 
   return (
-    <button
+    <motion.button
       className={`ds-filter-opt ds-filter-opt--${state} ds-filter-opt--${mode}`}
       onClick={onClick}
       type="button"
       aria-label={mode === "close" ? "Cerrar filtros" : "Filtros"}
+      whileTap={{ scale: 0.94 }}
+      transition={springs.snappy}
     >
       <Icon name={iconName} size="lg" color={iconColor} />
-    </button>
+    </motion.button>
   );
 }
 
@@ -89,15 +95,17 @@ export function ToggleMenu({
   const iconColor = mode === "close" ? "var(--ds-color-white)" : "var(--ds-color-black)";
 
   return (
-    <button
+    <motion.button
       className={`ds-toggle-menu ds-toggle-menu--${state} ds-toggle-menu--${mode}`}
       onClick={onClick}
       type="button"
       aria-label={mode === "open" ? "Abrir menú" : "Cerrar menú"}
       aria-expanded={mode === "open"}
+      whileTap={{ scale: 0.94 }}
+      transition={springs.snappy}
     >
       <Icon name={iconName} size="lg" color={iconColor} />
-    </button>
+    </motion.button>
   );
 }
 

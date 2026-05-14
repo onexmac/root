@@ -1,5 +1,8 @@
 import React from "react";
+import { motion } from "motion/react";
 import { Icon, IconName } from "../Icon/Icon";
+import { springs } from "../springs";
+import { haptic } from "../haptic";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -78,11 +81,13 @@ export function Button({
   ) : null;
 
   return (
-    <button
+    <motion.button
       type={type}
       className={classes}
       disabled={isDisabled}
-      onClick={!isDisabled ? onClick : undefined}
+      whileTap={isDisabled ? undefined : { scale: 0.97 }}
+      transition={springs.snappy}
+      onClick={!isDisabled ? () => { haptic.select(); onClick?.(); } : undefined}
       aria-disabled={isDisabled}
     >
       {(layout === "icon-left" || layout === "icon") && iconEl}
@@ -90,6 +95,6 @@ export function Button({
         <span className="ds-btn__label">{label}</span>
       )}
       {layout === "icon-right" && iconEl}
-    </button>
+    </motion.button>
   );
 }
