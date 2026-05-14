@@ -47,15 +47,3 @@ export const CompletoPressed: Story = {
 export const SinStockPressed: Story = {
   args: { value: 3, state: "sin-stock", mode: "pressed", size: "sm" },
 };
-
-/** Tappable — botón interactivo, halo automático en :active al mantener presionado. */
-export const Tappable: Story = {
-  args: {
-    value: 5,
-    state: "incompleto",
-    size: "md",
-    onTap: () => console.log("tap"),
-  },
-};
-
-export const Large: Story = { args: { value: 120, state: "completo", size: "lg" } };
