@@ -1,0 +1,645 @@
+/* ============================================================
+   H4 — Control de usuarios
+   Estilos del prototipo. Solo `var(--ds-*)`. Sin Tailwind.
+   ============================================================ */
+
+.cu {
+  display: flex;
+  width: 100%;
+  min-height: 1024px;
+  background: var(--ds-color-surface);
+  font-family: var(--ds-font-family);
+  color: var(--ds-color-black);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Sidebar ───────────────────────────────────────────── */
+
+.cu-sidebar {
+  /* Figma: white-black/black-100 = rgba(0,0,0,0.8) — gris muy oscuro, no negro puro */
+  background: var(--ds-color-black-100);
+  padding: var(--ds-space-4) var(--ds-space-4) var(--ds-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  flex-shrink: 0;
+}
+
+.cu-sidebar__toggle {
+  align-self: flex-end;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-white);
+  margin-bottom: var(--ds-space-5);
+}
+.cu-sidebar__toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cu-sidebar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-white);
+  flex-shrink: 0;
+}
+
+.cu-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  border: none;
+  border-radius: var(--ds-radius-xl);
+  /* Inactive: sin pill, deja ver el fondo del sidebar */
+  background: transparent;
+  color: var(--ds-color-white);
+  font-family: inherit;
+  font-size: var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  cursor: pointer;
+  min-height: 64px;
+  justify-content: flex-start;
+  transition: background 100ms ease;
+}
+
+/* Collapsed state: circular pill, icon-only, self-sized */
+.cu-sidebar:not(.is-expanded) .cu-sidebar__item {
+  width: 56px;
+  height: 56px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+  justify-content: center;
+  align-self: center;
+}
+
+.cu-sidebar__item.is-active {
+  background: var(--ds-color-gray-500);
+}
+
+.cu-sidebar__label {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* ── Main ──────────────────────────────────────────────── */
+
+.cu__main {
+  flex: 1;
+  padding: var(--ds-space-6);
+  min-width: 0;
+}
+
+.cu-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-4);
+  margin-bottom: var(--ds-space-5);
+}
+
+.cu-section__header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-4);
+}
+
+.cu-section__title {
+  font-size: var(--ds-font-size-subtitle);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  margin: 0;
+}
+
+/* ── Plus button (yellow/green-ish floating) ───────────── */
+
+.cu-plus {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--ds-radius-lg);
+  background: var(--ds-color-green-100);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--ds-shadow-03-big);
+}
+
+/* ── Tabla usuarios ────────────────────────────────────── */
+
+.cu-table {
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  padding: 0;
+  box-shadow: var(--ds-shadow-01);
+  overflow: hidden;
+  min-height: 800px;
+}
+
+.cu-table__head {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-4) var(--ds-space-5);
+  /* Figma: white-black/black-100 = rgba(0,0,0,0.8) */
+  background: var(--ds-color-black-100);
+  color: var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  font-weight: var(--ds-font-weight-semibold);
+  margin: var(--ds-space-3);
+}
+
+.cu-table__col {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  min-width: 0;
+}
+
+.cu-table__col--name { gap: var(--ds-space-3); }
+.cu-table__col--status { justify-content: flex-end; }
+
+.cu-table__body {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cu-table__row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: var(--ds-space-4);
+  padding: var(--ds-space-3) var(--ds-space-5);
+  cursor: pointer;
+  border-bottom: 1px solid var(--ds-color-gray-100);
+}
+.cu-table__row:last-child { border-bottom: none; }
+
+.cu-table__name { font-weight: var(--ds-font-weight-semibold); }
+
+.cu-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ds-color-gray-100);
+  color: var(--ds-color-gray-400);
+  flex-shrink: 0;
+}
+
+/* ── Status pill (Activo/Inactivo con check) ───────────── */
+
+.cu-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  padding: var(--ds-space-2) var(--ds-space-4);
+  border-radius: var(--ds-radius-xl);
+  font-size: var(--ds-font-size-body-sm);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  min-width: 110px;
+  justify-content: center;
+}
+.cu-status.is-active   { background: var(--ds-color-black);    color: var(--ds-color-white); }
+.cu-status.is-inactive { background: var(--ds-color-gray-200); color: var(--ds-color-gray-400); }
+
+/* ── Drawer ────────────────────────────────────────────── */
+
+.cu-drawer__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.cu-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 560px;
+  max-width: 100%;
+  background: var(--ds-color-white);
+  z-index: 11;
+  padding: var(--ds-space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-5);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.cu-drawer__head {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  position: relative;
+}
+
+.cu-drawer__title {
+  font-size: var(--ds-font-size-subtitle);
+  font-weight: var(--ds-font-weight-semibold);
+  margin: 0;
+  flex: 1;
+}
+
+.cu-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--ds-space-2);
+  border-radius: var(--ds-radius-md);
+}
+
+.cu-drawer__role {
+  align-self: center;
+  margin-top: calc(-1 * var(--ds-space-3));
+}
+
+.cu-drawer__fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--ds-space-4);
+  margin: 0;
+}
+
+.cu-field { display: flex; flex-direction: column; gap: var(--ds-space-1); }
+.cu-field__label { font-weight: var(--ds-font-weight-semibold); font-size: var(--ds-font-size-body-md); margin: 0; }
+.cu-field__value { font-size: var(--ds-font-size-body-md); margin: 0; }
+
+.cu-drawer__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  margin-top: auto;
+}
+.cu-drawer__actions > * { width: 100%; }
+
+/* ── New user drawer tabs ──────────────────────────────── */
+
+.cu-newuser__tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ds-space-3);
+}
+
+.cu-newuser__tab {
+  border: 1px solid var(--ds-color-gray-100);
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  padding: var(--ds-space-3) var(--ds-space-4);
+  font-family: inherit;
+  font-weight: var(--ds-font-weight-semibold);
+  font-size: var(--ds-font-size-body-md);
+  cursor: pointer;
+  color: var(--ds-color-gray-400);
+  min-height: 48px;
+}
+.cu-newuser__tab.is-active {
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  border-color: var(--ds-color-black);
+}
+
+.cu-newuser__pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-4);
+}
+
+.cu-newuser__group {
+  font-size: var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  margin: var(--ds-space-3) 0 0;
+}
+
+.cu-newuser__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--ds-space-3);
+}
+.cu-newuser__row > * { min-width: 0; }
+
+.cu-newuser__nav {
+  display: flex;
+  margin-top: var(--ds-space-5);
+}
+.cu-newuser__nav--end     { justify-content: flex-end; }
+.cu-newuser__nav--between { justify-content: space-between; align-items: center; }
+
+.cu-round-nav {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--ds-color-white);
+  border: 1px solid var(--ds-color-gray-100);
+  box-shadow: var(--ds-shadow-01);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ── DropdownField (external label + DS SelectionDropdown) ─ */
+
+.cu-dropdown-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+  min-width: 0;
+}
+
+.cu-dropdown-field__label {
+  font-size: var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-regular);
+  color: var(--ds-color-black);
+}
+
+/* ── Overrides de tamaño del SelectionDropdown del DS ─────────
+   El DS tiene width: 372px fijo; ajustamos por contexto. */
+
+/* Default DS = compressed @ 70px, 372px width.
+   Cualquier `.cu-sd` deja al wrapper decidir el ancho. */
+.cu-sd { width: 100%; max-width: 100%; }
+
+/* Variante "full": dentro del formulario en columnas (U04/U05) */
+.cu-sd--full { width: 100%; }
+
+/* Variante "category": el dropdown de la esquina superior de R01/R02 */
+.cu-sd--category {
+  width: 380px;
+  max-width: 100%;
+}
+
+/* Variante "compact": dentro de la role card en R02 — más bajo */
+.cu-sd--compact .ds-sd__header {
+  height: 52px;
+  padding: var(--ds-space-2) var(--ds-space-2) var(--ds-space-2) var(--ds-space-4);
+}
+.cu-sd--compact .ds-sd__label {
+  font-size: var(--ds-font-size-body-sm);
+}
+
+/* ── Roles grid (chips) ────────────────────────────────── */
+
+.cu-roles-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-4);
+  border: 1px solid var(--ds-color-gray-100);
+  border-radius: var(--ds-radius-lg);
+}
+
+/* ============================================================
+   ROLES VIEW
+   ============================================================ */
+
+.cu-roles__category {
+  font-size: var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  margin: var(--ds-space-4) 0;
+}
+
+.cu-roles__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--ds-space-5);
+  max-width: 720px;
+}
+
+.cu-role-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+}
+
+.cu-role-card__nametag { align-self: flex-start; }
+
+.cu-role-card {
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-3);
+  box-shadow: var(--ds-shadow-01);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  position: relative;
+}
+
+.cu-role-card__tabs {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.cu-role-card__tab {
+  flex: 1;
+  padding: var(--ds-space-2) var(--ds-space-4);
+  border-radius: var(--ds-radius-xl);
+  border: 1px solid var(--ds-color-gray-100);
+  background: var(--ds-color-white);
+  font-family: inherit;
+  font-weight: var(--ds-font-weight-semibold);
+  font-size: var(--ds-font-size-body-sm);
+  color: var(--ds-color-gray-400);
+  cursor: pointer;
+  min-height: 36px;
+}
+.cu-role-card__tab.is-active {
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  border-color: var(--ds-color-black);
+}
+
+.cu-role-card__add {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ds-color-black);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cu-role-card__body {
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-md);
+  padding: var(--ds-space-3);
+  position: relative;
+  border: 1px solid var(--ds-color-gray-100);
+}
+
+.cu-role-card__title {
+  font-size: var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  margin: 0 0 var(--ds-space-2);
+}
+
+.cu-role-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+}
+
+.cu-role-card__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-size: var(--ds-font-size-body-md);
+}
+
+.cu-role-card__check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  flex-shrink: 0;
+}
+
+.cu-role-card__collapse {
+  position: absolute;
+  top: var(--ds-space-3);
+  right: var(--ds-space-3);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ds-color-black);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   CUADRILLAS VIEW
+   ============================================================ */
+
+.cu-cuadrillas__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--ds-space-5);
+  max-width: 720px;
+}
+
+.cu-cuad-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  align-self: flex-start;
+}
+
+.cu-cuad__nametag { align-self: flex-start; }
+
+.cu-cuad {
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  padding: var(--ds-space-4);
+  box-shadow: var(--ds-shadow-01);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-3);
+  min-width: 320px;
+}
+
+.cu-cuad__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+}
+
+.cu-cuad__name {
+  flex: 1;
+  font-weight: var(--ds-font-weight-semibold);
+  font-size: var(--ds-font-size-body-md);
+}
+
+.cu-cuad__add {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--ds-space-1);
+}
+
+.cu-cuad__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-2);
+}
+
+.cu-cuad__list {
+  list-style: none;
+  margin: 0;
+  padding: var(--ds-space-2) 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+  overflow: hidden;
+}
+
+.cu-cuad__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.cu-cuad__pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ds-color-gray-100);
+  color: var(--ds-color-gray-400);
+  flex-shrink: 0;
+}
+
+/* ── Stub marker para componentes no-DS ────────────────── */
+
+.cu-stub {
+  position: relative;
+  outline: 1px dashed var(--ds-color-red-100);
+  outline-offset: 4px;
+  border-radius: var(--ds-radius-md);
+}
+.cu-stub::before {
+  content: attr(data-stub);
+  position: absolute;
+  top: -22px;
+  left: 0;
+  font-size: 10px;
+  color: var(--ds-color-red-100);
+  font-weight: var(--ds-font-weight-semibold);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
