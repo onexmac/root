@@ -1,7 +1,9 @@
 import React from "react";
+import { motion } from "motion/react";
 import { Icon } from "../Icon/Icon";
 import { QuantitySelector, QuantitySelectorState } from "../QuantitySelector/QuantitySelector";
 import { ToggleCards } from "../ToggleCards/ToggleCards";
+import { springs } from "../springs";
 import "../QuantitySelector/QuantitySelector.css";
 
 // ─── SummaryCard ──────────────────────────────────────────────────────────────
@@ -34,11 +36,13 @@ export function SummaryCard({
   onClick,
 }: SummaryCardProps) {
   return (
-    <div
+    <motion.div
       className={`ds-summary-card ds-summary-card--${visibility}`}
       onClick={onClick}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
+      whileTap={onClick ? { scale: 0.98 } : undefined}
+      transition={springs.snappy}
     >
       {/* Left — info block */}
       <div className="ds-summary-card__info">
@@ -65,7 +69,7 @@ export function SummaryCard({
           onClick={onClick}
         />
       </div>
-    </div>
+    </motion.div>
   );
 }
 

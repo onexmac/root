@@ -59,14 +59,16 @@ export function FormField({
           aria-invalid={state === "advertencia"}
         />
         {state === "x" && !isDisabled && (
-          <button
+          <motion.button
             className="ds-form-field__clear"
             onClick={onClear}
             aria-label="Limpiar"
             type="button"
+            whileTap={{ scale: 0.82 }}
+            transition={springs.snappy}
           >
             <Icon name="close" size="sm" />
-          </button>
+          </motion.button>
         )}
         {state === "ayuda" && (
           <Icon name="info" size="sm" className="ds-form-field__icon" />
@@ -111,13 +113,15 @@ export function CheckBox({
 
   return (
     <label className={`ds-checkbox ds-checkbox--${state}`}>
-      <span
+      <motion.span
         className={`ds-checkbox__box${checked || state === "add" ? " ds-checkbox__box--checked" : ""}`}
         onClick={handleChange}
         role="checkbox"
         aria-checked={checked}
         tabIndex={isDisabled ? -1 : 0}
         onKeyDown={(e) => e.key === " " && handleChange()}
+        whileTap={isDisabled ? undefined : { scale: 0.85 }}
+        transition={springs.snappy}
       >
         {(checked || state === "add") && (
           <Icon name="check" size="sm" color="var(--ds-color-white)" />
@@ -125,7 +129,7 @@ export function CheckBox({
         {state === "remove" && (
           <Icon name="minus" size="sm" color="var(--ds-color-white)" />
         )}
-      </span>
+      </motion.span>
       <span className="ds-checkbox__label">{label}</span>
     </label>
   );
