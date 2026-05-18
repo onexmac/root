@@ -126,8 +126,14 @@ export function SlideArm({
           enabled={isArmed}
           successHoldMs={successHoldMs}
           onConfirm={() => {
+            // SlideToConfirm already lingered for successHoldMs before
+            // firing onConfirm — disarm immediately so the SlideArm
+            // doesn't double-wait. A consumer that wants to keep the
+            // SlideArm visible after the parent action (e.g. a toast)
+            // can rely on the slider's brief settling animation +
+            // disarm transition reading as one continuous "done" beat.
             onConfirm();
-            window.setTimeout(disarm, successHoldMs);
+            disarm();
           }}
         />
 

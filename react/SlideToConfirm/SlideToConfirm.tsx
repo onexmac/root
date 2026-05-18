@@ -146,8 +146,14 @@ export function SlideToConfirm({
     haptic.complete();
     animate(dragX, maxDrag, springs.completing);
     setIsConfirmed(true);
-    onConfirm();
+    // Linger: keep the checkmark visible for `successHoldMs` so the user
+    // sees the success state before downstream actions (closing a sheet,
+    // navigating, etc.) tear the slider down. If `onConfirm` fired
+    // immediately, a parent that closes-on-success would unmount the
+    // slider before the check ever rendered. Firing here, AFTER the
+    // hold, gives consumers a clean "the user saw it" guarantee.
     window.setTimeout(() => {
+      onConfirm();
       animate(dragX, 0, springs.settling);
       setIsConfirmed(false);
       lastTickRef.current = 0;
