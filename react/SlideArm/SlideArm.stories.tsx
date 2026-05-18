@@ -24,7 +24,7 @@ const meta: Meta<typeof SlideArm> = {
     collapsedWidth: { control: { type: "range", min: 80, max: 280, step: 8 } },
     height: { control: { type: "range", min: 56, max: 96, step: 4 } },
     cornerRadius: { control: { type: "range", min: 0, max: 40, step: 2 } },
-    successHoldMs: { control: { type: "range", min: 300, max: 3000, step: 100 } },
+    successHoldMs: { control: { type: "range", min: 200, max: 3000, step: 100 } },
   },
 };
 

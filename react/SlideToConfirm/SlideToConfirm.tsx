@@ -63,7 +63,12 @@ export interface SlideToConfirmProps {
   height?: number;
   /** Corner radius, px. Default 24. */
   cornerRadius?: number;
-  /** Hold the checkmark this long (ms) before auto-reset. Default 1600. */
+  /**
+   * Hold the checkmark this long (ms) before firing `onConfirm` and
+   * auto-resetting. Default 800. Half the old 1600 ms — long enough to
+   * register the success state, short enough not to feel sluggish when
+   * the parent reacts (sheet close, navigation, etc).
+   */
   successHoldMs?: number;
   /** When false, pointer input is ignored (used by SlideArm while collapsed). */
   enabled?: boolean;
@@ -77,7 +82,7 @@ export function SlideToConfirm({
   threshold = 0.72,
   height = 80,
   cornerRadius = 24,
-  successHoldMs = 1600,
+  successHoldMs = 800,
   enabled = true,
   className,
 }: SlideToConfirmProps) {

@@ -44,6 +44,11 @@ export interface SlideArmProps {
   height?: number;
   cornerRadius?: number;
   onConfirm: () => void;
+  /**
+   * How long the success state holds before `onConfirm` fires and the
+   * SlideArm disarms. Default 800 ms. Bubbles through to the inner
+   * SlideToConfirm — keep them in sync.
+   */
   successHoldMs?: number;
   className?: string;
 }
@@ -54,7 +59,7 @@ export function SlideArm({
   height = 80,
   cornerRadius = 24,
   onConfirm,
-  successHoldMs = 1600,
+  successHoldMs = 800,
   className,
 }: SlideArmProps) {
   const [isArmed, setIsArmed] = useState(false);
