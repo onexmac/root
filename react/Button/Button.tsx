@@ -60,6 +60,7 @@ export interface ButtonProps {
   fullWidth?: boolean;
   type?: "button" | "submit" | "reset";
   style?: React.CSSProperties;
+  ariaLabel?: string;
 }
 
 // Map legacy variant → color
@@ -83,6 +84,7 @@ export function Button({
   fullWidth = false,
   type = "button",
   style,
+  ariaLabel,
 }: ButtonProps) {
   // Resolve color: explicit prop wins, then legacy variant, then default
   const resolvedColor: ButtonColor =
@@ -114,6 +116,7 @@ export function Button({
       className={classes}
       disabled={isDisabled}
       aria-disabled={isDisabled}
+      aria-label={ariaLabel}
       style={{
         position: "relative",
         WebkitTapHighlightColor: "transparent",

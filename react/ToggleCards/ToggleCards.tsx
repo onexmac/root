@@ -1,13 +1,9 @@
 import React from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { springs } from "../springs";
-import { Icon } from "../Icon/Icon";
-import "./ToggleCards.css";
+import { Button } from "../Button/Button";
 
 export type ToggleCardsState = "standard" | "pressed";
 export type ToggleCardsMode = "normal" | "disabled";
 export type ToggleCardsSize = "big" | "small";
-/** Matches Figma: "open" = card abierta (mostrar chevrons), "close" = card cerrada (mostrar flecha) */
 export type ToggleCardsVisibility = "open" | "close";
 
 export interface ToggleCardsProps {
@@ -20,44 +16,27 @@ export interface ToggleCardsProps {
   className?: string;
 }
 
-/**
- * ToggleCards — botón negro con ícono que indica si la card está abierta o cerrada.
- * Mirrors Figma: size (big/small), visibility (open/close), state (standard/pressed).
- */
+const SIZE_STYLES: Record<ToggleCardsSize, React.CSSProperties> = {
+  big:   { width: 60, height: 88, borderRadius: "var(--ds-radius-lg)" },
+  small: { width: 60, height: 50, borderRadius: "var(--ds-radius-lg)" },
+};
+
 export function ToggleCards({
-  state = "standard",
   mode = "normal",
   size = "big",
   visibility = "open",
   onClick,
   ariaLabel,
-  className,
 }: ToggleCardsProps) {
   return (
-    <motion.button
-      type="button"
-      className={`ds-toggle ds-toggle--${size} ds-toggle--${state} ds-toggle--${mode} ds-toggle--${visibility}${className ? ` ${className}` : ""}`}
-      disabled={mode === "disabled"}
+    <Button
+      layout="icon"
+      color={mode === "disabled" ? "gray" : "black"}
+      state={mode === "disabled" ? "disabled" : "standard"}
+      icon={visibility === "open" ? "open" : "close"}
+      style={SIZE_STYLES[size]}
+      ariaLabel={ariaLabel ?? (visibility === "open" ? "Cerrar card" : "Abrir card")}
       onClick={onClick}
-      whileTap={mode === "disabled" ? undefined : { scale: 0.94 }}
-      transition={springs.snappy}
-      aria-label={ariaLabel ?? (visibility === "open" ? "Cerrar card" : "Abrir card")}
-      aria-expanded={visibility === "open"}
-    >
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={visibility}
-          className="ds-toggle__icon"
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.7 }}
-          transition={springs.snappy}
-        >
-          {visibility === "open"
-            ? <Icon name="open" size="lg" color="currentColor" />
-            : <Icon name="close" size="lg" color="currentColor" />}
-        </motion.span>
-      </AnimatePresence>
-    </motion.button>
+    />
   );
 }
