@@ -1,7 +1,11 @@
-import React from "react";
-import { motion } from "motion/react";
+import React, { useRef, useState } from "react";
 import { Icon, IconName } from "../Icon/Icon";
-import { springs } from "../springs";
+import { haptic } from "../haptic";
+
+// Must match --ds-radius-xl = 32px
+const TABS_RADIUS = 32;
+const HALO_WIDTH = 8;
+const HALO_COLOR = "rgb(140, 140, 140)"; // muted shade of black fill
 
 export type TabsMenuState = "standard" | "pressed";
 export type TabsMenuLayout = "label" | "label+icon";
@@ -23,15 +27,41 @@ export function TabsMenu({
   onClick,
 }: TabsMenuProps) {
   const showIcon = layout === "label+icon";
+  const [pressed, setPressed] = useState(false);
+  const cancelled = useRef(false);
 
   return (
-    <motion.button
+    <button
       className={`ds-tabs-menu ds-tabs-menu--${state} ds-tabs-menu--${layout.replace("+", "-")}`}
-      onClick={onClick}
       type="button"
       aria-pressed={state === "pressed"}
-      whileTap={{ scale: 0.97 }}
-      transition={springs.snappy}
+      style={{
+        position: "relative",
+        WebkitTapHighlightColor: "transparent",
+        touchAction: "manipulation",
+      }}
+      onPointerDown={(e) => {
+        e.currentTarget.setPointerCapture(e.pointerId);
+        cancelled.current = false;
+        setPressed(true);
+        haptic.select();
+      }}
+      onPointerUp={() => {
+        setPressed(false);
+        if (!cancelled.current) {
+          setTimeout(() => onClick?.(), 100);
+        }
+      }}
+      onPointerLeave={() => {
+        if (pressed) {
+          cancelled.current = true;
+          setPressed(false);
+        }
+      }}
+      onPointerCancel={() => {
+        cancelled.current = true;
+        setPressed(false);
+      }}
     >
       {showIcon && (
         <span className="ds-tabs-menu__icon">
@@ -39,7 +69,23 @@ export function TabsMenu({
         </span>
       )}
       <span className="ds-tabs-menu__label">{label}</span>
-    </motion.button>
+
+      {/* Halo overlay — 80ms in / 180ms out 120ms hold */}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: -HALO_WIDTH,
+          borderRadius: TABS_RADIUS + HALO_WIDTH,
+          border: `${HALO_WIDTH}px solid ${HALO_COLOR}`,
+          pointerEvents: "none",
+          opacity: pressed ? 1 : 0,
+          transition: pressed
+            ? "opacity 80ms ease-out"
+            : "opacity 180ms ease-out 120ms",
+        }}
+      />
+    </button>
   );
 }
 
@@ -61,14 +107,44 @@ export function TabFilterChip({
   icon = "check",
   onClick,
 }: TabFilterChipProps) {
+  const isDisabled = state === "disabled";
+  const [pressed, setPressed] = useState(false);
+  const cancelled = useRef(false);
+
   return (
-    <motion.button
+    <button
       className={`ds-filter-chip ds-filter-chip--${state}`}
-      onClick={onClick}
       type="button"
-      disabled={state === "disabled"}
-      whileTap={state === "disabled" ? undefined : { scale: 0.96 }}
-      transition={springs.snappy}
+      disabled={isDisabled}
+      style={{
+        position: "relative",
+        WebkitTapHighlightColor: "transparent",
+        touchAction: "manipulation",
+      }}
+      onPointerDown={(e) => {
+        if (isDisabled) return;
+        e.currentTarget.setPointerCapture(e.pointerId);
+        cancelled.current = false;
+        setPressed(true);
+        haptic.select();
+      }}
+      onPointerUp={() => {
+        if (isDisabled) return;
+        setPressed(false);
+        if (!cancelled.current) {
+          setTimeout(() => onClick?.(), 100);
+        }
+      }}
+      onPointerLeave={() => {
+        if (pressed) {
+          cancelled.current = true;
+          setPressed(false);
+        }
+      }}
+      onPointerCancel={() => {
+        cancelled.current = true;
+        setPressed(false);
+      }}
     >
       <Icon
         name={icon}
@@ -76,7 +152,25 @@ export function TabFilterChip({
         color={state === "active" ? "var(--ds-color-white)" : "var(--ds-color-gray-300)"}
       />
       <span className="ds-filter-chip__label">{label}</span>
-    </motion.button>
+
+      {/* Halo overlay */}
+      {!isDisabled && (
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: -HALO_WIDTH,
+            borderRadius: TABS_RADIUS + HALO_WIDTH,
+            border: `${HALO_WIDTH}px solid ${HALO_COLOR}`,
+            pointerEvents: "none",
+            opacity: pressed ? 1 : 0,
+            transition: pressed
+              ? "opacity 80ms ease-out"
+              : "opacity 180ms ease-out 120ms",
+          }}
+        />
+      )}
+    </button>
   );
 }
 

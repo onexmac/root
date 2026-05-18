@@ -74,6 +74,7 @@ body {
    ============================================================ */
 
 .ds-btn {
+  position:        relative;
   display:         inline-flex;
   align-items:     center;
   justify-content: center;
@@ -92,6 +93,7 @@ body {
   transition:      box-shadow 120ms ease, background 100ms ease;
   white-space:     nowrap;
   user-select:     none;
+  overflow:        visible;
 }
 
 /* Colors */
@@ -250,6 +252,7 @@ body {
    ============================================================ */
 
 .ds-tabs-menu {
+  position:        relative;
   display:         inline-flex;
   align-items:     center;
   justify-content: center;
@@ -267,6 +270,7 @@ body {
   letter-spacing:  0;
   cursor:          pointer;
   transition:      box-shadow 120ms ease;
+  overflow:        visible;
 }
 
 .ds-tabs-menu--pressed { box-shadow: inset 0 0 0 8px var(--ds-color-black-100); }
@@ -287,6 +291,7 @@ body {
    ============================================================ */
 
 .ds-filter-chip {
+  position:      relative;
   display:       inline-flex;
   align-items:   center;
   gap:           var(--ds-space-1);
@@ -299,6 +304,7 @@ body {
   font-weight:   var(--ds-font-weight-semibold);
   cursor:        pointer;
   transition:    background 100ms ease;
+  overflow:      visible;
 }
 
 .ds-filter-chip--active   { background: var(--ds-color-black); color: var(--ds-color-white); }
