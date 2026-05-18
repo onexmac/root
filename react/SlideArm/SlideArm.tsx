@@ -92,14 +92,26 @@ export function SlideArm({
                 borderRadius: 20,
               }}
             >
-              <Icon name="close" size="sm" color="currentColor" />
+              {/* DS Icon registry has no X glyph — `close` paints a
+                  chevron-down. Rotate `plus` 45° to draw a true X.
+                  Promotion candidate: add an `x` (or `close-x`) icon to
+                  react/Icon/Icon.tsx. */}
+              <span
+                aria-hidden
+                style={{ display: "inline-flex", transform: "rotate(45deg)" }}
+              >
+                <Icon name="plus" size="sm" color="currentColor" />
+              </span>
             </HaloPress>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Bar shell — anchored TRAILING, width morphs collapsed ⇄ full. */}
+      {/* Bar shell — anchored TRAILING, width morphs collapsed ⇄ full.
+          `initial` is explicit so motion doesn't read 100% from the DOM
+          (the child SlideToConfirm has width:100%) on first mount. */}
       <motion.div
+        initial={{ width: collapsedWidth }}
         animate={{ width: isArmed ? "100%" : collapsedWidth }}
         // losa.md §5: open with `expanding`, close with `shrinking`.
         transition={isArmed ? springs.expanding : springs.shrinking}
