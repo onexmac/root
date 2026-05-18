@@ -1,13 +1,10 @@
-/* SlideButton — Figma node 997-3096. Slide-to-confirm gesture.
- * Overall: 242×80.  Track: 236×54 black.  Knob: 56×56 → 64×64 pressed.
- * Uses DESIGN.md springs + haptics vocabulary. Solo tokens var(--ds-*). */
+/* SlideButton — Figma node 997-3096.
+ * 282×80. Knob 80×80 (chevron-right). Track 282×80 (clip-path reveals
+ * from knob's right edge to trailing). Solo tokens var(--ds-*). */
 
 .ds-slide {
   position: relative;
-  width: 242px;
-  height: 80px;
-  display: flex;
-  align-items: center;
+  display: inline-block;
 }
 
 .ds-slide--disabled {
@@ -15,35 +12,22 @@
   pointer-events: none;
 }
 
-/* Track: black bar that holds the label + green fill indicator.
-   236×54, centered vertically within the 80px outer (13px top/bottom). */
+/* Black track — full bounds of the component. The visible region is clipped
+ * via clip-path inset() driven by the knob's x, so the left edge of the
+ * black bar tracks the knob exactly. */
 .ds-slide__track {
   position: absolute;
-  right: 0;
-  top: 13px;
-  width: 236px;
-  height: 54px;
+  inset: 0;
   background: var(--ds-color-black);
   border-radius: var(--ds-radius-lg);
-  overflow: hidden;
-}
-
-/* Green fill that grows as the knob is dragged */
-.ds-slide__fill {
-  position: absolute;
-  inset: 0;
-  background: var(--ds-color-green-200);
-  transform-origin: left center;
   pointer-events: none;
 }
 
-/* Label centered in the visible area to the right of the knob resting position */
+/* Label centered horizontally over the visible track portion (we offset by
+ * the knob's width so the text sits to the RIGHT of the knob's rest position). */
 .ds-slide__label {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 60px;
-  right: 0;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,11 +36,12 @@
   font-size: var(--ds-font-size-body-md);
   line-height: var(--ds-line-height-body-md);
   font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: 0.02em;
   pointer-events: none;
   user-select: none;
 }
 
-/* Confirm overlay — covers the full component on success */
+/* Confirm overlay — covers the component on success. */
 .ds-slide__confirm {
   position: absolute;
   inset: 0;
@@ -75,21 +60,12 @@
   pointer-events: none;
 }
 
-/* Knob — the draggable green button.
- *
- * Standard: 56×56 green body (centered in 80×80 container = 12px padding).
- *   Positioned at top: 12px, left: 0 to center within the 80px height.
- *
- * Pressed/dragging: grows to 64×64 body with 8px stroke ring (green-200 halo).
- *   The 8px ring means the visual expands to 80×80 (64 + 8*2).
- *   We shift top/left to keep it centered. */
+/* Knob — 80×80 squircle with right-chevron. Translates via motion `x`. */
 .ds-slide__knob {
   position: absolute;
   left: 0;
-  top: 12px;
+  top: 0;
   z-index: 3;
-  width: 56px;
-  height: 56px;
   border: 0;
   border-radius: var(--ds-radius-lg);
   background: var(--ds-color-green-100);
@@ -99,33 +75,37 @@
   justify-content: center;
   cursor: grab;
   box-shadow: var(--ds-shadow-03-big);
-  touch-action: none;
+  touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
   padding: 0;
   font-family: inherit;
-  transition:
-    width 160ms ease,
-    height 160ms ease,
-    top 160ms ease,
-    left 160ms ease,
-    box-shadow 160ms ease;
 }
 
-/* Pressed state: body grows to 64×64, 8px green-200 halo ring.
- * Container becomes 80×80 (64 + 8*2). Shifts to top:0 left:-8 to stay centered. */
-.ds-slide__knob:active,
 .ds-slide__knob[data-dragging="true"] {
   cursor: grabbing;
-  width: 64px;
-  height: 64px;
-  top: 8px;
-  left: -8px;
-  box-shadow:
-    0 0 0 8px var(--ds-color-green-200),
-    var(--ds-shadow-03-big);
 }
 
 .ds-slide__knob:disabled {
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+/* Halo — outer stroke ring in green-200, fades in on press.
+ * Drawn OUTSIDE the knob's bounds via negative inset, no layout shift. */
+.ds-slide__halo {
+  position: absolute;
+  inset: -4px;
+  border: 8px solid var(--ds-color-green-200);
+  border-radius: calc(var(--ds-radius-lg) + 4px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms ease-out 120ms;
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
+.ds-slide__knob:active .ds-slide__halo,
+.ds-slide__knob[data-dragging="true"] .ds-slide__halo {
+  opacity: 1;
+  transition: opacity 80ms ease-out 0ms;
 }
