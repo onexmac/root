@@ -1,7 +1,7 @@
 /**
  * Haptic vocabulary. Semantic — pick by the MEANING of the interaction,
- * not by which pattern feels nice. The same name in SwiftUI triggers the
- * analogous physical feedback; on the web, support varies by platform.
+ * not by which pattern feels nice. Values from P2_SPEC.md §4 (mirror the
+ * SwiftUI P2 prototype's HapticEngine.swift events).
  *
  * Support matrix (as of 2026):
  *   Android Chrome / Firefox / Edge    ✅ Web Vibration API, works
@@ -28,28 +28,23 @@ function supportsVibrate(): boolean {
 function vibrate(pattern: number | number[]) {
   if (!supportsVibrate()) return false;
   try {
-    // Older Android Chrome requires a preceding user gesture; we always
-    // call from event handlers so this is safe.
     return navigator.vibrate(pattern);
   } catch {
     return false;
   }
 }
 
-// Durations: Android hardware varies wildly. Sub-10ms is often imperceptible
-// on mid-tier devices. These values are a bit long for taste on a high-end
-// phone but land reliably across the Android fleet.
 export const haptic = {
-  /** Success confirmation. Three-pulse pattern. */
-  complete: () => vibrate([15, 40, 15]),
-  /** Tap / selection. Short but perceptible. */
-  select:   () => vibrate(15),
-  /** Drag milestone (e.g. quarter-progress crossing). */
-  drag:     () => vibrate(18),
-  /** Removal or warning. Two-pulse. */
-  delete:   () => vibrate([20, 15, 20]),
-  /** Validation failure. Five-pulse alarm. */
-  error:    () => vibrate([25, 50, 25, 50, 25]),
+  /** Light tap — buttons, toggles. Fire on onPressStart (touchdown). */
+  select:   () => vibrate(8),
+  /** Medium — drag start and snap-threshold crossings. */
+  drag:     () => vibrate(15),
+  /** Success confirmation. */
+  complete: () => vibrate([10, 30, 10]),
+  /** Warning before destructive confirm. */
+  delete:   () => vibrate([20, 50, 20]),
+  /** Validation failure. */
+  error:    () => vibrate([30, 30, 30, 30]),
 } as const;
 
 export type HapticEvent = keyof typeof haptic;

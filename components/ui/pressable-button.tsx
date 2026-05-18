@@ -1,85 +1,142 @@
 'use client';
 
-/**
- * PressableButton — port of SwiftUI's PressablePedirStyle.
- *
- * Renders a THIN STROKE HALO outside the button's bounds on press, in a
- * contextual color (muted shade of the button's own fill). No scale, no
- * layout push, no form submission.
- *
- * Why type="button" by default: inside a <form>, a <button> without type
- * defaults to "submit" and triggers navigation / reload. We're a prototype
- * with no forms — `type="button"` avoids surprise submits.
- */
-
 import { motion } from 'motion/react';
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
+import {
+  forwardRef,
+  useCallback,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+  type ButtonHTMLAttributes,
+} from 'react';
 
+/**
+ * Halo color palette — the muted shade that appears as the press ring
+ * around each button fill. Derived from the H4 / Adelante Figma palette;
+ * keep these in sync with the SwiftUI `PressableSquircleStyle` statics.
+ *
+ *   green → muted olive   (paired with the brand green pill / "+")
+ *   black → medium gray   (paired with the black squircle buttons)
+ *   white → light gray    (paired with white buttons / cards)
+ */
 export const halo = {
   green: 'rgb(133, 166, 41)',
   black: 'rgb(140, 140, 140)',
-  white: 'rgb(210, 210, 210)',
+  white: 'rgb(209, 209, 209)',
 } as const;
 
 export type HaloColor = (typeof halo)[keyof typeof halo] | string;
 
-export interface PressableButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
+export interface PressableButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> {
   children: ReactNode;
-  haloColor?: HaloColor;
-  haloWidth?: number;
+  /** Corner radius of your button's visible shape, in px. The halo tracks it. */
   cornerRadius?: number;
-  /** Delay firing onClick so the press halo can register visually (default 100ms). */
-  pressDelayMs?: number;
+  /** Halo ring thickness, in px. 8 matches the iOS prototype. */
+  haloWidth?: number;
+  /** Halo color — typically one of the `halo` palette values. */
+  haloColor?: HaloColor;
+  /** Fires AFTER `pressDelayMs` so the halo registers visually before any UI change. */
   onClick?: () => void;
+  /** Fires on pointer-down (use this for haptic.select() or analytics). */
+  onPressStart?: () => void;
+  /** Grace period between release and `onClick`. Default 100 ms — matches iOS. */
+  pressDelayMs?: number;
+  className?: string;
+  style?: CSSProperties;
 }
 
+/**
+ * Pressable button — port of P2's SwiftUI `PressableSquircleStyle`.
+ *
+ * On press, a halo ring fades in OUTSIDE the button's edge. The button
+ * itself does NOT scale or move — the halo is the entire feedback.
+ *
+ * Timing (matches iOS to the millisecond):
+ *   • Press   → halo opacity 0 → 1, ease-out,  80 ms
+ *   • Release → halo opacity 1 → 0, ease-out, 180 ms, delayed 120 ms
+ *
+ * The release delay is the magic that makes even the briefest tap feel
+ * legible — the halo is GUARANTEED to be on screen long enough to read
+ * before it starts fading.
+ *
+ * Halo geometry — to sit OUTSIDE the button:
+ *   inset:        -haloWidth / 2          (bounds extend past the button)
+ *   borderRadius: cornerRadius + haloWidth / 2   (tracks the button's shape)
+ *   border:       haloWidth px solid haloColor
+ *
+ * Math: a border of thickness `haloWidth` centered on the inset edge has
+ * its INNER edge at the button's edge and its OUTER edge `haloWidth` beyond.
+ * The middle stays transparent because `border` doesn't fill.
+ *
+ * IMPORTANT: the parent container must leave at least `haloWidth/2` of
+ * breathing room around this button (no `overflow: hidden` directly on
+ * the wrapper, or the halo gets clipped). Use the `<PressableSlot>` helper
+ * below when embedding inside a card or other clipping container.
+ */
 export const PressableButton = forwardRef<HTMLButtonElement, PressableButtonProps>(
   function PressableButton(
     {
       children,
-      haloColor = halo.black,
-      haloWidth = 8,
       cornerRadius = 20,
-      pressDelayMs = 100,
+      haloWidth = 8,
+      haloColor = halo.black,
       onClick,
+      onPressStart,
+      pressDelayMs = 100,
       className,
       style,
+      disabled = false,
+      'aria-label': ariaLabel,
       ...rest
     },
-    ref
+    ref,
   ) {
-    const [isPressed, setPressed] = useState(false);
+    const [isPressed, setIsPressed] = useState(false);
 
-    const handleClick = () => {
-      if (!onClick) return;
-      if (pressDelayMs <= 0) {
-        onClick();
-        return;
-      }
-      window.setTimeout(() => onClick(), pressDelayMs);
-    };
+    const handleClick = useCallback(() => {
+      if (!onClick || disabled) return;
+      window.setTimeout(onClick, pressDelayMs);
+    }, [onClick, pressDelayMs, disabled]);
 
     return (
       <button
         {...rest}
         ref={ref}
-        // Always non-submitting — prototype surface, no forms.
         type="button"
+        disabled={disabled}
+        aria-label={ariaLabel}
+        onPointerDown={() => {
+          if (disabled) return;
+          setIsPressed(true);
+          onPressStart?.();
+        }}
+        onPointerUp={() => setIsPressed(false)}
+        onPointerLeave={() => setIsPressed(false)}
+        onPointerCancel={() => setIsPressed(false)}
         onClick={handleClick}
-        onPointerDown={() => setPressed(true)}
-        onPointerUp={() => setPressed(false)}
-        onPointerLeave={() => setPressed(false)}
-        onPointerCancel={() => setPressed(false)}
-        className={cn('relative inline-block select-none outline-none', className)}
-        style={{ borderRadius: cornerRadius, ...style }}
+        className={className}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: cornerRadius,
+          cursor: disabled ? 'default' : 'pointer',
+          border: 0,
+          padding: 0,
+          margin: 0,
+          background: 'transparent',
+          outline: 'none',
+          WebkitTapHighlightColor: 'transparent',
+          userSelect: 'none',
+          touchAction: 'manipulation',
+          ...style,
+          // Forced — halo positions itself absolutely against this element.
+          position: 'relative',
+        }}
       >
         {children}
 
-        {/* Halo — ring drawn OUTSIDE bounds, doesn't affect layout.
-            Promoted to its own compositor layer at mount (translateZ) so
-            toggling opacity at press doesn't trigger paint on neighbors. */}
         <motion.span
           aria-hidden
           initial={false}
@@ -87,7 +144,7 @@ export const PressableButton = forwardRef<HTMLButtonElement, PressableButtonProp
           transition={
             isPressed
               ? { duration: 0.08, ease: 'easeOut' }
-              : { duration: 0.18, ease: 'easeOut', delay: 0.12 }
+              : { duration: 0.18, delay: 0.12, ease: 'easeOut' }
           }
           style={{
             position: 'absolute',
@@ -95,11 +152,58 @@ export const PressableButton = forwardRef<HTMLButtonElement, PressableButtonProp
             borderRadius: cornerRadius + haloWidth / 2,
             border: `${haloWidth}px solid ${haloColor}`,
             pointerEvents: 'none',
-            willChange: 'opacity',
-            transform: 'translateZ(0)',
           }}
         />
       </button>
     );
-  }
+  },
 );
+
+/**
+ * Wrapper that reserves the breathing room the halo needs to grow into.
+ * Use it around a PressableButton whenever the immediate parent has
+ * `overflow: hidden` (cards, sheets, table cells). The padding equals
+ * `haloWidth/2` on every side — same number the halo's inset uses — so
+ * the halo's outer edge lands exactly on the slot's edge.
+ *
+ *   <PressableSlot>
+ *     <PressableButton ...>…</PressableButton>
+ *   </PressableSlot>
+ */
+export function PressableSlot({
+  children,
+  haloWidth = 8,
+  className,
+  style,
+}: {
+  children: ReactNode;
+  haloWidth?: number;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <span
+      className={className}
+      style={{
+        display: 'inline-flex',
+        padding: haloWidth / 2,
+        margin: -haloWidth / 2,
+        overflow: 'visible',
+        ...style,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+/**
+ * Standalone press-delay helper — use it from a parent that owns the
+ * tap callback (so the SAME 100 ms grace period applies even when the
+ * action you're firing re-renders the button out of existence).
+ *
+ * Mirrors `pressDelayed` in P2's SwiftUI.
+ */
+export function pressDelayed(action: () => void, ms = 100) {
+  window.setTimeout(action, ms);
+}
