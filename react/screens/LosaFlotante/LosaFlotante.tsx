@@ -9,7 +9,7 @@ import { Button } from "../../Button/Button";
 import { FormField, Tag } from "../../Form/Form";
 import { Icon } from "../../Icon/Icon";
 import { SelectionDropdown } from "../../SelectionDropdown/SelectionDropdown";
-import { SlideButton } from "../../SlideButton/SlideButton";
+import { SlideArm } from "../../SlideArm/SlideArm";
 import { ToggleCards } from "../../ToggleCards/ToggleCards";
 import { springs } from "../../springs";
 import { haptic } from "../../haptic";
@@ -579,11 +579,14 @@ function NuevoUsuarioSheet({
                 </AnimatePresence>
               </motion.div>
 
-              {/* Floating footer — SlideButton stays put while form scrolls. */}
+              {/* Floating footer — SlideArm stays put while form scrolls.
+                  Collapsed: green "Crear usuario" pill at the trailing edge.
+                  Tap → grows into a full-width SlideToConfirm with a cancel
+                  X above. */}
               <div className="lf-sheet__footer">
-                <SlideButton
+                <SlideArm
                   label="Crear usuario"
-                  confirmedLabel="Creado"
+                  collapsedWidth={200}
                   onConfirm={onConfirm}
                 />
               </div>
