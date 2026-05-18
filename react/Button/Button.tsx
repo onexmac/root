@@ -11,9 +11,18 @@ const HALO_COLOR: Record<ButtonColor, string> = {
   gray:  "transparent",
 };
 
-// Must match --ds-radius-lg = 16px
-const BTN_RADIUS = 16;
 const HALO_WIDTH = 8;
+
+// border-radius del halo según size + layout
+// sm+icon → círculo de 44px → radio = 22px → halo = 30px
+// sm+label → pill → radius-xl = 32px → halo = 40px
+// md+icon  → cuadrado 56px → radius-lg = 16px → halo = 24px
+// md+label → mismo
+function haloRadius(size: ButtonSize, layout: ButtonLayout): number {
+  if (size === "sm" && layout === "icon") return 22 + HALO_WIDTH;
+  if (size === "sm") return 32 + HALO_WIDTH;
+  return 16 + HALO_WIDTH;
+}
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -24,6 +33,9 @@ export type ButtonColor = "green" | "red" | "white" | "black" | "gray";
 export type ButtonLayout = "label" | "icon-left" | "icon-right" | "icon";
 
 export type ButtonState = "standard" | "pressed" | "disabled";
+
+/** md = 56px (default), sm = 44px compacto */
+export type ButtonSize = "md" | "sm";
 
 // Legacy compat
 export type ButtonVariant = "primary" | "secondary" | "disabled";
@@ -39,12 +51,15 @@ export interface ButtonProps {
   icon?: IconName;
   /** Interaction state */
   state?: ButtonState;
+  /** md = 56 px (default) · sm = 44 px compacto, sombra ligera */
+  size?: ButtonSize;
   /** @deprecated Use color instead */
   variant?: ButtonVariant;
   onClick?: () => void;
   /** Full-width block */
   fullWidth?: boolean;
   type?: "button" | "submit" | "reset";
+  style?: React.CSSProperties;
 }
 
 // Map legacy variant → color
@@ -62,10 +77,12 @@ export function Button({
   layout = "label",
   icon,
   state = "standard",
+  size = "md",
   variant,
   onClick,
   fullWidth = false,
   type = "button",
+  style,
 }: ButtonProps) {
   // Resolve color: explicit prop wins, then legacy variant, then default
   const resolvedColor: ButtonColor =
@@ -77,6 +94,7 @@ export function Button({
     "ds-btn",
     `ds-btn--${resolvedColor}`,
     `ds-btn--${state}`,
+    `ds-btn--${size}`,
     layout !== "label" ? `ds-btn--layout-${layout}` : "",
     fullWidth ? "ds-btn--full" : "",
   ]
@@ -84,11 +102,7 @@ export function Button({
     .join(" ");
 
   const iconEl = icon ? (
-    <Icon
-      name={icon}
-      size="md"
-      color="currentColor"
-    />
+    <Icon name={icon} size="md" color="currentColor" />
   ) : null;
 
   const [pressed, setPressed] = useState(false);
@@ -143,7 +157,7 @@ export function Button({
           style={{
             position: "absolute",
             inset: -HALO_WIDTH,
-            borderRadius: BTN_RADIUS + HALO_WIDTH,
+            borderRadius: haloRadius(size, layout),
             border: `${HALO_WIDTH}px solid ${HALO_COLOR[resolvedColor]}`,
             pointerEvents: "none",
             opacity: pressed ? 1 : 0,

@@ -89,9 +89,7 @@ export function BoletaPedido() {
               transition={springs.expanding}
             >
               <ToggleCards visibility="open" onClick={() => goTo("closed")} />
-              <button className="boleta-pedido__icon-btn" aria-label="Buscar" onClick={() => haptic.select()}>
-                <Icon name="search" size="md" />
-              </button>
+              <Button layout="icon" color="white" icon="search" onClick={() => haptic.select()} />
               <PedirPill onClick={() => goTo("confirm")} />
             </motion.div>
           )}
@@ -105,18 +103,15 @@ export function BoletaPedido() {
               exit={{ opacity: 0, y: 16 }}
               transition={springs.expanding}
             >
-              <button
-                className="boleta-pedido__pedir-wide"
+              <Button
+                label="PEDIR"
+                color="green"
+                layout="icon-right"
+                icon="arrow-right"
+                style={{ flex: 1 }}
                 onClick={() => goTo("menu")}
-              >
-                <span>PEDIR</span>
-                <Icon name="arrow" size="sm" />
-              </button>
-              <button
-                className="boleta-pedido__slot"
-                aria-label="Más opciones"
-                onClick={() => goTo("slab")}
               />
+              <Button layout="icon" color="black" icon="close" onClick={() => goTo("slab")} />
             </motion.div>
           )}
 
@@ -130,16 +125,10 @@ export function BoletaPedido() {
               transition={springs.expanding}
             >
               <div className="boleta-pedido__menu">
-                <MenuItem label="PEDIDOS" iconName="list" onClick={() => completeOrder("PEDIDOS")} />
-                <MenuItem label="ENTREGADO" iconName="check" onClick={() => completeOrder("ENTREGADO")} />
-                <MenuItem label="TRASLADO" iconName="arrow" onClick={() => completeOrder("TRASLADO")} />
-                <button
-                  className="boleta-pedido__menu-close"
-                  aria-label="Cerrar menú"
-                  onClick={() => goTo("slab")}
-                >
-                  <Icon name="close" size="md" />
-                </button>
+                <MenuItem label="PEDIDOS"   iconName="list"     onClick={() => completeOrder("PEDIDOS")} />
+                <MenuItem label="ENTREGADO" iconName="entrega"  onClick={() => completeOrder("ENTREGADO")} />
+                <MenuItem label="TRASLADO"  iconName="traslado" onClick={() => completeOrder("TRASLADO")} />
+                <Button size="sm" layout="icon" color="white" icon="close" onClick={() => goTo("slab")} />
               </div>
               <PedirPill active onClick={() => goTo("slab")} />
             </motion.div>
@@ -155,9 +144,7 @@ export function BoletaPedido() {
               transition={springs.expanding}
             >
               <ToggleCards visibility="close" onClick={() => goTo("slab")} />
-              <button className="boleta-pedido__icon-btn" aria-label="Buscar" onClick={() => haptic.select()}>
-                <Icon name="search" size="md" />
-              </button>
+              <Button layout="icon" color="white" icon="search" onClick={() => haptic.select()} />
               <PedirPill onClick={() => goTo("confirm")} />
             </motion.div>
           )}
@@ -252,12 +239,8 @@ function BoletaCardHeader({
       {showActions && (
         <div className="boleta-card__actions">
           <Icon name="check" size="md" />
-          <button className="boleta-card__pill" onClick={onToggle} aria-label="Toggle detalles">
-            <Icon name="chevron" size="sm" />
-          </button>
-          <button className="boleta-card__pill boleta-card__pill--close" onClick={onClose} aria-label="Cerrar">
-            <Icon name="close" size="sm" />
-          </button>
+          <Button size="sm" layout="icon" color="black" icon="open" onClick={onToggle} />
+          <Button size="sm" layout="icon" color="gray" icon="close" onClick={onClose} />
         </div>
       )}
     </div>
@@ -293,17 +276,22 @@ function ItemRow({ item, mode }: { item: Item; mode: Mode }) {
  * ============================================================ */
 
 function PedirPill({ onClick, active = false }: { onClick: () => void; active?: boolean }) {
+  const [pressed, setPressed] = useState(false);
+  const cancelled = React.useRef(false);
   return (
-    <motion.button
+    <button
       className={`pedir-pill ${active ? "pedir-pill--active" : ""}`}
-      onClick={onClick}
-      whileTap={{ scale: 0.96 }}
-      transition={springs.snappy}
       aria-label="Pedir"
+      style={{ position: "relative", WebkitTapHighlightColor: "transparent", touchAction: "manipulation" }}
+      onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); cancelled.current = false; setPressed(true); haptic.select(); }}
+      onPointerUp={() => { setPressed(false); if (!cancelled.current) setTimeout(() => onClick(), 100); }}
+      onPointerLeave={() => { if (pressed) { cancelled.current = true; setPressed(false); } }}
+      onPointerCancel={() => { cancelled.current = true; setPressed(false); }}
     >
       <span>PEDIR</span>
-      <Icon name="chevron-left" size="sm" />
-    </motion.button>
+      <Icon name="open" size="sm" />
+      <span aria-hidden style={{ position: "absolute", inset: -8, borderRadius: 40, border: "8px solid rgb(133,166,41)", pointerEvents: "none", opacity: pressed ? 1 : 0, transition: pressed ? "opacity 80ms ease-out" : "opacity 180ms ease-out 120ms" }} />
+    </button>
   );
 }
 
@@ -317,15 +305,14 @@ function MenuItem({
   onClick: () => void;
 }) {
   return (
-    <motion.button
-      className="menu-item"
+    <Button
+      layout="icon-left"
+      color="black"
+      fullWidth
+      icon={iconName as IconName}
+      label={label}
       onClick={onClick}
-      whileTap={{ scale: 0.97 }}
-      transition={springs.snappy}
-    >
-      <Icon name={iconName} size="md" />
-      <span>{label}</span>
-    </motion.button>
+    />
   );
 }
 

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Button } from "../../Button/Button";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -204,13 +205,13 @@ function SolicitudCard({
               <IconCheck />
             </span>
           )}
-          <button
-            className="solicitud-card__toggle"
+          <Button
+            size="sm"
+            layout="icon"
+            color="gray"
+            icon={isOpen ? "arrow-up" : "arrow-down"}
             onClick={onToggle}
-            aria-label={isOpen ? "Cerrar" : "Abrir"}
-          >
-            {isOpen ? <IconChevronUp /> : <IconChevronDown />}
-          </button>
+          />
         </div>
       </div>
 
@@ -329,9 +330,7 @@ export function Slab() {
       {/* ── Top Header ── */}
       <header className="slab-screen__header">
         <h1 className="slab-screen__title">Solicitudes</h1>
-        <button className="slab-screen__filter-btn" onClick={handleMenuOpen} aria-label="Filtrar">
-          <IconList />
-        </button>
+        <Button size="sm" layout="icon" color="white" icon="menu" onClick={handleMenuOpen} />
       </header>
 
       {/* ── Scrollable Card List ── */}
@@ -349,12 +348,8 @@ export function Slab() {
       {/* ── Bottom Floating Bar ── */}
       <div className="slab-screen__bottom">
         <div className="slab-screen__nav">
-          <button className="slab-screen__nav-btn" aria-label="Atrás">
-            <IconBack />
-          </button>
-          <button className="slab-screen__nav-btn" aria-label="Buscar">
-            <IconSearch />
-          </button>
+          <Button size="sm" layout="icon" color="white" icon="back" />
+          <Button size="sm" layout="icon" color="white" icon="search" />
         </div>
 
         {view === "slab" && (
@@ -363,12 +358,8 @@ export function Slab() {
 
         {view === "confirm" && (
           <div className="slab-confirm-bar">
-            <button className="slab-confirm-bar__cancel" onClick={handleCancel} aria-label="Cancelar">
-              <IconClose />
-            </button>
-            <button className="slab-confirm-bar__btn" onClick={handleCancel}>
-              PEDIR ›
-            </button>
+            <Button size="sm" layout="icon" color="white" icon="close" onClick={handleCancel} />
+            <Button label="PEDIR" color="green" fullWidth onClick={handleCancel} />
           </div>
         )}
       </div>
