@@ -1,0 +1,358 @@
+/* ============================================================
+   Losa Flotante — screen-local styles
+   Only the bespoke layout primitives live here. Every DS-rendered
+   element keeps its ds-* classes from design-system.css.
+   ============================================================ */
+
+/* ── Root shell ────────────────────────────────────────────── */
+
+.lf {
+  position: relative;
+  margin:   0 auto;
+  width:    100%;
+  max-width: 402px;
+  min-height: 100dvh;
+  background: var(--ds-color-surface);
+  color:      var(--ds-color-black);
+  font-family: var(--ds-font-family);
+}
+
+.lf[data-prototype] {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  overscroll-behavior-y: contain;
+}
+
+.lf[data-prototype] input,
+.lf[data-prototype] textarea {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.lf__list {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--ds-space-4);
+  padding:        var(--ds-space-6) var(--ds-space-4) 160px;
+}
+
+/* ── UserCard ──────────────────────────────────────────────── */
+
+.lf-card {
+  background:    var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  box-shadow:    var(--ds-shadow-01);
+}
+
+.lf-card__head {
+  display:        flex;
+  align-items:    center;
+  gap:            var(--ds-space-3);
+  padding:        var(--ds-space-5) var(--ds-space-6);
+}
+
+.lf-card__head-main {
+  flex:      1;
+  min-width: 0;
+}
+
+.lf-card__activo {
+  display:     inline-flex;
+  align-items: center;
+  gap:         6px;
+}
+
+.lf-card__activo-check {
+  display:        inline-flex;
+  align-items:    center;
+  justify-content: center;
+  width:          20px;
+  height:         20px;
+  border-radius:  50%;
+  color:          var(--ds-color-black);
+}
+
+.lf-card__name-row {
+  display:     flex;
+  align-items: center;
+  gap:         var(--ds-space-2);
+}
+
+.lf-card__short-name {
+  font-size:      22px;
+  line-height:    28px;
+  font-weight:    var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  color:          var(--ds-color-black);
+  white-space:    nowrap;
+  overflow:       hidden;
+  text-overflow:  ellipsis;
+}
+
+.lf-card__check-circle {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  width:           24px;
+  height:          24px;
+  border:          1px solid var(--ds-color-black);
+  border-radius:   50%;
+  color:           var(--ds-color-black);
+  flex-shrink:     0;
+}
+
+/* grid-template-rows: 0fr ↔ 1fr expand trick (no height: auto jitter) */
+.lf-card__grid {
+  display:    grid;
+  transition: grid-template-rows 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lf-card__grid-inner {
+  overflow:   hidden;
+  min-height: 0;
+}
+
+.lf-card__body {
+  padding: 0 var(--ds-space-6) var(--ds-space-6);
+}
+
+.lf-card__full-name {
+  margin:         0 0 var(--ds-space-5) 0;
+  font-size:      var(--ds-font-size-subtitle-lg);
+  line-height:    28px;
+  font-weight:    var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  color:          var(--ds-color-black);
+}
+
+.lf-card__rows {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--ds-space-4);
+  margin:         0;
+}
+
+.lf-card__row {
+  display:               grid;
+  grid-template-columns: 80px 1fr;
+  align-items:           center;
+  gap:                   var(--ds-space-4);
+}
+
+.lf-card__row-label {
+  font-size:   var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  color:       var(--ds-color-black);
+  margin:      0;
+}
+
+.lf-card__row-label--paired { position: relative; }
+
+/* NOT-IN-DS: hairline that visually connects paired Rol → Obras labels. */
+.lf-card__hairline {
+  position:   absolute;
+  left:       14px;
+  top:        100%;
+  display:    block;
+  width:      1px;
+  height:     12px;
+  background: var(--ds-color-gray-300);
+}
+
+.lf-card__row-value {
+  display: flex;
+  margin:  0;
+}
+
+/* ── BottomActionBar ───────────────────────────────────────── */
+/* NOT-IN-DS: viewport-fixed mobile dock with burger + (FAB lives in sheet). */
+
+.lf-bar {
+  position:        fixed;
+  inset:           auto 0 0 0;
+  z-index:         30;
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  margin:          0 auto;
+  width:           100%;
+  max-width:       402px;
+  padding:         var(--ds-space-3) var(--ds-space-6) var(--ds-space-6);
+  pointer-events:  none;
+}
+
+.lf-bar > * { pointer-events: auto; }
+.lf-bar__spacer { width: 4px; height: 4px; }
+
+/* ── Sheet ─────────────────────────────────────────────────── */
+/* NOT-IN-DS: FAB → bottom-sheet morph. */
+
+.lf-scrim {
+  position:   fixed;
+  inset:      0;
+  z-index:    40;
+  cursor:     default;
+  background: var(--ds-color-black-100);
+  border:     none;
+  padding:    0;
+}
+
+.lf-sheet {
+  position:   fixed;
+  z-index:    50;
+  overflow:   hidden;
+  box-shadow: var(--ds-shadow-03-big);
+  margin:     0 auto;
+}
+
+.lf-sheet__content {
+  display:        flex;
+  flex-direction: column;
+  width:          100%;
+  height:         100%;
+}
+
+.lf-sheet__handle {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  flex-shrink:     0;
+  padding-top:     var(--ds-space-3);
+  padding-bottom:  4px;
+}
+
+.lf-sheet__handle-btn {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  width:           56px;
+  height:          28px;
+  border:          none;
+  background:      transparent;
+  cursor:          pointer;
+  border-radius:   20px;
+}
+
+.lf-sheet__body {
+  flex:       1;
+  overflow-y: auto;
+  padding:    0 var(--ds-space-6) var(--ds-space-6);
+}
+
+.lf-sheet__title-row {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             var(--ds-space-3);
+  padding:         var(--ds-space-2) 0 var(--ds-space-6);
+}
+
+.lf-sheet__avatar {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  width:           48px;
+  height:          48px;
+  border-radius:   50%;
+  background:      var(--ds-color-gray-100);
+  color:           var(--ds-color-gray-500);
+}
+
+.lf-sheet__title {
+  margin:         0;
+  font-size:      var(--ds-font-size-subtitle-lg);
+  font-weight:    var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  text-transform: uppercase;
+  color:          var(--ds-color-black);
+}
+
+.lf-sheet__tabs {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             var(--ds-space-3);
+  padding-bottom:  var(--ds-space-6);
+}
+
+.lf-sheet__divider {
+  display:     flex;
+  align-items: center;
+  gap:         var(--ds-space-3);
+  margin:      0 0 var(--ds-space-6);
+}
+
+.lf-sheet__divider-line {
+  flex:       1;
+  height:     1px;
+  background: var(--ds-color-gray-200);
+}
+
+.lf-sheet__divider-label {
+  font-size:      var(--ds-font-size-body-sm);
+  font-weight:    var(--ds-font-weight-semibold);
+  letter-spacing: var(--ds-letter-spacing-wide);
+  text-transform: uppercase;
+  color:          var(--ds-color-gray-500);
+}
+
+.lf-sheet__pane {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--ds-space-4);
+}
+
+/* Floating footer keeps the SlideButton anchored at the bottom of the
+   sheet regardless of form scroll. */
+.lf-sheet__footer {
+  flex-shrink:     0;
+  display:         flex;
+  justify-content: center;
+  padding:         var(--ds-space-3) var(--ds-space-6) var(--ds-space-6);
+  background:      var(--ds-color-white);
+  border-top:      1px solid var(--ds-color-gray-100);
+  box-shadow:      0 -8px 16px rgba(0, 0, 0, 0.04);
+}
+
+.lf-sheet__fab {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  width:           100%;
+  height:          100%;
+  border:          none;
+  background:      transparent;
+  color:           var(--ds-color-black);
+  cursor:          pointer;
+}
+
+/* ── DropdownField (label + DS SelectionDropdown) ─────────── */
+
+.lf-dropdown-field {
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--ds-space-1);
+}
+
+.lf-dropdown-field__label {
+  padding-left: 4px;
+  font-size:    var(--ds-font-size-label);
+  line-height:  var(--ds-line-height-label);
+  color:        var(--ds-color-black);
+}
+
+/* ── losa-stack overrides for DS components inside mobile sheet ──
+   The DS hard-codes 370/372px on FormField + SelectionDropdown,
+   tuned to the 372px Figma frame. The 402-wide sheet (minus 48px
+   gutters) leaves 354px usable, so stretch them to 100%. */
+
+.losa-stack .ds-form-field,
+.losa-stack .ds-sd {
+  width: 100%;
+}
+
+.losa-stack .ds-sd__list-inner {
+  max-height: 240px;
+  overflow-y: auto;
+}
