@@ -24,16 +24,19 @@
   /* ── Typography ── */
   --ds-font-family:          "Roboto", "Segoe UI", sans-serif;
   --ds-font-size-body-sm:    12px;
+  --ds-font-size-label:      14px;   /* Figma: font size/font size 14 */
   --ds-font-size-body-md:    16px;
   --ds-font-size-subtitle:    20px;
   --ds-font-size-subtitle-lg:  24px;
   --ds-font-size-heading:      32px;
   --ds-line-height-body-sm:  16px;
+  --ds-line-height-label:    20px;   /* Figma: line height/line height 20 */
   --ds-line-height-body-md:  24px;
   --ds-line-height-subtitle:    24px;
   --ds-line-height-subtitle-lg:  24px;
   --ds-line-height-heading:      40px;
   --ds-letter-spacing-default: 0;
+  --ds-letter-spacing-tight: 0.25px; /* Figma: font spacing/font sapcing 0,25 */
   --ds-letter-spacing-wide:  0.4px;
   --ds-font-weight-regular:  400;
   --ds-font-weight-semibold: 600;
@@ -45,6 +48,7 @@
   --ds-space-4: 16px;
   --ds-space-5: 20px;
   --ds-space-6: 24px;
+  --ds-space-10: 40px;  /* Figma: spacing/spacing 40 */
 
   /* ── Radius ── */
   --ds-radius-sm: 4px;
