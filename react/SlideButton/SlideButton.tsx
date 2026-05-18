@@ -3,7 +3,7 @@ import { AnimatePresence, motion, useAnimationControls, useMotionValue, useTrans
 import { springs } from "../springs";
 import { haptic } from "../haptic";
 import { Icon } from "../Icon/Icon";
-
+import "./SlideButton.css";
 
 export interface SlideButtonProps {
   /** Texto del label centrado (ej. "Pedir", "Confirmar") */
@@ -25,20 +25,16 @@ export interface SlideButtonProps {
   className?: string;
 }
 
-const TRACK_WIDTH = 352;
-const KNOB_WIDTH = 88;
-const KNOB_HEIGHT = 64;
-const KNOB_MARGIN = 8;
+/* Figma node 997-3096 dimensions */
+const COMPONENT_WIDTH = 242;
+const KNOB_SIZE = 56;         /* standard knob body */
 
 /**
- * SlideButton — gesto de "deslizar para confirmar" estilo iOS.
+ * SlideButton — deslizar para confirmar.
  *
- * Comportamiento:
- *  - Drag horizontal del knob verde a la derecha; rubber-band al pasar el límite.
- *  - Al cruzar el threshold (default 72% del recorrido), dispara onConfirm.
- *  - Fill verde-200 detrás del knob crece con el progreso.
- *  - Label se desvanece al avanzar; al confirmar se muestra el confirmedLabel sobre toda la barra.
- *  - Haptics: select (start), drag (snap-back), complete (confirmar).
+ * Figma: 242×80, black track 236×54, green knob 56×56 → 64×64 pressed.
+ * Springs: snappy (snap-back), completing (confirm animation).
+ * Haptics: select (touch), drag (snap-back), complete (confirm).
  */
 export function SlideButton({
   label = "Pedir",
@@ -54,7 +50,7 @@ export function SlideButton({
   const x = useMotionValue(0);
   const controls = useAnimationControls();
   const [confirmed, setConfirmed] = useState(false);
-  const maxDrag = TRACK_WIDTH - KNOB_WIDTH - KNOB_MARGIN;
+  const maxDrag = COMPONENT_WIDTH - KNOB_SIZE;
 
   const labelOpacity = useTransform(x, [0, maxDrag * 0.4], [1, 0]);
   const fillScaleX = useTransform(x, [0, maxDrag], [0, 1]);
@@ -80,7 +76,6 @@ export function SlideButton({
   };
 
   const visibleLabel = disabled ? (disabledLabel ?? label) : label;
-
   const [dragging, setDragging] = useState(false);
 
   return (
