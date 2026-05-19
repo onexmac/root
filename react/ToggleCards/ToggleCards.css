@@ -32,7 +32,7 @@
 .ds-toggle--pressed:not(.ds-toggle--disabled),
 .ds-toggle:not(.ds-toggle--disabled):active {
   box-shadow:
-    0 0 0 8px var(--ds-color-black),
+    0 0 0 8px rgba(0, 0, 0, 0.8),
     var(--ds-shadow-03-big);
 }
 

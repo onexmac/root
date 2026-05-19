@@ -5,7 +5,7 @@ import { haptic } from "../haptic";
 // Must match --ds-radius-xl = 32px
 const TABS_RADIUS = 32;
 const HALO_WIDTH = 8;
-const HALO_COLOR = "rgb(140, 140, 140)"; // muted shade of black fill
+const HALO_COLOR = "rgba(0, 0, 0, 0.8)"; // Figma: 80% opacity black stroke
 
 export type TabsMenuState = "standard" | "pressed";
 export type TabsMenuLayout = "label" | "label+icon";

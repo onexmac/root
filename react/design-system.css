@@ -300,8 +300,18 @@ body {
   overflow:        visible;
 }
 
-/* Figma pressed: 8px black outward stroke ring */
-.ds-tabs-menu--pressed { box-shadow: 0 0 0 8px var(--ds-color-black); }
+/* Figma pressed: 8px black 80% opacity outward stroke ring */
+.ds-tabs-menu--pressed { box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.8); }
+
+/* Figma disabled mode: gray-100 bg */
+.ds-tabs-menu--disabled {
+  background: var(--ds-color-gray-100);
+  color:      var(--ds-color-gray-400);
+  cursor:     default;
+}
+.ds-tabs-menu--pressed.ds-tabs-menu--disabled {
+  box-shadow: 0 0 0 8px var(--ds-color-surface), var(--ds-shadow-03-big);
+}
 
 .ds-tabs-menu__icon {
   display:         inline-flex;
@@ -418,9 +428,13 @@ body {
   background:      var(--ds-color-black);
 }
 
-/* Figma pressed: stays white, 8px #F3F3F3 outward stroke */
-.ds-toggle-menu--pressed {
+/* Figma pressed open: white bg, 8px #F3F3F3 stroke */
+.ds-toggle-menu--pressed.ds-toggle-menu--open {
   box-shadow: 0 0 0 8px var(--ds-color-surface), var(--ds-shadow-03-big);
+}
+/* Figma pressed close: black bg, 8px black 80% stroke */
+.ds-toggle-menu--pressed.ds-toggle-menu--close {
+  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.8), var(--ds-shadow-03-big);
 }
 
 /* ============================================================
@@ -443,8 +457,8 @@ body {
 .ds-toggle-cards--small { height: 50px; }
 .ds-toggle-cards--big   { height: 88px; }
 .ds-toggle-cards--disabled { background: var(--ds-color-gray-200); cursor: default; }
-/* Figma pressed: stays black, 8px black outward stroke ring */
-.ds-toggle-cards--pressed  { box-shadow: 0 0 0 8px var(--ds-color-black), var(--ds-shadow-03-big); }
+/* Figma pressed: stays black, 8px black 80% opacity outward stroke ring */
+.ds-toggle-cards--pressed  { box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.8), var(--ds-shadow-03-big); }
 
 /* ============================================================
    SUMMARY CARD  (ds-summary-card)
@@ -657,10 +671,13 @@ body {
   box-shadow: none;
 }
 
+.ds-form-field--disabled .ds-form-field__label {
+  color: var(--ds-color-gray-400);
+}
 .ds-form-field--disabled .ds-form-field__input {
   background:  var(--ds-color-gray-100);
   color:       var(--ds-color-gray-300);
-  border-color: var(--ds-color-gray-200);
+  border:      none;
   box-shadow:  none;
   cursor:      not-allowed;
 }
@@ -741,7 +758,7 @@ body {
   color:      var(--ds-color-black);
 }
 
-.ds-checkbox--disabled .ds-checkbox__label { color: var(--ds-color-gray-300); }
+.ds-checkbox--disabled .ds-checkbox__label { color: var(--ds-color-black); }
 
 /* ============================================================
    TAG  (ds-tag)
@@ -778,23 +795,24 @@ body {
   width:          368px;
 }
 
-/* Figma: "0% completado" — body-md/semibold, black */
+/* Figma: "0% completado" — 16px/24px regular, black */
 .ds-progress__label {
   font-family: var(--ds-font-family);
-  font-size:   var(--ds-font-size-subtitle);
-  font-weight: var(--ds-font-weight-semibold);
-  line-height: 28px;
+  font-size:   var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-regular);
+  line-height: var(--ds-line-height-body-md);
   color:       var(--ds-color-black);
   white-space: nowrap;
 }
 
-/* Figma track: 368x14, r=20, white bg */
+/* Figma track: 368x14, r=20, white bg, inner shadow */
 .ds-progress__track {
   width:         100%;
   height:        14px;
   background:    var(--ds-color-white);
   border-radius: 20px;
   overflow:      hidden;
+  box-shadow:    0 4px 8px rgba(170, 175, 182, 0.25);
 }
 
 /* Figma fill: r=20, black */
@@ -854,9 +872,9 @@ body {
   transition:    background 120ms ease, border-color 120ms ease;
 }
 
-/* Figma active/selected: 4px black border, black fill */
+/* Figma active/selected: 4px black INSIDE border, 80% black fill */
 .ds-option-label--active .ds-option-label__dot {
-  background:   var(--ds-color-black);
+  background:   rgba(0, 0, 0, 0.8);
   border-color: var(--ds-color-black);
 }
 
