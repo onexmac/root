@@ -631,7 +631,7 @@ body {
 .ds-checkbox {
   display:     inline-flex;
   align-items: center;
-  gap:         var(--ds-space-3);
+  gap:         var(--ds-space-2);
   cursor:      pointer;
   user-select: none;
 }
