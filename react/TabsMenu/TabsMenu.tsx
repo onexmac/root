@@ -146,12 +146,12 @@ export function TabFilterChip({
         setPressed(false);
       }}
     >
+      <span className="ds-filter-chip__label">{label}</span>
       <Icon
         name={icon}
         size="md"
         color={state === "active" ? "var(--ds-color-white)" : "var(--ds-color-gray-300)"}
       />
-      <span className="ds-filter-chip__label">{label}</span>
 
       {/* Halo overlay */}
       {!isDisabled && (
