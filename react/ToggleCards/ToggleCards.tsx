@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../Button/Button";
-import { Icon } from "../Icon/Icon";
+import { Icon, type IconName } from "../Icon/Icon";
 
 export type ToggleCardsState = "standard" | "pressed";
 export type ToggleCardsMode = "normal" | "disabled";
@@ -26,25 +26,29 @@ const SIZE_STYLES: Record<ToggleCardsSize, React.CSSProperties> = {
  * ToggleCards — the black squircle toggle used on SelectionDropdown and
  * on UserCard chevrons.
  *
- * Icon swap is a **3D card flip** (rotateY around the vertical axis), not
- * a cross-fade. Both icons live at full opacity through the entire
- * transition — one is on the front face, the other on the back face. The
- * container rotates 0° → 180°; at the midpoint of the rotation each icon
- * is edge-on to the viewer (visually invisible due to flat geometry), and
- * past 90° the back face takes over. No fade frame ever shows a
- * half-transparent icon — the chevrons spin into each other, not through
- * each other.
+ * Each tap **spins the icon one full rotation** (360°) and swaps the
+ * icon source at the midpoint of the spin. Both states land at a
+ * multiple of 360° → the icon is rendered at its natural, un-rotated
+ * orientation in both rest positions:
  *
- * Implementation:
- *   • `perspective` on the container so rotateY reads as a real 3D flip.
- *   • `transform-style: preserve-3d` on the inner so children render in
- *     3D space, not flattened back into 2D.
- *   • `backface-visibility: hidden` on each face — the front face
- *     vanishes once it's facing away from the viewer (past 90°), letting
- *     the back face (rotated -180° relative to the inner) take over.
- *   • `cubic-bezier(0.34, 1.56, 0.64, 1)` for a slight overshoot at the
- *     end — same easing the brand uses on `springs.snappy`-style taps.
+ *   • visibility = "open"  → `open` icon (vertical chevron pair, `≷`)
+ *     at rotation 0 mod 360°.
+ *   • visibility = "close" → `close` icon (chevron-down + bar below,
+ *     `∨_`) at rotation 0 mod 360°.
+ *
+ * Math: each visibility change adds `360°`. Rotation accumulates
+ * monotonically — the icon spins in the same direction on every toggle,
+ * never reversing visually. The icon source swaps at the midpoint
+ * (~SWAP_AT_MS into SPIN_DURATION_MS), so the user sees the outgoing
+ * glyph spin halfway out and the incoming glyph spin the rest of the
+ * way in, landing un-rotated.
+ *
+ * No fade, no 3D — pure 2D CSS transform interpolation.
  */
+const SPIN_DURATION_MS = 480;
+const SWAP_AT_MS = 240; // 50 % of SPIN_DURATION_MS
+const SPIN_DELTA_DEG = 360; // one full spin per toggle
+
 export function ToggleCards({
   mode = "normal",
   size = "big",
@@ -52,6 +56,29 @@ export function ToggleCards({
   onClick,
   ariaLabel,
 }: ToggleCardsProps) {
+  // Monotonically-increasing rotation. Both states rest at multiples
+  // of 360° → the icon is at its natural orientation in either state.
+  const [rotation, setRotation] = useState(0);
+  // The icon currently rendered. Lags the visibility prop by SWAP_AT_MS
+  // so the swap happens at the midpoint of the spin.
+  const [displayedIcon, setDisplayedIcon] = useState<IconName>(
+    visibility === "close" ? "close" : "open",
+  );
+  const prevVisibility = useRef<ToggleCardsVisibility>(visibility);
+
+  useEffect(() => {
+    if (prevVisibility.current === visibility) return;
+
+    setRotation((prev) => prev + SPIN_DELTA_DEG);
+
+    const swapTimer = window.setTimeout(() => {
+      setDisplayedIcon(visibility === "close" ? "close" : "open");
+    }, SWAP_AT_MS);
+
+    prevVisibility.current = visibility;
+    return () => window.clearTimeout(swapTimer);
+  }, [visibility]);
+
   return (
     <Button
       layout="icon"
@@ -67,56 +94,11 @@ export function ToggleCards({
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
-          width: 24,
-          height: 24,
-          // 3D perspective context — needs to live on the parent of the
-          // rotating element, not on the element itself.
-          perspective: 320,
+          transform: `rotate(${rotation}deg)`,
+          transition: `transform ${SPIN_DURATION_MS}ms cubic-bezier(0.34, 1.56, 0.64, 1)`,
         }}
       >
-        <span
-          style={{
-            position: "relative",
-            width: "100%",
-            height: "100%",
-            transformStyle: "preserve-3d",
-            transform:
-              visibility === "close" ? "rotateY(180deg)" : "rotateY(0deg)",
-            transition: "transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1)",
-          }}
-        >
-          {/* Front face — `open` icon, facing the viewer at rotation 0. */}
-          <span
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
-            }}
-          >
-            <Icon name="open" size="md" color="currentColor" />
-          </span>
-
-          {/* Back face — `close` icon, pre-rotated 180° so it reads
-              right-side-up once the parent has rotated. */}
-          <span
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
-              transform: "rotateY(180deg)",
-            }}
-          >
-            <Icon name="close" size="md" color="currentColor" />
-          </span>
-        </span>
+        <Icon name={displayedIcon} size="md" color="currentColor" />
       </span>
     </Button>
   );

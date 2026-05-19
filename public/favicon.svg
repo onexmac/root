@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .bg   { fill: #FFFFFF; }
+    .mark { fill: #BDDE3B; }
+    @media (prefers-color-scheme: dark) {
+      .bg   { fill: #BDDE3B; }
+      .mark { fill: #000000; }
+    }
+  </style>
+  <rect class="bg" width="64" height="64" rx="14"/>
+  <g class="mark" transform="translate(12.8 23.65) scale(0.2356)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H45.645L87.8835 70.7845H41.4411L0 0ZM72.5219 20.6455H118.403L133.203 45.715H162.804L148.004 70.7845H102.257L72.5219 20.6455Z"/>
+  </g>
+</svg>
