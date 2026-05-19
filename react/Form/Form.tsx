@@ -157,6 +157,9 @@ export function Tag({ label = "Tag", state = "standard", onClick }: TagProps) {
       transition={springs.snappy}
     >
       {label}
+      {state === "active" && (
+        <Icon name="check" size="md" color="var(--ds-color-white)" />
+      )}
     </motion.button>
   );
 }
