@@ -266,9 +266,12 @@ export function Sheet({
                 </button>
               </div>
 
-              {/* Scrollable body wrapped in cascade — Header sits inside so it
-                  fades in with the first staggered child; Body itself takes
-                  the rest of the cascade order. */}
+              {/* Scrollable body wrapped in cascade. Each slot gets its own
+                  `motion.div` with `CASCADE_ITEM` HERE (not inside the slot
+                  components), so the motion.divs are direct children of the
+                  cascade container — variants propagate correctly. If we
+                  wrapped them inside SheetHeader/SheetBody, the function-
+                  component boundary would break variant inheritance. */}
               <motion.div
                 ref={bodyRef}
                 className="ds-sheet__body"
@@ -277,8 +280,22 @@ export function Sheet({
                 animate="show"
                 exit="hidden"
               >
-                {header}
-                {body}
+                {header ? (
+                  <motion.div
+                    variants={CASCADE_ITEM}
+                    className="ds-sheet__title-row"
+                  >
+                    {header}
+                  </motion.div>
+                ) : null}
+                {body ? (
+                  <motion.div
+                    variants={CASCADE_ITEM}
+                    className="ds-sheet__pane-wrap"
+                  >
+                    {body}
+                  </motion.div>
+                ) : null}
               </motion.div>
 
               {/* Footer pinned outside the scroll body. */}
@@ -326,17 +343,17 @@ export function SheetHeader({
   title,
   children,
 }: SheetHeaderProps) {
+  // Plain JSX — no motion. Sheet wraps this in the cascade motion.div so
+  // variants flow correctly (function-component boundaries break inheritance).
   return (
-    <motion.div variants={CASCADE_ITEM} className="ds-sheet__title-row">
-      {children ?? (
-        <>
-          <span className="ds-sheet__avatar">
-            <Icon name={iconName} size="lg" color="currentColor" />
-          </span>
-          {title ? <h2 className="ds-sheet__title">{title}</h2> : null}
-        </>
-      )}
-    </motion.div>
+    children ?? (
+      <>
+        <span className="ds-sheet__avatar">
+          <Icon name={iconName} size="lg" color="currentColor" />
+        </span>
+        {title ? <h2 className="ds-sheet__title">{title}</h2> : null}
+      </>
+    )
   );
 }
 
@@ -346,13 +363,11 @@ export interface SheetBodyProps {
 }
 
 export function SheetBody({ children, className }: SheetBodyProps) {
+  // Plain JSX — Sheet handles the cascade motion wrapper.
   return (
-    <motion.div
-      variants={CASCADE_ITEM}
-      className={`ds-sheet__pane${className ? ` ${className}` : ""}`}
-    >
+    <div className={`ds-sheet__pane${className ? ` ${className}` : ""}`}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
