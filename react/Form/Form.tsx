@@ -111,13 +111,13 @@ export function CheckBox({
     if (!isDisabled && onChange) onChange(!checked);
   };
 
-  const showIcon = !isDisabled && (state === "add" || state === "remove" || checked);
+  const isChecked = checked || state === "add" || state === "remove";
   const iconName = state === "remove" ? "remove" : "check";
 
   return (
     <label className={`ds-checkbox ds-checkbox--${state}`}>
       <motion.span
-        className={`ds-checkbox__box${checked || state === "add" || state === "remove" ? " ds-checkbox__box--checked" : ""}`}
+        className={`ds-checkbox__box${isChecked ? " ds-checkbox__box--checked" : ""}`}
         onClick={handleChange}
         role="checkbox"
         aria-checked={checked}
@@ -125,11 +125,12 @@ export function CheckBox({
         onKeyDown={(e) => e.key === " " && handleChange()}
         whileTap={isDisabled ? undefined : { scale: 0.85 }}
         transition={springs.snappy}
-      />
+      >
+        {isChecked && !isDisabled && (
+          <Icon name={iconName} size="md" color="var(--ds-color-white)" />
+        )}
+      </motion.span>
       <span className="ds-checkbox__label">{label}</span>
-      {showIcon && (
-        <Icon name={iconName} size="lg" color="var(--ds-color-black)" />
-      )}
     </label>
   );
 }

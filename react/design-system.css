@@ -650,11 +650,11 @@ body {
   transition:      background 120ms ease, border-color 120ms ease, border-width 120ms ease;
 }
 
-/* Figma agregar (checked): white bg, 8px black border — icon sits on top */
+/* Figma agregar/remove (checked): círculo negro sólido, ícono blanco adentro */
 .ds-checkbox__box--checked {
-  background:   var(--ds-color-white);
+  background:   var(--ds-color-black);
   border-color: var(--ds-color-black);
-  border-width: 8px;
+  border-width: 4px;
 }
 
 /* Figma disabled: gray-100 bg, gray-200 border, 4px */
@@ -664,12 +664,7 @@ body {
   cursor:       not-allowed;
 }
 
-/* Figma remove: same as checked — white bg, 8px black border, with remove icon */
-.ds-checkbox--remove .ds-checkbox__box {
-  background:   var(--ds-color-white);
-  border-color: var(--ds-color-black);
-  border-width: 8px;
-}
+/* remove usa el mismo estilo que --checked (negro sólido), manejado por ds-checkbox__box--checked */
 
 .ds-checkbox__label {
   font-size:  var(--ds-font-size-body-md);
