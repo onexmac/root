@@ -650,12 +650,11 @@ body {
   transition:      background 120ms ease, border-color 120ms ease, border-width 120ms ease;
 }
 
-/* Figma add/remove (checked): white fill, 8px black stroke (outer), black icon */
+/* Figma add/remove (checked): solid black circle, white icon inside */
 .ds-checkbox__box--checked {
-  background:   var(--ds-color-white);
+  background:   var(--ds-color-black);
   border-color: var(--ds-color-black);
   border-width: 4px;
-  box-shadow:   0 0 0 4px var(--ds-color-black);
 }
 
 /* Figma disabled: gray-100 bg, gray-200 border, 4px */
