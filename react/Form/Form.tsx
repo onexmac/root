@@ -112,7 +112,7 @@ export function CheckBox({
   };
 
   const isChecked = checked || state === "add" || state === "remove";
-  const iconName = state === "remove" ? "remove" : "check";
+  const iconName = state === "remove" ? "remove" : "completado";
 
   return (
     <label className={`ds-checkbox ds-checkbox--${state}`}>
@@ -127,7 +127,7 @@ export function CheckBox({
         transition={springs.snappy}
       >
         {isChecked && !isDisabled && (
-          <Icon name={iconName} size="md" color="var(--ds-color-white)" />
+          <Icon name={iconName} size="md" color="var(--ds-color-black)" />
         )}
       </motion.span>
       <span className="ds-checkbox__label">{label}</span>
