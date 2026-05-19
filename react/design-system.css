@@ -111,8 +111,9 @@ body {
 /* States — Figma pressed: body stays same color, 8px outward stroke ring */
 .ds-btn--pressed.ds-btn--green { background: var(--ds-color-green-100);  box-shadow: 0 0 0 8px var(--ds-color-green-200), var(--ds-shadow-03-big); }
 .ds-btn--pressed.ds-btn--red   { background: var(--ds-color-red-200);    box-shadow: 0 0 0 8px var(--ds-color-red-100),   var(--ds-shadow-03-big); }
-.ds-btn--pressed.ds-btn--black { background: var(--ds-color-black);      box-shadow: 0 0 0 8px var(--ds-color-black),     var(--ds-shadow-03-big); }
+.ds-btn--pressed.ds-btn--black { background: var(--ds-color-black);      box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.8),       var(--ds-shadow-03-big); }
 .ds-btn--pressed.ds-btn--white { background: var(--ds-color-white);      box-shadow: 0 0 0 8px var(--ds-color-surface),   var(--ds-shadow-03-big); }
+.ds-btn--pressed.ds-btn--gray  { background: var(--ds-color-gray-200);    box-shadow: 0 0 0 2px var(--ds-color-gray-100),   var(--ds-shadow-03-big); }
 
 /* Layout */
 .ds-btn--full { width: 100%; }

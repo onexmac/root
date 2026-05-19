@@ -2,26 +2,38 @@ import React, { useRef, useState } from "react";
 import { Icon, IconName } from "../Icon/Icon";
 import { haptic } from "../haptic";
 
-// Halo colors — muted/darker shade of each button fill (never contrasting)
+// Figma pressed stroke colors — exact from setButtons component set (node 434-2434)
 const HALO_COLOR: Record<ButtonColor, string> = {
-  green: "rgb(133, 166, 41)",
-  black: "rgb(140, 140, 140)",
-  white: "rgb(209, 209, 209)",
-  red:   "rgb(180, 100, 100)",
-  gray:  "transparent",
+  green: "rgb(136, 160, 36)",      // #88A024 — green-200
+  black: "rgba(0, 0, 0, 0.8)",    // black at 80% opacity (Figma)
+  white: "rgb(243, 243, 243)",     // #F3F3F3 — surface
+  red:   "rgb(201, 108, 108)",     // #C96C6C — red-100
+  gray:  "rgb(235, 235, 235)",     // #EBEBEB — gray-100
 };
 
-const HALO_WIDTH = 8;
+// Figma stroke widths: all 8px except gray (disabled) which is 2px
+const HALO_WIDTH_MAP: Record<ButtonColor, number> = {
+  green: 8,
+  black: 8,
+  white: 8,
+  red:   8,
+  gray:  2,
+};
 
-// border-radius del halo según size + layout
-// sm+icon → círculo de 44px → radio = 22px → halo = 30px
-// sm+label → pill → radius-xl = 32px → halo = 40px
-// md+icon  → cuadrado 56px → radius-lg = 16px → halo = 24px
+// Figma pressed body color overrides (only red changes during press)
+const PRESSED_BG: Partial<Record<ButtonColor, string>> = {
+  red: "rgb(187, 74, 74)", // #BB4A4A — red-200
+};
+
+// border-radius del halo según size + layout + per-color width
+// sm+icon → círculo de 44px → radio = 22px → halo = 22+w
+// sm+label → pill → radius-xl = 32px → halo = 32+w
+// md+icon  → cuadrado 56px → radius-lg = 16px → halo = 16+w
 // md+label → mismo
-function haloRadius(size: ButtonSize, layout: ButtonLayout): number {
-  if (size === "sm" && layout === "icon") return 22 + HALO_WIDTH;
-  if (size === "sm") return 32 + HALO_WIDTH;
-  return 16 + HALO_WIDTH;
+function haloRadius(size: ButtonSize, layout: ButtonLayout, w: number): number {
+  if (size === "sm" && layout === "icon") return 22 + w;
+  if (size === "sm") return 32 + w;
+  return 16 + w;
 }
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -121,6 +133,9 @@ export function Button({
         position: "relative",
         WebkitTapHighlightColor: "transparent",
         touchAction: "manipulation",
+        ...(pressed && PRESSED_BG[resolvedColor]
+          ? { backgroundColor: PRESSED_BG[resolvedColor] }
+          : {}),
       }}
       onPointerDown={(e) => {
         if (isDisabled) return;
@@ -154,22 +169,25 @@ export function Button({
       {layout === "icon-right" && iconEl}
 
       {/* Halo overlay — 80ms in / 180ms out 120ms hold. Sits OUTSIDE the button. */}
-      {!isDisabled && (
-        <span
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: -HALO_WIDTH,
-            borderRadius: haloRadius(size, layout),
-            border: `${HALO_WIDTH}px solid ${HALO_COLOR[resolvedColor]}`,
-            pointerEvents: "none",
-            opacity: pressed ? 1 : 0,
-            transition: pressed
-              ? "opacity 80ms ease-out"
-              : "opacity 180ms ease-out 120ms",
-          }}
-        />
-      )}
+      {!isDisabled && (() => {
+        const hw = HALO_WIDTH_MAP[resolvedColor];
+        return (
+          <span
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: -hw,
+              borderRadius: haloRadius(size, layout, hw),
+              border: `${hw}px solid ${HALO_COLOR[resolvedColor]}`,
+              pointerEvents: "none",
+              opacity: pressed ? 1 : 0,
+              transition: pressed
+                ? "opacity 80ms ease-out"
+                : "opacity 180ms ease-out 120ms",
+            }}
+          />
+        );
+      })()}
     </button>
   );
 }
