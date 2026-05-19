@@ -71,10 +71,12 @@ export const TagAll: StoryObj = {
 export const ProgressAll: StoryObj = {
   name: "ProgressBar / All steps",
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16, padding: 16 }}>
-      {[0, 25, 50, 75, 100].map((p) => (
-        <ProgressBar key={p} progress={p} label={`Paso ${p / 25 + 1}`} />
-      ))}
+    <div style={{ display: "flex", flexDirection: "column", gap: 32, padding: 24 }}>
+      <ProgressBar progress={0} label="0% completado" description="Faltan 4 materiales" />
+      <ProgressBar progress={25} label="25% completado" description="Faltan 3 materiales" />
+      <ProgressBar progress={50} label="50% completado" description="Faltan 2 materiales" />
+      <ProgressBar progress={75} label="75% completado" description="Falta 1 material" />
+      <ProgressBar progress={100} label="100% completado" description="Todos los materiales listos" />
     </div>
   ),
 };

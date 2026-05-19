@@ -108,11 +108,11 @@ body {
 .ds-btn--gray,
 .ds-btn:disabled { background: var(--ds-color-gray-200); color: var(--ds-color-gray-400); cursor: not-allowed; pointer-events: none; }
 
-/* States */
-.ds-btn--pressed.ds-btn--green { background: var(--ds-color-green-100);  box-shadow: var(--ds-shadow-03-big), inset 0 0 0 8px var(--ds-color-green-200); }
-.ds-btn--pressed.ds-btn--red   { background: var(--ds-color-red-200);    box-shadow: var(--ds-shadow-03-big), inset 0 0 0 8px var(--ds-color-red-100); }
-.ds-btn--pressed.ds-btn--black { background: var(--ds-color-black);      box-shadow: var(--ds-shadow-03-big), inset 0 0 0 8px var(--ds-color-black-100); }
-.ds-btn--pressed.ds-btn--white { background: var(--ds-color-white);      box-shadow: var(--ds-shadow-03-big), inset 0 0 0 8px var(--ds-color-surface); }
+/* States — Figma pressed: body stays same color, 8px outward stroke ring */
+.ds-btn--pressed.ds-btn--green { background: var(--ds-color-green-100);  box-shadow: 0 0 0 8px var(--ds-color-green-200), var(--ds-shadow-03-big); }
+.ds-btn--pressed.ds-btn--red   { background: var(--ds-color-red-200);    box-shadow: 0 0 0 8px var(--ds-color-red-100),   var(--ds-shadow-03-big); }
+.ds-btn--pressed.ds-btn--black { background: var(--ds-color-black);      box-shadow: 0 0 0 8px var(--ds-color-black),     var(--ds-shadow-03-big); }
+.ds-btn--pressed.ds-btn--white { background: var(--ds-color-white);      box-shadow: 0 0 0 8px var(--ds-color-surface),   var(--ds-shadow-03-big); }
 
 /* Layout */
 .ds-btn--full { width: 100%; }
@@ -299,7 +299,8 @@ body {
   overflow:        visible;
 }
 
-.ds-tabs-menu--pressed { box-shadow: inset 0 0 0 8px var(--ds-color-black-100); }
+/* Figma pressed: 8px black outward stroke ring */
+.ds-tabs-menu--pressed { box-shadow: 0 0 0 8px var(--ds-color-black); }
 
 .ds-tabs-menu__icon {
   display:         inline-flex;
@@ -345,7 +346,7 @@ body {
   gap:           var(--ds-space-2);
   padding:       var(--ds-space-3) var(--ds-space-2);
   background:    var(--ds-color-white);
-  border-radius: var(--ds-radius-xl);
+  border-radius: 9999px;     /* Figma: circular pill shape */
 }
 
 /* ============================================================
@@ -366,9 +367,10 @@ body {
   transition:      box-shadow 120ms ease, background 120ms ease;
 }
 
+/* Figma pressed: stays white, 8px #F3F3F3 outward stroke (NOT black bg) */
 .ds-nav-ctrl--pressed {
-  background:      var(--ds-color-black);
-  box-shadow:      var(--ds-shadow-03-big);
+  background:      var(--ds-color-white);
+  box-shadow:      0 0 0 8px var(--ds-color-surface), var(--ds-shadow-03-big);
 }
 
 /* ============================================================
@@ -390,7 +392,8 @@ body {
 }
 
 .ds-filter-opt--close { background: var(--ds-color-black); }
-.ds-filter-opt--pressed { box-shadow: var(--ds-shadow-03-big); }
+/* Figma pressed: stays white, 8px #F3F3F3 outward stroke */
+.ds-filter-opt--pressed { box-shadow: 0 0 0 8px var(--ds-color-surface), var(--ds-shadow-03-big); }
 
 /* ============================================================
    TOGGLE MENU  (ds-toggle-menu)
@@ -414,6 +417,11 @@ body {
   background:      var(--ds-color-black);
 }
 
+/* Figma pressed: stays white, 8px #F3F3F3 outward stroke */
+.ds-toggle-menu--pressed {
+  box-shadow: 0 0 0 8px var(--ds-color-surface), var(--ds-shadow-03-big);
+}
+
 /* ============================================================
    TOGGLE CARDS  (ds-toggle-cards)
    ============================================================ */
@@ -434,7 +442,8 @@ body {
 .ds-toggle-cards--small { height: 50px; }
 .ds-toggle-cards--big   { height: 88px; }
 .ds-toggle-cards--disabled { background: var(--ds-color-gray-200); cursor: default; }
-.ds-toggle-cards--pressed  { background: var(--ds-color-gray-500); }
+/* Figma pressed: stays black, 8px black outward stroke ring */
+.ds-toggle-cards--pressed  { box-shadow: 0 0 0 8px var(--ds-color-black), var(--ds-shadow-03-big); }
 
 /* ============================================================
    SUMMARY CARD  (ds-summary-card)
@@ -651,6 +660,7 @@ body {
   background:  var(--ds-color-gray-100);
   color:       var(--ds-color-gray-300);
   border-color: var(--ds-color-gray-200);
+  box-shadow:  none;
   cursor:      not-allowed;
 }
 
@@ -697,27 +707,32 @@ body {
   width:           30px;
   height:          30px;
   border:          4px solid var(--ds-color-black);
-  border-radius:   50%;
+  border-radius:   var(--ds-radius-lg);   /* Figma: r=16 */
   flex-shrink:     0;
   background:      var(--ds-color-white);
   position:        relative;
-  transition:      background 120ms ease, border-color 120ms ease;
+  transition:      background 120ms ease, border-color 120ms ease, border-width 120ms ease;
 }
 
+/* Figma agregar (checked): white bg, 8px black border — icon sits on top */
 .ds-checkbox__box--checked {
-  background:   var(--ds-color-black);
+  background:   var(--ds-color-white);
   border-color: var(--ds-color-black);
+  border-width: 8px;
 }
 
+/* Figma disabled: gray-100 bg, gray-200 border, 4px */
 .ds-checkbox--disabled .ds-checkbox__box {
   background:   var(--ds-color-gray-100);
   border-color: var(--ds-color-gray-200);
   cursor:       not-allowed;
 }
 
+/* Figma remove: same as checked — white bg, 8px black border, with remove icon */
 .ds-checkbox--remove .ds-checkbox__box {
-  background:   var(--ds-color-black);
+  background:   var(--ds-color-white);
   border-color: var(--ds-color-black);
+  border-width: 8px;
 }
 
 .ds-checkbox__label {
@@ -754,36 +769,52 @@ body {
    PROGRESS BAR  (ds-progress)
    ============================================================ */
 
+/* Figma progressBar: vertical layout 368x66 — title on top, track, description below */
 .ds-progress {
-  display:       flex;
-  align-items:   center;
-  gap:           var(--ds-space-3);
-  width:         368px;
+  display:        flex;
+  flex-direction: column;
+  gap:            var(--ds-space-2);
+  width:          368px;
 }
 
+/* Figma: "0% completado" — body-md/semibold, black */
 .ds-progress__label {
-  font-size:   var(--ds-font-size-body-md);
+  font-family: var(--ds-font-family);
+  font-size:   var(--ds-font-size-subtitle);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: 28px;
   color:       var(--ds-color-black);
-  line-height: var(--ds-line-height-body-md);
   white-space: nowrap;
 }
 
+/* Figma track: 368x14, r=20, white bg */
 .ds-progress__track {
-  flex:          1;
+  width:         100%;
   height:        14px;
   background:    var(--ds-color-white);
-  border-radius: var(--ds-radius-2xl);
-  box-shadow:    var(--ds-shadow-01);
+  border-radius: 20px;
   overflow:      hidden;
 }
 
+/* Figma fill: r=20, black */
 .ds-progress__fill {
   height:        100%;
   background:    var(--ds-color-black);
-  border-radius: var(--ds-radius-2xl);
+  border-radius: 20px;
+  min-width:     14px;
   transition:    width 300ms ease;
 }
 
+/* Figma description: "Faltan 4 materiales" — body-sm, gray-300 */
+.ds-progress__description {
+  font-family: var(--ds-font-family);
+  font-size:   var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-regular);
+  line-height: var(--ds-line-height-body-md);
+  color:       var(--ds-color-gray-300);
+}
+
+/* Legacy alias */
 .ds-progress__pct {
   font-size:   var(--ds-font-size-body-sm);
   font-weight: var(--ds-font-weight-semibold);
@@ -810,26 +841,29 @@ body {
   padding:     var(--ds-space-2) var(--ds-space-3);
 }
 
+/* Figma standard: 30x30 ellipse, 4px gray-200 border, white fill */
 .ds-option-label__dot {
   display:       block;
   width:         30px;
   height:        30px;
   border-radius: 50%;
   flex-shrink:   0;
-  border:        3px solid var(--ds-color-black);
+  border:        4px solid var(--ds-color-gray-200);
   background:    var(--ds-color-white);
   transition:    background 120ms ease, border-color 120ms ease;
 }
 
+/* Figma active/selected: 4px black border, black fill */
 .ds-option-label--active .ds-option-label__dot {
   background:   var(--ds-color-black);
   border-color: var(--ds-color-black);
 }
 
+/* Figma disabled: gray-100 fill, gray-200 border, gray-300 text */
 .ds-option-label--disabled { color: var(--ds-color-gray-300); cursor: not-allowed; }
 .ds-option-label--disabled .ds-option-label__dot {
   border-color: var(--ds-color-gray-200);
-  background:   var(--ds-color-white);
+  background:   var(--ds-color-gray-100);
 }
 
 /* ============================================================

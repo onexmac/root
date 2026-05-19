@@ -152,7 +152,7 @@ function CloseButton({ onClick }: { onClick: () => void }) {
       onClick={onClick}
       aria-label="Cerrar"
     >
-      <Icon name="delete" size="sm" color="currentColor" />
+      <Icon name="close" size="md" color="currentColor" />
     </button>
   );
 }

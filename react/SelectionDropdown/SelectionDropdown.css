@@ -1,13 +1,13 @@
 /* SelectionDropdown — terjeta blanca expandible (Figma: Nav » selectionDropdown). Solo var(--ds-*). */
 
-/* Contenedor principal */
+/* Contenedor principal — NO overflow:hidden so ToggleCards shadow/ring isn't clipped */
 .ds-sd {
   position:      relative;
   width:         372px;
   background:    var(--ds-color-white);
   border-radius: var(--ds-radius-xl);      /* 32px */
   box-shadow:    var(--ds-shadow-01);      /* only on header area visually */
-  overflow:      hidden;
+  overflow:      visible;
 }
 
 /* Header: siempre visible. Label gris + ToggleCards small */

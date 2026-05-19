@@ -26,18 +26,14 @@
   width: 60px;
 }
 
-/* Pressed — replica fiel del Figma:
- *   border 8px solid black-100 (rgba(0,0,0,.8)) + drop-shadow proyectado 8px afuera vía spread.
- *   Sobre fondo surface, el 80% de negro renderea como ~#303030 = halo oscuro visible.
- *   Sobre fondo blanco/oscuro, el ring también se ve por la diferencia de opacidad.
- *   Se dispara también al :active para feedback automático mientras se mantiene presionado.
- *   Se excluye disabled para que un toggle deshabilitado no muestre halo al touch. */
+/* Figma pressed: stays black, 8px solid black outward stroke ring.
+ * Also triggers on :active for instant feedback while pressing.
+ * Excluded on disabled so a disabled toggle doesn't show the ring. */
 .ds-toggle--pressed:not(.ds-toggle--disabled),
 .ds-toggle:not(.ds-toggle--disabled):active {
   box-shadow:
-    0 0 0 8px var(--ds-color-black-100),
-    0 0 3px 8px rgba(0, 0, 0, 0.16),
-    0 2px 2px 8px rgba(0, 0, 0, 0.16);
+    0 0 0 8px var(--ds-color-black),
+    var(--ds-shadow-03-big);
 }
 
 .ds-toggle--disabled {

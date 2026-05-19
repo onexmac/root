@@ -96,18 +96,19 @@
   color: var(--ds-color-gray-500);
 }
 
-/* Botón cerrar default (cuando se pasa onClose y no rightSlot) */
+/* Figma close button: plain 20x20 icon, gray-300 fill, no background circle */
 .ds-search__close {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   border: 0;
-  border-radius: 50%;
-  background: var(--ds-color-gray-100);
-  color: var(--ds-color-black);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ds-color-gray-300);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
   -webkit-tap-highlight-color: transparent;
 }
 

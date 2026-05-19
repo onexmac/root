@@ -4,7 +4,7 @@ import { Icon, IconName } from "../Icon/Icon";
 import { springs } from "../springs";
 
 // ─── NavigationControls ───────────────────────────────────────────────────────
-// Figma: 65×59 pill (radius 32), white bg standard, BLACK bg pressed
+// Figma: 65×59 pill (radius 32), white bg always. Pressed: 8px #F3F3F3 border ring.
 // Icons: simple chevron-left (back) / chevron-right (go)
 
 export type NavControlState = "standard" | "pressed";
@@ -22,7 +22,6 @@ export function NavigationControls({
   onClick,
 }: NavigationControlsProps) {
   const iconName = navigation === "back" ? "chevron-left" : "chevron-right";
-  const iconColor = state === "pressed" ? "var(--ds-color-white)" : "var(--ds-color-black)";
 
   return (
     <motion.button
@@ -33,7 +32,7 @@ export function NavigationControls({
       whileTap={{ scale: 0.94 }}
       transition={springs.snappy}
     >
-      <Icon name={iconName} size="lg" color={iconColor} />
+      <Icon name={iconName} size="lg" color="var(--ds-color-black)" />
     </motion.button>
   );
 }

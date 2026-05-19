@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import React, { useState } from "react";
 import { QuantitySelector } from "./QuantitySelector";
 
 const meta: Meta<typeof QuantitySelector> = {
@@ -46,4 +47,30 @@ export const CompletoPressed: Story = {
 
 export const SinStockPressed: Story = {
   args: { value: 3, state: "sin-stock", mode: "pressed", size: "sm" },
+};
+
+/** Interactive — tap para incrementar cantidad con animación. */
+export const Interactive: Story = {
+  name: "Interactive / Tap to increment",
+  render: () => {
+    const [val, setVal] = useState(0);
+    const getState = (v: number) => {
+      if (v === 0) return "pendiente" as const;
+      if (v < 3) return "incompleto" as const;
+      if (v >= 5) return "sin-stock" as const;
+      return "completo" as const;
+    };
+    return (
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+        <QuantitySelector
+          value={val}
+          state={getState(val)}
+          onTap={() => setVal((v) => (v >= 6 ? 0 : v + 1))}
+        />
+        <p style={{ margin: 0, fontSize: 12, color: "#5d636c" }}>
+          Tap para incrementar (reset a 0 en 7)
+        </p>
+      </div>
+    );
+  },
 };

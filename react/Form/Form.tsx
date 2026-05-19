@@ -124,10 +124,10 @@ export function CheckBox({
         transition={springs.snappy}
       >
         {(checked || state === "add") && (
-          <Icon name="check" size="sm" color="var(--ds-color-white)" />
+          <Icon name="check" size="sm" color="var(--ds-color-black)" />
         )}
         {state === "remove" && (
-          <Icon name="minus" size="sm" color="var(--ds-color-white)" />
+          <Icon name="minus" size="sm" color="var(--ds-color-black)" />
         )}
       </motion.span>
       <span className="ds-checkbox__label">{label}</span>
@@ -166,11 +166,16 @@ export type ProgressBarStep = 0 | 25 | 50 | 75 | 100;
 export interface ProgressBarProps {
   /** Progress percentage */
   progress?: number;
-  /** Optional label */
+  /** Title label — e.g. "0% completado" */
   label?: string;
+  /** Description below bar — e.g. "Faltan 4 materiales" */
+  description?: string;
 }
 
-export function ProgressBar({ progress = 0, label }: ProgressBarProps) {
+/**
+ * ProgressBar — Figma vertical layout: title on top, 14px track, description below.
+ */
+export function ProgressBar({ progress = 0, label, description }: ProgressBarProps) {
   const clamped = Math.min(100, Math.max(0, progress));
   return (
     <div className="ds-progress">
@@ -178,14 +183,14 @@ export function ProgressBar({ progress = 0, label }: ProgressBarProps) {
       <div className="ds-progress__track">
         <div
           className="ds-progress__fill"
-          style={{ width: `${clamped}%` }}
+          style={{ width: `${Math.max(clamped, clamped > 0 ? 4 : 0)}%` }}
           role="progressbar"
           aria-valuenow={clamped}
           aria-valuemin={0}
           aria-valuemax={100}
         />
       </div>
-      <span className="ds-progress__pct">{clamped}%</span>
+      {description && <span className="ds-progress__description">{description}</span>}
     </div>
   );
 }

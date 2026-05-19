@@ -1,6 +1,7 @@
 import React from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { springs } from "../springs";
+import { haptic } from "../haptic";
 
 
 /**
@@ -100,7 +101,7 @@ export function QuantitySelector({
       <motion.button
         type="button"
         className={classes}
-        onClick={onTap}
+        onClick={() => { haptic.select(); onTap(); }}
         whileTap={{ scale: 0.86 }}
         transition={springs.snappy}
         aria-label={ariaLabel ?? `Cantidad ${value}`}
