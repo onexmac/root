@@ -106,7 +106,7 @@ body {
 .ds-btn--white  { background: var(--ds-color-white);     color: var(--ds-color-black); }
 .ds-btn--black  { background: var(--ds-color-black);     color: var(--ds-color-white); }
 .ds-btn--gray,
-.ds-btn:disabled { background: var(--ds-color-gray-200); color: var(--ds-color-gray-400); cursor: not-allowed; pointer-events: none; }
+.ds-btn:disabled { background: var(--ds-color-gray-200); color: var(--ds-color-gray-300); cursor: not-allowed; pointer-events: none; }
 
 /* States — Figma pressed: body stays same color, 8px outward stroke ring */
 .ds-btn--pressed.ds-btn--green { background: var(--ds-color-green-100);  box-shadow: 0 0 0 8px var(--ds-color-green-200), var(--ds-shadow-03-big); }
@@ -272,7 +272,7 @@ body {
   display:       flex;
   align-items:   center;
   gap:           var(--ds-space-2);
-  padding:       var(--ds-space-3) var(--ds-space-2);
+  padding:       var(--ds-space-4);
   background:    var(--ds-color-white);
   border-radius: 9999px;     /* Figma: circular pill shape */
 }
@@ -590,7 +590,7 @@ body {
 }
 
 .ds-form-field--disabled .ds-form-field__label {
-  color: var(--ds-color-gray-400);
+  color: var(--ds-color-gray-300);
 }
 .ds-form-field--disabled .ds-form-field__input {
   background:  var(--ds-color-gray-100);
@@ -618,11 +618,11 @@ body {
 
 .ds-form-field__helper {
   font-size:  var(--ds-font-size-body-sm);
-  color:      var(--ds-color-gray-500);
+  color:      var(--ds-color-gray-300);
   margin-top: var(--ds-space-1);
 }
 
-.ds-form-field__helper--warn { color: var(--ds-color-red-100); }
+.ds-form-field__helper--warn { color: var(--ds-color-red-200); }
 
 /* ============================================================
    CHECKBOX  (ds-checkbox)
@@ -792,9 +792,9 @@ body {
   transition:    background 120ms ease, border-color 120ms ease;
 }
 
-/* Figma active/selected: 4px black INSIDE border, 80% black fill */
+/* Figma active/selected: 4px black border, black fill */
 .ds-option-label--active .ds-option-label__dot {
-  background:   rgba(0, 0, 0, 0.8);
+  background:   var(--ds-color-black);
   border-color: var(--ds-color-black);
 }
 
