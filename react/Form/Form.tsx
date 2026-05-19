@@ -137,7 +137,7 @@ export function CheckBox({
 
 // ─── Tag ──────────────────────────────────────────────────────────────────────
 
-export type TagState = "active" | "standard";
+export type TagState = "active" | "standard" | "disabled";
 
 export interface TagProps {
   label?: string;
@@ -146,12 +146,14 @@ export interface TagProps {
 }
 
 export function Tag({ label = "Tag", state = "standard", onClick }: TagProps) {
+  const isDisabled = state === "disabled";
   return (
     <motion.button
       className={`ds-tag ds-tag--${state}`}
-      onClick={onClick}
+      onClick={isDisabled ? undefined : onClick}
+      disabled={isDisabled}
       type="button"
-      whileTap={{ scale: 0.95 }}
+      whileTap={isDisabled ? undefined : { scale: 0.95 }}
       transition={springs.snappy}
     >
       {label}

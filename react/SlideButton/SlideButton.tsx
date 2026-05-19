@@ -93,7 +93,7 @@ export function SlideButton({
    * preserves the corner radius across the moving left edge. */
   const trackClip = useTransform(
     x,
-    (v) => `inset(0 0 0 ${v}px round 20px)`,
+    (v) => `inset(0 0 0 ${v}px round 16px)`,
   );
 
   /* Label fades as the knob crosses it — clear "this is being acted on" cue. */

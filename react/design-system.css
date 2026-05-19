@@ -192,89 +192,6 @@ body {
 }
 
 /* ============================================================
-   SEARCH BAR  (ds-search-bar)
-   ============================================================ */
-
-.ds-search-bar {
-  position:   relative;
-  display:    inline-flex;
-  flex-direction: column;
-  background: var(--ds-color-white);
-  border-radius: var(--ds-radius-md);
-  box-shadow: var(--ds-shadow-01);
-}
-
-.ds-search-bar__inner {
-  display:     flex;
-  align-items: center;
-  gap:         var(--ds-space-2);
-  padding:     var(--ds-space-3) var(--ds-space-4);
-  min-height:  59px;
-}
-
-.ds-search-bar--icon { display: inline-flex; }
-.ds-search-bar--icon .ds-search-bar__inner { padding: var(--ds-space-3); }
-
-.ds-search-bar__icon-wrap {
-  display:         flex;
-  align-items:     center;
-  justify-content: center;
-  flex-shrink:     0;
-}
-
-.ds-search-bar__label {
-  display:     inline-flex;
-  align-items: center;
-  gap:         var(--ds-space-1);
-  border:      none;
-  background:  transparent;
-  font-family: var(--ds-font-family);
-  font-size:   var(--ds-font-size-body-md);
-  font-weight: var(--ds-font-weight-semibold);
-  cursor:      pointer;
-  white-space: nowrap;
-  color:       var(--ds-color-black);
-  padding:     0;
-}
-
-.ds-search-bar__input {
-  flex:       1;
-  border:     none;
-  outline:    none;
-  background: transparent;
-  font-family: var(--ds-font-family);
-  font-size:  var(--ds-font-size-body-md);
-  color:      var(--ds-color-gray-300);
-  min-width:  0;
-}
-
-.ds-search-bar__input::placeholder { color: var(--ds-color-gray-300); }
-
-.ds-search-bar--pressed { box-shadow: var(--ds-shadow-03-big); }
-
-.ds-search-bar__dropdown {
-  display:    flex;
-  flex-direction: column;
-  border-top: 1px solid var(--ds-color-gray-100);
-  padding:    var(--ds-space-2) 0;
-}
-
-.ds-search-bar__option {
-  display:    flex;
-  align-items: center;
-  padding:    var(--ds-space-3) var(--ds-space-4);
-  border:     none;
-  background: transparent;
-  font-family: var(--ds-font-family);
-  font-size:  var(--ds-font-size-body-md);
-  color:      var(--ds-color-black);
-  cursor:     pointer;
-  text-align: left;
-}
-
-.ds-search-bar__option:hover { background: var(--ds-color-gray-100); }
-
-/* ============================================================
    TABS MENU  (ds-tabs-menu)
    ============================================================ */
 
@@ -403,8 +320,9 @@ body {
 }
 
 .ds-filter-opt--close { background: var(--ds-color-black); }
-/* Figma pressed: stays white, 8px #F3F3F3 outward stroke */
+/* Figma pressed normal: 8px #F3F3F3 ring. Pressed close: 8px black 80% ring (dark bg) */
 .ds-filter-opt--pressed { box-shadow: 0 0 0 8px var(--ds-color-surface), var(--ds-shadow-03-big); }
+.ds-filter-opt--pressed.ds-filter-opt--close { box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.8), var(--ds-shadow-03-big); }
 
 /* ============================================================
    TOGGLE MENU  (ds-toggle-menu)
@@ -469,7 +387,7 @@ body {
   align-items:     center;
   justify-content: space-between;
   width:           362px;
-  padding:         var(--ds-space-1) var(--ds-space-3) var(--ds-space-1) var(--ds-space-5);
+  padding:         2px var(--ds-space-3) 2px var(--ds-space-5);
   border-radius:   var(--ds-radius-lg);
   background:      var(--ds-color-white);
   box-shadow:      var(--ds-shadow-01);
@@ -782,6 +700,7 @@ body {
 
 .ds-tag--active   { background: var(--ds-color-black); color: var(--ds-color-white); border: none; }
 .ds-tag--standard { background: transparent; border: 2px solid var(--ds-color-gray-200); color: var(--ds-color-gray-300); }
+.ds-tag--disabled { background: transparent; border: 2px solid var(--ds-color-gray-200); color: var(--ds-color-gray-200); cursor: not-allowed; pointer-events: none; opacity: 0.55; }
 
 /* ============================================================
    PROGRESS BAR  (ds-progress)
@@ -827,9 +746,9 @@ body {
 /* Figma description: "Faltan 4 materiales" — body-sm, gray-300 */
 .ds-progress__description {
   font-family: var(--ds-font-family);
-  font-size:   var(--ds-font-size-body-md);
+  font-size:   var(--ds-font-size-body-sm);
   font-weight: var(--ds-font-weight-regular);
-  line-height: var(--ds-line-height-body-md);
+  line-height: var(--ds-line-height-body-sm);
   color:       var(--ds-color-gray-300);
 }
 

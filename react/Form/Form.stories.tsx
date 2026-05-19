@@ -63,6 +63,7 @@ export const TagAll: StoryObj = {
     <div style={{ display: "flex", gap: 12, padding: 16 }}>
       <Tag state="active"   label="Activo" />
       <Tag state="standard" label="Estándar" />
+      <Tag state="disabled" label="Deshabilitado" />
     </div>
   ),
 };
