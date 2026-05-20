@@ -5,6 +5,7 @@ const meta: Meta<typeof QuantitySelector> = {
   title: "Sistema de Diseño/QuantitySelector",
   component: QuantitySelector,
   parameters: { layout: "centered" },
+  args: { onTap: () => {} },
   argTypes: {
     state: {
       control: { type: "inline-radio" },
