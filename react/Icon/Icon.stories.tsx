@@ -2,39 +2,30 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import React from "react";
 import { Icon, IconName } from "./Icon";
 
-// Catálogo exacto del nodo Figma 1153-3008 (Losa Flotante)
+// Catálogo exacto del Figma (Losa Flotante) — orden idéntico
 const ALL_ICONS: IconName[] = [
-  // Fila 1
-  "home", "user", "folder", "open",
-  // Fila 2
-  "arrow-right", "back", "search", "go",
-  // Fila 3
-  "check", "list", "boleta", "traslado",
-  // Fila 4
-  "entrega", "sin-stock", "completado", "incompleto",
-  // Fila 5
-  "pendiente", "sin-autorizar", "filter", "close",
-  // Fila 6
-  "edit", "info", "plus", "minus",
-  // Fila 7
-  "delete", "place", "alert", "remove",
-  // Fila 8
-  "calculator", "cuadrillas", "rol",
-  // Fila 9
-  "options", "menu", "good",
+  "home", "filter", "user", "close",
+  "folder", "edit", "open", "info",
+  "arrow-right", "plus", "back", "minus",
+  "search", "delete", "go", "place",
+  "good", "alert", "list", "remove",
+  "boleta", "calculator", "traslado", "cuadrillas",
+  "entrega", "rol", "sin-stock", "options",
+  "completado", "menu", "incompleto",
+  "pendiente", "sin-autorizar",
 ];
 
 // Labels del Figma para el gallery
 const ICON_LABELS: Partial<Record<IconName, string>> = {
-  home: "Home", user: "User", folder: "Folder", open: "Open",
-  "arrow-right": "Arrow", back: "Back", search: "Lens", go: "Go",
-  check: "Check", list: "List", boleta: "Boleta", traslado: "Traslado",
-  entrega: "Entrega", "sin-stock": "Sin stock", completado: "Completado", incompleto: "Incompleto",
-  pendiente: "Pendiente", "sin-autorizar": "Sin autorizar", filter: "Filter", close: "Close",
-  edit: "Edit", info: "Info", plus: "Add", minus: "Minus",
-  delete: "Delete", place: "Place", alert: "Warning", remove: "Remove",
-  calculator: "Calculator", cuadrillas: "Cuadrillas", rol: "Rol",
-  options: "Options", menu: "Menu", good: "Good",
+  home: "Home", filter: "Filter", user: "User", close: "Close",
+  folder: "Folder", edit: "Edit", open: "Open", info: "Info",
+  "arrow-right": "Arrow", plus: "Add", back: "Back", minus: "Minus",
+  search: "Lens", delete: "Delete", go: "Go", place: "place",
+  good: "Good", alert: "Warning", list: "List", remove: "Remove",
+  boleta: "Boleta", calculator: "Calculator", traslado: "Traslado", cuadrillas: "Cuadrillas",
+  entrega: "Entrega", rol: "Rol", "sin-stock": "Sin stock", options: "options",
+  completado: "Completado", menu: "menu", incompleto: "Incompleto",
+  pendiente: "Pendiente", "sin-autorizar": "Sin autorizar",
 };
 
 const meta: Meta<typeof Icon> = {
