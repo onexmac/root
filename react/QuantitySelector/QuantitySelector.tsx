@@ -98,16 +98,14 @@ export function QuantitySelector({
 
   if (onTap) {
     return (
-      <motion.button
+      <button
         type="button"
         className={classes}
         onClick={() => { haptic.select(); onTap(); }}
-        whileTap={{ scale: 0.86 }}
-        transition={springs.snappy}
         aria-label={ariaLabel ?? `Cantidad ${value}`}
       >
         {inner}
-      </motion.button>
+      </button>
     );
   }
 
