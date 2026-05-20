@@ -41,10 +41,3 @@ export const Expanded: Story = {
   },
 };
 
-export const Interactive: Story = {
-  args: {
-    label: "Seleccionar tipo",
-    items: SAMPLE_ITEMS,
-  },
-};
-

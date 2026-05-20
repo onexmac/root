@@ -19,8 +19,9 @@ const COLORS: { token: string; hex: string; note: string }[] = [
   { token: "--ds-color-gray-300",  hex: "#AAAFB6", note: "Bordes suaves" },
   { token: "--ds-color-gray-200",  hex: "#D9D9D9", note: "Bordes" },
   { token: "--ds-color-gray-100",  hex: "#EBEBEB", note: "Fondo hover" },
-  { token: "--ds-color-black",     hex: "#000000", note: "Texto principal" },
-  { token: "--ds-color-white",     hex: "#FFFFFF", note: "Fondo claro" },
+  { token: "--ds-color-black",     hex: "#000000",          note: "Texto principal" },
+  { token: "--ds-color-black-100", hex: "rgba(0,0,0,0.8)",  note: "Halos pressed" },
+  { token: "--ds-color-white",     hex: "#FFFFFF",          note: "Fondo claro" },
   { token: "--ds-color-surface",   hex: "#F3F3F3", note: "Fondo de página" },
   { token: "--ds-color-yellow",    hex: "#F0C802", note: "Advertencia" },
 ];
@@ -48,10 +49,15 @@ export const Colors: StoryObj = {
 // ─── Typography ──────────────────────────────────────────────────────────────
 
 const TYPE_SCALE = [
-  { token: "body-sm",  size: "12px", lineHeight: "16px", weight: 400,  sample: "Texto pequeño — body-sm" },
-  { token: "body-md",  size: "16px", lineHeight: "24px", weight: 400,  sample: "Texto de cuerpo — body-md" },
-  { token: "subtitle", size: "20px", lineHeight: "24px", weight: 600,  sample: "Subtítulo — subtitle" },
-  { token: "heading",  size: "32px", lineHeight: "40px", weight: 700,  sample: "Encabezado — heading" },
+  { token: "body-sm / regular",      size: "12px", lineHeight: "16px", letterSpacing: "0",     weight: 400, sample: "Texto pequeño regular — body-sm" },
+  { token: "body-sm / semibold",      size: "12px", lineHeight: "16px", letterSpacing: "0.4px", weight: 600, sample: "Texto pequeño semibold — body-sm" },
+  { token: "body-md / regular",       size: "16px", lineHeight: "24px", letterSpacing: "0",     weight: 400, sample: "Texto de cuerpo regular — body-md" },
+  { token: "body-md / semibold",      size: "16px", lineHeight: "24px", letterSpacing: "0",     weight: 600, sample: "Texto de cuerpo semibold — body-md" },
+  { token: "subtitle / regular",      size: "20px", lineHeight: "24px", letterSpacing: "0.4px", weight: 400, sample: "Subtítulo regular — subtitle" },
+  { token: "subtitle / semibold",     size: "20px", lineHeight: "24px", letterSpacing: "0.4px", weight: 600, sample: "Subtítulo semibold — subtitle" },
+  { token: "subtitle-lg / regular",   size: "24px", lineHeight: "24px", letterSpacing: "0.4px", weight: 400, sample: "Subtítulo grande regular — subtitle-lg" },
+  { token: "subtitle-lg / semibold",  size: "24px", lineHeight: "24px", letterSpacing: "0.4px", weight: 600, sample: "Subtítulo grande semibold — subtitle-lg" },
+  { token: "heading / semibold",      size: "32px", lineHeight: "40px", letterSpacing: "0.4px", weight: 600, sample: "Encabezado — heading" },
 ];
 
 export const Typography: StoryObj = {
@@ -63,9 +69,11 @@ export const Typography: StoryObj = {
           <div key={t.token} style={{ borderBottom: "1px solid #EBEBEB", paddingBottom: 20 }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 8 }}>
               <code style={{ background: "#EBEBEB", padding: "2px 8px", borderRadius: 4, fontSize: 12 }}>{t.token}</code>
-              <span style={{ fontSize: 12, color: "#747B86" }}>{t.size} / {t.lineHeight} / weight {t.weight}</span>
+              <span style={{ fontSize: 12, color: "#747B86" }}>
+                {t.size} / lh {t.lineHeight} / ls {t.letterSpacing} / w {t.weight}
+              </span>
             </div>
-            <div style={{ fontFamily: "Roboto, sans-serif", fontSize: t.size, lineHeight: t.lineHeight, fontWeight: t.weight, color: "#000" }}>
+            <div style={{ fontFamily: "Roboto, sans-serif", fontSize: t.size, lineHeight: t.lineHeight, fontWeight: t.weight, letterSpacing: t.letterSpacing, color: "#000" }}>
               {t.sample}
             </div>
           </div>

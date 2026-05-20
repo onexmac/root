@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import React, { useState } from "react";
+import React from "react";
 import { FormField, CheckBox, Tag, ProgressBar, OptionLabel } from "./Form";
 
 // ── FormField ──
@@ -40,20 +40,12 @@ export const CheckBoxAll: StoryObj = {
   name: "CheckBox / All states",
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: 16 }}>
-      <CheckBox state="add"      label="Agregar opción" />
-      <CheckBox state="remove"   label="Remover opción" />
-      <CheckBox state="standard" label="Opción estándar" />
-      <CheckBox state="disabled" label="Opción deshabilitada" />
+      <CheckBox state="add"      label="option label" />
+      <CheckBox state="remove"   label="option label" />
+      <CheckBox state="standard" label="option label" />
+      <CheckBox state="disabled" label="option label" />
     </div>
   ),
-};
-
-export const CheckBoxInteractive: StoryObj = {
-  name: "CheckBox / Interactive",
-  render: () => {
-    const [c, setC] = useState(false);
-    return <CheckBox label="Acepto los términos" checked={c} onChange={setC} />;
-  },
 };
 
 // ── Tag ──
@@ -61,9 +53,8 @@ export const TagAll: StoryObj = {
   name: "Tag / All states",
   render: () => (
     <div style={{ display: "flex", gap: 12, padding: 16 }}>
-      <Tag state="active"   label="Activo" />
-      <Tag state="standard" label="Estándar" />
-      <Tag state="disabled" label="Deshabilitado" />
+      <Tag state="active"   label="Label" />
+      <Tag state="standard" label="Label" />
     </div>
   ),
 };
@@ -74,10 +65,10 @@ export const ProgressAll: StoryObj = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 32, padding: 24 }}>
       <ProgressBar progress={0} label="0% completado" description="Faltan 4 materiales" />
-      <ProgressBar progress={25} label="25% completado" description="Faltan 3 materiales" />
-      <ProgressBar progress={50} label="50% completado" description="Faltan 2 materiales" />
-      <ProgressBar progress={75} label="75% completado" description="Falta 1 material" />
-      <ProgressBar progress={100} label="100% completado" description="Todos los materiales listos" />
+      <ProgressBar progress={25}  label="25% completado"  description="Faltan 4 materiales" />
+      <ProgressBar progress={50}  label="50% completado"  description="Faltan 4 materiales" />
+      <ProgressBar progress={75}  label="75% completado"  description="Faltan 4 materiales" />
+      <ProgressBar progress={100} label="100% completado" />
     </div>
   ),
 };
@@ -87,9 +78,9 @@ export const OptionLabelAll: StoryObj = {
   name: "OptionLabel / All states",
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: 16 }}>
-      <OptionLabel state="active"   label="Opción activa" />
-      <OptionLabel state="standard" label="Opción estándar" />
-      <OptionLabel state="disabled" label="Opción deshabilitada" />
+      <OptionLabel state="active"   label="option label" />
+      <OptionLabel state="standard" label="option label" />
+      <OptionLabel state="disabled" label="option label" />
     </div>
   ),
 };

@@ -15,10 +15,5 @@ const meta: Meta<typeof SlideButton> = {
 export default meta;
 type Story = StoryObj<typeof SlideButton>;
 
-/** Standard — estado de reposo, listo para deslizar. */
+/** Standard — reposo, listo para deslizar. */
 export const Standard: Story = {};
-
-/** Disabled — bloqueado, no se puede deslizar. */
-export const Disabled: Story = {
-  args: { disabled: true, disabledLabel: "No disponible" },
-};
