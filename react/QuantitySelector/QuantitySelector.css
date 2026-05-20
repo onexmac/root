@@ -64,17 +64,17 @@ button.ds-qty-selector {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: 8px solid transparent;
+  border: 7px solid transparent;
   pointer-events: none;
   box-sizing: border-box;
 }
 
 .ds-qty-selector--md .ds-qty-selector__ring {
-  border-width: 10px;
+  border-width: 9px;
 }
 
 .ds-qty-selector--lg .ds-qty-selector__ring {
-  border-width: 14px;
+  border-width: 13px;
 }
 
 /* CSS var --pill-color por variant — usado por el ring interior y el outer halo del pressed.
@@ -112,24 +112,22 @@ button.ds-qty-selector {
    Transition para que el grow del pressed sea suave. */
 .ds-qty-selector__inner {
   position: absolute;
-  inset: 6px;
+  inset: 7px;
   border-radius: 50%;
   background: var(--ds-color-black);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   z-index: 1;
-  box-sizing: border-box;
-  border: 0 solid var(--ds-color-black);
-  transition: border-width 120ms ease;
+  transition: inset 120ms ease;
 }
 
 .ds-qty-selector--md .ds-qty-selector__inner {
-  inset: 8px;
+  inset: 9px;
 }
 
 .ds-qty-selector--lg .ds-qty-selector__inner {
-  inset: 12px;
+  inset: 13px;
 }
 
 /* ============================================================
@@ -165,9 +163,18 @@ button.ds-qty-selector {
  * :active cuando es interactivo (button.ds-qty-selector).
  * ============================================================ */
 
-/* Figma pressed: inner ellipse gets 4px black stroke */
 .ds-qty-selector--pressed .ds-qty-selector__inner,
 button.ds-qty-selector:not(:disabled):active .ds-qty-selector__inner {
-  border-width: 4px;
+  inset: 6px;
+}
+
+.ds-qty-selector--md.ds-qty-selector--pressed .ds-qty-selector__inner,
+button.ds-qty-selector.ds-qty-selector--md:not(:disabled):active .ds-qty-selector__inner {
+  inset: 8px;
+}
+
+.ds-qty-selector--lg.ds-qty-selector--pressed .ds-qty-selector__inner,
+button.ds-qty-selector.ds-qty-selector--lg:not(:disabled):active .ds-qty-selector__inner {
+  inset: 12px;
 }
 
