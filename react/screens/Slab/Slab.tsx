@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Button } from "../../Button/Button";
+import { Icon } from "../../Icon/Icon";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -88,77 +89,6 @@ const MOCK_SOLICITUDES: SolicitudData[] = [
   },
 ];
 
-// ─── Icons (inline SVG) ───────────────────────────────────────────────────────
-
-const IconCheck = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path d="M4 10l4 4 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const IconChevronDown = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const IconChevronUp = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M4 10l4-4 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const IconInfo = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M8 7v4M8 5.5v.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-);
-
-const IconBack = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path d="M12 5l-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const IconSearch = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <circle cx="9" cy="9" r="6" stroke="currentColor" strokeWidth="2" />
-    <path d="M13.5 13.5l3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
-
-const IconArrow = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M4 8h8M9 5l3 3-3 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const IconClose = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
-
-const IconList = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path d="M5 6h10M5 10h10M5 14h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
-
-const IconDelivery = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <rect x="3" y="7" width="14" height="10" rx="1" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M7 7V5a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-);
-
-const IconTransfer = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path d="M4 8h12M13 5l3 3-3 3M16 12H4M7 9l-3 3 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 function QuantityBar({ quantity, target, status }: { quantity: number; target: number; status: MaterialStatus }) {
@@ -194,7 +124,7 @@ function SolicitudCard({
           <span className="solicitud-card__code">{data.code}</span>
           <div className="solicitud-card__meta">
             <span className="solicitud-card__time">{data.time}</span>
-            <IconInfo />
+            <Icon name="info" size="sm" color="currentColor" />
             <span className="solicitud-card__boleta">{data.boleta}</span>
           </div>
         </div>
@@ -202,14 +132,14 @@ function SolicitudCard({
         <div className="solicitud-card__controls">
           {data.isGood && (
             <span className="solicitud-card__badge solicitud-card__badge--good">
-              <IconCheck />
+              <Icon name="check" size="md" color="currentColor" />
             </span>
           )}
           <Button
             size="sm"
             layout="icon"
             color="gray"
-            icon={isOpen ? "arrow-up" : "arrow-down"}
+            icon={isOpen ? "open" : "close"}
             onClick={onToggle}
           />
         </div>
@@ -281,7 +211,7 @@ function SlideButton({ onConfirm }: { onConfirm: () => void }) {
         onPointerCancel={handlePointerUp}
       >
         <span className="slide-btn__text">PEDIR</span>
-        <IconArrow />
+        <Icon name="arrow-right" size="sm" color="currentColor" />
       </div>
     </div>
   );
@@ -292,15 +222,15 @@ function MenuDrawer({ onClose, onSelectOption }: { onClose: () => void; onSelect
     <div className="menu-drawer" onClick={onClose}>
       <div className="menu-drawer__panel" onClick={(e) => e.stopPropagation()}>
         <button className="menu-drawer__option" onClick={() => onSelectOption("pedidos")}>
-          <span className="menu-drawer__icon"><IconList /></span>
+          <span className="menu-drawer__icon"><Icon name="list" size="md" color="currentColor" /></span>
           <span className="menu-drawer__label">PEDIDOS</span>
         </button>
         <button className="menu-drawer__option" onClick={() => onSelectOption("entregado")}>
-          <span className="menu-drawer__icon"><IconDelivery /></span>
+          <span className="menu-drawer__icon"><Icon name="entrega" size="md" color="currentColor" /></span>
           <span className="menu-drawer__label">ENTREGADO</span>
         </button>
         <button className="menu-drawer__option" onClick={() => onSelectOption("traslado")}>
-          <span className="menu-drawer__icon"><IconTransfer /></span>
+          <span className="menu-drawer__icon"><Icon name="traslado" size="md" color="currentColor" /></span>
           <span className="menu-drawer__label">TRASLADO</span>
         </button>
       </div>

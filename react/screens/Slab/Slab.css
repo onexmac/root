@@ -93,11 +93,11 @@
 }
 
 .solicitud-card__code {
-  font-size: 32px;
+  font-size: var(--ds-font-size-heading);
   line-height: var(--ds-line-height-heading);
   font-weight: var(--ds-font-weight-semibold);
   color: var(--ds-color-black);
-  letter-spacing: -0.5px;
+  letter-spacing: var(--ds-letter-spacing-default);
 }
 
 .solicitud-card__meta {
@@ -308,7 +308,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-90deg);
-  font-size: 9px;
+  font-size: var(--ds-font-size-body-sm);
   font-weight: var(--ds-font-weight-semibold);
   color: var(--ds-color-gray-500);
   white-space: nowrap;
@@ -342,9 +342,9 @@
 }
 
 .slide-btn__text {
-  font-size: 9px;
+  font-size: var(--ds-font-size-body-sm);
   font-weight: var(--ds-font-weight-semibold);
-  letter-spacing: 1.5px;
+  letter-spacing: var(--ds-letter-spacing-wide);
   text-transform: uppercase;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -465,9 +465,9 @@
 }
 
 .menu-drawer__label {
-  font-size: 9px;
+  font-size: var(--ds-font-size-body-sm);
   font-weight: var(--ds-font-weight-semibold);
-  letter-spacing: 1px;
+  letter-spacing: var(--ds-letter-spacing-wide);
   text-align: center;
   line-height: 1.3;
   text-transform: uppercase;
