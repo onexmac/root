@@ -28,7 +28,7 @@ const ALL_ICONS: IconName[] = [
 const ICON_LABELS: Partial<Record<IconName, string>> = {
   home: "Home", user: "User", folder: "Folder", open: "Open",
   "arrow-right": "Arrow", back: "Back", search: "Lens", go: "Go",
-  check: "Good", list: "List", boleta: "Boleta", traslado: "Traslado",
+  check: "Check", list: "List", boleta: "Boleta", traslado: "Traslado",
   entrega: "Entrega", "sin-stock": "Sin stock", completado: "Completado", incompleto: "Incompleto",
   pendiente: "Pendiente", "sin-autorizar": "Sin autorizar", filter: "Filter", close: "Close",
   edit: "Edit", info: "Info", plus: "Add", minus: "Minus",
