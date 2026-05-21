@@ -74,7 +74,7 @@ const COLOR_GROUPS: {
 ];
 
 export const Color: StoryObj = {
-  name: "color",
+  name: "Color",
   parameters: { layout: "fullscreen" },
   render: () => (
     <div style={{
@@ -229,7 +229,7 @@ const COL_STYLE: React.CSSProperties = {
 };
 
 export const Tipografia: StoryObj = {
-  name: "tipografia",
+  name: "Tipografia",
   parameters: { layout: "fullscreen" },
   render: () => (
     <div style={{
@@ -360,7 +360,7 @@ const RADIUS_ROWS = [
 ];
 
 export const CornerRadiuos: StoryObj = {
-  name: "corner radiuos",
+  name: "Corner Radiuos",
   parameters: { layout: "fullscreen" },
   render: () => (
     <div style={{
@@ -482,7 +482,7 @@ const ICONS_RIGHT: { icon: IconName; label: string; desc: string }[] = [
 ];
 
 export const Iconos: StoryObj = {
-  name: "iconos",
+  name: "Iconos",
   parameters: { layout: "fullscreen" },
   render: () => (
     <div style={{
@@ -643,7 +643,7 @@ function NavSection({ name, desc, children }: {
 }
 
 export const Navigation: StoryObj = {
-  name: "navigation",
+  name: "Navigation",
   parameters: { layout: "fullscreen" },
   render: () => (
     <div style={{
@@ -962,7 +962,7 @@ const QS_ROWS: { state: QuantitySelectorState; mode: "standard" | "pressed" }[] 
 ];
 
 export const Buttons: StoryObj = {
-  name: "buttons",
+  name: "Buttons",
   parameters: { layout: "fullscreen" },
   render: () => (
     <div style={{
@@ -1129,7 +1129,7 @@ const SAMPLE_MATERIALS = [
 ];
 
 export const Cards: StoryObj = {
-  name: "cards",
+  name: "Cards",
   parameters: { layout: "fullscreen" },
   render: () => (
     <div style={{
@@ -1219,7 +1219,7 @@ export const Cards: StoryObj = {
 // ─── Forms ───────────────────────────────────────────────────────────────────
 
 export const Forms: StoryObj = {
-  name: "forms",
+  name: "Forms",
   parameters: { layout: "fullscreen" },
   render: () => (
     <div style={{

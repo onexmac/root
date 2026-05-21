@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "./Button";
 
 const meta: Meta<typeof Button> = {
-  title: "Sistema de Diseño/buttons",
+  title: "Sistema de Diseño/Button",
   component: Button,
   tags: ["autodocs"],
   argTypes: {
