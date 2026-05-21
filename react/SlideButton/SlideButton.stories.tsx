@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SlideButton } from "./SlideButton";
 
 const meta: Meta<typeof SlideButton> = {
-  title: "Buttons",
+  title: "Buttons/SlideButton",
   component: SlideButton,
   parameters: { layout: "centered" },
   args: {

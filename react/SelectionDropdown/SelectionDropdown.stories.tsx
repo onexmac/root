@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SelectionDropdown } from "./SelectionDropdown";
 
 const meta: Meta<typeof SelectionDropdown> = {
-  title: "Nav",
+  title: "Nav/SelectionDropdown",
   component: SelectionDropdown,
   parameters: { layout: "centered" },
   decorators: [

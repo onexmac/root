@@ -3,7 +3,7 @@ import React from "react";
 import { NavigationControls, FilterOptions, ToggleMenu } from "./Nav";
 
 const meta: Meta<typeof NavigationControls> = {
-  title: "Nav",
+  title: "Nav/Nav",
   component: NavigationControls,
   tags: ["autodocs"],
   argTypes: {

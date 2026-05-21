@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SearchBar } from "./SearchBar";
 
 const meta: Meta<typeof SearchBar> = {
-  title: "Nav",
+  title: "Nav/SearchBar",
   component: SearchBar,
   parameters: { layout: "centered" },
   argTypes: {

@@ -3,7 +3,7 @@ import React from "react";
 import { TabsMenu } from "./TabsMenu";
 
 const meta: Meta<typeof TabsMenu> = {
-  title: "Nav",
+  title: "Nav/TabsMenu",
   component: TabsMenu,
   tags: ["autodocs"],
   argTypes: {
