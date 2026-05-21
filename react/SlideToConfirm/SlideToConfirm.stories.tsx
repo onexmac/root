@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SlideToConfirm } from "./SlideToConfirm";
 
 const meta: Meta<typeof SlideToConfirm> = {
-  title: "Sistema de diseño/SlideToConfirm",
+  title: "Buttons/SlideToConfirm",
   component: SlideToConfirm,
   parameters: {
     layout: "centered",
