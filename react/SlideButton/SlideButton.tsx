@@ -9,7 +9,7 @@ import {
 } from "motion/react";
 import { springs } from "../springs";
 import { haptic } from "../haptic";
-import { Icon } from "../Icon/Icon";
+import { Icon } from "../iconos/Icon";
 import "./SlideButton.css";
 
 export interface SlideButtonProps {

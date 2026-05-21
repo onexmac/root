@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { TestScreens } from "./TestScreens";
+import { Test1v2 } from "./Test1v2";
 
-const meta: Meta<typeof TestScreens> = {
+const meta: Meta<typeof Test1v2> = {
   title: "Screens/Test1 v2",
-  component: TestScreens,
+  component: Test1v2,
   parameters: {
     layout: "fullscreen",
   },
@@ -11,6 +11,6 @@ const meta: Meta<typeof TestScreens> = {
 
 export default meta;
 
-type Story = StoryObj<typeof TestScreens>;
+type Story = StoryObj<typeof Test1v2>;
 
 export const Default: Story = {};

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Icon, IconName } from "../Icon/Icon";
+import { Icon, IconName } from "../iconos/Icon";
 import { haptic } from "../haptic";
 
 // Must match --ds-radius-xl = 32px

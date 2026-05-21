@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "motion/react";
 import { springs } from "../springs";
-import { Icon } from "../Icon/Icon";
+import { Icon } from "../iconos/Icon";
 import "./SearchBar.css";
 
 export type SearchBarLayout = "label" | "normal" | "icon" | "expanded";

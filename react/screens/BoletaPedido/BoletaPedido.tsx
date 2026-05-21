@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Button } from "../../Button/Button";
-import { Icon } from "../../Icon/Icon";
+import { Button } from "../../buttons/Button";
+import { Icon } from "../../iconos/Icon";
 import { ToggleCards } from "../../ToggleCards/ToggleCards";
 import { springs } from "../../springs";
 import { haptic } from "../../haptic";

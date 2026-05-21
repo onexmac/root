@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { springs } from "../springs";
 import { haptic } from "../haptic";
 import { QuantitySelector, type QuantitySelectorState } from "../QuantitySelector/QuantitySelector";
-import { Icon } from "../Icon/Icon";
+import { Icon } from "../iconos/Icon";
 
 
 const ITEM_HEIGHT = 48;

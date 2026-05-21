@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { Icon, IconName } from "../Icon/Icon";
+import { Icon, IconName } from "../iconos/Icon";
 import { springs } from "../springs";
 
 // ─── NavigationControls ───────────────────────────────────────────────────────

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ControlUsuarios } from "./ControlUsuarios";
+import { ControlDeUsuarios } from "./ControlDeUsuarios";
 
-const meta: Meta<typeof ControlUsuarios> = {
+const meta: Meta<typeof ControlDeUsuarios> = {
   title: "H4/Control de usuarios",
-  component: ControlUsuarios,
+  component: ControlDeUsuarios,
   parameters: {
     layout: "fullscreen",
     docs: {
@@ -20,6 +20,6 @@ const meta: Meta<typeof ControlUsuarios> = {
 
 export default meta;
 
-type Story = StoryObj<typeof ControlUsuarios>;
+type Story = StoryObj<typeof ControlDeUsuarios>;
 
 export const Default: Story = {};

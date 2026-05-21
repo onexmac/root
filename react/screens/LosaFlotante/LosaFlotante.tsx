@@ -5,9 +5,9 @@ import {
   type PanInfo,
   type Variants,
 } from "motion/react";
-import { Button } from "../../Button/Button";
-import { FormField, Tag } from "../../Form/Form";
-import { Icon } from "../../Icon/Icon";
+import { Button } from "../../buttons/Button";
+import { FormField, Tag } from "../../forms/Form";
+import { Icon } from "../../iconos/Icon";
 import { SelectionDropdown } from "../../SelectionDropdown/SelectionDropdown";
 import { SlideButton } from "../../SlideButton/SlideButton";
 import { ToggleCards } from "../../ToggleCards/ToggleCards";

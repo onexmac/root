@@ -72,26 +72,27 @@ export function SelectionDropdown({
         {isOpen && (
           <motion.div
             key="sd-items-card"
-            className="ds-sd__items-card"
+            className="ds-sd__items-wrapper"
             initial={{ height: 0, opacity: 0, marginTop: 0 }}
             animate={{ height: "auto", opacity: 1, marginTop: 16 }}
             exit={{ height: 0, opacity: 0, marginTop: 0 }}
             transition={springs.expanding}
-            style={{ overflow: "hidden" }}
           >
-            <div className="ds-sd__items-inner">
-              {items.map((item, i) => (
-                <motion.button
-                  key={i}
-                  type="button"
-                  className="ds-sd__item"
-                  onClick={item.onClick}
-                  whileTap={{ scale: 0.97 }}
-                  transition={springs.snappy}
-                >
-                  {item.label}
-                </motion.button>
-              ))}
+            <div className="ds-sd__items-card">
+              <div className="ds-sd__items-inner">
+                {items.map((item, i) => (
+                  <motion.button
+                    key={i}
+                    type="button"
+                    className="ds-sd__item"
+                    onClick={item.onClick}
+                    whileTap={{ scale: 0.97 }}
+                    transition={springs.snappy}
+                  >
+                    {item.label}
+                  </motion.button>
+                ))}
+              </div>
             </div>
           </motion.div>
         )}

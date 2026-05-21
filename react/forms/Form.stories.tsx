@@ -4,7 +4,7 @@ import { FormField, CheckBox, Tag, ProgressBar, OptionLabel } from "./Form";
 
 // ─── formField — nombres de stories alineados a Figma (state: ...) ─────────────
 const meta: Meta<typeof FormField> = {
-  title: "Sistema de Diseño/formField",
+  title: "Sistema de Diseño/forms",
   component: FormField,
   tags: ["autodocs"],
   argTypes: {

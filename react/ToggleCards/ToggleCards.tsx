@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../Button/Button";
+import { Button } from "../buttons/Button";
 
 export type ToggleCardsState = "standard" | "pressed";
 export type ToggleCardsMode = "normal" | "disabled";

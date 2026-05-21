@@ -39,13 +39,17 @@
   text-overflow:  ellipsis;
 }
 
+/* Wrapper animado — solo clip de altura (sin fondo, sin borde). */
+.ds-sd__items-wrapper {
+  overflow: hidden;
+}
+
 /* CARD 2 — Items list. Separado del header por 16px de margin-top (animado). */
 .ds-sd__items-card {
   width:         100%;
   background:    var(--ds-color-white);
   border-radius: var(--ds-radius-xl);
   box-shadow:    var(--ds-shadow-01);
-  overflow:      hidden;
 }
 
 /* Inner padding de la lista de items */

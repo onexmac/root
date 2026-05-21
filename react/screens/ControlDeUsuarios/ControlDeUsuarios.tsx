@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Button } from "../../Button/Button";
-import { FormField, Tag } from "../../Form/Form";
-import { Icon } from "../../Icon/Icon";
+import { Button } from "../../buttons/Button";
+import { FormField, Tag } from "../../forms/Form";
+import { Icon } from "../../iconos/Icon";
 import { SelectionDropdown } from "../../SelectionDropdown/SelectionDropdown";
 import { springs } from "../../springs";
 import { haptic } from "../../haptic";
-import "./ControlUsuarios.css";
+import "./ControlDeUsuarios.css";
 
 /* ============================================================
  * H4 — Control de usuarios
@@ -102,7 +102,7 @@ const CATALOGOS = {
  * Componente principal
  * ============================================================ */
 
-export function ControlUsuarios() {
+export function ControlDeUsuarios() {
   const [frame, setFrame] = useState<Frame>("U01");
 
   // Estado optimista

@@ -7,7 +7,7 @@ import { SearchBar, type SearchSuggestion } from "../../SearchBar/SearchBar";
 import { ToggleCards } from "../../ToggleCards/ToggleCards";
 import { TabsMenu } from "../../TabsMenu/TabsMenu";
 import { SlideButton } from "../../SlideButton/SlideButton";
-import "./TestScreens.css";
+import "./Test1v2.css";
 
 /**
  * TestScreens — prototipo de las 4 pantallas test screen 1–4
@@ -83,7 +83,7 @@ function variantFor(qty: number, requested?: number): QuantitySelectorState {
 
 type Route = "list" | "detail";
 
-export function TestScreens() {
+export function Test1v2() {
   const [route, setRoute] = useState<Route>("list");
   /** screen 1 vs 2: si está "verified" usa variantes mixed, si no, todo default */
   const [verified, setVerified] = useState(true);

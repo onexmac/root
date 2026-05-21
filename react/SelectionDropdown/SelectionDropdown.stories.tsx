@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SelectionDropdown } from "./SelectionDropdown";
 
@@ -26,18 +26,24 @@ const SAMPLE_ITEMS = [
 ];
 
 export const Compressed: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return <SelectionDropdown {...args} isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />;
+  },
   args: {
     label: "Tipo de material",
     items: SAMPLE_ITEMS,
-    isOpen: false,
   },
 };
 
 export const Expanded: Story = {
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(true);
+    return <SelectionDropdown {...args} isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />;
+  },
   args: {
     label: "Tipo de material",
     items: SAMPLE_ITEMS,
-    isOpen: true,
   },
 };
 
