@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { fn } from "@storybook/test";
 import { QuantitySelector } from "./QuantitySelector";
 
 const meta: Meta<typeof QuantitySelector> = {
@@ -17,7 +16,8 @@ const meta: Meta<typeof QuantitySelector> = {
   },
   args: {
     value: 3,
-    onTap: fn(),
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    onTap: () => {},
   },
 };
 
