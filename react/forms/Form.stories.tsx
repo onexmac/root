@@ -17,7 +17,7 @@ type Story = StoryObj<typeof FormField>;
 
 export const Standard:    Story = { name: "state: standard",    args: { state: "standard" } };
 export const Active:      Story = { name: "state: active",      args: { state: "active",      value: "Texto activo" } };
-export const X:           Story = { name: "state: x",           args: { state: "x",           value: "Texto borrable" } };
+export const X:           Story = { name: "state: x",           args: { state: "x" } };
 export const Ayuda:       Story = { name: "state: ayuda",       args: { state: "ayuda",       helperText: "Mensaje de ayuda" } };
 export const Advertencia: Story = { name: "state: advertencia", args: { state: "advertencia", helperText: "Mensaje de advertencia" } };
 export const Disabled:    Story = { name: "state: disabled",    args: { state: "disabled",    value: "No editable" } };
