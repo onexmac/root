@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import React from "react";
 import { SummaryCard, MaterialList, DetailCard } from "./Card";
+import type { QuantitySelectorState } from "../QuantitySelector/QuantitySelector";
 
 const meta: Meta<typeof SummaryCard> = {
   title: "Cards/Card",
@@ -24,11 +25,21 @@ type Story = StoryObj<typeof SummaryCard>;
 export const Open:  Story = { args: { visibility: "open"  } };
 export const Close: Story = { args: { visibility: "close" } };
 
-export const MaterialListExample: StoryObj = {
+export const MaterialListExample: StoryObj<{ qtyState: QuantitySelectorState; qty: number }> = {
   name: "MaterialList",
-  render: () => (
+  argTypes: {
+    qtyState: { control: "select", options: ["pendiente", "incompleto", "completo", "sin-stock"] },
+    qty:      { control: { type: "number", min: 0, max: 999 } },
+  },
+  args: { qtyState: "incompleto", qty: 3 },
+  render: ({ qtyState, qty }) => (
     <div style={{ padding: 16, background: "var(--ds-color-surface)" }}>
-      <MaterialList description="CONECTOR ADAPTADOR HEMBRA EAGLE 110V SALIDA MACHO EAGLE 220V" qtyState="incompleto" qty={3} />
+      <MaterialList
+        description="CONECTOR ADAPTADOR HEMBRA EAGLE 110V SALIDA MACHO EAGLE 220V"
+        qtyState={qtyState}
+        qty={qty}
+        onStateChange={() => {}}
+      />
     </div>
   ),
 };
