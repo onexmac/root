@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "@storybook/test";
 import { QuantitySelector } from "./QuantitySelector";
 
 const meta: Meta<typeof QuantitySelector> = {
@@ -10,8 +11,13 @@ const meta: Meta<typeof QuantitySelector> = {
       control: { type: "inline-radio" },
       options: ["pendiente", "incompleto", "completo", "sin-stock"],
     },
-    mode: { control: { type: "inline-radio" }, options: ["standard", "pressed"] },
+    mode:  { control: { type: "inline-radio" }, options: ["standard", "pressed"] },
+    size:  { control: { type: "inline-radio" }, options: ["sm", "md", "lg"] },
     value: { control: { type: "number", min: 0, max: 999 } },
+  },
+  args: {
+    value: 3,
+    onTap: fn(),
   },
 };
 
