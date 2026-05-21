@@ -13,6 +13,12 @@ const config: StorybookConfig = {
     "@storybook/addon-docs",
     "@storybook/addon-onboarding"
   ],
+  // Serve `public/` at the Storybook root so iframe.html can resolve
+  // /apple-touch-icon.png, /manifest.webmanifest, etc. iOS Safari reads
+  // these as absolute paths when the user does "Add to Home Screen".
+  // Icons are regenerated via `npm run icons` (which reads the canonical
+  // SVG at ~/Desktop/adelante-icon.svg). Per ICON.md.
+  "staticDirs": ["../public"],
   "framework": "@storybook/react-vite",
   async viteFinal(config) {
     const basePath = process.env.STORYBOOK_BASE_PATH;

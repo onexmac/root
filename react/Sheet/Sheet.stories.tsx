@@ -5,7 +5,7 @@ import { FormField } from "../Form/Form";
 import { SlideArm } from "../SlideArm/SlideArm";
 
 const meta: Meta<typeof Sheet> = {
-  title: "Sistema de diseño/Sheet",
+  title: "Cards/Sheet",
   component: Sheet,
   parameters: {
     layout: "fullscreen",
