@@ -672,9 +672,8 @@ body {
   transition:      background 120ms ease, border-color 120ms ease, border-width 120ms ease;
 }
 
-/* Figma checked: círculo sólido negro. Sin borde, fondo negro = disco negro puro. Ícono en blanco encima. */
+/* checked: sin borde, fondo blanco, ícono negro visible sobre blanco */
 .ds-checkbox__box--checked {
-  background:   var(--ds-color-black);
   border-width: 0;
 }
 
