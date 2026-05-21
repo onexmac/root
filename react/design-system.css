@@ -669,21 +669,13 @@ body {
   background:      var(--ds-color-white);
   position:        relative;
   overflow:        hidden;
-  transition:      background 120ms ease, border-color 120ms ease;
+  transition:      background 120ms ease, border-color 120ms ease, border-width 120ms ease;
 }
 
-/* Figma add/remove: border 8px grueso = el relleno negro; el border cubre los círculos del SVG,
-   dejando visible solo el símbolo (checkmark/minus) en el área de contenido central */
+/* Figma checked: círculo sólido negro. Sin borde, fondo negro = disco negro puro. Ícono en blanco encima. */
 .ds-checkbox__box--checked {
-  background:   var(--ds-color-white);
-  border-width: 8px;
-}
-
-/* SVG tamaño natural 24px (lg); el border 8px lo cubre en los bordes, solo el símbolo central es visible */
-.ds-checkbox__box--checked svg {
-  width:       24px;
-  height:      24px;
-  flex-shrink: 0;
+  background:   var(--ds-color-black);
+  border-width: 0;
 }
 
 /* Figma disabled: gray-100 bg, gray-200 border */
