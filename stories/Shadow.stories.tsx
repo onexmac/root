@@ -7,12 +7,50 @@ const meta: Meta = {
 };
 export default meta;
 
-const SHADOW_TOKENS = [
+const SPEC_TEXT: React.CSSProperties = {
+  fontSize:   12,
+  fontWeight: 400,
+  lineHeight: "16px",
+  color:      "var(--ds-color-black)",
+  margin:     0,
+};
+
+interface ShadowLayer { x: number; y: number; blur: number; spread: number; color: string }
+
+function SpecCol({ layer }: { layer: ShadowLayer }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 140 }}>
+      <p style={SPEC_TEXT}>x: {layer.x}</p>
+      <p style={SPEC_TEXT}>y: {layer.y}</p>
+      <p style={SPEC_TEXT}>blur: {layer.blur}</p>
+      <p style={SPEC_TEXT}>spread: {layer.spread}</p>
+      <p style={SPEC_TEXT}>color: {layer.color}</p>
+    </div>
+  );
+}
+
+const SHADOWS: { name: string; css: string; layers: ShadowLayer[] }[] = [
   {
-    name:  "shadow 01",
-    token: "--ds-shadow-01",
-    value: "0px 4px 8px rgba(170, 175, 182, 0.25)",
-    usage: "Cards, panels, elevated surfaces",
+    name: "shadow 01",
+    css:  "0px 4px 8px 0px #AAAFB640",
+    layers: [
+      { x: 0, y: 4, blur: 8, spread: 0, color: "gray 300 al 25%" },
+    ],
+  },
+  {
+    name: "shadow 02_soft",
+    css:  "0px 6px 0px 0px #00000029",
+    layers: [
+      { x: 0, y: 6, blur: 0, spread: 0, color: "black al 16%" },
+    ],
+  },
+  {
+    name: "shadow 03_big",
+    css:  "0px 6px 0px 0px #00000029, 0px 2px 4px 0px #00000029",
+    layers: [
+      { x: 0, y: 6, blur: 0, spread: 0, color: "black al 16%" },
+      { x: 0, y: 2, blur: 4, spread: 0, color: "black al 16%" },
+    ],
   },
 ];
 
@@ -57,58 +95,36 @@ export const Overview: StoryObj = {
         shadow
       </h1>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-        {SHADOW_TOKENS.map((s) => (
-          <div key={s.name} style={{ display: "flex", alignItems: "center", gap: 32 }}>
-            {/* Preview box */}
-            <div style={{
-              width:        120,
-              height:       80,
-              background:   "var(--ds-color-white)",
-              borderRadius: "var(--ds-radius-lg)",
-              boxShadow:    `var(${s.token})`,
-              flexShrink:   0,
-            }} />
-
-            {/* Info */}
-            <div>
-              <p style={{
-                fontSize:   "var(--ds-font-size-body-md)",
-                fontWeight: "var(--ds-font-weight-semibold)",
-                lineHeight: "var(--ds-line-height-body-md)",
-                color:      "var(--ds-color-black)",
-                margin:     "0 0 4px 0",
-              }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 520 }}>
+        {SHADOWS.map((s) => (
+          <div key={s.name} style={{
+            background:    "var(--ds-color-white)",
+            border:        "1px solid #e8eaed",
+            borderRadius:  16,
+            padding:       "20px 24px",
+            display:       "flex",
+            alignItems:    "flex-start",
+            gap:           24,
+          }}>
+            {/* Left: name + preview */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, flexShrink: 0 }}>
+              <p style={{ fontSize: 12, fontWeight: 600, lineHeight: "16px", color: "var(--ds-color-black)", margin: 0 }}>
                 {s.name}
               </p>
-              <p style={{
-                fontSize:   "var(--ds-font-size-body-sm)",
-                fontWeight: "var(--ds-font-weight-regular)",
-                lineHeight: "var(--ds-line-height-body-sm)",
-                color:      "var(--ds-color-gray-500)",
-                margin:     "0 0 2px 0",
-                fontFamily: "monospace",
-              }}>
-                {`var(${s.token})`}
-              </p>
-              <p style={{
-                fontSize:   "var(--ds-font-size-body-sm)",
-                fontWeight: "var(--ds-font-weight-regular)",
-                lineHeight: "var(--ds-line-height-body-sm)",
-                color:      "var(--ds-color-gray-400)",
-                margin:     0,
-              }}>
-                {s.value}
-              </p>
-              <p style={{
-                fontSize:   "var(--ds-font-size-body-sm)",
-                fontWeight: "var(--ds-font-weight-regular)",
-                lineHeight: "var(--ds-line-height-body-sm)",
-                color:      "var(--ds-color-gray-300)",
-                margin:     "4px 0 0",
-              }}>
-                {s.usage}
-              </p>
+              <div style={{
+                width:        52,
+                height:       44,
+                background:   "var(--ds-color-white)",
+                borderRadius: 8,
+                boxShadow:    s.css,
+              }} />
+            </div>
+
+            {/* Right: spec columns */}
+            <div style={{ display: "flex", gap: 24, paddingTop: 20 }}>
+              {s.layers.map((layer, i) => (
+                <SpecCol key={i} layer={layer} />
+              ))}
             </div>
           </div>
         ))}
@@ -116,3 +132,45 @@ export const Overview: StoryObj = {
     </div>
   ),
 };
+
+/* ── individual token stories (controls-enabled) ── */
+export const Shadow01: StoryObj = {
+  name: "shadow 01",
+  parameters: { layout: "centered" },
+  render: () => (
+    <div style={{ padding: 32 }}>
+      <div style={{
+        width: 120, height: 80, background: "var(--ds-color-white)",
+        borderRadius: 12, boxShadow: "0px 4px 8px 0px #AAAFB640",
+      }} />
+    </div>
+  ),
+};
+
+export const Shadow02Soft: StoryObj = {
+  name: "shadow 02_soft",
+  parameters: { layout: "centered" },
+  render: () => (
+    <div style={{ padding: 32 }}>
+      <div style={{
+        width: 120, height: 80, background: "var(--ds-color-white)",
+        borderRadius: 12, boxShadow: "0px 6px 0px 0px #00000029",
+      }} />
+    </div>
+  ),
+};
+
+export const Shadow03Big: StoryObj = {
+  name: "shadow 03_big",
+  parameters: { layout: "centered" },
+  render: () => (
+    <div style={{ padding: 32 }}>
+      <div style={{
+        width: 120, height: 80, background: "var(--ds-color-white)",
+        borderRadius: 12, boxShadow: "0px 6px 0px 0px #00000029, 0px 2px 4px 0px #00000029",
+      }} />
+    </div>
+  ),
+};
+
+
