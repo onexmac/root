@@ -556,6 +556,12 @@ body {
   color:       var(--ds-color-black);
 }
 
+/* Figma standard: label 14px/20lh (otros estados 16px/24lh) */
+.ds-form-field--standard .ds-form-field__label {
+  font-size:   var(--ds-font-size-label);
+  line-height: var(--ds-line-height-label);
+}
+
 .ds-form-field__input-wrap {
   position:   relative;
   display:    flex;
@@ -569,7 +575,8 @@ body {
   border-radius: var(--ds-radius-2xl);
   padding:       var(--ds-space-4) var(--ds-space-5);
   font-family:   var(--ds-font-family);
-  font-size:     var(--ds-font-size-body-md);
+  font-size:     var(--ds-font-size-label);   /* Figma: font-size-14 = 14px */
+  line-height:   var(--ds-line-height-label); /* Figma: line-height-20 = 20px */
   color:         var(--ds-color-black);
   background:    var(--ds-color-white);
   box-shadow:    var(--ds-shadow-01);
@@ -599,10 +606,13 @@ body {
 }
 .ds-form-field--disabled .ds-form-field__input {
   background:  var(--ds-color-gray-100);
-  color:       var(--ds-color-gray-300);
+  color:       rgba(170, 175, 182, 0.5); /* Figma: gray-300 @ 50% */
   border:      none;
   box-shadow:  none;
   cursor:      not-allowed;
+}
+.ds-form-field--disabled .ds-form-field__input::placeholder {
+  color: rgba(170, 175, 182, 0.5); /* Figma: gray-300 @ 50% */
 }
 
 .ds-form-field__clear,
