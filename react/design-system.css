@@ -673,8 +673,8 @@ body {
 
 /* Figma add/remove (checked): círculo negro sólido, ícono blanco grande centrado */
 .ds-checkbox__box--checked {
-  background:   var(--ds-color-black);
-  border-color: var(--ds-color-black);
+  background:   var(--ds-color-white);
+  border-width: 8px; /* Figma: 8px border en checked — el borde + outer-ring del icono forman el círculo sólido */
 }
 
 /* Figma disabled: gray-100 bg, gray-200 border */
