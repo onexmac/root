@@ -44,9 +44,9 @@
 .ds-sd__list-inner {
   display:        flex;
   flex-direction: column;
-  gap:            var(--ds-space-3);               /* 12px entre pills (espacio blanco Figma) */
-  padding:        var(--ds-space-3);
-  /* 12px todos los lados */
+  gap:            var(--ds-space-4);               /* Figma spacing/spacing 16 entre pills */
+  padding:        var(--ds-space-4) var(--ds-space-3) var(--ds-space-3);
+  /* top 16 (spacing 16 entre header y primera pill), 12 los demás */
 }
 
 /* Cada item: pill negro 58px tipo TabsMenu.

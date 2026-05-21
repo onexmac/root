@@ -67,20 +67,21 @@ export function FormField({
             whileTap={{ scale: 0.82 }}
             transition={springs.snappy}
           >
-            <Icon name="close" size="sm" />
+            <Icon name="delete" size="sm" />
           </motion.button>
-        )}
-        {state === "ayuda" && (
-          <Icon name="info" size="sm" className="ds-form-field__icon" />
-        )}
-        {state === "advertencia" && (
-          <Icon name="alert" size="sm" className="ds-form-field__icon ds-form-field__icon--warn" />
         )}
       </div>
       {resolvedHelper && (
         <span
           className={`ds-form-field__helper${state === "advertencia" ? " ds-form-field__helper--warn" : ""}`}
         >
+          {(state === "ayuda" || state === "advertencia") && (
+            <Icon
+              name="info"
+              size="sm"
+              className={state === "advertencia" ? "ds-form-field__helper-icon ds-form-field__helper-icon--warn" : "ds-form-field__helper-icon"}
+            />
+          )}
           {resolvedHelper}
         </span>
       )}
@@ -112,7 +113,7 @@ export function CheckBox({
   };
 
   const isChecked = checked || state === "add" || state === "remove";
-  const iconName = state === "remove" ? "remove" : "completado";
+  const iconName = state === "remove" ? "minus" : "good";
 
   return (
     <label className={`ds-checkbox ds-checkbox--${state}`}>
@@ -127,7 +128,7 @@ export function CheckBox({
         transition={springs.snappy}
       >
         {isChecked && !isDisabled && (
-          <Icon name={iconName} size="md" color="var(--ds-color-white)" />
+          <Icon name={iconName} size="sm" color="var(--ds-color-white)" />
         )}
       </motion.span>
       <span className="ds-checkbox__label">{label}</span>
@@ -158,7 +159,7 @@ export function Tag({ label = "Tag", state = "standard", onClick }: TagProps) {
     >
       {label}
       {state === "active" && (
-        <Icon name="check" size="md" color="var(--ds-color-white)" />
+        <Icon name="completado" size="md" color="var(--ds-color-white)" />
       )}
     </motion.button>
   );

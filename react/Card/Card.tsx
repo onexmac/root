@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
 import { Icon } from "../Icon/Icon";
 import { QuantitySelector, QuantitySelectorState } from "../QuantitySelector/QuantitySelector";
 import { ToggleCards } from "../ToggleCards/ToggleCards";
 import { springs } from "../springs";
 import "../QuantitySelector/QuantitySelector.css";
+
+// Orden cíclico de estados del QuantitySelector (Figma prototype)
+const QTY_STATE_CYCLE: QuantitySelectorState[] = [
+  "pendiente",
+  "incompleto",
+  "completo",
+  "sin-stock",
+];
+
+function nextQtyState(s: QuantitySelectorState): QuantitySelectorState {
+  const idx = QTY_STATE_CYCLE.indexOf(s);
+  return QTY_STATE_CYCLE[(idx + 1) % QTY_STATE_CYCLE.length];
+}
 
 // ─── SummaryCard ──────────────────────────────────────────────────────────────
 
@@ -82,7 +95,9 @@ export interface MaterialListProps {
   qtyState?: QuantitySelectorState;
   /** Cantidad */
   qty?: number;
+  /** Callback opcional cuando se toca el QuantitySelector. Si no se pasa, cicla el estado internamente. */
   onQtyChange?: (qty: number) => void;
+  onStateChange?: (state: QuantitySelectorState) => void;
 }
 
 export function MaterialList({
@@ -90,15 +105,28 @@ export function MaterialList({
   qtyState = "pendiente",
   qty = 1,
   onQtyChange,
+  onStateChange,
 }: MaterialListProps) {
+  // Estado interno solo si no hay control externo
+  const [internalState, setInternalState] = useState<QuantitySelectorState>(qtyState);
+  const isControlled = onStateChange !== undefined;
+  const currentState = isControlled ? qtyState : internalState;
+
+  const handleTap = () => {
+    if (onQtyChange) onQtyChange(qty);
+    const next = nextQtyState(currentState);
+    if (isControlled) onStateChange!(next);
+    else setInternalState(next);
+  };
+
   return (
     <div className="ds-material-list">
       <p className="ds-material-list__desc">{description}</p>
       <QuantitySelector
         value={qty}
-        state={qtyState}
+        state={currentState}
         size="sm"
-        onTap={onQtyChange ? () => onQtyChange(qty) : undefined}
+        onTap={handleTap}
       />
     </div>
   );

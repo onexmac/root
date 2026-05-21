@@ -52,12 +52,13 @@ export function SelectionDropdown({
 
   return (
     <div className={`ds-sd${isOpen ? " ds-sd--open" : ""}${className ? ` ${className}` : ""}` }>
-      {/* Header: siempre visible */}
+      {/* Header: siempre visible. Figma: compressed muestra chevron-down (close),
+          expanded muestra double-chevron (open) indicando que se puede colapsar. */}
       <div className="ds-sd__header">
         <span className="ds-sd__label">{label}</span>
         <ToggleCards
           size="small"
-          visibility={isOpen ? "close" : "open"}
+          visibility={isOpen ? "open" : "close"}
           onClick={toggle}
           ariaLabel={isOpen ? "Cerrar opciones" : "Ver opciones"}
         />

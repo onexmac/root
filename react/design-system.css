@@ -296,7 +296,8 @@ body {
 }
 
 /* Figma pressed: stays white, 8px #F3F3F3 outward stroke (NOT black bg) */
-.ds-nav-ctrl--pressed {
+.ds-nav-ctrl--pressed,
+.ds-nav-ctrl:not(:disabled):active {
   background:      var(--ds-color-white);
   box-shadow:      0 0 0 8px var(--ds-color-surface), var(--ds-shadow-03-big);
 }
@@ -321,8 +322,10 @@ body {
 
 .ds-filter-opt--close { background: var(--ds-color-black); }
 /* Figma pressed normal: 8px #F3F3F3 ring. Pressed close: 8px black 80% ring (dark bg) */
-.ds-filter-opt--pressed { box-shadow: 0 0 0 8px var(--ds-color-surface), var(--ds-shadow-03-big); }
-.ds-filter-opt--pressed.ds-filter-opt--close { box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.8), var(--ds-shadow-03-big); }
+.ds-filter-opt--pressed,
+.ds-filter-opt:not(:disabled):active { box-shadow: 0 0 0 8px var(--ds-color-surface), var(--ds-shadow-03-big); }
+.ds-filter-opt--pressed.ds-filter-opt--close,
+.ds-filter-opt--close:not(:disabled):active { box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.8), var(--ds-shadow-03-big); }
 
 /* ============================================================
    TOGGLE MENU  (ds-toggle-menu)
@@ -347,11 +350,13 @@ body {
 }
 
 /* Figma pressed open: white bg, 8px #F3F3F3 stroke */
-.ds-toggle-menu--pressed.ds-toggle-menu--open {
+.ds-toggle-menu--pressed.ds-toggle-menu--open,
+.ds-toggle-menu--open:not(:disabled):active {
   box-shadow: 0 0 0 8px var(--ds-color-surface), var(--ds-shadow-03-big);
 }
 /* Figma pressed close: black bg, 8px black 80% stroke */
-.ds-toggle-menu--pressed.ds-toggle-menu--close {
+.ds-toggle-menu--pressed.ds-toggle-menu--close,
+.ds-toggle-menu--close:not(:disabled):active {
   box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.8), var(--ds-shadow-03-big);
 }
 
@@ -617,12 +622,17 @@ body {
 .ds-form-field__icon--warn { color: var(--ds-color-red-100); }
 
 .ds-form-field__helper {
-  font-size:  var(--ds-font-size-body-sm);
-  color:      var(--ds-color-gray-300);
-  margin-top: var(--ds-space-1);
+  display:     inline-flex;
+  align-items: center;
+  gap:         var(--ds-space-1);
+  font-size:   var(--ds-font-size-body-sm);
+  color:       var(--ds-color-gray-300);
+  margin-top:  var(--ds-space-1);
 }
 
 .ds-form-field__helper--warn { color: var(--ds-color-red-200); }
+.ds-form-field__helper-icon  { color: var(--ds-color-gray-300); flex-shrink: 0; }
+.ds-form-field__helper-icon--warn { color: var(--ds-color-red-200); }
 
 /* ============================================================
    CHECKBOX  (ds-checkbox)
@@ -739,13 +749,15 @@ body {
   transition:    width 300ms ease;
 }
 
-/* Figma description: "Faltan 4 materiales" — body-sm, gray-300 */
+/* Figma description: "Faltan 4 materiales" — body-sm, gray-300, alineado a la derecha bajo la barra */
 .ds-progress__description {
   font-family: var(--ds-font-family);
   font-size:   var(--ds-font-size-body-sm);
   font-weight: var(--ds-font-weight-regular);
   line-height: var(--ds-line-height-body-sm);
   color:       var(--ds-color-gray-300);
+  text-align:  right;
+  align-self:  flex-end;
 }
 
 /* Legacy alias */
@@ -787,9 +799,9 @@ body {
   transition:    background 120ms ease, border-color 120ms ease;
 }
 
-/* Figma active/selected: 4px black border, black fill */
+/* Figma active/selected: 4px black border, inner fill gray-500 (un tono más claro que el borde) */
 .ds-option-label--active .ds-option-label__dot {
-  background:   var(--ds-color-black);
+  background:   var(--ds-color-gray-500);
   border-color: var(--ds-color-black);
 }
 
