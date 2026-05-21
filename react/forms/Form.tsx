@@ -128,7 +128,7 @@ export function CheckBox({
         transition={springs.snappy}
       >
         {isChecked && !isDisabled && (
-          <Icon name={iconName} size="lg" color="var(--ds-color-white)" />
+          <Icon name={iconName} size="lg" color="var(--ds-color-black)" />
         )}
       </motion.span>
       <span className="ds-checkbox__label">{label}</span>
