@@ -1,23 +1,27 @@
-/* SelectionDropdown — terjeta blanca expandible (Figma: Nav » selectionDropdown). Solo var(--ds-*). */
+/* SelectionDropdown — DOS contenedores separados (Figma: Nav » selectionDropdown).
+   1) Header card (siempre visible)
+   2) Items card (visible cuando isOpen, separado por margin-top 16) */
 
-/* Contenedor principal — NO overflow:hidden so ToggleCards shadow/ring isn't clipped */
 .ds-sd {
   position:      relative;
   width:         372px;
-  background:    var(--ds-color-white);
-  border-radius: var(--ds-radius-xl);      /* 32px */
-  box-shadow:    var(--ds-shadow-01);      /* only on header area visually */
-  overflow:      visible;
+  background:    transparent;
+  display:       flex;
+  flex-direction: column;
 }
 
-/* Header: siempre visible. Label gris + ToggleCards small */
-.ds-sd__header {
+/* CARD 1 — Header con label + ToggleCards. Propia shadow. */
+.ds-sd__header-card {
   display:         flex;
   align-items:     center;
   justify-content: space-between;
+  width:           100%;
   height:          70px;
   padding:         var(--ds-space-3) var(--ds-space-3) var(--ds-space-3) var(--ds-space-5);
   /* 12px right/top/bottom, 20px left */
+  background:      var(--ds-color-white);
+  border-radius:   var(--ds-radius-xl);          /* 32px */
+  box-shadow:      var(--ds-shadow-01);
 }
 
 /* Label gris del header (body/regular 16px, gray-300) */
@@ -35,18 +39,21 @@
   text-overflow:  ellipsis;
 }
 
-/* Wrapper de la lista colapsable (height animada con motion) */
-.ds-sd__list {
-  overflow: hidden;
+/* CARD 2 — Items list. Separado del header por 16px de margin-top (animado). */
+.ds-sd__items-card {
+  width:         100%;
+  background:    var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  box-shadow:    var(--ds-shadow-01);
+  overflow:      hidden;
 }
 
 /* Inner padding de la lista de items */
-.ds-sd__list-inner {
+.ds-sd__items-inner {
   display:        flex;
   flex-direction: column;
   gap:            var(--ds-space-4);               /* Figma spacing/spacing 16 entre pills */
-  padding:        var(--ds-space-4) var(--ds-space-3) var(--ds-space-3);
-  /* top 16 (spacing 16 entre header y primera pill), 12 los demás */
+  padding:        var(--ds-space-3);               /* 12px todos los lados */
 }
 
 /* Cada item: pill negro 58px tipo TabsMenu.

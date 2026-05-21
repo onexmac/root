@@ -50,11 +50,14 @@ export function SelectionDropdown({
     onToggle?.();
   };
 
+  // Figma: dos contenedores separados con shadow propia.
+  //  1. Header card (siempre visible)
+  //  2. Items card (solo visible cuando isOpen)
+  // Se separan por gap, no por padding interno de un solo card.
   return (
     <div className={`ds-sd${isOpen ? " ds-sd--open" : ""}${className ? ` ${className}` : ""}` }>
-      {/* Header: siempre visible. Figma: compressed muestra chevron-down (close),
-          expanded muestra double-chevron (open) indicando que se puede colapsar. */}
-      <div className="ds-sd__header">
+      {/* Header card */}
+      <div className="ds-sd__header-card">
         <span className="ds-sd__label">{label}</span>
         <ToggleCards
           size="small"
@@ -64,19 +67,19 @@ export function SelectionDropdown({
         />
       </div>
 
-      {/* Lista expandible */}
+      {/* Items card — contenedor separado con su propia shadow */}
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
-            key="sd-list"
-            className="ds-sd__list"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+            key="sd-items-card"
+            className="ds-sd__items-card"
+            initial={{ height: 0, opacity: 0, marginTop: 0 }}
+            animate={{ height: "auto", opacity: 1, marginTop: 16 }}
+            exit={{ height: 0, opacity: 0, marginTop: 0 }}
             transition={springs.expanding}
             style={{ overflow: "hidden" }}
           >
-            <div className="ds-sd__list-inner">
+            <div className="ds-sd__items-inner">
               {items.map((item, i) => (
                 <motion.button
                   key={i}
