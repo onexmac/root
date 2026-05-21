@@ -75,11 +75,11 @@ export function FormField({
         <span
           className={`ds-form-field__helper${state === "advertencia" ? " ds-form-field__helper--warn" : ""}`}
         >
-          {(state === "ayuda" || state === "advertencia") && (
+          {state === "advertencia" && (
             <Icon
-              name="info"
+              name="incompleto"
               size="sm"
-              className={state === "advertencia" ? "ds-form-field__helper-icon ds-form-field__helper-icon--warn" : "ds-form-field__helper-icon"}
+              className="ds-form-field__helper-icon ds-form-field__helper-icon--warn"
             />
           )}
           {resolvedHelper}
