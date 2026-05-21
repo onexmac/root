@@ -45,9 +45,9 @@ const SIZE_STYLES: Record<ToggleCardsSize, React.CSSProperties> = {
  *
  * No fade, no 3D — pure 2D CSS transform interpolation.
  */
-const SPIN_DURATION_MS = 480;
-const SWAP_AT_MS = 240; // 50 % of SPIN_DURATION_MS
-const SPIN_DELTA_DEG = 360; // one full spin per toggle
+const SPIN_DURATION_MS = 540;
+const SWAP_AT_MS = 270; // 50 % of SPIN_DURATION_MS
+const SPIN_DELTA_DEG = 540; // 1.5 spins per toggle — close lands at 180° visual
 
 export function ToggleCards({
   mode = "normal",
