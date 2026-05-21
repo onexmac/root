@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { QuantitySelector } from "./QuantitySelector";
 
 const meta: Meta<typeof QuantitySelector> = {
-  title: "Sistema de Diseño/QuantitySelector",
+  title: "Buttons",
   component: QuantitySelector,
   parameters: { layout: "centered" },
   argTypes: {
