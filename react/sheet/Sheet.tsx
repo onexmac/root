@@ -5,7 +5,7 @@ import {
   type PanInfo,
   type Variants,
 } from "motion/react";
-import { Icon, type IconName } from "../Icon/Icon";
+import { Icon, type IconName } from "../iconos/Icon";
 import { springs } from "../springs";
 import { haptic } from "../haptic";
 import "./Sheet.css";

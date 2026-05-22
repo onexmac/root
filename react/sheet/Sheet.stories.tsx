@@ -1,8 +1,8 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Sheet } from "./Sheet";
-import { FormField } from "../Form/Form";
-import { SlideArm } from "../SlideArm/SlideArm";
+import { FormField } from "../forms/Form";
+import { SlideButton } from "../SlideButton/SlideButton";
 
 const meta: Meta<typeof Sheet> = {
   title: "Cards/Sheet",
@@ -85,9 +85,8 @@ function SheetDemo({ withForm = false }: { withForm?: boolean }) {
           )}
         </Sheet.Body>
         <Sheet.Footer>
-          <SlideArm
+          <SlideButton
             label="Crear"
-            collapsedWidth={200}
             onConfirm={() => setOpen(false)}
           />
         </Sheet.Footer>
