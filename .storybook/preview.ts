@@ -8,9 +8,6 @@ import '../react/ToggleCards/ToggleCards.css'
 import '../react/screens/Slab/Slab.css'
 import '../react/screens/Boletas/Boletas.css'
 import '../react/screens/BoletaPedido/BoletaPedido.css'
-import '../react/screens/Test1/Test1.css'
-import '../react/screens/Test1/Test1Detail.css'
-import '../react/screens/Test1v2/Test1v2.css'
 import { adelanteTheme } from './theme'
 
 const preview: Preview = {
