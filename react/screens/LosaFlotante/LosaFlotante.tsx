@@ -1,14 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import {
-  AnimatePresence,
-  motion,
-  type PanInfo,
-  type Variants,
-} from "motion/react";
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { Button } from "../../Button/Button";
 import { FormField, Tag } from "../../Form/Form";
 import { Icon } from "../../Icon/Icon";
 import { SelectionDropdown } from "../../SelectionDropdown/SelectionDropdown";
+import { Sheet } from "../../Sheet/Sheet";
 import { SlideArm } from "../../SlideArm/SlideArm";
 import { ToggleCards } from "../../ToggleCards/ToggleCards";
 import { springs } from "../../springs";
@@ -20,22 +16,16 @@ import "./LosaFlotante.css";
  *
  * M1: mobile feed of UserCards (collapsed ↔ expanded with grid-template-rows
  *     expand + AnimatePresence crossfade between short-name and Activo pill).
- * M2: FAB → bottom-sheet morph for "NUEVO USUARIO". Two-phase morph
- *     (width then height), drag-to-dismiss, scroll-to-fullscreen with
- *     hysteresis (12/2), three-state machine (closed/open/fullScreen),
- *     floating SlideButton footer.
+ * M2: FAB → bottom-sheet morph for "NUEVO USUARIO". The morph itself is
+ *     owned by the DS `Sheet` (`react/Sheet/`) — NuevoUsuarioSheet just
+ *     supplies header / body / footer slots.
  *
- * DS components consumed: Button, Tag, FormField, SelectionDropdown,
- * SlideButton, ToggleCards, Icon.
+ * DS components consumed: Sheet, Button, Tag, FormField, SelectionDropdown,
+ * SlideArm, ToggleCards, Icon.
  *
  * Stubs flagged with `NOT-IN-DS:` are promotion candidates. See
  * losa-flotante/components/losa/DS-GAPS.md in the standalone prototype.
  * ============================================================ */
-
-// ── Spring add-ons (losa-only, not yet in ../springs) ────────
-// shrinking: closes the sheet. popping: bouncy pop-in for the Activo pill.
-const SHRINKING = { type: "spring", stiffness: 224, damping: 29, mass: 1 } as const;
-const POPPING = { type: "spring", stiffness: 385, damping: 22, mass: 1 } as const;
 
 // ── Seed data ────────────────────────────────────────────────
 
@@ -157,7 +147,7 @@ function UserCard({
                 initial={{ opacity: 0, scale: 0.85, x: 8 }}
                 animate={{ opacity: 1, scale: 1, x: 0 }}
                 exit={{ opacity: 0, scale: 0.85, x: 8 }}
-                transition={POPPING}
+                transition={springs.popping}
                 className="lf-card__activo"
               >
                 {/* NOT-IN-DS: Tag with trailing icon (Activo ✓).
@@ -297,64 +287,12 @@ function BottomActionBar() {
 
 // ── NuevoUsuarioSheet (M2) ───────────────────────────────────
 //
-// NOT-IN-DS: FAB → bottom-sheet morph surface. DS only ships desktop
-// `Drawer` (CSS slide-in aside). Promote if more mobile flows need it.
+// Thin wrapper over the DS `Sheet`. All morph + drag + scrim + scroll-to-
+// fullscreen + cascade logic lives in `react/Sheet/Sheet.tsx`. This screen
+// supplies the M2-specific composition: title row + segmented tabs + form
+// + SlideArm footer.
 
 type SheetTab = "personal" | "rol";
-
-const SHEET_VARIANTS: Variants = {
-  closed: {
-    width: 84,
-    height: 80,
-    right: 24,
-    bottom: 24,
-    backgroundColor: "var(--ds-color-green-100)",
-    borderRadius: 24,
-    transition: {
-      width: { delay: 0.18, ...SHRINKING },
-      right: { delay: 0.18, ...SHRINKING },
-      height: SHRINKING,
-      bottom: SHRINKING,
-      borderRadius: SHRINKING,
-      backgroundColor: { duration: 0.28 },
-    },
-  },
-  open: {
-    width: "100%",
-    height: "82vh",
-    right: 0,
-    bottom: 0,
-    backgroundColor: "var(--ds-color-white)",
-    borderRadius: 32,
-    transition: {
-      width: springs.expanding,
-      right: springs.expanding,
-      height: { delay: 0.18, ...springs.expanding },
-      bottom: { delay: 0.18, ...springs.expanding },
-      borderRadius: { delay: 0.28, ...springs.expanding },
-      backgroundColor: { duration: 0.28, delay: 0.1 },
-    },
-  },
-  fullScreen: {
-    width: "100%",
-    height: "100vh",
-    right: 0,
-    bottom: 0,
-    backgroundColor: "var(--ds-color-white)",
-    borderRadius: 0,
-    transition: springs.expanding,
-  },
-};
-
-const CASCADE_CONTAINER: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.06, delayChildren: 0.38 } },
-};
-
-const CASCADE_ITEM: Variants = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: springs.expanding },
-};
 
 function NuevoUsuarioSheet({
   open, onOpen, onDismiss, onConfirm,
@@ -364,251 +302,139 @@ function NuevoUsuarioSheet({
   onDismiss: () => void;
   onConfirm: () => void;
 }) {
-  const [fullScreen, setFullScreen] = useState(false);
   const [tab, setTab] = useState<SheetTab>("rol");
   const [form, setForm] = useState({
     nombre: "", apellido: "", dni: "", telefono: "", email: "",
     area: "", salario: "", puesto: "", fecha: "",
   });
-  const bodyRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) setFullScreen(false);
-  }, [open]);
-
-  useEffect(() => {
-    const el = bodyRef.current;
-    if (!el || !open) return;
-    const onScroll = () => {
-      const top = el.scrollTop;
-      setFullScreen((prev) => {
-        if (!prev && top > 12) return true;
-        if (prev && top <= 2) return false;
-        return prev;
-      });
-    };
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [open]);
-
-  const animateTo = !open ? "closed" : fullScreen ? "fullScreen" : "open";
-
-  const handleDragEnd = (
-    _e: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo,
-  ) => {
-    if (!open) return;
-    if (info.offset.y > 120 || info.velocity.y > 600) onDismiss();
-  };
 
   return (
-    <>
-      <AnimatePresence>
-        {open ? (
-          <motion.button
-            key="scrim"
-            type="button"
-            aria-label="Cerrar"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.24 }}
-            onClick={onDismiss}
-            className="lf-scrim"
+    <Sheet
+      open={open}
+      onOpen={onOpen}
+      onDismiss={onDismiss}
+      fab={{
+        background: "var(--ds-color-green-100)",
+        color: "var(--ds-color-black)",
+        iconName: "plus",
+        ariaLabel: "Crear usuario",
+      }}
+    >
+      <Sheet.Header iconName="user" title="Nuevo usuario" />
+      <Sheet.Body>
+        {/* NOT-IN-DS: two-tab segmented toggle (outlined↔filled).
+            Composed from two DS Buttons since DS has no such variant. */}
+        <div className="lf-sheet__tabs">
+          <Button
+            label="Personal"
+            color={tab === "personal" ? "black" : "white"}
+            size="sm"
+            onClick={() => setTab("personal")}
           />
-        ) : null}
-      </AnimatePresence>
+          <Button
+            label="Rol y asignación"
+            color={tab === "rol" ? "black" : "white"}
+            size="sm"
+            onClick={() => setTab("rol")}
+          />
+        </div>
 
-      <motion.div
-        key="sheet"
-        className="lf-sheet losa-stack"
-        style={{
-          maxWidth: open ? 402 : undefined,
-          left: open ? "50%" : "auto",
-          x: open ? "-50%" : 0,
-          touchAction: open ? "auto" : "manipulation",
-        }}
-        initial="closed"
-        animate={animateTo}
-        variants={SHEET_VARIANTS}
-        drag={open ? "y" : false}
-        dragConstraints={{ top: 0, bottom: 0 }}
-        dragElastic={{ top: 0, bottom: 0.5 }}
-        onDragStart={() => haptic.drag()}
-        onDragEnd={handleDragEnd}
-      >
-        <AnimatePresence initial={false} mode="wait">
-          {open ? (
+        <div className="lf-sheet__divider">
+          <span className="lf-sheet__divider-line" />
+          <span className="lf-sheet__divider-label">
+            {tab === "personal" ? "Identidad" : "Asignación"}
+          </span>
+          <span className="lf-sheet__divider-line" />
+        </div>
+
+        <AnimatePresence mode="wait" initial={false}>
+          {tab === "rol" ? (
             <motion.div
-              key="content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.28 } }}
-              exit={{ opacity: 0 }}
-              className="lf-sheet__content"
+              key="rol"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={springs.expanding}
+              className="lf-sheet__pane"
             >
-              {/* NOT-IN-DS: drag-handle / dismiss chevron at top of sheet. */}
-              <div className="lf-sheet__handle">
-                <button
-                  type="button"
-                  aria-label="Cerrar"
-                  onClick={onDismiss}
-                  className="lf-sheet__handle-btn"
-                >
-                  <Icon name="close" size="md" color="var(--ds-color-gray-500)" />
-                </button>
-              </div>
-
-              <motion.div
-                ref={bodyRef}
-                className="lf-sheet__body"
-                variants={CASCADE_CONTAINER}
-                initial="hidden"
-                animate="show"
-                exit="hidden"
-              >
-                <motion.div variants={CASCADE_ITEM} className="lf-sheet__title-row">
-                  <span className="lf-sheet__avatar">
-                    <Icon name="user" size="lg" color="currentColor" />
-                  </span>
-                  <h2 className="lf-sheet__title">Nuevo usuario</h2>
-                </motion.div>
-
-                {/* NOT-IN-DS: two-tab segmented toggle (outlined↔filled).
-                    Composed from two DS Buttons since DS has no such variant. */}
-                <motion.div variants={CASCADE_ITEM} className="lf-sheet__tabs">
-                  <Button
-                    label="Personal"
-                    color={tab === "personal" ? "black" : "white"}
-                    size="sm"
-                    onClick={() => setTab("personal")}
-                  />
-                  <Button
-                    label="Rol y asignación"
-                    color={tab === "rol" ? "black" : "white"}
-                    size="sm"
-                    onClick={() => setTab("rol")}
-                  />
-                </motion.div>
-
-                <motion.div variants={CASCADE_ITEM} className="lf-sheet__divider">
-                  <span className="lf-sheet__divider-line" />
-                  <span className="lf-sheet__divider-label">
-                    {tab === "personal" ? "Identidad" : "Asignación"}
-                  </span>
-                  <span className="lf-sheet__divider-line" />
-                </motion.div>
-
-                <AnimatePresence mode="wait" initial={false}>
-                  {tab === "rol" ? (
-                    <motion.div
-                      key="rol"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={springs.expanding}
-                      className="lf-sheet__pane"
-                    >
-                      <DropdownField
-                        label="Área de trabajo"
-                        value={form.area}
-                        options={AREA_OPTIONS}
-                        onSelect={(v) => setForm({ ...form, area: v })}
-                      />
-                      <DropdownField
-                        label="Salario"
-                        value={form.salario}
-                        options={SALARIO_OPTIONS}
-                        onSelect={(v) => setForm({ ...form, salario: v })}
-                      />
-                      <FormField
-                        label="Puesto de trabajo"
-                        placeholder="Placeholder"
-                        value={form.puesto}
-                        onChange={(e) => setForm({ ...form, puesto: e.target.value })}
-                      />
-                      <DropdownField
-                        label="Fecha de ingreso"
-                        value={form.fecha}
-                        options={FECHA_OPTIONS}
-                        onSelect={(v) => setForm({ ...form, fecha: v })}
-                      />
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="personal"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={springs.expanding}
-                      className="lf-sheet__pane"
-                    >
-                      <FormField
-                        label="Nombre"
-                        placeholder="Placeholder"
-                        value={form.nombre}
-                        onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-                      />
-                      <FormField
-                        label="Apellido"
-                        placeholder="Placeholder"
-                        value={form.apellido}
-                        onChange={(e) => setForm({ ...form, apellido: e.target.value })}
-                      />
-                      <FormField
-                        label="DNI"
-                        placeholder="Placeholder"
-                        value={form.dni}
-                        onChange={(e) => setForm({ ...form, dni: e.target.value })}
-                      />
-                      <FormField
-                        label="Teléfono"
-                        placeholder="Placeholder"
-                        type="tel"
-                        value={form.telefono}
-                        onChange={(e) => setForm({ ...form, telefono: e.target.value })}
-                      />
-                      <FormField
-                        label="Correo electrónico"
-                        placeholder="Placeholder"
-                        type="email"
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-
-              {/* Floating footer — SlideArm stays put while form scrolls.
-                  Collapsed: green "Crear usuario" pill at the trailing edge.
-                  Tap → grows into a full-width SlideToConfirm with a cancel
-                  X above. */}
-              <div className="lf-sheet__footer">
-                <SlideArm
-                  label="Crear usuario"
-                  collapsedWidth={200}
-                  onConfirm={onConfirm}
-                />
-              </div>
+              <DropdownField
+                label="Área de trabajo"
+                value={form.area}
+                options={AREA_OPTIONS}
+                onSelect={(v) => setForm({ ...form, area: v })}
+              />
+              <DropdownField
+                label="Salario"
+                value={form.salario}
+                options={SALARIO_OPTIONS}
+                onSelect={(v) => setForm({ ...form, salario: v })}
+              />
+              <FormField
+                label="Puesto de trabajo"
+                placeholder="Placeholder"
+                value={form.puesto}
+                onChange={(e) => setForm({ ...form, puesto: e.target.value })}
+              />
+              <DropdownField
+                label="Fecha de ingreso"
+                value={form.fecha}
+                options={FECHA_OPTIONS}
+                onSelect={(v) => setForm({ ...form, fecha: v })}
+              />
             </motion.div>
           ) : (
-            <motion.button
-              key="fab"
-              type="button"
-              aria-label="Crear usuario"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { delay: 0.24 } }}
-              exit={{ opacity: 0 }}
-              onPointerDown={() => haptic.select()}
-              onClick={onOpen}
-              className="lf-sheet__fab"
+            <motion.div
+              key="personal"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={springs.expanding}
+              className="lf-sheet__pane"
             >
-              <Icon name="plus" size="lg" color="currentColor" />
-            </motion.button>
+              <FormField
+                label="Nombre"
+                placeholder="Placeholder"
+                value={form.nombre}
+                onChange={(e) => setForm({ ...form, nombre: e.target.value })}
+              />
+              <FormField
+                label="Apellido"
+                placeholder="Placeholder"
+                value={form.apellido}
+                onChange={(e) => setForm({ ...form, apellido: e.target.value })}
+              />
+              <FormField
+                label="DNI"
+                placeholder="Placeholder"
+                value={form.dni}
+                onChange={(e) => setForm({ ...form, dni: e.target.value })}
+              />
+              <FormField
+                label="Teléfono"
+                placeholder="Placeholder"
+                type="tel"
+                value={form.telefono}
+                onChange={(e) => setForm({ ...form, telefono: e.target.value })}
+              />
+              <FormField
+                label="Correo electrónico"
+                placeholder="Placeholder"
+                type="email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+              />
+            </motion.div>
           )}
         </AnimatePresence>
-      </motion.div>
-    </>
+      </Sheet.Body>
+      <Sheet.Footer>
+        <SlideArm
+          label="Crear usuario"
+          collapsedWidth={200}
+          onConfirm={onConfirm}
+        />
+      </Sheet.Footer>
+    </Sheet>
   );
 }
 

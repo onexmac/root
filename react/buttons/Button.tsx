@@ -73,6 +73,13 @@ export interface ButtonProps {
   type?: "button" | "submit" | "reset";
   style?: React.CSSProperties;
   ariaLabel?: string;
+  /**
+   * Override the icon + label content with a custom node. Useful when a
+   * consumer needs to animate the icon swap (e.g. ToggleCards crossfade)
+   * but wants to keep the DS halo + haptic + sizing. If provided, the
+   * `icon` and `label` props are ignored.
+   */
+  children?: React.ReactNode;
 }
 
 // Map legacy variant → color
@@ -97,6 +104,7 @@ export function Button({
   type = "button",
   style,
   ariaLabel,
+  children,
 }: ButtonProps) {
   // Resolve color: explicit prop wins, then legacy variant, then default
   const resolvedColor: ButtonColor =
@@ -162,11 +170,15 @@ export function Button({
         setPressed(false);
       }}
     >
-      {(layout === "icon-left" || layout === "icon") && iconEl}
-      {layout !== "icon" && label && (
-        <span className="ds-btn__label">{label}</span>
+      {children ?? (
+        <>
+          {(layout === "icon-left" || layout === "icon") && iconEl}
+          {layout !== "icon" && label && (
+            <span className="ds-btn__label">{label}</span>
+          )}
+          {layout === "icon-right" && iconEl}
+        </>
       )}
-      {layout === "icon-right" && iconEl}
 
       {/* Halo overlay — 80ms in / 180ms out 120ms hold. Sits OUTSIDE the button. */}
       {!isDisabled && (() => {

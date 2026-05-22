@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SlideArm } from "./SlideArm";
 
 const meta: Meta<typeof SlideArm> = {
-  title: "Sistema de diseño/SlideArm",
+  title: "Buttons/SlideArm",
   component: SlideArm,
   parameters: {
     layout: "centered",
