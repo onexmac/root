@@ -677,6 +677,10 @@ body {
   border-width: 8px;
   background:   var(--ds-color-black);
 }
+/* SVG fill como propiedad CSS (no atributo) para que var() resuelva correctamente */
+.ds-checkbox__box--checked svg {
+  fill: var(--ds-color-white);
+}
 
 /* Figma disabled: gray-100 bg, gray-200 border */
 .ds-checkbox--disabled .ds-checkbox__box {
