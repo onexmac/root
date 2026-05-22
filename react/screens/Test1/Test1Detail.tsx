@@ -3,7 +3,6 @@ import { AnimatePresence, motion, useAnimationControls, useMotionValue, useTrans
 import { springs } from "../../springs";
 import { haptic } from "../../haptic";
 import { QuantitySelector, type QuantitySelectorState as DSQuantitySelectorState } from "../../QuantitySelector/QuantitySelector";
-import { ScrollPicker } from "../../ScrollPicker/ScrollPicker";
 import { SelectionDropdown, type SelectionItem } from "../../SelectionDropdown/SelectionDropdown";
 import { SlideButton } from "../../SlideButton/SlideButton";
 import "./Test1Detail.css";
@@ -190,7 +189,6 @@ function MaterialRow({
   onQtyChange: (qty: number) => void;
   onRemove: () => void;
 }) {
-  const [pickerOpen, setPickerOpen] = useState(false);
   const x = useMotionValue(0);
   const controls = useAnimationControls();
 
@@ -201,11 +199,6 @@ function MaterialRow({
     [-SWIPE_MAX_DRAG, -SWIPE_DELETE_THRESHOLD, 0],
     [1.15, 1.05, 0.85],
   );
-
-  const openPicker = () => {
-    haptic.select();
-    setPickerOpen(true);
-  };
 
   const variant = material.variant ?? computeVariant(material.qty, material.requested);
   const hasBudget = material.budgeted != null;
@@ -253,18 +246,32 @@ function MaterialRow({
         onDragStart={() => haptic.select()}
         onDragEnd={handleDragEnd}
       >
-        <motion.button
-          type="button"
+        <div
           className="td-row__main"
-          onClick={openPicker}
-          whileTap={{ scale: 0.98 }}
-          transition={springs.snappy}
-          aria-label={`${material.name} — ${ariaSummary}, tocá para editar; deslizá a la izquierda para eliminar`}
+          aria-label={`${material.name} — ${ariaSummary}; deslizá a la izquierda para eliminar`}
         >
           <p className="td-row__name">{material.name}</p>
 
           <div className="td-row__right">
-            <QuantitySelector value={material.qty} state={variant} />
+            <div className="td-row__qty-controls">
+              <motion.button
+                type="button"
+                className="td-row__qty-btn"
+                onClick={() => { haptic.select(); onQtyChange(Math.max(0, material.qty - 1)); }}
+                whileTap={{ scale: 0.85 }}
+                transition={springs.snappy}
+                aria-label="Reducir cantidad"
+              >−</motion.button>
+              <QuantitySelector value={material.qty} state={variant} />
+              <motion.button
+                type="button"
+                className="td-row__qty-btn"
+                onClick={() => { haptic.select(); onQtyChange(material.qty + 1); }}
+                whileTap={{ scale: 0.85 }}
+                transition={springs.snappy}
+                aria-label="Aumentar cantidad"
+              >+</motion.button>
+            </div>
             {(hasRequested || hasBudget) && (
               <div className="td-row__mini-stats" aria-hidden>
                 {hasRequested && (
@@ -282,20 +289,8 @@ function MaterialRow({
               </div>
             )}
           </div>
-        </motion.button>
+        </div>
       </motion.div>
-
-      <ScrollPicker
-        open={pickerOpen}
-        initialValue={material.qty}
-        contextLabel={material.name}
-        variant={variant}
-        onClose={() => setPickerOpen(false)}
-        onConfirm={(q) => {
-          onQtyChange(q);
-          setPickerOpen(false);
-        }}
-      />
     </div>
   );
 }

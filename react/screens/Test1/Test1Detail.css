@@ -169,6 +169,30 @@
   min-height: 49px;
 }
 
+.td-row__qty-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+}
+
+.td-row__qty-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ds-color-black);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
+  line-height: 1;
+  touch-action: manipulation;
+}
+
 .td-row__mini-stats {
   display: flex;
   align-items: center;
