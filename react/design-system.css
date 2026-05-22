@@ -672,9 +672,9 @@ body {
   transition:      background 120ms ease, border-color 120ms ease, border-width 120ms ease;
 }
 
-/* checked: sin borde, fondo blanco, ícono negro visible sobre blanco */
+/* checked: borde 8px negro → círculo negro sólido, ícono blanco visible al centro */
 .ds-checkbox__box--checked {
-  border-width: 0;
+  border-width: 8px;
 }
 
 /* Figma disabled: gray-100 bg, gray-200 border */
