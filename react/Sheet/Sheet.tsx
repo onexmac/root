@@ -5,7 +5,7 @@ import {
   type PanInfo,
   type Variants,
 } from "motion/react";
-import { Icon, type IconName } from "../iconos/Icon";
+import { Icon, type IconName } from "../Icon/Icon";
 import { springs } from "../springs";
 import { haptic } from "../haptic";
 import "./Sheet.css";
@@ -173,11 +173,11 @@ export function Sheet({
       borderRadius: FAB_RADIUS,
       transition: {
         // Reverse symmetry: height collapses first, width after delay.
-        width: { delay: 0.18, ...springs.settling },
-        right: { delay: 0.18, ...springs.settling },
-        height: springs.settling,
-        bottom: springs.settling,
-        borderRadius: springs.settling,
+        width: { delay: 0.18, ...springs.shrinking },
+        right: { delay: 0.18, ...springs.shrinking },
+        height: springs.shrinking,
+        bottom: springs.shrinking,
+        borderRadius: springs.shrinking,
         backgroundColor: { duration: 0.28 },
       },
     },
