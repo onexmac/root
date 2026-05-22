@@ -4,11 +4,11 @@
 
 ## Contexto obligatorio
 
-Leer antes de cualquier acción:
+Leer **completo** antes de cualquier acción:
 
-1. `docs/flotante.md` — entry point del sistema. Define los componentes disponibles y referencia los archivos companion necesarios según la tarea.
+1. `docs/flotante.md` — leer sección por sección, no escanear. Contiene los contratos de comportamiento, animaciones, haptics y props exactas de cada componente. Los archivos companion listados en el frontmatter se cargan según la tarea.
 
-**Regla:** usar solo lo que esté documentado. Si un componente o valor no existe, preguntar antes de continuar.
+**Regla:** si un componente, prop, token o interacción no está documentada explícitamente en `flotante.md`, no inventar. Preguntar antes de continuar.
 
 ---
 
