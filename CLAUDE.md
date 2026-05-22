@@ -2,14 +2,23 @@
 
 > Este archivo es leído automáticamente por Claude Code al abrir esta carpeta.
 
+## Contexto obligatorio
+
+Leer antes de cualquier acción:
+
+1. `docs/flotante.md` — entry point del sistema. Define los componentes disponibles y referencia los archivos companion necesarios según la tarea.
+
+**Regla:** usar solo lo que esté documentado. Si un componente o valor no existe, preguntar antes de continuar.
+
+---
+
 ## Flujos de trabajo
 
 | Flujo | Archivo | Cuándo usarlo |
 |---|---|---|
-| **Losa Flotante** | [docs/LosaFlotante.md](docs/LosaFlotante.md) | Actualizar o crear un componente del sistema de diseño |
-| **Formaleta** | [docs/Formaleta.md](docs/Formaleta.md) | Generar una pantalla de la app desde Figma |
+| **Losa Flotante** | [docs/flotante.md](docs/flotante.md) | Actualizar o crear un componente del sistema de diseño |
 
-Ambos flujos tienen el mismo checkpoint: si el componente (o valor) **no existe en Live Code**, preguntar al usuario qué hacer antes de continuar.
+Si el componente (o valor) **no existe en Live Code**, preguntar al usuario qué hacer antes de continuar.
 
 ---
 
@@ -39,7 +48,4 @@ Ambos flujos tienen el mismo checkpoint: si el componente (o valor) **no existe 
 | Motion | `motion/react` (Framer Motion) |
 | Build | Vite |
 | Docs | Storybook 10 (React Vite) |
-| Deploy | GitHub Pages — auto en push a `main` |
-| Figma sync | MCP de Figma (`mcp.figma.com`) |
-
-> **Regla global:** No usar Tailwind. Todo con `var(--ds-*)` tokens.
+| De
