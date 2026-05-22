@@ -1,7 +1,7 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Sheet } from "./Sheet";
-import { FormField } from "../Form/Form";
+import { FormField } from "../forms/Form";
 import { SlideArm } from "../SlideArm/SlideArm";
 
 const meta: Meta<typeof Sheet> = {
