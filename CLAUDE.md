@@ -6,8 +6,8 @@
 
 | Flujo | Archivo | Cuándo usarlo |
 |---|---|---|
-| **Losa Flotante** | [LosaFlotante.md](LosaFlotante.md) | Actualizar o crear un componente del sistema de diseño |
-| **Formaleta** | [Formaleta.md](Formaleta.md) | Generar una pantalla de la app desde Figma |
+| **Losa Flotante** | [docs/LosaFlotante.md](docs/LosaFlotante.md) | Actualizar o crear un componente del sistema de diseño |
+| **Formaleta** | [docs/Formaleta.md](docs/Formaleta.md) | Generar una pantalla de la app desde Figma |
 
 Ambos flujos tienen el mismo checkpoint: si el componente (o valor) **no existe en Live Code**, preguntar al usuario qué hacer antes de continuar.
 
