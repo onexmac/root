@@ -173,11 +173,11 @@ export function Sheet({
       borderRadius: FAB_RADIUS,
       transition: {
         // Reverse symmetry: height collapses first, width after delay.
-        width: { delay: 0.18, ...springs.shrinking },
-        right: { delay: 0.18, ...springs.shrinking },
-        height: springs.shrinking,
-        bottom: springs.shrinking,
-        borderRadius: springs.shrinking,
+        width: { delay: 0.18, ...springs.settling },
+        right: { delay: 0.18, ...springs.settling },
+        height: springs.settling,
+        bottom: springs.settling,
+        borderRadius: springs.settling,
         backgroundColor: { duration: 0.28 },
       },
     },
