@@ -1,6 +1,6 @@
 import type { StoryObj, Meta } from "@storybook/react-vite";
 import React from "react";
-import { SummaryCard, MaterialList, DetailCard } from "../react/cards/Card";
+import { SummaryCard, MaterialList, DetailCard } from "../react/Card/Card";
 import { NavStateLabel, NavSection } from "./helpers";
 
 const meta: Meta = {

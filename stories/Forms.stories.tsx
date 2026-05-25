@@ -1,6 +1,6 @@
 import type { StoryObj, Meta } from "@storybook/react-vite";
 import React from "react";
-import { FormField, CheckBox, Tag, ProgressBar, OptionLabel } from "../react/forms/Form";
+import { FormField, CheckBox, Tag, ProgressBar, OptionLabel } from "../react/Form/Form";
 import { NavStateLabel, NavSection } from "./helpers";
 
 const meta: Meta = {

@@ -1,11 +1,11 @@
 import type { StoryObj, Meta } from "@storybook/react-vite";
 import React from "react";
-import { Button } from "../react/buttons/Button";
-import type { ButtonColor, ButtonState } from "../react/buttons/Button";
+import { Button } from "../react/Button/Button";
+import type { ButtonColor, ButtonState } from "../react/Button/Button";
 import { QuantitySelector } from "../react/QuantitySelector/QuantitySelector";
 import type { QuantitySelectorState } from "../react/QuantitySelector/QuantitySelector";
 import { SlideButton } from "../react/SlideButton/SlideButton";
-import { Icon } from "../react/iconos/Icon";
+import { Icon } from "../react/Icon/Icon";
 import { NavAnnotation, NavStateLabel, NavSection } from "./helpers";
 
 const meta: Meta = {
