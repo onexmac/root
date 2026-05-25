@@ -1,4 +1,4 @@
----
+﻿---
 name: flotante
 companion: Losa.md, Memory.md.
 parallel: INFRA.md (iOS/Swift equivalent of this file)
@@ -10,7 +10,7 @@ purpose: The canonical component library and operational guide for Adelante web 
 
 **Figma is exploration, this file is truth.** When Claude Code needs to build a screen, components must come from here — not from Figma's invented stand-ins, not from improvisation. If a component isn't documented in this file, it doesn't exist yet: flag the gap and stop.
 
-**Regla de oro:** nunca valores hardcodeados. Solo tokens `--ds-*` o los listados en §3. Sin Tailwind dentro de componentes DS.
+**Golden rule:** never hard-coded values. Only `--ds-*` tokens or those listed in §3. No Tailwind inside DS components.
 
 ---
 
@@ -140,7 +140,7 @@ When using DS components, prefer the `--ds-color-*` tokens emitted by `design-sy
 
 **Halo color must be a muted/darker shade of the button's own fill, not a contrasting color.** Green button → green halo, charcoal → gray halo. Never accent colors.
 
-**`gray` Button**: semánticamente "deshabilitado visual" — halo de 2 px (no 8 px).
+**`gray` Button**: semantically "visually disabled" — 2 px halo only (not 8 px).
 
 ### 3.4 Typography (Roboto)
 
@@ -230,7 +230,7 @@ export const springs = {
 } as const satisfies Record<string, Transition>;
 ```
 
-**No existe `shrinking` en el catálogo viejo** — era un gap. Usar `settling` en código legado hasta migrar.
+**`shrinking` does not exist in the old catalog** — it was a gap. Use `settling` in legacy code until migrated.
 
 ### 5.1 Spring usage cheat sheet
 
@@ -753,31 +753,31 @@ The `color` prop does not resolve `var()` because browsers do not propagate CSS 
 
 ### 12.3 FormField
 
-**Archivo:** `react/Form/Form.tsx`
+**File:** `react/Form/Form.tsx`
 
-Campo de texto con label, input y helper.
+Text field with label, input and helper text.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `string` | `"Nombre"` | Label superior |
-| `placeholder` | `string` | `"Escribir aquí"` | Placeholder del input |
-| `type` | `"text" \| "email" \| "password" \| "number" \| "tel"` | `"text"` | Tipo HTML del input |
-| `state` | `FormFieldState` | `"standard"` | Estado visual |
-| `helperText` | `string` | — | Texto de ayuda/advertencia |
-| `value` | `string` | — | Valor controlado |
-| `onChange` | `ChangeEventHandler` | — | Handler de cambio |
-| `onClear` | `() => void` | — | Handler del botón X (solo en `state="x"`) |
+| `label` | `string` | `"Nombre"` | Field label |
+| `placeholder` | `string` | `"Escribir aquí"` | Input placeholder |
+| `type` | `"text" \| "email" \| "password" \| "number" \| "tel"` | `"text"` | HTML input type |
+| `state` | `FormFieldState` | `"standard"` | Visual state |
+| `helperText` | `string` | — | Helper / warning text |
+| `value` | `string` | — | Controlled value |
+| `onChange` | `ChangeEventHandler` | — | Change handler |
+| `onClear` | `() => void` | — | Clear button handler (only when `state="x"`) |
 
-**Estados (`FormFieldState`):**
+**States (`FormFieldState`)**
 
-| Estado | Visual | Cuándo |
-|--------|--------|--------|
-| `standard` | Borde gris fino | Reposo |
-| `active` | Borde negro 2 px | Foco / typing |
-| `x` | Borde verde 2 px + botón delete | Tiene contenido clearable |
-| `ayuda` | Borde gris + helper gris + ícono `info` | Instrucción al usuario |
-| `advertencia` | Borde rojo 2 px + helper rojo + ícono `incompleto` | Validación fallida |
-| `disabled` | Fondo gray-100, sin borde | Campo bloqueado |
+| State | Visual | When |
+|--------|--------|------|
+| `standard` | Thin gray border | Idle |
+| `active` | 2 px black border | Focused / typing |
+| `x` | 2 px green border + delete button | Has clearable content |
+| `ayuda` | Gray border + gray helper + `info` icon | User instruction |
+| `advertencia` | 2 px red border + red helper + `incompleto` icon | Validation failed |
+| `disabled` | gray-100 background, no border | Field locked |
 
 **Dimensions**
 - Width 370 px, input height 59 px.
@@ -804,10 +804,10 @@ Binary selector with semantic states.
 | `onChange` | `(checked: boolean) => void` | — | Handler |
 
 **States**
-- `standard` — gray border, no fill.
-- `add` — black circle + white checkmark (`good`).
-- `remove` — black circle + white minus (`minus`).
-- `disabled` — dimmed, non-interactive.
+- `standard` — 4 px black border, white fill, no icon.
+- `add` — solid black circle (8 px border collapses into fill) + white `good` checkmark.
+- `remove` — solid black circle + white `minus` icon.
+- `disabled` — gray-100 fill, gray-200 border, no icon, non-interactive.
 
 **Do not use for**
 - Exclusive selection → radio or `TabsMenu`.
@@ -816,9 +816,89 @@ Binary selector with semantic states.
 
 ---
 
-### 12.5 Card / SummaryCard
+### 12.5 Tag
 
-**File:** `react/cards/Card.tsx`
+**File:** `react/Form/Form.tsx`
+
+Pill label that represents a category or selection state. When `active`, appends a `completado` icon to the right of the label.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | `"Tag"` | Tag text |
+| `state` | `"active" \| "standard" \| "disabled"` | `"standard"` | Visual state |
+| `onClick` | `() => void` | — | Tap handler |
+
+**States**
+- `standard` — transparent, 2 px gray-200 border, gray-300 text.
+- `active` — black fill, white text, `completado` icon on the right.
+- `disabled` — same border as standard, gray-200 text, 0.55 opacity, non-interactive.
+
+**Use for**
+- Category or status chips on content rows.
+- Read-only selection labels.
+
+**Do not use for**
+- Multi-select filters → `SelectionDropdown`.
+- Navigation → `TabsMenu`.
+
+---
+
+### 12.6 ProgressBar
+
+**File:** `react/Form/Form.tsx`
+
+Horizontal progress track with an optional label and description. Figma layout: label → track → description (vertical stack).
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `progress` | `number` | `0` | Percentage (0–100). Semantic steps: 0, 25, 50, 75, 100 |
+| `label` | `string` | — | Title above the bar (e.g. `"0% completado"`) |
+| `description` | `string` | — | Text below the bar (e.g. `"Faltan 4 materiales"`) |
+
+**Visual structure**
+- Track: 100% width, 14 px tall, border-radius 20 px, white background with inner shadow.
+- Fill: black, border-radius 20 px. Minimum rendered width: 4 px when `progress > 0`.
+
+**Use for**
+- Showing completion percentage of a boleta or order (materials done / total).
+
+**Do not use for**
+- Step indicators → compose with multiple discrete items.
+- Indeterminate / loading states.
+
+---
+
+### 12.7 OptionLabel
+
+**File:** `react/Form/Form.tsx`
+
+Selectable row option with a circular dot indicator. Behaves like a radio button — use it inside lists where exactly one option can be active.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | `"Opción"` | Option text |
+| `state` | `"active" \| "standard" \| "disabled"` | `"standard"` | Visual state |
+| `onClick` | `() => void` | — | Selection handler |
+
+**States**
+- `standard` — 30×30 circle, 4 px gray-200 border, white fill.
+- `active` — solid black circle.
+- `disabled` — gray-100 fill, gray-200 border, gray-300 text, non-interactive.
+
+**Animation** — `motion.button` with `whileTap: { scale: 0.97 }` and `springs.snappy`.
+
+**Use for**
+- Single-selection lists (radio-like behavior without the native radio input).
+
+**Do not use for**
+- Multi-select → `CheckBox`.
+- Navigation tabs → `TabsMenu`.
+
+---
+
+### 12.8 Card / SummaryCard
+
+**File:** `react/Card/Card.tsx`
 
 Summary card for an order or boleta with a completion status indicator.
 
@@ -841,7 +921,7 @@ Summary card for an order or boleta with a completion status indicator.
 
 ---
 
-### 12.6 TabsMenu + TabFilterChip
+### 12.9 TabsMenu + TabFilterChip
 
 **File:** `react/TabsMenu/TabsMenu.tsx`
 
@@ -868,7 +948,7 @@ Summary card for an order or boleta with a completion status indicator.
 
 ---
 
-### 12.7 SearchBar
+### 12.10 SearchBar
 
 **File:** `react/SearchBar/SearchBar.tsx`
 
@@ -899,7 +979,7 @@ Search bar with multiple presentation modes.
 
 ---
 
-### 12.8 SelectionDropdown
+### 12.11 SelectionDropdown
 
 **File:** `react/SelectionDropdown/SelectionDropdown.tsx`
 
@@ -931,7 +1011,7 @@ interface SelectionDropdownItem {
 
 ---
 
-### 12.9 QuantitySelector
+### 12.12 QuantitySelector
 
 **File:** `react/QuantitySelector/QuantitySelector.tsx`
 
@@ -969,7 +1049,7 @@ Backward-compatible aliases: `default → incompleto` · `ok → completo` · `a
 
 ---
 
-### 12.10 SlideButton
+### 12.13 SlideButton
 
 **File:** `react/SlideButton/SlideButton.tsx`
 
@@ -1003,7 +1083,7 @@ Width is set inline (282 px) and cannot be overridden via CSS — center it with
 
 ---
 
-### 12.11 SlideToConfirm
+### 12.14 SlideToConfirm
 
 **File:** `react/SlideToConfirm/SlideToConfirm.tsx`
 
@@ -1033,7 +1113,7 @@ Slider where the knob grows with the drag. Port of `SlideToConfirm.swift`. Width
 
 ---
 
-### 12.12 SlideArm
+### 12.15 SlideArm
 
 **File:** `react/SlideArm/SlideArm.tsx`
 
@@ -1064,7 +1144,7 @@ Collapsed  →  Tap  →  Armed (SlideToConfirm full-width + X cancel)
 
 ---
 
-### 12.13 Sheet
+### 12.16 Sheet
 
 **File:** `react/Sheet/Sheet.tsx`
 
@@ -1108,7 +1188,7 @@ Open state is controlled by the parent — Sheet has no internal state. If an an
 
 ---
 
-### 12.14 ToggleCards
+### 12.17 ToggleCards
 
 **File:** `react/ToggleCards/ToggleCards.tsx`
 
@@ -1138,9 +1218,9 @@ Black squircle with a chevron that rotates 540° on each state change. Expansion
 
 ---
 
-### 12.15 NavigationControls
+### 12.18 NavigationControls
 
-**File:** `react/nav/Nav.tsx`
+**File:** `react/Nav/Nav.tsx`
 
 Back/forward navigation button. White pill 65×59.
 
@@ -1156,9 +1236,9 @@ Back/forward navigation button. White pill 65×59.
 
 ---
 
-### 12.16 FilterOptions
+### 12.19 FilterOptions
 
-**File:** `react/nav/Nav.tsx`
+**File:** `react/Nav/Nav.tsx`
 
 Filter panel open/close button. Pill 65×59.
 
@@ -1177,9 +1257,9 @@ Filter panel open/close button. Pill 65×59.
 
 ---
 
-### 12.17 ToggleMenu
+### 12.20 ToggleMenu
 
-**File:** `react/nav/Nav.tsx`
+**File:** `react/Nav/Nav.tsx`
 
 Side menu open/close button. Pill 65×59.
 
@@ -1198,7 +1278,7 @@ Side menu open/close button. Pill 65×59.
 
 ---
 
-### 12.18 AdelanteMark
+### 12.21 AdelanteMark
 
 **File:** `react/AdelanteMark/AdelanteMark.tsx`
 
@@ -1235,17 +1315,17 @@ Do not recolor using `fill` as an inline attribute — always use `color:` CSS o
 
 ---
 
-### 12.19 Promotion candidates (NOT-IN-DS today)
+### 12.22 Promotion candidates (NOT-IN-DS today)
 
-Patrones que existen como stubs en screens, pendientes de promoción:
+Patterns that exist as stubs in screens, pending promotion to the DS:
 
-- Two-tab segmented toggle (outlined ↔ filled)
-- Trailing-icon `Tag` variant
-- Paired `Rol → Obras` row con hairline
-- Mobile bottom action bar
-- True `x` glyph en el Icon registry
+- Two-tab segmented toggle (outlined ↔ filled).
+- Trailing-icon `Tag` variant.
+- Paired `Rol → Obras` row with hairline divider.
+- Mobile bottom action bar.
+- True `x` glyph in the Icon registry.
 
-Cuando se shipea uno como `NOT-IN-DS:` stub, flaggearlo para promoción en el PR description.
+When shipping one as a `NOT-IN-DS:` stub, flag it for promotion in the PR description.
 
 ---
 
