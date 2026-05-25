@@ -1,6 +1,6 @@
 ---
 name: flotante
-companion: Losa.md, Memory.md, HALOPRESS.md, ICON.md, SLIDE_TO_CONFIRM.md, SHEET_MORPH.md
+companion: Losa.md, Memory.md.
 parallel: INFRA.md (iOS/Swift equivalent of this file)
 repo: github.com/DavidpcAD/adelante-design-system
 purpose: The canonical component library and operational guide for Adelante web prototypes. Lives in the repo. Loaded on demand when Claude Code needs to render or modify a real component. Components must come from here — Figma is exploratory, not canonical. If a component isn't in this file, it doesn't exist yet; flag and stop.

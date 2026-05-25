@@ -4,11 +4,13 @@
 
 ## Contexto obligatorio
 
-Leer **completo** antes de cualquier acción:
+**ACCIÓN REQUERIDA antes de cualquier tarea:** usar la herramienta Read para leer estos tres archivos en orden, completos. No escanear.
 
-1. `docs/flotante.md` — leer sección por sección, no escanear. Contiene los contratos de comportamiento, animaciones, haptics y props exactas de cada componente. Los archivos companion listados en el frontmatter se cargan según la tarea.
+1. `docs/Memory.md` — equipo, stack, workflow y entorno
+2. `docs/Losa.md` — reglas de gobierno y tabla de routing
+3. `docs/Flotante.md` — librería de componentes: tokens, springs, haptics, inventario DS y vendoring
 
-**Regla:** si un componente, prop, token o interacción no está documentada explícitamente en `flotante.md`, no inventar. Preguntar antes de continuar.
+**Regla:** si un componente, prop, token o interacción no está documentado explícitamente en `Flotante.md`, no inventar — preguntar antes de continuar.
 
 ---
 
@@ -46,6 +48,9 @@ Si el componente (o valor) **no existe en Live Code**, preguntar al usuario qué
 | Framework | React 19 + TypeScript |
 | Styling | CSS custom properties (`react/design-system.css`) |
 | Motion | `motion/react` (Framer Motion) |
+| Icons | `@phosphor-icons/react` |
 | Build | Vite |
 | Docs | Storybook 10 (React Vite) |
-| De
+| Testing | Vitest + Playwright (browser) |
+| Deploy | GitHub Pages + Chromatic |
+| Design | Figma + `@figma/code-connect` |
