@@ -646,59 +646,108 @@ The [adelante-design-system](https://github.com/DavidpcAD/adelante-design-system
 
 ### 12.1 Button
 
-**Archivo:** `react/Button/Button.tsx`
+**File:** `react/Button/Button.tsx`
 
-Botón principal del sistema. Cubre todos los CTAs de la app. Implementa el halo + `haptic.select()` en touchdown.
+Main button of the system. Covers all CTAs in the app. Implements the halo + `haptic.select()` on touchdown.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `string` | — | Texto del botón |
-| `color` | `"green" \| "red" \| "white" \| "black" \| "gray"` | `"green"` | Color / intención semántica |
-| `layout` | `"label" \| "icon-left" \| "icon-right" \| "icon"` | `"label"` | Disposición del contenido |
-| `icon` | `IconName` | — | Ícono (requiere `layout` con icon) |
-| `state` | `"standard" \| "pressed" \| "disabled"` | `"standard"` | Estado de interacción |
+| `label` | `string` | — | Button text |
+| `color` | `"green" \| "red" \| "white" \| "black" \| "gray"` | `"green"` | Color / semantic intent |
+| `layout` | `"label" \| "icon-left" \| "icon-right" \| "icon"` | `"label"` | Content layout |
+| `icon` | `IconName` | — | Icon (requires `layout` with icon) |
+| `state` | `"standard" \| "pressed" \| "disabled"` | `"standard"` | Interaction state |
 | `size` | `"md" \| "sm"` | `"md"` | `md`=56px · `sm`=44px |
-| `fullWidth` | `boolean` | `false` | Ocupa el 100% del contenedor |
+| `fullWidth` | `boolean` | `false` | Fills 100% of the container |
 | `onClick` | `() => void` | — | Handler |
 
-Detalles visuales: `md` altura 56 px · `border-radius: var(--ds-radius-lg)` (16 px) · `sm` altura 44 px · `border-radius: var(--ds-radius-xl)` (32 px) · sombra ligera · `layout="icon"` círculo exacto 56×56 (`md`) / 44×44 (`sm`) · Pressed halo 8 px outward del mismo tono (`green-200`, `red-100`, `rgba(0,0,0,0.8)`, `#F3F3F3`, `gray-100`) · `gray` halo 2 px (no 8).
+**Size**
+- `md` → 56 px tall · `sm` → 44 px tall
+- `layout="icon"` → exact square (56×56 / 44×44)
 
-Usar para acciones primarias (`green`), destructivas (`red`), secundarias sobre fondo oscuro (`white`), CTAs neutros (`black`), deshabilitados (`gray` o `state="disabled"`). No usar para: navegación de tabs → `TabsMenu` · confirmar deslizando → `SlideButton` o `SlideArm` · chips de filtro → `SelectionDropdown` · botones de cierre en cards → `ToggleCards`.
+**Border-radius**
+- `md` → 16 px (`--ds-radius-lg`)
+- `sm` → 32 px (`--ds-radius-xl`) — collapses to pill
+- `sm` + `layout="icon"` → 50% — collapses to circle
+
+**Shadow**
+- `md` → `shadow-03-big`
+- `sm` → `shadow-01` (softer)
+
+**Pressed halo**
+- 8 px ring outward, same tone as the button fill
+- `green` → `#88A024` (green-200) · `red` → `#C96C6C` (red-100) · `black` → `rgba(0,0,0,0.8)`
+- `white` → `#F3F3F3` (surface) · `gray` → `#EBEBEB` (gray-100), **2 px** only
+
+**Use for**
+- Primary action → `color="green"`.
+- Destructive action → `color="red"`.
+- Secondary action on dark background → `color="white"`.
+- Neutral CTA → `color="black"`.
+- Disabled state → `color="gray"` or `state="disabled"`.
+
+**Do not use for**
+- Tab navigation → `TabsMenu`.
+- Slide-to-confirm → `SlideButton` or `SlideArm`.
+- Filter chips → `SelectionDropdown`.
+- Card collapse/expand controls → `ToggleCards`.
 
 ---
 
 ### 12.2 Icon
 
-**Archivo:** `react/Icon/Icon.tsx`
+**File:** `react/Icon/Icon.tsx`
 
-Catálogo de íconos del sistema. 34 íconos, todos `viewBox 0 0 24 24`, fill por CSS.
+System icon catalog. 34 icons, all `viewBox 0 0 24 24`, filled via CSS.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `IconName` | — | Nombre del ícono |
-| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Tamaño del SVG |
-| `color` | `string` | `"currentColor"` | Color fill — **usar CSS prop, no atributo SVG** |
-| `className` | `string` | — | Clase extra |
+| `name` | `IconName` | — | Icon name |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | SVG size |
+| `color` | `string` | `"currentColor"` | Fill color — **use CSS property, not SVG attribute** |
+| `className` | `string` | — | Extra class |
 
-**Nombres disponibles:** `home` · `user` · `folder` · `open` · `arrow-right` · `back` · `search` · `go` · `check` · `list` · `boleta` · `traslado` · `entrega` · `sin-stock` · `completado` · `incompleto` · `pendiente` · `sin-autorizar` · `filter` · `close` · `edit` · `info` · `plus` · `minus` · `delete` · `place` · `alert` · `remove` · `calculator` · `cuadrillas` · `rol` · `menu` · `options` · `good`
+**Catalog (34 icons)**
 
-**Aliases:** `arrow` / `forward` → `arrow-right` · `chevron-left` → `back` · `chevron-right` → `arrow-right` · `chevron-down` → `close` · `chevron-up` / `chevrons-up-down` → `open` · `warning` → `alert` · `lens` / `leans` → `search` · `check` → `good`
+- Navigation: `home`, `back`, `arrow-right`, `go`
+- Actions: `search`, `filter`, `edit`, `plus`, `minus`, `delete`, `remove`, `close`, `open`, `menu`, `options`
+- State and feedback: `check`, `good`, `info`, `alert`, `completado`, `incompleto`, `pendiente`, `sin-stock`, `sin-autorizar`
+- Documents: `boleta`, `traslado`, `entrega`, `list`, `folder`, `calculator`
+- People and resources: `user`, `cuadrillas`, `rol`, `place`
 
-**Confusiones frecuentes:**
-- `good` = checkmark simple (sin círculo) · `completado` tiene círculo exterior
-- `minus` = barra horizontal (sin círculo) · `remove` tiene círculo exterior
-- `delete` = X real · `close` es chevron-down, NO una X
-- No existe glifo `x` standalone — `close` pinta un chevron-down. Rotar `plus` 45° si se necesita una X real (promotion candidate).
+**Aliases**
 
-**SVG fill:** el atributo HTML no resuelve `var()`. Siempre sobreescribir via CSS property:
+Alternative names the component resolves internally to the canonical name:
+- `arrow`, `forward`, `chevron-right` → `arrow-right`
+- `chevron-left` → `back`
+- `chevron-down` → `close`
+- `chevron-up`, `chevrons-up-down` → `open`
+- `warning` → `alert`
+- `lens`, `leans` → `search`
+- `check` → `good`
+
+**Common confusions**
+
+- `good` is a plain checkmark without a circle. `completado` has an outer circle — they are different icons.
+- `minus` is a horizontal bar without a circle. `remove` has an outer circle.
+- `delete` is a real X. `close` is a chevron-down, not an X — they are different icons.
+- There is no standalone `x` glyph in the catalog. If a real X is needed, rotate `plus` 45° (promotion candidate).
+
+**SVG fill**
+
+The `color` prop does not resolve `var()` because browsers do not propagate CSS variables as HTML attributes on SVG elements. Always apply color via CSS on the parent element:
+
 ```tsx
-// MAL
+// WRONG — var() does not resolve as an attribute
 <Icon name="good" color="var(--ds-color-white)" />
-// BIEN
-.mi-clase svg { fill: var(--ds-color-white); }
+
+// CORRECT — CSS property on the parent
+.my-class svg { fill: var(--ds-color-white); }
 ```
 
-No usar para el logo/marca → usar `AdelanteMark`. No usar para íconos que dupliquen los de Phosphor que ya están en el DS.
+**Do not use for**
+- Adelante logo or brand mark → `AdelanteMark`.
+- Icons already covered by Phosphor (`@phosphor-icons/react`) available in the DS.
 
 ---
 
@@ -730,109 +779,139 @@ Campo de texto con label, input y helper.
 | `advertencia` | Borde rojo 2 px + helper rojo + ícono `incompleto` | Validación fallida |
 | `disabled` | Fondo gray-100, sin borde | Campo bloqueado |
 
-Dimensiones: width 370 px · input height 59 px · `border-radius: var(--ds-radius-xl)` (32 px).
+**Dimensions**
+- Width 370 px, input height 59 px.
+- Border-radius 32 px (`--ds-radius-xl`) — pill.
 
-No usar para: buscar en listas → `SearchBar` · seleccionar opciones fijas → `SelectionDropdown` · cantidades con +/- → `QuantitySelector`.
+**Do not use for**
+- Searching in lists → `SearchBar`.
+- Selecting from fixed options → `SelectionDropdown`.
+- Quantity input with +/- → `QuantitySelector`.
 
 ---
 
 ### 12.4 CheckBox
 
-**Archivo:** `react/Form/Form.tsx`
+**File:** `react/Form/Form.tsx`
 
-Selector binario con estados de intención.
+Binary selector with semantic states.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `string` | `"Opción"` | Texto de la opción |
-| `state` | `"standard" \| "add" \| "remove" \| "disabled"` | `"standard"` | Estado semántico |
-| `checked` | `boolean` | `false` | Valor actual |
+| `label` | `string` | `"Opción"` | Option text |
+| `state` | `"standard" \| "add" \| "remove" \| "disabled"` | `"standard"` | Semantic state |
+| `checked` | `boolean` | `false` | Current value |
 | `onChange` | `(checked: boolean) => void` | — | Handler |
 
-`standard` = borde gris sin relleno · `add` = círculo negro + checkmark blanco (`good`) · `remove` = círculo negro + minus blanco (`minus`) · `disabled` = atenuado, no interactivo.
+**States**
+- `standard` — gray border, no fill.
+- `add` — black circle + white checkmark (`good`).
+- `remove` — black circle + white minus (`minus`).
+- `disabled` — dimmed, non-interactive.
 
-No usar para selección exclusiva → radio o `TabsMenu` · activar/desactivar features → toggle dedicado · filtros → `SelectionDropdown`.
+**Do not use for**
+- Exclusive selection → radio or `TabsMenu`.
+- Toggling features on/off → dedicated toggle.
+- Filters → `SelectionDropdown`.
 
 ---
 
 ### 12.5 Card / SummaryCard
 
-**Archivo:** `react/cards/Card.tsx`
+**File:** `react/cards/Card.tsx`
 
-Tarjeta resumen de una orden/boleta con estado de completitud.
+Summary card for an order or boleta with a completion status indicator.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `company` | `string` | `"NOVARUM"` | Nombre de empresa |
-| `code` | `string` | `"C.01"` | Código de obra/centro |
-| `orderNumber` | `string` | `"BS000095"` | Número de orden |
-| `timestamp` | `string` | `"Ayer 10:25 am"` | Tiempo legible |
-| `statusState` | `QuantitySelectorState` | `"completo"` | Estado visual del ícono |
-| `visibility` | `"open" \| "close"` | `"open"` | Expandida o colapsada |
-| `onClick` | `() => void` | — | Handler de tap |
+| `company` | `string` | `"NOVARUM"` | Company name |
+| `code` | `string` | `"C.01"` | Work order / cost center code |
+| `orderNumber` | `string` | `"BS000095"` | Order number |
+| `timestamp` | `string` | `"Ayer 10:25 am"` | Human-readable timestamp |
+| `statusState` | `QuantitySelectorState` | `"completo"` | Status icon state |
+| `visibility` | `"open" \| "close"` | `"open"` | Expanded or collapsed |
+| `onClick` | `() => void` | — | Tap handler |
 
-Usar para listas de boletas/pedidos con estado visual claro. No usar para contenido genérico sin estructura de orden ni para cards de perfil de usuario.
+**Use for**
+- Lists of boletas or orders with a clear visual status.
+
+**Do not use for**
+- Generic content without an order structure.
+- User profile cards.
 
 ---
 
 ### 12.6 TabsMenu + TabFilterChip
 
-**Archivo:** `react/TabsMenu/TabsMenu.tsx`
+**File:** `react/TabsMenu/TabsMenu.tsx`
 
-`TabsMenu` es un pill negro de navegación/acción. `TabFilterChip` es el chip row de selección múltiple. **Ninguno es un segmented control outlined↔filled de dos tabs** — componer con dos `Button`s para eso.
+`TabsMenu` is a black pill for navigation or primary actions. `TabFilterChip` is a chip row for multi-select filtering. **Neither is a two-tab segmented control (outlined ↔ filled)** — compose two `Button`s for that.
 
-| Prop (`TabsMenu`) | Tipo | Default | Descripción |
+| Prop (`TabsMenu`) | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `string` | `"Tab"` | Texto del tab |
-| `state` | `"standard" \| "pressed"` | `"standard"` | Estado visual |
-| `layout` | `"label" \| "label+icon"` | `"label"` | Con o sin ícono |
-| `icon` | `IconName` | `"home"` | Ícono (solo con `layout="label+icon"`) |
+| `label` | `string` | `"Tab"` | Tab text |
+| `state` | `"standard" \| "pressed"` | `"standard"` | Visual state |
+| `layout` | `"label" \| "label+icon"` | `"label"` | With or without icon |
+| `icon` | `IconName` | `"home"` | Icon (only with `layout="label+icon"`) |
 | `onClick` | `() => void` | — | Handler |
 
-Dimensiones: min 300×80 · `border-radius: 32px` · padding H 40 px · V 24 px · fondo `--ds-color-black` · texto `--ds-color-white` · pressed halo 8 px `rgba(0,0,0,0.8)`.
+**Dimensions**
+- Min size 300×80 px, border-radius 32 px.
+- Padding: 40 px horizontal, 24 px vertical.
+- Background `--ds-color-black`, text `--ds-color-white`.
+- Pressed halo 8 px `rgba(0,0,0,0.8)`.
 
-No usar para botones de acción primaria → `Button` · filtros con estado → `SelectionDropdown` · acciones inline pequeñas → `Button size="sm"`.
+**Do not use for**
+- Primary action buttons → `Button`.
+- Stateful filters → `SelectionDropdown`.
+- Small inline actions → `Button size="sm"`.
 
 ---
 
 ### 12.7 SearchBar
 
-**Archivo:** `react/SearchBar/SearchBar.tsx`
+**File:** `react/SearchBar/SearchBar.tsx`
 
-Barra de búsqueda con múltiples modos de presentación.
+Search bar with multiple presentation modes.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `layout` | `"label" \| "normal" \| "icon" \| "expanded"` | `"label"` | Modo de presentación |
-| `state` | `"standard" \| "pressed"` | `"standard"` | Estado visual |
-| `placeholder` | `string` | `"Buscar"` | Placeholder |
-| `value` | `string` | — | Valor controlado |
-| `onChange` | `ChangeEventHandler` | — | Handler de cambio |
-| `onClick` | `() => void` | — | Handler (solo `layout="icon"`) |
-| `onClose` | `() => void` | — | Muestra botón X de cierre |
-| `rightSlot` | `ReactNode` | — | Override del slot derecho |
-| `suggestions` | `SearchSuggestion[]` | — | Solo `layout="expanded"` |
-| `onPick` | `(s: SearchSuggestion) => void` | — | Selección de sugerencia |
+| `layout` | `"label" \| "normal" \| "icon" \| "expanded"` | `"label"` | Presentation mode |
+| `state` | `"standard" \| "pressed"` | `"standard"` | Visual state |
+| `placeholder` | `string` | `"Buscar"` | Placeholder text |
+| `value` | `string` | — | Controlled value |
+| `onChange` | `ChangeEventHandler` | — | Change handler |
+| `onClick` | `() => void` | — | Click handler (`layout="icon"` only) |
+| `onClose` | `() => void` | — | Shows X close button when provided |
+| `rightSlot` | `ReactNode` | — | Overrides the right slot |
+| `suggestions` | `SearchSuggestion[]` | — | `layout="expanded"` only |
+| `onPick` | `(s: SearchSuggestion) => void` | — | Suggestion selection handler |
 
-Layouts: `icon` = botón circular 65 px con lupa · `normal` = pill sin texto · `label` = pill con texto + X opcional · `expanded` = pill + panel de sugerencias.
+**Layouts**
+- `icon` — circular button 65 px with search icon.
+- `normal` — pill with no text.
+- `label` — pill with text and optional X button.
+- `expanded` — pill + suggestions panel below.
 
-No usar para: input de datos de formulario → `FormField` · selección entre opciones fijas → `SelectionDropdown`.
+**Do not use for**
+- Form data input → `FormField`.
+- Selecting from fixed options → `SelectionDropdown`.
 
 ---
 
 ### 12.8 SelectionDropdown
 
-**Archivo:** `react/SelectionDropdown/SelectionDropdown.tsx`
+**File:** `react/SelectionDropdown/SelectionDropdown.tsx`
 
-Selector desplegable de opciones con header colapsable. Width fijo 372 px.
+Collapsible option selector with a fixed-width header. Fixed width 372 px.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `string` | `"Label"` | Texto del header |
-| `items` | `SelectionDropdownItem[]` | `[]` | Lista de opciones |
-| `isOpen` | `boolean` | — | Control externo (opcional) |
-| `onToggle` | `() => void` | — | Callback de toggle |
-| `className` | `string` | — | Clase extra |
+| `label` | `string` | `"Label"` | Header text |
+| `items` | `SelectionDropdownItem[]` | `[]` | Option list |
+| `isOpen` | `boolean` | — | External open control (optional) |
+| `onToggle` | `() => void` | — | Toggle callback |
+| `className` | `string` | — | Extra class |
 
 ```ts
 interface SelectionDropdownItem {
@@ -841,118 +920,162 @@ interface SelectionDropdownItem {
 }
 ```
 
-Visual: cerrado = 70 px blanco `border-radius: 32px` `shadow-01` label gris + `ToggleCards small` · abierto = header + lista de pills negros 80 px, separados por gap.
+**Appearance**
+- Closed — 70 px white pill, border-radius 32 px, `shadow-01`, gray label + `ToggleCards small`.
+- Open — header + list of black 80 px pills separated by gap.
 
-No usar para: búsqueda con texto libre → `SearchBar` · listas largas o dinámicas → pantalla dedicada · selección múltiple → `CheckBox`.
+**Do not use for**
+- Free-text search → `SearchBar`.
+- Long or dynamic lists → dedicated screen.
+- Multi-select → `CheckBox`.
 
 ---
 
 ### 12.9 QuantitySelector
 
-**Archivo:** `react/QuantitySelector/QuantitySelector.tsx`
+**File:** `react/QuantitySelector/QuantitySelector.tsx`
 
-Pill circular con anillo de estado. Indicador visual de progreso de materiales.
+Circular pill with a status ring. Visual progress indicator for materials.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `value` | `number` | — | Número dentro del círculo |
-| `state` | `QuantitySelectorState` | `"pendiente"` | Estado del anillo |
+| `value` | `number` | — | Number displayed inside the circle |
+| `state` | `QuantitySelectorState` | `"pendiente"` | Ring state |
 | `size` | `"sm" \| "md" \| "lg"` | `"sm"` | `sm`=49 px · `md`=64 px · `lg`=96 px |
-| `mode` | `"standard" \| "pressed"` | `"standard"` | Añade halo en pressed |
-| `onTap` | `() => void` | — | Si se pasa, es interactivo |
-| `ariaLabel` | `string` | — | Aria label custom |
+| `mode` | `"standard" \| "pressed"` | `"standard"` | Adds halo when pressed |
+| `onTap` | `() => void` | — | Makes the component interactive when provided |
+| `ariaLabel` | `string` | — | Custom aria label |
 
-**Estados:** `pendiente` = sin anillo (gris) · `incompleto` = anillo amarillo (mitad derecha) · `completo` = anillo verde completo · `sin-stock` = anillo rojo completo. Aliases backward-compat: `default → incompleto` · `ok → completo` · `alert → sin-stock`.
+**States**
+- `pendiente` — no ring (gray).
+- `incompleto` — yellow ring (right half only).
+- `completo` — full green ring.
+- `sin-stock` — full red ring.
 
-Estructura visual: `__outer` disco gray-200 (base) · `__ring` borde colorido por estado (overlay) · `__inner` círculo negro con el número.
+Backward-compatible aliases: `default → incompleto` · `ok → completo` · `alert → sin-stock`
+
+**Visual structure**
+- `__outer` — gray-200 base disc
+- `__ring` — colored border overlay, driven by state
+- `__inner` — black circle with the number
+
+**Use for**
+- Showing completion status of a material item (boleta, pedido).
+- Inline status indicator alongside a card or row.
+
+**Do not use for**
+- Quantity input with +/- → `QuantitySelector` in the DS handles display only; for editing use a dedicated input.
+- Generic numeric badges with no status meaning.
 
 ---
 
 ### 12.10 SlideButton
 
-**Archivo:** `react/SlideButton/SlideButton.tsx`
+**File:** `react/SlideButton/SlideButton.tsx`
 
-Deslizador de confirmación con knob fijo en track negro. Ancho fijo 282 px.
+Slide-to-confirm with a fixed knob on a black track. Fixed width 282 px.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `string` | `"Pedir"` | Texto del track |
-| `confirmedLabel` | `string` | `"Confirmado"` | Texto post-confirmación |
-| `threshold` | `number` | `0.72` | Fracción del recorrido para confirmar (0-1) |
-| `onConfirm` | `() => void` | — | **Requerido.** Callback al confirmar |
-| `disabled` | `boolean` | `false` | Bloquea el gesto |
-| `disabledLabel` | `string` | — | Texto alternativo cuando disabled |
-| `confirmedHoldMs` | `number` | `1800` | ms antes del auto-reset |
-| `autoReset` | `boolean` | `true` | Reset automático post-confirmación |
+| `label` | `string` | `"Pedir"` | Track label |
+| `confirmedLabel` | `string` | `"Confirmado"` | Label after confirmation |
+| `threshold` | `number` | `0.72` | Fraction of travel required to confirm (0–1) |
+| `onConfirm` | `() => void` | — | **Required.** Confirmation callback |
+| `disabled` | `boolean` | `false` | Blocks the gesture |
+| `disabledLabel` | `string` | — | Alternative label when disabled |
+| `confirmedHoldMs` | `number` | `1800` | ms before auto-reset |
+| `autoReset` | `boolean` | `true` | Auto-reset after confirmation |
 
-Dimensiones (Figma nodo 997-3096): ancho 282 px · alto 80 px · knob 80×80 squircle. Comportamiento: drag ≥ threshold → confirma + auto-reset · drag < threshold → snap-back vía `springs.snappy` · tap sin drag → nudge 32 px + bounce back (hint pedagógico).
+**Dimensions** (Figma node 997-3096)
+- Width 282 px, height 80 px, knob 80×80 squircle.
 
-`SlideButton` tiene el width seteado inline (282 px) y no puede sobreescribirse via CSS — centrarlo con `flex justify-center`.
+**Behavior**
+- Drag ≥ threshold → confirms + auto-reset.
+- Drag < threshold → snaps back via `springs.snappy`.
+- Tap without drag → nudges 32 px + bounces back (pedagogical hint).
 
-No usar para: confirmación dentro de Sheet/panel → `SlideArm` · acciones reversibles simples → `Button` · acciones que ya tienen diálogo → redundante.
+Width is set inline (282 px) and cannot be overridden via CSS — center it with `flex justify-center`.
+
+**Do not use for**
+- Confirmation inside a Sheet or panel → `SlideArm`.
+- Simple reversible actions → `Button`.
+- Actions that already have a confirmation dialog → redundant.
 
 ---
 
 ### 12.11 SlideToConfirm
 
-**Archivo:** `react/SlideToConfirm/SlideToConfirm.tsx`
+**File:** `react/SlideToConfirm/SlideToConfirm.tsx`
 
-Deslizador donde el knob crece con el drag. Port de `SlideToConfirm.swift`. Width 100% del contenedor.
+Slider where the knob grows with the drag. Port of `SlideToConfirm.swift`. Width 100% of the container.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `string` | `"PEDIR"` | Label dentro del knob |
-| `onConfirm` | `() => void` | — | **Requerido.** Callback al confirmar |
-| `knobWidth` | `number` | `160` | Ancho en reposo del knob (px) |
-| `threshold` | `number` | `0.72` | Fracción para confirmar (0-1) |
-| `height` | `number` | `80` | Alto del componente (px) |
-| `cornerRadius` | `number` | `24` | Radio de esquina (px) |
-| `successHoldMs` | `number` | `800` | ms antes de auto-reset |
-| `enabled` | `boolean` | `true` | Cuando `false`, ignora input (usado por `SlideArm`) |
+| `label` | `string` | `"PEDIR"` | Label inside the knob |
+| `onConfirm` | `() => void` | — | **Required.** Confirmation callback |
+| `knobWidth` | `number` | `160` | Knob width at rest (px) |
+| `threshold` | `number` | `0.72` | Fraction required to confirm (0–1) |
+| `height` | `number` | `80` | Component height (px) |
+| `cornerRadius` | `number` | `24` | Corner radius (px) |
+| `successHoldMs` | `number` | `800` | ms before auto-reset |
+| `enabled` | `boolean` | `true` | When `false`, ignores input (used internally by `SlideArm`) |
 
-**Diferencia con `SlideButton`:** `SlideButton` tiene knob fijo pequeño + track negro con label centrado, uso standalone. `SlideToConfirm` tiene knob que crece = el knob ES el track, uso principal dentro de `SlideArm`. Tap nudge: `SlideButton` +32 px · `SlideToConfirm` +52 px.
+**Difference from `SlideButton`**
+- `SlideButton` — small fixed knob + black track with centered label, standalone use
+- `SlideToConfirm` — growing knob that becomes the track, primary use is inside `SlideArm`
+- Tap nudge: `SlideButton` +32 px · `SlideToConfirm` +52 px
 
-Usar principalmente dentro de `SlideArm`. No usar standalone en pantalla → usar `SlideButton`. **Full spec: SLIDE_TO_CONFIRM.md**.
+**Use for**
+- Inside `SlideArm` — this is its primary context.
+
+**Do not use for**
+- Standalone on a screen → use `SlideButton` instead.
 
 ---
 
 ### 12.12 SlideArm
 
-**Archivo:** `react/SlideArm/SlideArm.tsx`
+**File:** `react/SlideArm/SlideArm.tsx`
 
-Píldora compacta que se expande en un `SlideToConfirm` completo. Port de `PedirBar.swift`. Anchored trailing; la barra crece hacia la izquierda vía `springs.expanding`. Disarma vía `springs.shrinking` (sin overshoot).
+Compact pill that expands into a full `SlideToConfirm`. Port of `PedirBar.swift`. Anchored to the trailing edge; the bar grows left via `springs.expanding`. Disarms via `springs.shrinking` (no overshoot).
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `label` | `string` | `"PEDIR"` | Texto de la píldora colapsada |
-| `collapsedWidth` | `number` | `160` | Ancho colapsado (px) |
-| `height` | `number` | `80` | Alto (px) |
-| `cornerRadius` | `number` | `24` | Radio de esquina (px) |
-| `onConfirm` | `() => void` | — | **Requerido.** Callback al confirmar |
-| `successHoldMs` | `number` | `800` | ms antes del auto-reset |
+| `label` | `string` | `"PEDIR"` | Collapsed pill text |
+| `collapsedWidth` | `number` | `160` | Collapsed width (px) |
+| `height` | `number` | `80` | Height (px) |
+| `cornerRadius` | `number` | `24` | Corner radius (px) |
+| `onConfirm` | `() => void` | — | **Required.** Confirmation callback |
+| `successHoldMs` | `number` | `800` | ms before auto-reset |
 
 ```
 Collapsed  →  Tap  →  Armed (SlideToConfirm full-width + X cancel)
-  Armed    →  Drag completo  →  Confirmed (fires onConfirm, disarms)
-  Armed    →  X cancel       →  Collapsed
+  Armed    →  Full drag  →  Confirmed (fires onConfirm, disarms)
+  Armed    →  X cancel   →  Collapsed
 ```
 
-Usar para CTA de pedido/confirmación dentro de un `Sheet` · cuando el espacio es limitado y el botón necesita "armarse" antes de confirmar · flujo de pedir materiales (patrón PedirBar de iOS). No usar si el ancestro tiene `overflow: hidden` — los halos y la X se recortarán.
+**Use for**
+- Order/confirmation CTA inside a `Sheet`.
+- When space is limited and the action needs to be "armed" before confirming.
+- Material order flow (PedirBar pattern from iOS).
+
+**Do not use for**
+- Ancestors with `overflow: hidden` — halos and the X button will be clipped.
 
 ---
 
 ### 12.13 Sheet
 
-**Archivo:** `react/Sheet/Sheet.tsx`
+**File:** `react/Sheet/Sheet.tsx`
 
-Superficie FAB → bottom-sheet con morph animado. 3 estados: cerrado, abierto, fullscreen.
+FAB → bottom-sheet surface with animated morph. 3 states: closed, open, fullscreen.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `open` | `boolean` | — | **Requerido.** Estado de apertura |
-| `onOpen` | `() => void` | — | **Requerido.** Callback para abrir |
-| `onDismiss` | `() => void` | — | **Requerido.** Callback para cerrar |
-| `fab` | `SheetFab` | — | Config del FAB cerrado |
+| `open` | `boolean` | — | **Required.** Open state |
+| `onOpen` | `() => void` | — | **Required.** Open callback |
+| `onDismiss` | `() => void` | — | **Required.** Dismiss callback |
+| `fab` | `SheetFab` | — | Closed FAB config |
 | `children` | `ReactNode` | — | `Sheet.Header`, `Sheet.Body`, `Sheet.Footer` |
 
 ```ts
@@ -963,95 +1086,129 @@ interface SheetFab {
 }
 ```
 
-Slots: `<Sheet.Header>` título/descripción · `<Sheet.Body>` contenido scrolleable · `<Sheet.Footer>` sticky bottom para acciones.
+**Slots**
+- `<Sheet.Header>` — title and description.
+- `<Sheet.Body>` — scrollable content.
+- `<Sheet.Footer>` — sticky bottom actions.
 
-Comportamiento: FAB cerrado 84×80 px `border-radius: 24 px` `fixed` bottom-right · morph al abrir: ancho crece primero → alto 180 ms después · drag-to-dismiss: offset.y > 120 px OR velocity.y > 600 → cierra · scroll-to-fullscreen: scroll 12 px → fullscreen; scroll 2 px de vuelta → vuelve a open · scrim cierra al tap · desktop centrado max-width 402 px · cascade entrance `staggerChildren: 0.06, delayChildren: 0.38`.
+**Behavior**
+- Closed FAB: 84×80 px, border-radius 24 px, `fixed` bottom-right.
+- Open morph: width grows first → height follows after ~180 ms delay.
+- Drag-to-dismiss: `offset.y > 120 px` OR `velocity.y > 600 px/s` → closes.
+- Scroll-to-fullscreen: scroll 12 px → fullscreen; scroll back to 2 px → returns to open.
+- Scrim tap → closes.
+- Desktop: centered, max-width 402 px.
+- Cascade entrance: `staggerChildren: 0.06, delayChildren: 0.38`.
 
-Si el ancestro tiene `overflow: hidden`, el FAB fijo no se ve. El estado de apertura lo controla el padre — Sheet no tiene estado propio.
+Open state is controlled by the parent — Sheet has no internal state. If an ancestor has `overflow: hidden`, the fixed FAB will not be visible.
 
-**Full spec: SHEET_MORPH.md**. No usar para diálogos sí/no → modal dedicado · múltiples sheets simultáneos.
+**Do not use for**
+- Yes/no dialogs → dedicated modal.
+- Multiple simultaneous sheets.
 
 ---
 
 ### 12.14 ToggleCards
 
-**Archivo:** `react/ToggleCards/ToggleCards.tsx`
+**File:** `react/ToggleCards/ToggleCards.tsx`
 
-Squircle negro con chevron que gira 540° al cambiar estado. Control de expansión.
+Black squircle with a chevron that rotates 540° on each state change. Expansion control.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `visibility` | `"open" \| "close"` | `"open"` | Estado actual |
+| `visibility` | `"open" \| "close"` | `"open"` | Current state |
 | `size` | `"big" \| "small"` | `"big"` | `big`=60×88 · `small`=60×50 |
-| `mode` | `"normal" \| "disabled"` | `"normal"` | Disabled atenúa |
+| `mode` | `"normal" \| "disabled"` | `"normal"` | Disabled dims the control |
 | `onClick` | `() => void` | — | Handler |
-| `ariaLabel` | `string` | — | Accesibilidad |
+| `ariaLabel` | `string` | — | Accessibility label |
 
-Animación: cada tap acumula +540° (1.5 vueltas) — nunca revierte dirección · ícono cambia a la mitad del giro (270 ms de 540 ms) · `open` → ícono `open` · `close` → ícono `close`.
+**Animation**
+- Each tap accumulates +540° (1.5 turns) — never reverses direction.
+- Icon swaps at the midpoint of the rotation (270 ms into the 540 ms spin).
+- `open` state → `open` icon · `close` state → `close` icon.
 
-Usar para control de expansión de `SelectionDropdown` · chevron en `SummaryCard` · cualquier toggle de visibilidad de sección. No usar para acciones con texto ni toggles booleanos de configuración.
+**Use for**
+- Expansion control in `SelectionDropdown`.
+- Chevron in `SummaryCard`.
+- Any section visibility toggle.
+
+**Do not use for**
+- Buttons with text labels.
+- Boolean configuration toggles.
 
 ---
 
 ### 12.15 NavigationControls
 
-**Archivo:** `react/nav/Nav.tsx`
+**File:** `react/nav/Nav.tsx`
 
-Botón de navegación atrás/adelante. Pill blanco 65×59.
+Back/forward navigation button. White pill 65×59.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `navigation` | `"back" \| "go"` | `"back"` | Dirección |
-| `state` | `"standard" \| "pressed"` | `"standard"` | Estado visual |
+| `navigation` | `"back" \| "go"` | `"back"` | Direction |
+| `state` | `"standard" \| "pressed"` | `"standard"` | Visual state |
 | `onClick` | `() => void` | — | Handler |
 
-No usar para cancelar acciones → `Button color="black"` label "Cancelar" · cerrar panels/sheets → drag-to-dismiss del `Sheet`.
+**Do not use for**
+- Canceling actions → `Button color="black"` with label "Cancelar".
+- Closing panels or sheets → use the `Sheet` drag-to-dismiss.
 
 ---
 
 ### 12.16 FilterOptions
 
-**Archivo:** `react/nav/Nav.tsx`
+**File:** `react/nav/Nav.tsx`
 
-Botón de apertura/cierre del panel de filtros. Pill 65×59.
+Filter panel open/close button. Pill 65×59.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `mode` | `"normal" \| "close"` | `"normal"` | `normal`=blanco+filter · `close`=negro+chevron-down |
-| `state` | `"standard" \| "pressed"` | `"standard"` | Estado visual |
+| `mode` | `"normal" \| "close"` | `"normal"` | `normal`=white+filter icon · `close`=black+chevron-down |
+| `state` | `"standard" \| "pressed"` | `"standard"` | Visual state |
 | `onClick` | `() => void` | — | Handler |
 
-Siempre en par con `SelectionDropdown` o un panel de filtros.
+**Use for**
+- Opening and closing a filter panel alongside a `SelectionDropdown`
+
+**Do not use for**
+- Opening the side menu → `ToggleMenu`.
+- Any action unrelated to filtering.
 
 ---
 
 ### 12.17 ToggleMenu
 
-**Archivo:** `react/nav/Nav.tsx`
+**File:** `react/nav/Nav.tsx`
 
-Botón de apertura/cierre del menú lateral. Pill 65×59.
+Side menu open/close button. Pill 65×59.
 
-| Prop | Tipo | Default | Descripción |
+| Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `mode` | `"open" \| "close"` | `"open"` | Estado del menú |
-| `state` | `"standard" \| "pressed"` | `"standard"` | Estado visual |
+| `mode` | `"open" \| "close"` | `"open"` | Menu state |
+| `state` | `"standard" \| "pressed"` | `"standard"` | Visual state |
 | `onClick` | `() => void` | — | Handler |
 
-Siempre en la navbar superior, a la izquierda. No usar para cerrar sheets o modales → sus controles propios.
+**Use for**
+- Opening and closing the side navigation menu, always in the top navbar left side
+
+**Do not use for**
+- Opening a filter panel → `FilterOptions`.
+- Closing sheets or modals → use their own dismiss controls.
 
 ---
 
 ### 12.18 AdelanteMark
 
-**Archivo:** `react/AdelanteMark/AdelanteMark.tsx`
+**File:** `react/AdelanteMark/AdelanteMark.tsx`
 
-El logo SVG canónico de Adelante. `fill="currentColor"` — se recolorea por CSS. Single 2-path SVG.
+Canonical Adelante SVG logo. `fill="currentColor"` — recolored via CSS. Single 2-path SVG.
 
-Acepta todas las props de `SVGProps<SVGSVGElement>`: `width`, `height`, `className`, `style`, etc.
+Accepts all `SVGProps<SVGSVGElement>` props: `width`, `height`, `className`, `style`, etc.
 
-| Modo | `color` del padre | `background` |
-|------|------------------|--------------|
-| Light (default) | `var(--ds-color-green-100)` | blanco |
+| Mode | Parent `color` | `background` |
+|------|----------------|--------------|
+| Light (default) | `var(--ds-color-green-100)` | white |
 | Dark | `var(--ds-color-black)` | `var(--ds-color-green-100)` |
 | Tinted | `#111` | `#F3F3F3` |
 
@@ -1067,7 +1224,14 @@ Acepta todas las props de `SVGProps<SVGSVGElement>`: `width`, `height`, `classNa
 </div>
 ```
 
-No recolorar con `fill` como atributo inline → usar `color:` CSS en el padre. **Full spec: ICON.md** para favicon recipe, PWA manifest, iOS AppIcon parity.
+Do not recolor using `fill` as an inline attribute — always use `color:` CSS on the parent. Full spec: **ICON.md** for favicon recipe, PWA manifest, iOS AppIcon parity.
+
+**Use for**
+- Any placement of the Adelante brand mark (splash screen, navbar, login).
+
+**Do not use for**
+- System icons → `Icon`.
+- Decorative or non-brand SVGs.
 
 ---
 
@@ -1087,32 +1251,32 @@ Cuando se shipea uno como `NOT-IN-DS:` stub, flaggearlo para promoción en el PR
 
 ## 13. Vendoring workflow
 
-El DS no está publicado en npm. En este repo la fuente canónica está bajo `react/`. Si un prototipo independiente necesita estos componentes, cópialos desde `react/` hacia la estructura del prototipo.
+The DS is not published on npm. The canonical source in this repo lives under `react/`. When a standalone prototype needs these components, copy them from `react/` into the prototype's structure.
 
 ### 13.1 Initial vendor (new prototype)
 
 ```bash
 DS=~/Documents/claudecode/adelante-design-system/react
-mkdir -p prototipo/src/ds/{Icon,Button,Form,Sheet,SlideButton,SlideToConfirm,SlideArm,SelectionDropdown,ToggleCards,TabsMenu,AdelanteMark}
+mkdir -p prototype/src/ds/{Icon,Button,Form,Sheet,SlideButton,SlideToConfirm,SlideArm,SelectionDropdown,ToggleCards,TabsMenu,AdelanteMark}
 
-cp "$DS/Icon/Icon.tsx"                                    prototipo/src/ds/Icon/
-cp "$DS/Button/Button.tsx"                                prototipo/src/ds/Button/
-cp "$DS/Form/Form.tsx"                                    prototipo/src/ds/Form/
-cp "$DS/Sheet/Sheet.tsx"                                  prototipo/src/ds/Sheet/
-cp "$DS/Sheet/Sheet.css"                                  prototipo/src/ds/Sheet/
-cp "$DS/SlideButton/SlideButton.tsx"                      prototipo/src/ds/SlideButton/
-cp "$DS/SlideButton/SlideButton.css"                      prototipo/src/ds/SlideButton/
-cp "$DS/SlideToConfirm/SlideToConfirm.tsx"                prototipo/src/ds/SlideToConfirm/
-cp "$DS/SlideToConfirm/SlideToConfirm.css"                prototipo/src/ds/SlideToConfirm/
-cp "$DS/SlideArm/SlideArm.tsx"                            prototipo/src/ds/SlideArm/
-cp "$DS/SlideArm/SlideArm.css"                            prototipo/src/ds/SlideArm/
-cp "$DS/SelectionDropdown/SelectionDropdown.tsx"          prototipo/src/ds/SelectionDropdown/
-cp "$DS/SelectionDropdown/SelectionDropdown.css"          prototipo/src/ds/SelectionDropdown/
-cp "$DS/ToggleCards/ToggleCards.tsx"                      prototipo/src/ds/ToggleCards/
-cp "$DS/ToggleCards/ToggleCards.css"                      prototipo/src/ds/ToggleCards/
-cp "$DS/TabsMenu/TabsMenu.tsx"                            prototipo/src/ds/TabsMenu/
-cp "$DS/AdelanteMark/AdelanteMark.tsx"                    prototipo/src/ds/AdelanteMark/
-cp "$DS/design-system.css"                                prototipo/src/ds/
+cp "$DS/Icon/Icon.tsx"                                    prototype/src/ds/Icon/
+cp "$DS/Button/Button.tsx"                                prototype/src/ds/Button/
+cp "$DS/Form/Form.tsx"                                    prototype/src/ds/Form/
+cp "$DS/Sheet/Sheet.tsx"                                  prototype/src/ds/Sheet/
+cp "$DS/Sheet/Sheet.css"                                  prototype/src/ds/Sheet/
+cp "$DS/SlideButton/SlideButton.tsx"                      prototype/src/ds/SlideButton/
+cp "$DS/SlideButton/SlideButton.css"                      prototype/src/ds/SlideButton/
+cp "$DS/SlideToConfirm/SlideToConfirm.tsx"                prototype/src/ds/SlideToConfirm/
+cp "$DS/SlideToConfirm/SlideToConfirm.css"                prototype/src/ds/SlideToConfirm/
+cp "$DS/SlideArm/SlideArm.tsx"                            prototype/src/ds/SlideArm/
+cp "$DS/SlideArm/SlideArm.css"                            prototype/src/ds/SlideArm/
+cp "$DS/SelectionDropdown/SelectionDropdown.tsx"          prototype/src/ds/SelectionDropdown/
+cp "$DS/SelectionDropdown/SelectionDropdown.css"          prototype/src/ds/SelectionDropdown/
+cp "$DS/ToggleCards/ToggleCards.tsx"                      prototype/src/ds/ToggleCards/
+cp "$DS/ToggleCards/ToggleCards.css"                      prototype/src/ds/ToggleCards/
+cp "$DS/TabsMenu/TabsMenu.tsx"                            prototype/src/ds/TabsMenu/
+cp "$DS/AdelanteMark/AdelanteMark.tsx"                    prototype/src/ds/AdelanteMark/
+cp "$DS/design-system.css"                                prototype/src/ds/
 
 cp "$DS/springs.ts"                                       lib/springs.ts
 cp "$DS/haptic.ts"                                        lib/haptic.ts
@@ -1121,7 +1285,7 @@ cp "$DS/haptic.ts"                                        lib/haptic.ts
 ### 13.2 Post-vendor cleanup
 
 ```bash
-cd prototipo/src/ds
+cd prototype/src/ds
 sed -i '' 's|from "\.\./springs"|from "@/lib/springs"|g; s|from "\.\./haptic"|from "@/lib/haptic"|g' \
   Sheet/Sheet.tsx SlideButton/SlideButton.tsx SlideToConfirm/SlideToConfirm.tsx \
   SlideArm/SlideArm.tsx Form/Form.tsx SelectionDropdown/SelectionDropdown.tsx \
@@ -1131,11 +1295,11 @@ sed -i '' 's|from "\.\./springs"|from "@/lib/springs"|g; s|from "\.\./haptic"|fr
 sed -i '' '/^@import url("https:\/\/fonts.googleapis.com/d' design-system.css
 ```
 
-Luego `@import "../ds/design-system.css";` al tope de `app/globals.css` o el equivalente del prototipo.
+Then add `@import "../ds/design-system.css";` at the top of `app/globals.css` (or the prototype's equivalent).
 
-### 13.3 Width overrides para el mobile shell
+### 13.3 Width overrides for the mobile shell
 
-Los componentes DS se autorearon para un frame de 372 px. Dentro del shell de 402 px (menos 48 px gutters → 354 px), desbordan. Agregar a `app/globals.css`:
+DS components were authored for a 372 px frame. Inside the 402 px shell (minus 48 px gutters → 354 px), they overflow. Add to `app/globals.css`:
 
 ```css
 .losa-stack .ds-form-field,
@@ -1143,44 +1307,55 @@ Los componentes DS se autorearon para un frame de 372 px. Dentro del shell de 40
 .losa-stack .ds-sd__list-inner { max-height: 240px; overflow-y: auto; }
 ```
 
-Envolver la sheet (o cualquier región con componentes DS) con `className="losa-stack"`.
+Wrap the sheet (or any region containing DS components) with `className="losa-stack"`.
 
-`SlideButton` tiene width inline (282 px) y no puede sobreescribirse via CSS — centrarlo con `flex justify-center`. `SlideToConfirm` / `SlideArm` son width-100% por diseño.
+`SlideButton` has an inline width (282 px) that cannot be overridden via CSS — center it with `flex justify-center`. `SlideToConfirm` and `SlideArm` are width-100% by design.
 
 ### 13.4 Token coexistence
 
-| Uso | Token |
+| Use | Token |
 |---|---|
 | Tailwind utility class | `--color-*` |
-| Inline style dentro de región DS | `--ds-color-*` |
-| Halo / press states | `--ds-color-*-pressed` o constantes `halo.*` |
+| Inline style inside a DS region | `--ds-color-*` |
+| Halo / press states | `--ds-color-*-pressed` or `halo.*` constants |
 
-No inventar un tercer namespace.
+Do not invent a third namespace.
 
 ---
 
 ## 14. When the DS doesn't have what you need (NOT-IN-DS pattern)
 
-1. Verificar que ninguna variante DS calza (size, color, layout). Leer `react/<Component>/<Component>.stories.tsx` — lista cada combinación soportada.
-2. Si nada calza, **stop and flag**:
+1. Verify that no DS variant fits (size, color, layout). Read `react/<Component>/<Component>.stories.tsx` — it lists every supported combination.
+2. If nothing fits, **stop and flag**:
 
    > *"The DS doesn't have a `<thing>` that fits this design. Options: (a) compose from existing primitives, (b) author a local stub flagged `NOT-IN-DS:` and promote later, (c) extend an existing DS component. Which path?"*
 
-3. Si el usuario elige (b), marcar el primitive local:
+3. If the user picks (b), mark the local primitive:
 
    ```tsx
    // NOT-IN-DS: <one-line description> · Promote to DS when stable.
    ```
 
-4. El módulo de screen publicado (§15) mantiene estos localmente en `react/screens/<Name>/` hasta que sean promovidos. No agregar primitivos a medio terminar en `react/<Component>/`.
+4. The published screen module (§15) keeps these locally in `react/screens/<Name>/` until promoted. Do not add half-finished primitives to `react/<Component>/`.
 
-**Never invent components silently.** La arquitectura anti-alucinación depende de esto — si Claude Code no puede trazar un componente a flotante.md o a un stub NOT-IN-DS, no debería existir.
+**Never invent components silently.** The anti-hallucination architecture depends on this — if Claude Code cannot trace a component back to `Flotante.md` or a `NOT-IN-DS:` stub, it should not exist.
 
 ---
 
 ## 15. Per-screen pattern (DS-side screen modules)
 
-Cuando un prototipo se estabiliza, espejarlo dentro del DS como `react/screens/<Name>/` — así Storybook lo indexa para el equipo.
+**`react/screens/` is a port destination, not a workspace.**
+
+A screen lands here only after it has been built and validated in a standalone prototype at `~/Documents/claudecode/<name>/`. Do not create or edit files under `react/screens/<Name>/` unless that standalone already exists.
+
+If it does not exist, stop and ask: *"There is no standalone prototype for this screen. Should I scaffold one first at `~/Documents/claudecode/`?"*
+
+The sequence is always:
+```
+Build in ~/Documents/claudecode/<name>/   ← real layout context, disposable
+        ↓  only when stable
+Port to react/screens/<Name>/             ← Storybook reference for the team
+```
 
 ### 15.1 Target shape
 
@@ -1195,119 +1370,119 @@ adelante-design-system/react/screens/<Name>/
 
 | Standalone prototype | DS screen |
 |---|---|
-| `app/page.tsx` + prototipo source files | Single `<Name>.tsx` |
+| `app/page.tsx` + prototype source files | Single `<Name>.tsx` |
 | `import { Button } from "@/ds/Button/Button"` | `import { Button } from "../../Button/Button"` |
-| Tailwind utility classes | CSS classes en `<Name>.css`, prefijadas con el screen (e.g. `lf-*`) |
+| Tailwind utility classes | CSS classes in `<Name>.css`, prefixed with the screen name (e.g. `lf-*`) |
 | `import { springs } from "@/lib/springs"` | `import { springs } from "../../springs"` |
-| Mock data en `mock-data.ts` | Inline `SEED_*` constants al tope de `<Name>.tsx` |
-| `NOT-IN-DS:` comments | Mantener tal cual |
+| Mock data in `mock-data.ts` | Inline `SEED_*` constants at the top of `<Name>.tsx` |
+| `NOT-IN-DS:` comments | Keep as-is |
 
-El DS no usa Tailwind. Convertir cada `className="…"` a una clase `<name>-*` CSS o `style={{ }}` inline. Inline para one-offs; promover a `<name>-*` cuando la misma combo aparezca 3+ veces.
+The DS does not use Tailwind. Convert every `className="…"` to a `<name>-*` CSS class or inline `style={{ }}`. Use inline for one-offs; promote to `<name>-*` when the same combination appears 3+ times.
 
 ### 15.3 Maintenance contract
 
-- El prototipo standalone en `~/Documents/claudecode/<name>/` es el workspace de dev local.
-- El screen DS en `react/screens/<Name>/` es la referencia para el equipo.
-- **Deben mantenerse en sync.** Cambio en uno → espejarlo en el otro en el mismo ciclo de PR.
-- Cuando un `NOT-IN-DS:` se promueve a `react/<Component>/`, eliminar el stub del screen y actualizar ambos para importar desde la nueva ubicación.
+- The standalone prototype at `~/Documents/claudecode/<name>/` is the local dev workspace.
+- The DS screen at `react/screens/<Name>/` is the team reference.
+- **They must stay in sync.** A change in one must be mirrored in the other within the same PR cycle.
+- When a `NOT-IN-DS:` stub is promoted to `react/<Component>/`, remove it from the screen and update both to import from the new location.
 
 ---
 
 ## 16. QA acceptance checklist
 
-Una screen está lista cuando **todos** los items abajo están verificados en dispositivo real.
+A screen is ready when **all** items below are verified on a real device.
 
 ### Press feedback
-- [ ] Cada elemento interactivo usa DS `Button` o `<PressableButton>` — sin `<button>` o `<div onClick>` raw.
-- [ ] Halo fade-in dentro de ~80 ms del touchdown.
-- [ ] Halo persiste ~120 ms después del release.
-- [ ] Halo fade-out tarda ~180 ms.
-- [ ] `onClick` dispara ~100 ms después del release.
-- [ ] Color del halo es un tono apagado/oscuro del fill del botón, no un color de contraste.
-- [ ] Ningún ancestro con `overflow: hidden` recorta el halo.
+- [ ] Every interactive element uses DS `Button` or `<PressableButton>` — no raw `<button>` or `<div onClick>`.
+- [ ] Halo fade-in within ~80 ms of touchdown.
+- [ ] Halo persists ~120 ms after release.
+- [ ] Halo fade-out takes ~180 ms.
+- [ ] `onClick` fires ~100 ms after release.
+- [ ] Halo color is a muted/darker shade of the button fill, not a contrasting color.
+- [ ] No ancestor with `overflow: hidden` clips the halo.
 
 ### Motion
-- [ ] Sin valores de spring inline. Todas las transiciones referencian `springs.<name>`.
-- [ ] Open usa `expanding`; close usa `shrinking` o `settling`.
-- [ ] Springs simétricos en la misma interacción (open/close con phasing espejado).
-- [ ] Sin `height: auto` en expand/collapse — usar `grid-template-rows: 0fr → 1fr`.
-- [ ] FAB → sheet morph: ancho crece primero, alto después de ~180 ms delay.
-- [ ] Sheet drag dismiss a `offset.y > 120 px` OR `velocity.y > 600 px/s`; sino spring back vía `settling`.
-- [ ] Cascade staggers a `0.06 s` por hijo después de `0.38 s` desde inicio del morph.
-- [ ] Action CTAs del sheet en footer `shrink-0` fuera del scroll body.
+- [ ] No inline spring values. All transitions reference `springs.<name>`.
+- [ ] Open uses `expanding`; close uses `shrinking` or `settling`.
+- [ ] Symmetric springs on the same interaction (open/close with mirrored phasing).
+- [ ] No `height: auto` on expand/collapse — use `grid-template-rows: 0fr → 1fr`.
+- [ ] FAB → sheet morph: width grows first, height after ~180 ms delay.
+- [ ] Sheet drag-dismiss at `offset.y > 120 px` OR `velocity.y > 600 px/s`; otherwise springs back via `settling`.
+- [ ] Cascade staggers at `0.06 s` per child after `0.38 s` from morph start.
+- [ ] Sheet action CTAs are in a `shrink-0` footer outside the scroll body.
 
 ### Haptics
-- [ ] `haptic.select()` en cada `onPressStart` (touchdown, no release).
-- [ ] `haptic.drag()` en drag start.
-- [ ] `haptic.complete()` en confirm / success.
-- [ ] `haptic.delete()` antes de cualquier confirmación destructiva.
-- [ ] Sin haptic en eventos hover-style.
+- [ ] `haptic.select()` on every `onPressStart` (touchdown, not release).
+- [ ] `haptic.drag()` on drag start.
+- [ ] `haptic.complete()` on confirm / success.
+- [ ] `haptic.delete()` before any destructive confirmation.
+- [ ] No haptic on hover-style events.
 
 ### Drag & drop
-- [ ] PointerSensor con `activationConstraint: { distance: 5 }`.
-- [ ] TouchSensor con `activationConstraint: { delay: 200, tolerance: 5 }`.
-- [ ] Items draggables con `touch-action: none` (`touch-none`).
-- [ ] Tap en item draggable sigue disparando acciones DS `Button` / `<PressableButton>`.
-- [ ] `<DragOverlay>` muestra ghost levantado con `scale: 1.05` + shadow.
-- [ ] `KeyboardSensor` agregado cuando el reorder necesita ser accesible por teclado.
+- [ ] `PointerSensor` with `activationConstraint: { distance: 5 }`.
+- [ ] `TouchSensor` with `activationConstraint: { delay: 200, tolerance: 5 }`.
+- [ ] Draggable items have `touch-action: none` (`touch-none`).
+- [ ] Tapping a draggable item still fires DS `Button` / `<PressableButton>` actions.
+- [ ] `<DragOverlay>` shows a lifted ghost with `scale: 1.05` + shadow.
+- [ ] `KeyboardSensor` added when reorder needs to be keyboard-accessible.
 
 ### Accessibility
-- [ ] Cada botón icon-only tiene `aria-label`.
-- [ ] Regiones expandibles usan `aria-expanded`.
-- [ ] Focus rings visibles en Tab nav; ningún botón los suprime.
-- [ ] `prefers-reduced-motion` sustituye `{ duration: 0.2, ease: "easeOut" }` para springs bouncy.
-- [ ] Contraste verificado para cualquier tono nuevo.
+- [ ] Every icon-only button has `aria-label`.
+- [ ] Expandable regions use `aria-expanded`.
+- [ ] Focus rings visible on Tab nav; no button suppresses them.
+- [ ] `prefers-reduced-motion` substitutes `{ duration: 0.2, ease: "easeOut" }` for bouncy springs.
+- [ ] Contrast verified for any new color tone.
 
 ### Layout
-- [ ] Mobile root es `max-w-[402px] mx-auto` con atributo `data-prototype`.
-- [ ] Sin `overflow-hidden` en el root.
-- [ ] Bottom action bar es `fixed` fuera del scroll container; scroll content tiene `pb-[160px]`.
-- [ ] Force-light tokens aplicados en el `layout.tsx` del prototipo (ambos `--surface-*` y `--color-*`).
+- [ ] Mobile root is `max-w-[402px] mx-auto` with `data-prototype` attribute.
+- [ ] No `overflow-hidden` on the root.
+- [ ] Bottom action bar is `fixed` outside the scroll container; scroll content has `pb-[160px]`.
+- [ ] Force-light tokens applied in the prototype's `layout.tsx` (both `--surface-*` and `--color-*`).
 
 ### Build
-- [ ] `npm run build` pasa — todas las rutas prerenderean como static.
-- [ ] Sin console warnings de layout shift o animation cancellation.
-- [ ] Sin tipos `any` en código committed.
+- [ ] `npm run build` passes — all routes pre-render as static.
+- [ ] No console warnings for layout shift or animation cancellation.
+- [ ] No `any` types in committed code.
 
 ### DS rules
-- [ ] Cada primitive interactivo reutilizable verificado contra el DS antes de autorearlo localmente.
-- [ ] Primitivos custom tienen comentario `NOT-IN-DS:` con una línea de description.
-- [ ] `lib/springs.ts` / `lib/haptic.ts` matches `react/springs.ts` / `react/haptic.ts` del DS.
-- [ ] Cuando el prototipo se estabiliza, está siendo portado a `react/screens/<Name>/` del DS (§15).
-- [ ] Cualquier fix a nivel de componente llegó al DS repo PRIMERO (DS-first workflow — Memory.md §8). Standalone re-vendoreado DESPUÉS de que el PR del DS fue mergeado. Las copias portadas en prototipos independientes nunca son el origen de cambios.
+- [ ] Every reusable interactive primitive verified against the DS before authoring locally.
+- [ ] Custom primitives have a `NOT-IN-DS:` comment with a one-line description.
+- [ ] `lib/springs.ts` / `lib/haptic.ts` matches `react/springs.ts` / `react/haptic.ts` in the DS.
+- [ ] When the prototype stabilizes, it is being ported to `react/screens/<Name>/` in the DS (§15).
+- [ ] Any component-level fix originated in the DS repo first (DS-first workflow — Memory.md §6). Standalone re-vendored only after the DS PR was merged. Vendored copies in standalone prototypes are never the origin of changes.
 
 ---
 
 ## 17. Anti-patterns (don't do)
 
-- **No** inline spring values (`transition={{ stiffness: 320 }}`). Agregar a `lib/springs.ts` primero.
-- **No** usar `layoutId` para morphs entre shapes diferentes. Crossfade con `AnimatePresence mode="popLayout"`.
-- **No** animar `width`/`height` en el mismo elemento que se está haciendo scroll. Scroll en un hijo de tamaño estático de la surface del morph.
-- **No** agregar `overflow-hidden` a un contenedor que envuelve un button — recorta el halo.
-- **No** poner handlers de dnd-kit en la surface del sheet. dnd-kit para items; motion drag para el sheet.
-- **No** confiar en screenshots del dev preview para timing de animaciones. Verificar en dispositivo real.
-- **No** inventar componentes. Si no está en §12 ni en un stub `NOT-IN-DS:`, no existe.
-- **No** editar las copias portadas en un prototipo standalone. El próximo re-vendor sobreescribe los cambios silenciosamente. Fix en el DS repo primero (Memory.md §8).
-- **No** shipear un stub `NOT-IN-DS:` que use comportamiento que ya está en el DS. Si el DS lo tiene, usarlo (vendor + apply).
-- **No** valores hardcodeados. Solo tokens `--ds-*` o los definidos en §3.
-- **No** Tailwind dentro de componentes DS vendoreados.
-- **No** `fill` como atributo inline en SVGs que necesitan `var()` — usar CSS property en el padre.
+- **No** inline spring values (`transition={{ stiffness: 320 }}`). Add to `lib/springs.ts` first.
+- **No** `layoutId` for morphs between different shapes. Use `AnimatePresence mode="popLayout"` crossfade.
+- **No** animating `width`/`height` on the same element being scrolled. Scroll inside a static-size child of the morph surface.
+- **No** `overflow-hidden` on a container wrapping a button — it clips the halo.
+- **No** dnd-kit handlers on the sheet surface. dnd-kit is for items; motion drag is for the sheet.
+- **No** relying on dev preview screenshots for animation timing. Verify on a real device.
+- **No** inventing components. If it's not in §12 or a `NOT-IN-DS:` stub, it does not exist.
+- **No** editing vendored copies in a standalone prototype. The next re-vendor silently overwrites changes. Fix in the DS repo first (Memory.md §6).
+- **No** shipping a `NOT-IN-DS:` stub that duplicates behavior already in the DS. If the DS has it, use it (vendor + apply).
+- **No** hardcoded values. Only `--ds-*` tokens or those defined in §3.
+- **No** Tailwind inside vendored DS components.
+- **No** `fill` as an inline attribute on SVGs that need `var()` — use CSS property on the parent.
 
 ---
 
-## 18. Pointers a specs por componente
+## 18. Component spec pointers
 
-Cuando se toca un componente específico, cargar su spec primero — esa es el contrato. La spec se actualiza **antes** del código.
+When touching a specific component, load its spec first — that is the contract. The spec is updated **before** the code.
 
-| Componente | Spec file |
+| Component | Spec file |
 |---|---|
 | Press contract (PressableButton + DS Button halo) | **HALOPRESS.md** |
 | AdelanteMark brand mark (web + iOS AppIcon) | **ICON.md** |
 | SlideToConfirm + SlideArm | **SLIDE_TO_CONFIRM.md** |
 | Sheet (3-state morph + drag + cascade) | **SHEET_MORPH.md** |
 
-Si un componente listado en §12 no tiene spec aún, el entry del inventario es el contrato. Promover a spec standalone cuando el comportamiento sea no-trivial.
+If a component listed in §12 has no dedicated spec yet, its inventory entry is the contract. Promote to a standalone spec when the behavior becomes non-trivial.
 
 ---
 
-*End of flotante.md. Si algo aquí está mal o es ambiguo, actualizar este archivo antes de tocar el código — el archivo es el contrato.*
+*End of Flotante.md. If anything here is wrong or ambiguous, update this file before touching the code — this file is the contract.*

@@ -1,35 +1,35 @@
 # CLAUDE.md — Adelante Design System
 
-> Este archivo es leído automáticamente por Claude Code al abrir esta carpeta.
+> This file is read automatically by Claude Code when opening this folder.
 
-## Contexto obligatorio
+## Required context
 
-**ACCIÓN REQUERIDA antes de cualquier tarea:** usar la herramienta Read para leer estos tres archivos en orden, completos. No escanear.
+**REQUIRED ACTION before any task:** use the Read tool to read these three files in order, in full. Do not skim.
 
-1. `docs/Memory.md` — equipo, stack, workflow y entorno
-2. `docs/Losa.md` — reglas de gobierno y tabla de routing
-3. `docs/Flotante.md` — librería de componentes: tokens, springs, haptics, inventario DS y vendoring
+1. `docs/Flotante.md` — component library: tokens, springs, haptics, DS inventory and vendoring.
+2. `docs/Losa.md` — governing rules and routing table.
+3. `docs/Memory.md` — team, stack, workflow and environment.
 
-**Regla:** si un componente, prop, token o interacción no está documentado explícitamente en `Flotante.md`, no inventar — preguntar antes de continuar.
+**Rule:** if a component, prop, token or interaction is not explicitly documented in `Flotante.md`, do not invent it — ask before continuing.
 
 ---
 
-## Flujos de trabajo
+## Workflows
 
-| Flujo | Archivo | Cuándo usarlo |
+| Workflow | File | When to use |
 |---|---|---|
-| **Losa Flotante** | [docs/flotante.md](docs/flotante.md) | Actualizar o crear un componente del sistema de diseño |
+| **Losa Flotante** | [docs/flotante.md](docs/flotante.md) | Updating or creating a design system component |
 
-Si el componente (o valor) **no existe en Live Code**, preguntar al usuario qué hacer antes de continuar.
+If the component (or value) **does not exist in Live Code**, ask the user what to do before continuing.
 
 ---
 
-## Archivos de Figma
+## Figma files
 
-| Archivo | Key |
+| File | Key |
 |---|---|
 | **Losa Flotante** (design system) | `oRDLRL9OUNcTQ0k6G5MBPS` |
-| **Prototype Screens** | _(agregar key cuando esté disponible)_ |
+| **Prototype Screens** | _(add key when available)_ |
 
 ---
 
@@ -43,7 +43,7 @@ Si el componente (o valor) **no existe en Live Code**, preguntar al usuario qué
 
 ## Stack
 
-| Capa | Tecnología |
+| Layer | Technology |
 |---|---|
 | Framework | React 19 + TypeScript |
 | Styling | CSS custom properties (`react/design-system.css`) |
