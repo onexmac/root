@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import { Button } from "../../buttons/Button";
-import { Icon } from "../../iconos/Icon";
+import { Button } from "../../Button/Button";
+import { Icon } from "../../Icon/Icon";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

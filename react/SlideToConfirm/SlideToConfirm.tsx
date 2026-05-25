@@ -6,7 +6,7 @@ import {
   useMotionValue,
   useTransform,
 } from "motion/react";
-import { Icon } from "../iconos/Icon";
+import { Icon } from "../Icon/Icon";
 import { springs } from "../springs";
 import { haptic } from "../haptic";
 import "./SlideToConfirm.css";

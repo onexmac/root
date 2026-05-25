@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Icon } from "../iconos/Icon";
+import { Icon } from "../Icon/Icon";
 import { springs } from "../springs";
 import { haptic } from "../haptic";
 import { SlideToConfirm } from "../SlideToConfirm/SlideToConfirm";

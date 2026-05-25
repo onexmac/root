@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { Icon } from "../iconos/Icon";
+import { Icon } from "../Icon/Icon";
 import { QuantitySelector, QuantitySelectorState } from "../QuantitySelector/QuantitySelector";
 import { ToggleCards } from "../ToggleCards/ToggleCards";
 import { springs } from "../springs";

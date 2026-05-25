@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Icon, IconName } from "../iconos/Icon";
+import { Icon, IconName } from "../Icon/Icon";
 import { haptic } from "../haptic";
 
 // Figma pressed stroke colors — exact from setButtons component set (node 434-2434)

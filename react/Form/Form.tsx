@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "motion/react";
-import { Icon } from "../iconos/Icon";
+import { Icon } from "../Icon/Icon";
 import { springs } from "../springs";
 
 // ─── FormField ────────────────────────────────────────────────────────────────

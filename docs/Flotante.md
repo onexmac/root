@@ -51,7 +51,7 @@ lib/
 ├── haptic.ts                    # §4 — must mirror react/haptic.ts in the DS exactly
 └── utils.ts                     # cn() helper
 
-components/ds/                   # §13 — vendored from adelante-design-system
+react/                           # DS component source in this repo
 ├── Button/Button.tsx
 ├── Form/Form.tsx
 ├── Icon/Icon.tsx
@@ -64,12 +64,9 @@ components/ds/                   # §13 — vendored from adelante-design-system
 ├── ToggleCards/{ToggleCards.tsx, ToggleCards.css}
 ├── AdelanteMark/AdelanteMark.tsx
 └── design-system.css
-
-components/ui/
-└── pressable-button.tsx         # §6 — fallback press contract when no DS variant fits
 ```
 
-If any of these is missing, vendor it from the DS (§13). The `lib/springs.ts` and `lib/haptic.ts` values **must match** `react/springs.ts` and `react/haptic.ts` in the DS exactly — they are the same vocabulary.
+If any of these is missing, vendor it from the DS (§13) or update this repo from the source. The `lib/springs.ts` and `lib/haptic.ts` values **must match** `react/springs.ts` and `react/haptic.ts` in the DS exactly — they are the same vocabulary.
 
 ---
 
@@ -253,9 +250,9 @@ If you add a spring, add it here AND in `react/springs.ts` of the DS (PR alongsi
 
 Every tap target uses one of these. The 80/180/120 ms timing is **part of the brand**; mirrors `PressableSquircleStyle` in `P2/Components/PressableSquircleStyle.swift` to the millisecond.
 
-**Preferred:** the DS `Button` (`components/ds/Button/Button.tsx`) with `color` (green/red/white/black/gray) + `layout` (label / icon-left / icon-right / icon) + `size` (md / sm). Implements the halo + `haptic.select()` on touchdown.
+**Preferred:** the DS `Button` (`react/Button/Button.tsx`) with `color` (green/red/white/black/gray) + `layout` (label / icon-left / icon-right / icon) + `size` (md / sm). Implements the halo + `haptic.select()` on touchdown.
 
-**Fallback:** `components/ui/pressable-button.tsx` (local `PressableButton`) — same timing contract, used when the DS variant doesn't match (arbitrary geometry, custom shape).
+**Fallback:** a local `PressableButton` shim — same timing contract, used when the DS variant doesn't match (arbitrary geometry, custom shape).
 
 ### 6.1 The four numbers — non-negotiable
 
@@ -620,7 +617,7 @@ export function useSpring(name: keyof typeof springs) {
 
 ### 11.2 Mock data
 
-Single source of truth per prototype, e.g. `components/<prototype>/mock-data.ts`. Type-first:
+Single source of truth per prototype, e.g. `mock-data.ts` or `src/mock-data.ts`. Type-first:
 
 ```ts
 export type User = {
@@ -1086,32 +1083,32 @@ Cuando se shipea uno como `NOT-IN-DS:` stub, flaggearlo para promoción en el PR
 
 ## 13. Vendoring workflow
 
-El DS no está publicado en npm. Vendorear los archivos React al prototipo en `components/ds/<Component>/`.
+El DS no está publicado en npm. En este repo la fuente canónica está bajo `react/`. Si un prototipo independiente necesita estos componentes, cópialos desde `react/` hacia la estructura del prototipo.
 
 ### 13.1 Initial vendor (new prototype)
 
 ```bash
 DS=~/Documents/claudecode/adelante-design-system/react
-mkdir -p components/ds/{Icon,Button,Form,Sheet,SlideButton,SlideToConfirm,SlideArm,SelectionDropdown,ToggleCards,TabsMenu,AdelanteMark}
+mkdir -p prototipo/src/ds/{Icon,Button,Form,Sheet,SlideButton,SlideToConfirm,SlideArm,SelectionDropdown,ToggleCards,TabsMenu,AdelanteMark}
 
-cp "$DS/Icon/Icon.tsx"                                    components/ds/Icon/
-cp "$DS/Button/Button.tsx"                                components/ds/Button/
-cp "$DS/Form/Form.tsx"                                    components/ds/Form/
-cp "$DS/Sheet/Sheet.tsx"                                  components/ds/Sheet/
-cp "$DS/Sheet/Sheet.css"                                  components/ds/Sheet/
-cp "$DS/SlideButton/SlideButton.tsx"                      components/ds/SlideButton/
-cp "$DS/SlideButton/SlideButton.css"                      components/ds/SlideButton/
-cp "$DS/SlideToConfirm/SlideToConfirm.tsx"                components/ds/SlideToConfirm/
-cp "$DS/SlideToConfirm/SlideToConfirm.css"                components/ds/SlideToConfirm/
-cp "$DS/SlideArm/SlideArm.tsx"                            components/ds/SlideArm/
-cp "$DS/SlideArm/SlideArm.css"                            components/ds/SlideArm/
-cp "$DS/SelectionDropdown/SelectionDropdown.tsx"          components/ds/SelectionDropdown/
-cp "$DS/SelectionDropdown/SelectionDropdown.css"          components/ds/SelectionDropdown/
-cp "$DS/ToggleCards/ToggleCards.tsx"                      components/ds/ToggleCards/
-cp "$DS/ToggleCards/ToggleCards.css"                      components/ds/ToggleCards/
-cp "$DS/TabsMenu/TabsMenu.tsx"                            components/ds/TabsMenu/
-cp "$DS/AdelanteMark/AdelanteMark.tsx"                    components/ds/AdelanteMark/
-cp "$DS/design-system.css"                                components/ds/
+cp "$DS/Icon/Icon.tsx"                                    prototipo/src/ds/Icon/
+cp "$DS/Button/Button.tsx"                                prototipo/src/ds/Button/
+cp "$DS/Form/Form.tsx"                                    prototipo/src/ds/Form/
+cp "$DS/Sheet/Sheet.tsx"                                  prototipo/src/ds/Sheet/
+cp "$DS/Sheet/Sheet.css"                                  prototipo/src/ds/Sheet/
+cp "$DS/SlideButton/SlideButton.tsx"                      prototipo/src/ds/SlideButton/
+cp "$DS/SlideButton/SlideButton.css"                      prototipo/src/ds/SlideButton/
+cp "$DS/SlideToConfirm/SlideToConfirm.tsx"                prototipo/src/ds/SlideToConfirm/
+cp "$DS/SlideToConfirm/SlideToConfirm.css"                prototipo/src/ds/SlideToConfirm/
+cp "$DS/SlideArm/SlideArm.tsx"                            prototipo/src/ds/SlideArm/
+cp "$DS/SlideArm/SlideArm.css"                            prototipo/src/ds/SlideArm/
+cp "$DS/SelectionDropdown/SelectionDropdown.tsx"          prototipo/src/ds/SelectionDropdown/
+cp "$DS/SelectionDropdown/SelectionDropdown.css"          prototipo/src/ds/SelectionDropdown/
+cp "$DS/ToggleCards/ToggleCards.tsx"                      prototipo/src/ds/ToggleCards/
+cp "$DS/ToggleCards/ToggleCards.css"                      prototipo/src/ds/ToggleCards/
+cp "$DS/TabsMenu/TabsMenu.tsx"                            prototipo/src/ds/TabsMenu/
+cp "$DS/AdelanteMark/AdelanteMark.tsx"                    prototipo/src/ds/AdelanteMark/
+cp "$DS/design-system.css"                                prototipo/src/ds/
 
 cp "$DS/springs.ts"                                       lib/springs.ts
 cp "$DS/haptic.ts"                                        lib/haptic.ts
@@ -1120,7 +1117,7 @@ cp "$DS/haptic.ts"                                        lib/haptic.ts
 ### 13.2 Post-vendor cleanup
 
 ```bash
-cd components/ds
+cd prototipo/src/ds
 sed -i '' 's|from "\.\./springs"|from "@/lib/springs"|g; s|from "\.\./haptic"|from "@/lib/haptic"|g' \
   Sheet/Sheet.tsx SlideButton/SlideButton.tsx SlideToConfirm/SlideToConfirm.tsx \
   SlideArm/SlideArm.tsx Form/Form.tsx SelectionDropdown/SelectionDropdown.tsx \
@@ -1130,7 +1127,7 @@ sed -i '' 's|from "\.\./springs"|from "@/lib/springs"|g; s|from "\.\./haptic"|fr
 sed -i '' '/^@import url("https:\/\/fonts.googleapis.com/d' design-system.css
 ```
 
-Luego `@import "../components/ds/design-system.css";` al tope de `app/globals.css`.
+Luego `@import "../ds/design-system.css";` al tope de `app/globals.css` o el equivalente del prototipo.
 
 ### 13.3 Width overrides para el mobile shell
 
@@ -1196,8 +1193,8 @@ Seguir `react/screens/ControlUsuarios/ControlUsuarios.tsx` como referencia estru
 
 | Standalone prototype | DS screen |
 |---|---|
-| `app/page.tsx` + `components/<proto>/*.tsx` | Single `<Name>.tsx` |
-| `import { Button } from "@/components/ds/Button/Button"` | `import { Button } from "../../Button/Button"` |
+| `app/page.tsx` + prototipo source files | Single `<Name>.tsx` |
+| `import { Button } from "@/ds/Button/Button"` | `import { Button } from "../../Button/Button"` |
 | Tailwind utility classes | CSS classes en `<Name>.css`, prefijadas con el screen (e.g. `lf-*`) |
 | `import { springs } from "@/lib/springs"` | `import { springs } from "../../springs"` |
 | Mock data en `mock-data.ts` | Inline `SEED_*` constants al tope de `<Name>.tsx` |
@@ -1275,7 +1272,7 @@ Una screen está lista cuando **todos** los items abajo están verificados en di
 - [ ] Primitivos custom tienen comentario `NOT-IN-DS:` con una línea de description.
 - [ ] `lib/springs.ts` / `lib/haptic.ts` matches `react/springs.ts` / `react/haptic.ts` del DS.
 - [ ] Cuando el prototipo se estabiliza, está siendo portado a `react/screens/<Name>/` del DS (§15).
-- [ ] Cualquier fix a nivel de componente llegó al DS repo PRIMERO (DS-first workflow — Memory.md §8). Standalone re-vendoreado DESPUÉS de que el PR del DS fue mergeado. Las copias vendoreadas en `components/ds/` nunca son el origen de cambios.
+- [ ] Cualquier fix a nivel de componente llegó al DS repo PRIMERO (DS-first workflow — Memory.md §8). Standalone re-vendoreado DESPUÉS de que el PR del DS fue mergeado. Las copias portadas en prototipos independientes nunca son el origen de cambios.
 
 ---
 
@@ -1288,7 +1285,7 @@ Una screen está lista cuando **todos** los items abajo están verificados en di
 - **No** poner handlers de dnd-kit en la surface del sheet. dnd-kit para items; motion drag para el sheet.
 - **No** confiar en screenshots del dev preview para timing de animaciones. Verificar en dispositivo real.
 - **No** inventar componentes. Si no está en §12 ni en un stub `NOT-IN-DS:`, no existe.
-- **No** editar `components/ds/` en el prototipo standalone. El próximo re-vendor sobreescribe los cambios silenciosamente. Fix en el DS repo primero (Memory.md §8).
+- **No** editar las copias portadas en un prototipo standalone. El próximo re-vendor sobreescribe los cambios silenciosamente. Fix en el DS repo primero (Memory.md §8).
 - **No** shipear un stub `NOT-IN-DS:` que use comportamiento que ya está en el DS. Si el DS lo tiene, usarlo (vendor + apply).
 - **No** valores hardcodeados. Solo tokens `--ds-*` o los definidos en §3.
 - **No** Tailwind dentro de componentes DS vendoreados.

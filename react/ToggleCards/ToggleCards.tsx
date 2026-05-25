@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button } from "../buttons/Button";
-import { Icon, type IconName } from "../iconos/Icon";
+import { Button } from "../Button/Button";
+import { Icon, type IconName } from "../Icon/Icon";
 
 export type ToggleCardsState = "standard" | "pressed";
 export type ToggleCardsMode = "normal" | "disabled";
