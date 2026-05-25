@@ -674,12 +674,12 @@ body {
 
 /* checked: borde 8px negro + fondo negro → círculo sólido, ícono blanco visible al centro */
 .ds-checkbox__box--checked {
-  background:   var(--ds-color-black);
+  background:   var(--ds-color-white);
   border-color: var(--ds-color-black);
 }
 /* SVG fill como propiedad CSS (no atributo) para que var() resuelva correctamente */
 .ds-checkbox__box--checked svg {
-  fill: var(--ds-color-white);
+  fill: var(--ds-color-black);
 }
 
 /* Figma disabled: gray-100 bg, gray-200 border */
@@ -698,7 +698,7 @@ body {
 .ds-checkbox--disabled .ds-checkbox__label { color: var(--ds-color-black); }
 
 /* ============================================================
-   TAG  (ds-tag)
+   TAG  (ds-tag)y como hago para que
    ============================================================ */
 
 .ds-tag {
