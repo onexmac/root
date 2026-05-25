@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AdelanteMark } from "./AdelanteMark";
 
 const meta: Meta<typeof AdelanteMark> = {
-  title: "Nuevos/AdelanteMark",
+  title: "New/AdelanteMark",
   component: AdelanteMark,
   parameters: {
     layout: "centered",

@@ -29,7 +29,7 @@ const ICON_LABELS: Partial<Record<IconName, string>> = {
 };
 
 const meta: Meta<typeof Icon> = {
-  title: "Iconos/Icon",
+  title: "Icons/Icon",
   component: Icon,
   tags: ["autodocs"],
   argTypes: {

@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "./Button";
 
 const meta: Meta = {
-  title: "Buttons/labels",
+  title: "Buttons/Labels",
   parameters: { layout: "centered" },
 };
 export default meta;
