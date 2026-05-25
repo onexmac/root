@@ -816,7 +816,7 @@ body {
 
 /* Figma active/selected: círculo sólido negro */
 .ds-option-label--active .ds-option-label__dot {
-  background:   var(--ds-color-black);
+  background:   var(--ds-color-black-100);
   border-color: var(--ds-color-black);
 }
 
