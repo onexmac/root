@@ -9,7 +9,7 @@ import { Icon } from "../react/Icon/Icon";
 import { NavAnnotation, NavStateLabel, NavSection } from "./helpers";
 
 const meta: Meta = {
-  title: "Buttons",
+  title: "Button",
   parameters: { layout: "padded" },
 };
 export default meta;

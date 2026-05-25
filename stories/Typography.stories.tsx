@@ -2,7 +2,7 @@ import type { StoryObj, Meta } from "@storybook/react-vite";
 import React from "react";
 
 const meta: Meta = {
-  title: "Tipografia",
+  title: "Typography",
   parameters: { layout: "padded" },
 };
 export default meta;

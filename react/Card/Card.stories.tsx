@@ -4,7 +4,7 @@ import { SummaryCard, MaterialList, DetailCard } from "./Card";
 import type { QuantitySelectorState } from "../QuantitySelector/QuantitySelector";
 
 const meta: Meta<typeof SummaryCard> = {
-  title: "Cards/Card",
+  title: "Card/Card",
   component: SummaryCard,
   tags: ["autodocs"],
   argTypes: {

@@ -4,7 +4,7 @@ import { Icon } from "../react/Icon/Icon";
 import type { IconName } from "../react/Icon/Icon";
 
 const meta: Meta = {
-  title: "Iconos",
+  title: "Icon",
   parameters: { layout: "padded" },
 };
 export default meta;

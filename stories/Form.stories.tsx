@@ -4,7 +4,7 @@ import { FormField, CheckBox, Tag, ProgressBar, OptionLabel } from "../react/For
 import { NavStateLabel, NavSection } from "./helpers";
 
 const meta: Meta = {
-  title: "Forms",
+  title: "Form",
   parameters: { layout: "padded" },
 };
 export default meta;

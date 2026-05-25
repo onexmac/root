@@ -4,7 +4,7 @@ import { SummaryCard, MaterialList, DetailCard } from "../react/Card/Card";
 import { NavStateLabel, NavSection } from "./helpers";
 
 const meta: Meta = {
-  title: "Cards",
+  title: "Card",
   parameters: { layout: "padded" },
 };
 export default meta;
