@@ -52,17 +52,21 @@ lib/
 └── utils.ts                     # cn() helper
 
 react/                           # DS component source in this repo
+├── AdelanteMark/AdelanteMark.tsx
 ├── Button/Button.tsx
+├── Card/Card.tsx
 ├── Form/Form.tsx
 ├── Icon/Icon.tsx
+├── Nav/Nav.tsx                  # NavigationControls, FilterOptions, ToggleMenu
+├── QuantitySelector/{QuantitySelector.tsx, QuantitySelector.css}
+├── SearchBar/{SearchBar.tsx, SearchBar.css}
 ├── SelectionDropdown/{SelectionDropdown.tsx, SelectionDropdown.css}
 ├── Sheet/{Sheet.tsx, Sheet.css}
+├── SlideArm/{SlideArm.tsx, SlideArm.css}
 ├── SlideButton/{SlideButton.tsx, SlideButton.css}
 ├── SlideToConfirm/{SlideToConfirm.tsx, SlideToConfirm.css}
-├── SlideArm/{SlideArm.tsx, SlideArm.css}
 ├── TabsMenu/TabsMenu.tsx
 ├── ToggleCards/{ToggleCards.tsx, ToggleCards.css}
-├── AdelanteMark/AdelanteMark.tsx
 └── design-system.css
 ```
 
@@ -1186,8 +1190,6 @@ adelante-design-system/react/screens/<Name>/
 ├── <Name>.stories.tsx      # Storybook entry
 └── <Name>.css              # screen-only styles not in design-system.css
 ```
-
-Seguir `react/screens/ControlUsuarios/ControlUsuarios.tsx` como referencia estructural.
 
 ### 15.2 Porting rules
 

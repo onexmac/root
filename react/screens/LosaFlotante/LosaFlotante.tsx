@@ -9,7 +9,7 @@ import { SlideArm } from "../../SlideArm/SlideArm";
 import { ToggleCards } from "../../ToggleCards/ToggleCards";
 import { springs } from "../../springs";
 import { haptic } from "../../haptic";
-import "./LosaFlotante.css";
+//import "./LosaFlotante.css";
 
 /* ============================================================
  * H4 — Losa Flotante (mobile prototype, M1 + M2)
