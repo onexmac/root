@@ -690,7 +690,6 @@ body {
 }
 
 /* remove usa el mismo estilo que --checked (negro sólido), manejado por ds-checkbox__box--checked */
-
 .ds-checkbox__label {
   font-size:  var(--ds-font-size-body-md);
   color:      var(--ds-color-black);

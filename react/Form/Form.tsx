@@ -113,7 +113,7 @@ export function CheckBox({
   };
 
   const isChecked = checked || state === "add" || state === "remove";
-  const iconName = state === "remove" ? "minus" : "good";
+  const iconName = state === "remove" ? "remove" : "completado";
 
   return (
     <label className={`ds-checkbox ds-checkbox--${state}`}>
