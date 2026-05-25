@@ -668,14 +668,14 @@ body {
   flex-shrink:     0;
   background:      var(--ds-color-white);
   position:        relative;
-  overflow:        hidden;
+  /*overflow:        hidden;*/
   transition:      background 120ms ease, border-color 120ms ease, border-width 120ms ease;
 }
 
 /* checked: borde 8px negro + fondo negro → círculo sólido, ícono blanco visible al centro */
 .ds-checkbox__box--checked {
-  border-width: 8px;
   background:   var(--ds-color-black);
+  border-color: var(--ds-color-black);
 }
 /* SVG fill como propiedad CSS (no atributo) para que var() resuelva correctamente */
 .ds-checkbox__box--checked svg {

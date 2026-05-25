@@ -881,9 +881,9 @@ Selectable row option with a circular dot indicator. Behaves like a radio button
 | `onClick` | `() => void` | — | Selection handler |
 
 **States**
-- `standard` — 30×30 circle, 4 px gray-200 border, white fill.
-- `active` — solid black circle.
-- `disabled` — gray-100 fill, gray-200 border, gray-300 text, non-interactive.
+- `standard` — 30×30 circle, 4 px `gray-200` border, white fill.
+- `active` — 4 px pure black border + `black-100` fill (`rgba(0,0,0,0.8)`). Appears as a solid dark dot.
+- `disabled` — `gray-100` fill, `gray-200` border, `gray-300` text, non-interactive.
 
 **Animation** — `motion.button` with `whileTap: { scale: 0.97 }` and `springs.snappy`.
 
