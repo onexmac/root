@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ToggleCards } from "./ToggleCards";
 
@@ -32,3 +32,30 @@ export const SmallDisabled:          Story = { args: { size: "small", visibility
 export const SmallDisabledPressed:   Story = { args: { size: "small", visibility: "open",  state: "pressed", mode: "disabled" } };
 export const SmallDisabledClose:     Story = { args: { size: "small", visibility: "close", mode: "disabled" } };
 export const SmallDisabledClosePressed: Story = { args: { size: "small", visibility: "close", state: "pressed", mode: "disabled" } };
+
+// ─── Interactive ──────────────────────────────────────────────────────────────
+export const Interactive: Story = {
+  render: () => {
+    const [open, setOpen] = useState(true);
+    return (
+      <ToggleCards
+        size="big"
+        visibility={open ? "open" : "close"}
+        onClick={() => setOpen((v) => !v)}
+      />
+    );
+  },
+};
+
+export const InteractiveSmall: Story = {
+  render: () => {
+    const [open, setOpen] = useState(true);
+    return (
+      <ToggleCards
+        size="small"
+        visibility={open ? "open" : "close"}
+        onClick={() => setOpen((v) => !v)}
+      />
+    );
+  },
+};
