@@ -5,9 +5,6 @@ import '../react/SearchBar/SearchBar.css'
 import '../react/SelectionDropdown/SelectionDropdown.css'
 import '../react/SlideButton/SlideButton.css'
 import '../react/ToggleCards/ToggleCards.css'
-import '../react/screens/Slab/Slab.css'
-import '../react/screens/Boletas/Boletas.css'
-import '../react/screens/BoletaPedido/BoletaPedido.css'
 import { adelanteTheme } from './theme'
 
 const preview: Preview = {
