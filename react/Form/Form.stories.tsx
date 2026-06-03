@@ -81,8 +81,10 @@ export const TagAll: StoryObj = {
   render: () => (
     <div style={{ display: "flex", gap: 12, padding: 16 }}>
       <Tag state="active"   label="Label" />
-      <Tag state="standard" label="Label" />
       <Tag state="disabled" label="Label" />
+      <Tag state="standard" label="Label" />
+      <Tag state="active" layout="label+icon" icon="info" label="Label" />
+      <Tag layout="label" label="Label" />
     </div>
   ),
 };
