@@ -74,8 +74,8 @@ export const OptionsExtraAll: StoryObj = {
 export const TagActive:    StoryObj = { name: "selectors / state: active",   render: () => <Tag state="active"   label="Label" /> };
 export const TagDisabled:  StoryObj = { name: "selectors / state: disabled", render: () => <Tag state="disabled" label="Label" /> };
 export const TagStandard:  StoryObj = { name: "selectors / state: standard", render: () => <Tag state="standard" label="Label" /> };
-export const TagLabelIcon: StoryObj = { name: "selectors / label+icon",      render: () => <Tag state="active" layout="label+icon" icon="info" label="Label" /> };
-export const TagLabel:     StoryObj = { name: "selectors / label",           render: () => <Tag layout="label" label="Label" /> };
+export const TagLabelIcon: StoryObj = { name: "selectors / state: label+icon", render: () => <Tag state="active" layout="label+icon" icon="info" label="Label" /> };
+export const TagLabel:     StoryObj = { name: "selectors / state: label",     render: () => <Tag layout="label" label="Label" /> };
 export const TagAll: StoryObj = {
   name: "selectors / All states",
   render: () => (
