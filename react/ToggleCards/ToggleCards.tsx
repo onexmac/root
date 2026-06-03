@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import "./ToggleCards.css";
 import { Button } from "../Button/Button";
 import { Icon, type IconName } from "../Icon/Icon";
 

@@ -141,6 +141,7 @@ export function Button({
         position: "relative",
         WebkitTapHighlightColor: "transparent",
         touchAction: "manipulation",
+        ...style,
         ...(pressed && PRESSED_BG[resolvedColor]
           ? { backgroundColor: PRESSED_BG[resolvedColor] }
           : {}),

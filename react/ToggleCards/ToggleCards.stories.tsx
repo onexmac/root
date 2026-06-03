@@ -34,7 +34,7 @@ export const SmallDisabledClose:     Story = { args: { size: "small", visibility
 export const SmallDisabledClosePressed: Story = { args: { size: "small", visibility: "close", state: "pressed", mode: "disabled" } };
 
 // ─── Interactive ──────────────────────────────────────────────────────────────
-export const Interactive: Story = {
+export const InteractiveBig: Story = {
   render: () => {
     const [open, setOpen] = useState(true);
     return (
