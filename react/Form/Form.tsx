@@ -182,18 +182,22 @@ export function CheckBox({
 // ─── Tag ──────────────────────────────────────────────────────────────────────
 
 export type TagState = "active" | "standard" | "disabled";
+export type TagLayout = "pill" | "label+icon" | "label";
 
 export interface TagProps {
   label?: string;
   state?: TagState;
+  layout?: TagLayout;
+  icon?: IconName;
   onClick?: () => void;
 }
 
-export function Tag({ label = "Tag", state = "standard", onClick }: TagProps) {
+export function Tag({ label = "Tag", state = "standard", layout = "pill", icon = "info", onClick }: TagProps) {
   const isDisabled = state === "disabled";
+
   return (
     <motion.button
-      className={`ds-tag ds-tag--${state}`}
+      className={`ds-tag ds-tag--${state}${layout !== "pill" ? ` ds-tag--layout-${layout.replace("+", "-")}` : ""}`}
       onClick={isDisabled ? undefined : onClick}
       disabled={isDisabled}
       type="button"
@@ -201,8 +205,8 @@ export function Tag({ label = "Tag", state = "standard", onClick }: TagProps) {
       transition={springs.snappy}
     >
       {label}
-      {state === "active" && (
-        <Icon name="completado" size="md" color="var(--ds-color-white)" />
+      {layout === "label+icon" && (
+        <Icon name={icon} size="md" color="currentColor" />
       )}
     </motion.button>
   );

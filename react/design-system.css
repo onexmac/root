@@ -763,9 +763,11 @@ body {
   transition:    background 100ms ease;
 }
 
-.ds-tag--active   { background: var(--ds-color-black); color: var(--ds-color-white); border: none; font-weight: var(--ds-font-weight-regular); }
-.ds-tag--standard { background: transparent; border: 2px solid var(--ds-color-gray-200); color: var(--ds-color-gray-300); }
-.ds-tag--disabled { background: transparent; border: 2px solid var(--ds-color-gray-200); color: var(--ds-color-gray-200); cursor: not-allowed; pointer-events: none; opacity: 0.55; }
+.ds-tag--active   { background: var(--ds-color-black);    color: var(--ds-color-white);   border: none; font-weight: var(--ds-font-weight-regular); }
+.ds-tag--standard { background: transparent; color: var(--ds-color-gray-300); border: 2px solid var(--ds-color-gray-200); }
+.ds-tag--disabled { background: var(--ds-color-gray-200); color: var(--ds-color-gray-300); border: none; cursor: not-allowed; pointer-events: none; }
+
+.ds-tag--layout-label { background: transparent; border: none; color: var(--ds-color-black); }
 
 /* ============================================================
    PROGRESS BAR  (ds-progress)
