@@ -12,6 +12,9 @@ import { haptic } from "../haptic";
 import { Icon } from "../Icon/Icon";
 import "./SlideButton.css";
 
+export type SlideButtonMode  = "guardar" | "eliminar";
+export type SlideButtonState = "standard" | "pressed";
+
 export interface SlideButtonProps {
   /** Texto centrado en el track (ej. "Pedir", "Confirmar"). */
   label?: string;
@@ -29,6 +32,10 @@ export interface SlideButtonProps {
   confirmedHoldMs?: number;
   /** Reset automático después de confirmar. Default true. */
   autoReset?: boolean;
+  /** guardar (verde) o eliminar (rojo). Default "guardar". */
+  mode?: SlideButtonMode;
+  /** Para Storybook: fuerza el halo visible sin interacción. */
+  state?: SlideButtonState;
   className?: string;
 }
 
@@ -79,31 +86,31 @@ export function SlideButton({
   disabledLabel,
   confirmedHoldMs = 1800,
   autoReset = true,
+  mode = "guardar",
+  state = "standard",
   className,
 }: SlideButtonProps) {
-  const x = useMotionValue(0);
+  const reversed = mode === "eliminar";
+  const maxDrag = COMPONENT_WIDTH - KNOB_SIZE;
+
+  const x = useMotionValue(reversed ? maxDrag : 0);
   const knobScale = useMotionValue(1);
   const controls = useAnimationControls();
   const [confirmed, setConfirmed] = useState(false);
   const [dragging, setDragging] = useState(false);
 
-  const maxDrag = COMPONENT_WIDTH - KNOB_SIZE;
-
-  /* Track clip-path: visible from `x` to the trailing edge. Round keyword
-   * preserves the corner radius across the moving left edge. */
-  const trackClip = useTransform(
-    x,
-    (v) => `inset(0 0 0 ${v}px round 16px)`,
+  const trackClip = useTransform(x, (v) =>
+    reversed
+      ? `inset(0 ${maxDrag - v}px 0 0 round 16px)`
+      : `inset(0 0 0 ${v}px round 16px)`,
   );
 
-  /* Label fades as the knob crosses it — clear "this is being acted on" cue. */
   const labelOpacity = useTransform(x, (v) => {
     if (maxDrag <= 0) return 1;
-    return Math.max(0, 1 - (v / maxDrag) * 1.6);
+    const progress = reversed ? (maxDrag - v) / maxDrag : v / maxDrag;
+    return Math.max(0, 1 - progress * 1.6);
   });
 
-  /* Nudge timer — cleared on re-tap, drag start, confirm, and unmount so
-   * a stale "go back to 0" can't snap the knob mid-interaction. */
   const nudgeTimerRef = useRef<number | null>(null);
   const clearNudgeTimer = () => {
     if (nudgeTimerRef.current != null) {
@@ -117,11 +124,13 @@ export function SlideButton({
     if (disabled || confirmed) return;
     haptic.select();
     clearNudgeTimer();
-    animate(x, NUDGE_DISTANCE_PX, NUDGE_KICK);
+    const rest = reversed ? maxDrag : 0;
+    const nudgeTarget = reversed ? maxDrag - NUDGE_DISTANCE_PX : NUDGE_DISTANCE_PX;
+    animate(x, nudgeTarget, NUDGE_KICK);
     animate(knobScale, 1.04, NUDGE_KICK);
     nudgeTimerRef.current = window.setTimeout(() => {
       nudgeTimerRef.current = null;
-      animate(x, 0, NUDGE_RETURN);
+      animate(x, rest, NUDGE_RETURN);
       animate(knobScale, 1, NUDGE_RETURN);
     }, NUDGE_HOLD_MS);
   };
@@ -138,30 +147,31 @@ export function SlideButton({
       return;
     }
 
-    const progress = info.offset.x / maxDrag;
+    const progress = reversed ? -info.offset.x / maxDrag : info.offset.x / maxDrag;
     if (progress > threshold) {
       clearNudgeTimer();
       haptic.complete();
       setConfirmed(true);
-      controls.start({ x: maxDrag, transition: springs.completing });
+      controls.start({ x: reversed ? 0 : maxDrag, transition: springs.completing });
       onConfirm();
       if (autoReset) {
         window.setTimeout(() => {
-          x.set(0);
+          x.set(reversed ? maxDrag : 0);
           setConfirmed(false);
         }, confirmedHoldMs);
       }
     } else {
       haptic.drag();
-      controls.start({ x: 0, transition: springs.snappy });
+      controls.start({ x: reversed ? maxDrag : 0, transition: springs.snappy });
     }
   };
 
   const visibleLabel = disabled ? (disabledLabel ?? label) : label;
+  const visibleConfirmedLabel = reversed && confirmedLabel === "Confirmado" ? "Eliminado" : confirmedLabel;
 
   return (
     <div
-      className={`ds-slide ${disabled ? "ds-slide--disabled" : ""}${className ? ` ${className}` : ""}`}
+      className={`ds-slide ds-slide--${mode} ds-slide--${state}${disabled ? " ds-slide--disabled" : ""}${className ? ` ${className}` : ""}`}
       style={{ width: COMPONENT_WIDTH, height: HEIGHT }}
       aria-live="polite"
     >
@@ -182,7 +192,8 @@ export function SlideButton({
         className="ds-slide__label"
         style={{
           opacity: labelOpacity,
-          paddingLeft: KNOB_SIZE,
+          paddingLeft:  reversed ? 0        : KNOB_SIZE,
+          paddingRight: reversed ? KNOB_SIZE : 0,
         }}
       >
         {visibleLabel}
@@ -200,7 +211,7 @@ export function SlideButton({
             transition={springs.completing}
           >
             <Icon name="check" size="lg" color="currentColor" />
-            <span>{confirmedLabel}</span>
+            {visibleConfirmedLabel && <span>{visibleConfirmedLabel}</span>}
           </motion.div>
         )}
       </AnimatePresence>
@@ -211,7 +222,7 @@ export function SlideButton({
         className="ds-slide__knob"
         drag={confirmed || disabled ? false : "x"}
         dragConstraints={{ left: 0, right: maxDrag }}
-        dragElastic={{ left: 0.2, right: 0.15 }}
+        dragElastic={reversed ? { left: 0.15, right: 0.2 } : { left: 0.2, right: 0.15 }}
         dragMomentum={false}
         dragTransition={{ bounceStiffness: 600, bounceDamping: 30 }}
         style={{
@@ -239,7 +250,7 @@ export function SlideButton({
       >
         {/* Press halo — outer ring in green-200, fades in on press */}
         <span aria-hidden className="ds-slide__halo" />
-        <Icon name="arrow-right" size="lg" color="currentColor" />
+        <Icon name={reversed ? "back" : "arrow-right"} size="lg" color="currentColor" />
       </motion.button>
     </div>
   );

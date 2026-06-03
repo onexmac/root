@@ -109,3 +109,16 @@
   opacity: 1;
   transition: opacity 80ms ease-out 0ms;
 }
+
+/* mode: eliminar — overlay de confirmación en rojo */
+.ds-slide--eliminar .ds-slide__confirm { background: var(--ds-color-red-100); }
+
+/* mode: eliminar — knob rojo, halo rojo claro */
+.ds-slide--eliminar .ds-slide__knob                          { background: var(--ds-color-red-100); }
+.ds-slide--eliminar .ds-slide__knob:active,
+.ds-slide--eliminar .ds-slide__knob[data-dragging="true"]    { background: var(--ds-color-red-200); }
+.ds-slide--eliminar .ds-slide__halo                          { border-color: var(--ds-color-red-100); }
+.ds-slide--pressed.ds-slide--eliminar .ds-slide__knob        { background: var(--ds-color-red-200); }
+
+/* state: pressed — halo visible sin interacción (Storybook) */
+.ds-slide--pressed .ds-slide__halo   { opacity: 1; transition: none; }
