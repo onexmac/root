@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from "../../Button/Button";
-import { CheckBox, FormField, OptionLabel } from "../../Form/Form";
+import { OptionsExtra, FormField, OptionLabel } from "../../Form/Form";
 import { Icon } from "../../Icon/Icon";
 import { SelectionDropdown } from "../../SelectionDropdown/SelectionDropdown";
 import { TabsMenu, TabFilterChip } from "../../TabsMenu/TabsMenu";
@@ -22,7 +22,7 @@ import "./Roles.css";
  *        para cerrar; FormField "Nombre del rol" + SelectionDropdown
  *        "Categoría" + Cancelar/Agregar)
  *
- *  DS components: Button, CheckBox, FormField, OptionLabel, Icon,
+ *  DS components: Button, OptionsExtra, FormField, OptionLabel, Icon,
  *  SelectionDropdown, TabsMenu, TabFilterChip.
  *
  *  NOT-IN-DS: pill compacta `SmallPill` (28 px) usada para badges
@@ -503,7 +503,7 @@ export function Roles({ initialCollapsed = false }: RolesProps = {}) {
               {rows.map((p) => (
                 <li key={p.id} className="roles-perm">
                   <div className="roles-perm__main">
-                    <CheckBox
+                    <OptionsExtra
                       label={p.label}
                       checked={p.enabled}
                       state={p.enabled ? "add" : "standard"}

@@ -645,10 +645,10 @@ body {
 .ds-form-field__helper-icon--warn { color: var(--ds-color-red-200); }
 
 /* ============================================================
-   CHECKBOX  (ds-checkbox)
+   OPTIONS EXTRA  (ds-options-extra)
    ============================================================ */
 
-.ds-checkbox {
+.ds-options-extra {
   display:     inline-flex;
   align-items: center;
   gap:         var(--ds-space-2);
@@ -657,7 +657,7 @@ body {
 }
 
 /* Figma: círculo 30x30, border 4px black, radius 50% */
-.ds-checkbox__box {
+.ds-options-extra__box {
   display:         flex;
   align-items:     center;
   justify-content: center;
@@ -673,30 +673,77 @@ body {
 }
 
 /* checked: borde 8px negro + fondo blanco → anillo grueso, ícono negro al centro */
-.ds-checkbox__box--checked {
+.ds-options-extra__box--checked {
   border-width: 8px;
   background:   var(--ds-color-white);
 }
 
 /* SVG fill como propiedad CSS (no atributo) para que var() resuelva correctamente */
-.ds-checkbox__box--checked svg {
+.ds-options-extra__box--checked svg {
   fill: var(--ds-color-black);
 }
 
 /* Figma disabled: gray-100 bg, gray-200 border */
-.ds-checkbox--disabled .ds-checkbox__box {
+.ds-options-extra--disabled .ds-options-extra__box {
   background:   var(--ds-color-gray-100);
   border-color: var(--ds-color-gray-200);
   cursor:       not-allowed;
 }
 
-/* remove usa el mismo estilo que --checked (negro sólido), manejado por ds-checkbox__box--checked */
-.ds-checkbox__label {
+/* remove usa el mismo estilo que --checked (negro sólido), manejado por ds-options-extra__box--checked */
+.ds-options-extra__label {
   font-size:  var(--ds-font-size-body-md);
   color:      var(--ds-color-black);
 }
 
-.ds-checkbox--disabled .ds-checkbox__label { color: var(--ds-color-black); }
+.ds-options-extra--disabled .ds-options-extra__label { color: var(--ds-color-black); }
+
+/* ============================================================
+   CHECKBOX  (ds-checkbox)
+   ============================================================ */
+
+.ds-checkbox {
+  display:     inline-flex;
+  align-items: center;
+  gap:         var(--ds-space-2);
+  cursor:      pointer;
+  user-select: none;
+}
+
+.ds-checkbox__box {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  flex-shrink:     0;
+  color:           var(--ds-color-gray-300);
+}
+
+.ds-checkbox:hover:not(.ds-checkbox--disabled) .ds-checkbox__box,
+.ds-checkbox--hover .ds-checkbox__box {
+  color: var(--ds-color-black);
+}
+
+.ds-checkbox--checked .ds-checkbox__box {
+  color: var(--ds-color-black);
+}
+
+.ds-checkbox--disabled {
+  cursor: not-allowed;
+}
+
+.ds-checkbox--disabled .ds-checkbox__box {
+  color: var(--ds-color-gray-200);
+}
+
+.ds-checkbox__label {
+  font-size: var(--ds-font-size-body-md);
+  color:     var(--ds-color-gray-300);
+}
+
+.ds-checkbox:hover:not(.ds-checkbox--disabled) .ds-checkbox__label,
+.ds-checkbox--hover .ds-checkbox__label  { color: var(--ds-color-black); }
+.ds-checkbox--checked  .ds-checkbox__label { color: var(--ds-color-black); }
+.ds-checkbox--disabled .ds-checkbox__label { color: var(--ds-color-gray-200); }
 
 /* ============================================================
    TAG  (ds-tag)y como hago para que

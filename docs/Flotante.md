@@ -707,13 +707,14 @@ System icon catalog. 34 icons, all `viewBox 0 0 24 24`, filled via CSS.
 | `color` | `string` | `"currentColor"` | Fill color — **use CSS property, not SVG attribute** |
 | `className` | `string` | — | Extra class |
 
-**Catalog (34 icons)**
+**Catalog (38 icons)**
 
 - Navigation: `home`, `back`, `arrow-right`, `go`
-- Actions: `search`, `filter`, `edit`, `plus`, `minus`, `delete`, `remove`, `close`, `open`, `menu`, `options`
+- Actions: `search`, `filter`, `edit`, `plus`, `minus`, `delete`, `remove`, `close`, `open`, `menu`, `options`, `duplicar`
 - State and feedback: `check`, `good`, `info`, `alert`, `completado`, `incompleto`, `pendiente`, `sin-stock`, `sin-autorizar`
 - Documents: `boleta`, `traslado`, `entrega`, `list`, `folder`, `calculator`
 - People and resources: `user`, `cuadrillas`, `rol`, `place`
+- Form controls: `checkbox`, `checkbox-fill`, `square`
 
 **Aliases**
 
@@ -794,7 +795,38 @@ Text field with label, input and helper text.
 
 **File:** `react/Form/Form.tsx`
 
-Binary selector with semantic states.
+Square checkbox with four visual states. Use for binary on/off selection in forms.
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | `"Opción"` | Option text |
+| `state` | `"standard" \| "hover" \| "checked" \| "disabled"` | `"standard"` | Visual state |
+| `checked` | `boolean` | `false` | Controlled checked value |
+| `onChange` | `(checked: boolean) => void` | — | Handler |
+
+**States + colors**
+
+| State | Icon | Icon color | Label color |
+|---|---|---|---|
+| `standard` | `square` | gray-300 | gray-300 |
+| `hover` | `square` | black | black |
+| `checked` | `checkbox-fill` | black | black |
+| `disabled` | `square` | gray-200 | gray-200 |
+
+Hover is also triggered by CSS `:hover` — no need to set `state="hover"` at runtime.
+
+**Do not use for**
+- Exclusive selection → radio or `TabsMenu`.
+- Circular multi-state selector (add/remove) → `OptionsExtra`.
+- Filters → `SelectionDropdown`.
+
+---
+
+### 12.4b OptionsExtra
+
+**File:** `react/Form/Form.tsx`
+
+Circular selector with semantic add/remove states. Previously called `CheckBox`.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -810,8 +842,8 @@ Binary selector with semantic states.
 - `disabled` — gray-100 fill, gray-200 border, no icon, non-interactive.
 
 **Do not use for**
+- Simple binary checkbox → `CheckBox`.
 - Exclusive selection → radio or `TabsMenu`.
-- Toggling features on/off → dedicated toggle.
 - Filters → `SelectionDropdown`.
 
 ---

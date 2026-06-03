@@ -89,9 +89,56 @@ export function FormField({
   );
 }
 
+// ─── OptionsExtra ────────────────────────────────────────────────────────────
+
+export type OptionsExtraState = "add" | "remove" | "standard" | "disabled";
+
+export interface OptionsExtraProps {
+  label?: string;
+  state?: OptionsExtraState;
+  checked?: boolean;
+  onChange?: (checked: boolean) => void;
+}
+
+export function OptionsExtra({
+  label = "Opción",
+  state = "standard",
+  checked = false,
+  onChange,
+}: OptionsExtraProps) {
+  const isDisabled = state === "disabled";
+
+  const handleChange = () => {
+    if (!isDisabled && onChange) onChange(!checked);
+  };
+
+  const isChecked = checked || state === "add" || state === "remove";
+  const iconName = state === "remove" ? "remove" : "completado";
+
+  return (
+    <label className={`ds-options-extra ds-options-extra--${state}`}>
+      <motion.span
+        className={`ds-options-extra__box${isChecked ? " ds-options-extra__box--checked" : ""}`}
+        onClick={handleChange}
+        role="checkbox"
+        aria-checked={checked}
+        tabIndex={isDisabled ? -1 : 0}
+        onKeyDown={(e) => e.key === " " && handleChange()}
+        whileTap={isDisabled ? undefined : { scale: 0.85 }}
+        transition={springs.snappy}
+      >
+        {isChecked && !isDisabled && (
+          <Icon name={iconName} size="lg" color="var(--ds-color-white)" />
+        )}
+      </motion.span>
+      <span className="ds-options-extra__label">{label}</span>
+    </label>
+  );
+}
+
 // ─── CheckBox ────────────────────────────────────────────────────────────────
 
-export type CheckBoxState = "add" | "remove" | "standard" | "disabled";
+export type CheckBoxState = "standard" | "hover" | "checked" | "disabled";
 
 export interface CheckBoxProps {
   label?: string;
@@ -107,29 +154,25 @@ export function CheckBox({
   onChange,
 }: CheckBoxProps) {
   const isDisabled = state === "disabled";
+  const isChecked = checked || state === "checked";
 
   const handleChange = () => {
     if (!isDisabled && onChange) onChange(!checked);
   };
 
-  const isChecked = checked || state === "add" || state === "remove";
-  const iconName = state === "remove" ? "remove" : "completado";
-
   return (
-    <label className={`ds-checkbox ds-checkbox--${state}`}>
+    <label className={`ds-checkbox ds-checkbox--${state}${isChecked ? " ds-checkbox--checked" : ""}`}>
       <motion.span
-        className={`ds-checkbox__box${isChecked ? " ds-checkbox__box--checked" : ""}`}
+        className="ds-checkbox__box"
         onClick={handleChange}
         role="checkbox"
-        aria-checked={checked}
+        aria-checked={isChecked}
         tabIndex={isDisabled ? -1 : 0}
         onKeyDown={(e) => e.key === " " && handleChange()}
-        whileTap={isDisabled ? undefined : { scale: 0.85 }}
+        whileTap={isDisabled ? undefined : { scale: 0.88 }}
         transition={springs.snappy}
       >
-        {isChecked && !isDisabled && (
-          <Icon name={iconName} size="lg" color="var(--ds-color-white)" />
-        )}
+        <Icon name={isChecked ? "checkbox-fill" : "square"} size="md" />
       </motion.span>
       <span className="ds-checkbox__label">{label}</span>
     </label>

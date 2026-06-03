@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import React from "react";
-import { FormField, CheckBox, Tag, ProgressBar, OptionLabel } from "./Form";
+import { FormField, CheckBox, OptionsExtra, Tag, ProgressBar, OptionLabel } from "./Form";
 
 // ─── formField — nombres de stories alineados a Figma (state: ...) ─────────────
 const meta: Meta<typeof FormField> = {
@@ -15,15 +15,15 @@ const meta: Meta<typeof FormField> = {
 export default meta;
 type Story = StoryObj<typeof FormField>;
 
-export const Standard:    Story = { name: "state: standard",    args: { state: "standard" } };
-export const Active:      Story = { name: "state: active",      args: { state: "active",      value: "Texto activo" } };
-export const X:           Story = { name: "state: x",           args: { state: "x" } };
-export const Ayuda:       Story = { name: "state: ayuda",       args: { state: "ayuda",       helperText: "Mensaje de ayuda" } };
-export const Advertencia: Story = { name: "state: advertencia", args: { state: "advertencia", helperText: "Mensaje de advertencia" } };
-export const Disabled:    Story = { name: "state: disabled",    args: { state: "disabled",    value: "No editable" } };
+export const Standard:    Story = { name: "formField / state: standard",    args: { state: "standard" } };
+export const Active:      Story = { name: "formField / state: active",      args: { state: "active",      value: "Texto activo" } };
+export const X:           Story = { name: "formField / state: x",           args: { state: "x" } };
+export const Ayuda:       Story = { name: "formField / state: ayuda",       args: { state: "ayuda",       helperText: "Mensaje de ayuda" } };
+export const Advertencia: Story = { name: "formField / state: advertencia", args: { state: "advertencia", helperText: "Mensaje de advertencia" } };
+export const Disabled:    Story = { name: "formField / state: disabled",    args: { state: "disabled",    value: "No editable" } };
 
 export const AllStates: Story = {
-  name: "All states",
+  name: "formField / All states",
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 16, padding: 16 }}>
       <FormField state="ayuda"       label="Nombre" helperText="Mensaje de ayuda" />
@@ -37,18 +37,35 @@ export const AllStates: Story = {
 };
 
 // ─── checkBox ─────────────────────────────────────────────────────────────────
-export const CheckBoxAdd:      StoryObj = { name: "checkBox / state: add",      render: () => <CheckBox state="add"      label="option label" /> };
-export const CheckBoxRemove:   StoryObj = { name: "checkBox / state: remove",   render: () => <CheckBox state="remove"   label="option label" /> };
-export const CheckBoxStandard: StoryObj = { name: "checkBox / state: standard", render: () => <CheckBox state="standard" label="option label" /> };
 export const CheckBoxDisabled: StoryObj = { name: "checkBox / state: disabled", render: () => <CheckBox state="disabled" label="option label" /> };
+export const CheckBoxChecked:  StoryObj = { name: "checkBox / state: checked",  render: () => <CheckBox state="checked"  label="option label" /> };
+export const CheckBoxHover:    StoryObj = { name: "checkBox / state: hover",    render: () => <CheckBox state="hover"    label="option label" /> };
+export const CheckBoxStandard: StoryObj = { name: "checkBox / state: standard", render: () => <CheckBox state="standard" label="option label" /> };
 export const CheckBoxAll: StoryObj = {
   name: "checkBox / All states",
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: 16 }}>
-      <CheckBox state="add"      label="option label" />
-      <CheckBox state="remove"   label="option label" />
-      <CheckBox state="standard" label="option label" />
       <CheckBox state="disabled" label="option label" />
+      <CheckBox state="checked"  label="option label" />
+      <CheckBox state="hover"    label="option label" />
+      <CheckBox state="standard" label="option label" />
+    </div>
+  ),
+};
+
+// ─── optionsExtra ─────────────────────────────────────────────────────────────────
+export const OptionsExtraAdd:      StoryObj = { name: "optionsExtra / state: add",      render: () => <OptionsExtra state="add"      label="option label" /> };
+export const OptionsExtraRemove:   StoryObj = { name: "optionsExtra / state: remove",   render: () => <OptionsExtra state="remove"   label="option label" /> };
+export const OptionsExtraStandard: StoryObj = { name: "optionsExtra / state: standard", render: () => <OptionsExtra state="standard" label="option label" /> };
+export const OptionsExtraDisabled: StoryObj = { name: "optionsExtra / state: disabled", render: () => <OptionsExtra state="disabled" label="option label" /> };
+export const OptionsExtraAll: StoryObj = {
+  name: "optionsExtra / All states",
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: 16 }}>
+      <OptionsExtra state="add"      label="option label" />
+      <OptionsExtra state="remove"   label="option label" />
+      <OptionsExtra state="standard" label="option label" />
+      <OptionsExtra state="disabled" label="option label" />
     </div>
   ),
 };
