@@ -808,7 +808,7 @@ Square checkbox with four visual states. Use for binary on/off selection in form
 
 | State | Icon | Icon color | Label color |
 |---|---|---|---|
-| `standard` | `square` | gray-300 | gray-300 |
+| `standard` | `square` | gray-300 | black |
 | `hover` | `square` | black | black |
 | `checked` | `checkbox-fill` | black | black |
 | `disabled` | `square` | gray-200 | gray-200 |

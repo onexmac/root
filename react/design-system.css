@@ -737,12 +737,9 @@ body {
 
 .ds-checkbox__label {
   font-size: var(--ds-font-size-body-md);
-  color:     var(--ds-color-gray-300);
+  color:     var(--ds-color-black);
 }
 
-.ds-checkbox:hover:not(.ds-checkbox--disabled) .ds-checkbox__label,
-.ds-checkbox--hover .ds-checkbox__label  { color: var(--ds-color-black); }
-.ds-checkbox--checked  .ds-checkbox__label { color: var(--ds-color-black); }
 .ds-checkbox--disabled .ds-checkbox__label { color: var(--ds-color-gray-200); }
 
 /* ============================================================
