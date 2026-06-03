@@ -98,6 +98,7 @@ export interface TabFilterChipProps {
   label?: string;
   state?: TabFilterChipState;
   icon?: IconName;
+  showIcon?: boolean;
   onClick?: () => void;
 }
 
@@ -105,6 +106,7 @@ export function TabFilterChip({
   label = "Filtro",
   state = "active",
   icon = "check",
+  showIcon = true,
   onClick,
 }: TabFilterChipProps) {
   const isDisabled = state === "disabled";
@@ -147,11 +149,13 @@ export function TabFilterChip({
       }}
     >
       <span className="ds-filter-chip__label">{label}</span>
-      <Icon
-        name={icon}
-        size="md"
-        color={state === "active" ? "var(--ds-color-white)" : "var(--ds-color-gray-300)"}
-      />
+      {showIcon && (
+        <Icon
+          name={icon}
+          size="md"
+          color={state === "active" ? "var(--ds-color-white)" : "var(--ds-color-gray-300)"}
+        />
+      )}
 
       {/* Halo overlay */}
       {!isDisabled && (

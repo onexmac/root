@@ -1,0 +1,448 @@
+/* ============================================================
+   Roles & Permisos — grid de cards (RR01–RR06)
+   ============================================================ */
+
+.rg-shell {
+  width: 1440px;
+  min-height: 1024px;
+  background: var(--ds-color-surface);
+  font-family: var(--ds-font-family);
+  color: var(--ds-color-black);
+  display: flex;
+  position: relative;
+}
+
+/* ── Sidebar (mismo patrón que el prototipo Roles) ─────────── */
+
+.rg-sidebar {
+  background: #2a2a2a;
+  color: var(--ds-color-white);
+  padding: 32px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.rg-sidebar__menu {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: var(--ds-color-white);
+  border-radius: var(--ds-radius-md);
+  transition: background 100ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+}
+.rg-sidebar__menu:hover { background: rgba(255, 255, 255, 0.08); }
+.rg-sidebar__menu svg   { fill: var(--ds-color-white); }
+
+.rg-sidebar__items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rg-sidebar .ds-tabs-menu {
+  align-self: center;
+  overflow: hidden;
+  transition:
+    width          520ms cubic-bezier(0.32, 0.72, 0, 1),
+    min-width      520ms cubic-bezier(0.32, 0.72, 0, 1),
+    height         520ms cubic-bezier(0.32, 0.72, 0, 1),
+    border-radius  520ms cubic-bezier(0.32, 0.72, 0, 1),
+    padding        520ms cubic-bezier(0.32, 0.72, 0, 1),
+    gap            420ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.rg-sidebar .ds-tabs-menu__label {
+  overflow: hidden;
+  white-space: nowrap;
+  will-change: clip-path, opacity, filter, max-width;
+  transition:
+    opacity   320ms cubic-bezier(0.4, 0, 0.2, 1),
+    filter    320ms cubic-bezier(0.4, 0, 0.2, 1),
+    clip-path 420ms cubic-bezier(0.65, 0.05, 0.36, 1),
+    max-width 420ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Expanded */
+.rg-sidebar--expanded .ds-tabs-menu {
+  min-width: 256px;
+  width: 256px;
+  height: 80px;
+  border-radius: 999px;
+  padding: 0 32px;
+  justify-content: flex-start;
+  gap: 18px;
+  transition-delay: 280ms;
+}
+.rg-sidebar--expanded .ds-tabs-menu__label {
+  font-size: 16px;
+  letter-spacing: 0.6px;
+  opacity: 1;
+  filter: blur(0);
+  clip-path: inset(0 0% 0 0);
+  max-width: 200px;
+}
+.rg-sidebar--expanded .ds-tabs-menu:nth-child(3) { transition-delay: 280ms; }
+.rg-sidebar--expanded .ds-tabs-menu:nth-child(2) { transition-delay: 340ms; }
+.rg-sidebar--expanded .ds-tabs-menu:nth-child(1) { transition-delay: 400ms; }
+.rg-sidebar--expanded .ds-tabs-menu:nth-child(1) .ds-tabs-menu__label { transition-delay: 380ms; }
+.rg-sidebar--expanded .ds-tabs-menu:nth-child(2) .ds-tabs-menu__label { transition-delay: 460ms; }
+.rg-sidebar--expanded .ds-tabs-menu:nth-child(3) .ds-tabs-menu__label { transition-delay: 540ms; }
+
+/* Collapsed */
+.rg-sidebar--collapsed .ds-tabs-menu {
+  min-width: 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  padding: 0;
+  gap: 0;
+  justify-content: center;
+}
+.rg-sidebar--collapsed .ds-tabs-menu .ds-tabs-menu__icon svg {
+  width: 20px;
+  height: 20px;
+}
+.rg-sidebar--collapsed .ds-tabs-menu:nth-child(1) { transition-delay: 0ms; }
+.rg-sidebar--collapsed .ds-tabs-menu:nth-child(2) { transition-delay: 70ms; }
+.rg-sidebar--collapsed .ds-tabs-menu:nth-child(3) { transition-delay: 140ms; }
+.rg-sidebar--collapsed .ds-tabs-menu__label {
+  opacity: 0;
+  filter: blur(3px);
+  clip-path: inset(0 100% 0 0);
+  max-width: 0;
+}
+.rg-sidebar--collapsed .ds-tabs-menu:nth-child(1) .ds-tabs-menu__label { transition-delay: 0ms; }
+.rg-sidebar--collapsed .ds-tabs-menu:nth-child(2) .ds-tabs-menu__label { transition-delay: 70ms; }
+.rg-sidebar--collapsed .ds-tabs-menu:nth-child(3) .ds-tabs-menu__label { transition-delay: 140ms; }
+
+/* ── Main column ─────────────────────────────────────────── */
+
+.rg-main {
+  flex: 1 1 auto;
+  padding: 32px 40px 40px;
+  position: relative;
+  min-width: 0;
+}
+
+.rg-topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.rg-title {
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: 0.4px;
+  margin: 0;
+}
+
+.rg-subhead {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rg-subhead__label {
+  font-size: var(--ds-font-size-body-sm);
+  line-height: var(--ds-line-height-body-sm);
+  color: var(--ds-color-gray-500);
+}
+/* Altura cerrada reservada + SD absoluto: al abrir, la lista flota
+   sobre el contenido (CAMPO + grid) sin empujarlo hacia abajo. */
+.rg-dropdown-wrap {
+  position: relative;
+  width: 372px;
+  height: 70px;
+  z-index: 30;
+}
+.rg-dropdown-wrap .ds-sd {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 372px;
+}
+
+.rg-category {
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: 0.4px;
+  margin: 28px 0 16px;
+}
+
+/* ── Grid de cards ───────────────────────────────────────── */
+
+.rg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 16px;
+  align-items: start;
+}
+/* Sidebar colapsado → más ancho → mantenemos 3 col; al expandir el
+   main se angosta y bajamos a 2 para no comprimir las cards. */
+.rg-sidebar--expanded ~ .rg-main .rg-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* ── Card ────────────────────────────────────────────────── */
+
+.rg-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rg-card-role {
+  align-self: flex-start;
+  font-size: var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-gray-300);
+  padding: 8px 20px;
+  border-radius: 999px;
+  background: var(--ds-color-gray-100);
+}
+
+.rg-card {
+  background: var(--ds-color-gray-100);
+  border-radius: var(--ds-radius-xl);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Header del card */
+.rg-card__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 4px;
+}
+.rg-card__head-pill {
+  display: inline-flex;
+  align-items: center;
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  font-size: var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  padding: 6px 20px;
+  border-radius: 999px;
+}
+.rg-card__head-spacer { flex: 1 1 auto; }
+
+/* "+" agregar permiso */
+.rg-card__add {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 2px solid var(--ds-color-gray-200);
+  background: transparent;
+  color: var(--ds-color-gray-400);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.rg-card__add:hover:not(:disabled) { border-color: var(--ds-color-black); color: var(--ds-color-black); }
+.rg-card__add--active {
+  background: var(--ds-color-black);
+  border-color: var(--ds-color-black);
+  color: var(--ds-color-white);
+}
+.rg-card__add:disabled { opacity: 0.4; cursor: not-allowed; }
+.rg-card__add svg { fill: currentColor; }
+
+/* Icono editar / check */
+.rg-card__icon-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: var(--ds-color-gray-500);
+  border-radius: var(--ds-radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 120ms ease, background 120ms ease;
+}
+.rg-card__icon-btn:hover { color: var(--ds-color-black); background: rgba(0, 0, 0, 0.04); }
+.rg-card__icon-btn--save { color: var(--ds-color-green-200); }
+.rg-card__icon-btn--save:hover { color: var(--ds-color-green-100); }
+.rg-card__icon-btn svg { fill: currentColor; }
+
+/* ── Panel blanco interno ────────────────────────────────── */
+
+.rg-card__panel {
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rg-card__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.rg-card__panel-title {
+  font-size: var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-black);
+}
+
+/* Modo "+": el selector de permisos reemplaza el panel de filas (RR04) */
+.rg-card__add-mode {
+  display: flex;
+  flex-direction: column;
+}
+.rg-card__add-mode .ds-sd { width: 100%; }
+.rg-card__add-mode .ds-sd__header-card,
+.rg-card__add-mode .ds-sd__items-card { width: 100%; }
+.rg-card__add-empty {
+  display: block;
+  padding: 16px;
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  font-size: var(--ds-font-size-body-sm);
+  color: var(--ds-color-gray-400);
+}
+
+/* ── Filas de permisos ───────────────────────────────────── */
+
+.rg-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Contenedor colapsable de las filas extra — truco grid-template-rows
+   (Flotante §7.1): nativo, sin jitter. Solo cambia la altura de este
+   card; el grid reflowea y desliza lo de abajo sin mover los lados. */
+.rg-rows__more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rg-rows__more.is-open { grid-template-rows: 1fr; }
+.rg-rows__more-clip { overflow: hidden; min-height: 0; }
+
+.rg-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+.rg-row__main { flex: 1 1 auto; min-width: 0; }
+.rg-row__main .ds-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+/* Pills ver/editar: ocultos cuando el card está colapsado; aparecen con
+   fade + despliegue al expandir. No alteran la altura de la fila. */
+.rg-row__scopes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition:
+    opacity 220ms ease,
+    max-width 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.rg-card--expanded .rg-row__scopes {
+  opacity: 1;
+  max-width: 180px;
+  pointer-events: auto;
+}
+
+.rg-row__delete {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--ds-color-gray-400);
+  border-radius: var(--ds-radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 120ms ease;
+  flex: 0 0 auto;
+}
+.rg-row__delete:hover { color: var(--ds-color-red-100); }
+.rg-row__delete svg { fill: currentColor; }
+
+/* ── Scope pill (NOT-IN-DS) ──────────────────────────────── */
+
+.rg-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: var(--ds-font-size-body-sm);
+  font-weight: var(--ds-font-weight-semibold);
+  line-height: 1;
+  white-space: nowrap;
+  border: 2px solid transparent;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.rg-pill--standard {
+  background: var(--ds-color-white);
+  color: var(--ds-color-gray-300);
+  border-color: var(--ds-color-gray-200);
+}
+.rg-pill--active {
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  border-color: var(--ds-color-black);
+}
+.rg-pill--clickable { cursor: pointer; }
+.rg-pill--clickable:hover { filter: brightness(0.96); }
+.rg-pill:disabled { cursor: default; }
+
+/* ── Hover hint (Editar / Eliminar / Guardar) ────────────── */
+
+.rg-hint {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--ds-font-size-label);
+  line-height: var(--ds-line-height-label);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-black);
+  white-space: nowrap;
+  pointer-events: none;
+  background: var(--ds-color-white);
+  padding: 2px 8px;
+  border-radius: var(--ds-radius-sm);
+  box-shadow: var(--ds-shadow-01);
+  z-index: 5;
+}

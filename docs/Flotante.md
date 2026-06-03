@@ -863,7 +863,7 @@ Pill label that represents a category or selection state. When `active`, appends
 **States**
 - `standard` — transparent, 2 px gray-200 border, gray-300 text.
 - `active` — black fill, white text, `completado` icon on the right.
-- `disabled` — same border as standard, gray-200 text, 0.55 opacity, non-interactive.
+- `disabled` — gray-200 fill, gray-300 text, no border, non-interactive.
 
 **Use for**
 - Category or status chips on content rows.
@@ -965,6 +965,14 @@ Summary card for an order or boleta with a completion status indicator.
 | `state` | `"standard" \| "pressed"` | `"standard"` | Visual state |
 | `layout` | `"label" \| "label+icon"` | `"label"` | With or without icon |
 | `icon` | `IconName` | `"home"` | Icon (only with `layout="label+icon"`) |
+| `onClick` | `() => void` | — | Handler |
+
+| Prop (`TabFilterChip`) | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | `"Filtro"` | Chip text |
+| `state` | `"active" \| "disabled"` | `"active"` | Visual state |
+| `icon` | `IconName` | `"check"` | Icon shown after label |
+| `showIcon` | `boolean` | `true` | Toggle icon visibility (matches Figma variant) |
 | `onClick` | `() => void` | — | Handler |
 
 **Dimensions**
