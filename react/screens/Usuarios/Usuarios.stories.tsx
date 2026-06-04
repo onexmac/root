@@ -124,8 +124,8 @@ export const CreateMode: Story = {
  *  despliega el calendario como overlay (la interfaz no se mueve). Click en un
  *  día → cierra calendario y guarda el valor.
  */
-export const FechaNacimiento: Story = {
-  name: "📅 U014 — Fecha de nacimiento",
+export const UsuariosV02: Story = {
+  name: "usuariosV02",
   render: () => (
     <Frame>
       <Usuarios initialCollapsed initialCreateMode />
