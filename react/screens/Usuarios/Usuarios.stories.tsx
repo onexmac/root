@@ -117,3 +117,18 @@ export const CreateMode: Story = {
     </Frame>
   ),
 };
+
+/**
+ * 📅 U014 — CreateMode, tab Personal/Datos.
+ *  El campo "Fecha de nacimiento" arranca cerrado; al click en el dropdown se
+ *  despliega el calendario como overlay (la interfaz no se mueve). Click en un
+ *  día → cierra calendario y guarda el valor.
+ */
+export const FechaNacimiento: Story = {
+  name: "📅 U014 — Fecha de nacimiento",
+  render: () => (
+    <Frame>
+      <Usuarios initialCollapsed initialCreateMode />
+    </Frame>
+  ),
+};

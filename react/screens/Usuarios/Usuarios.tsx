@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from "../../Button/Button";
 import { Icon } from "../../Icon/Icon";
-import { OptionLabel } from "../../Form/Form";
+import { OptionLabel, CheckBox } from "../../Form/Form";
 import { SearchBar } from "../../SearchBar/SearchBar";
 import { TabsMenu } from "../../TabsMenu/TabsMenu";
 import { NavigationControls } from "../../Nav/Nav";
@@ -13,6 +13,9 @@ import {
   USERS,
   COLUMNS,
   JUAN_DETAIL,
+  TRABAJADOR_OPTIONS,
+  CEDULA_OPTIONS,
+  TELEFONO_OPTIONS,
   ROL_LIST,
   DEPARTAMENTO_OPTIONS,
   ESTADO_OPTIONS,
@@ -203,25 +206,10 @@ function SortableHeader({
 
 // ── NOT-IN-DS: FilterPopover ────────────────────────────────
 
-// NOT-IN-DS: checkbox square (black-filled + white check when active, outline when not) — U03 spec
-function FilterCheckbox({ active }: { active: boolean }) {
-  return (
-    <span className={`usr-checkbox${active ? " usr-checkbox--active" : ""}`}>
-      {active && <Icon name="completado" size="sm" />}
-    </span>
-  );
-}
-
-export interface FilterDataRow {
-  primary: string;
-  secondary?: string;
-}
-
 interface FilterPopoverProps {
   mode: FilterMode;
   placeholder: string;
   options?: string[];
-  dataRows?: FilterDataRow[];
   estadoOptions?: { label: string; indicator: "activo" | "inactivo" | null }[];
   onPick: (val: string) => void;
   onClose: () => void;
@@ -231,25 +219,33 @@ function FilterPopover({
   mode,
   placeholder,
   options = [],
-  dataRows = [],
   estadoOptions,
   onPick,
   onClose,
   anchor,
 }: FilterPopoverProps) {
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<number>(0);
+  // Multi-select by index (labels repeat in the mock data). Index 0 = "Todos".
+  // "Todos" is mutually exclusive with specific options; emptying the set falls
+  // back to "Todos".
+  const [selected, setSelected] = useState<Set<number>>(new Set([0]));
+  const toggle = (i: number) => {
+    setSelected((prev) => {
+      if (i === 0) return new Set([0]);
+      const next = new Set(prev);
+      next.delete(0);
+      if (next.has(i)) next.delete(i);
+      else next.add(i);
+      if (next.size === 0) next.add(0);
+      return next;
+    });
+  };
 
   const popClass =
     mode === "list"
       ? "usr-filter-pop usr-filter-pop--compact"
-      : mode === "search"
-        ? "usr-filter-pop usr-filter-pop--search"
-        : "usr-filter-pop";
+      : "usr-filter-pop";
 
-  const filteredData = dataRows.filter((o) =>
-    o.primary.toLowerCase().includes(query.toLowerCase()),
-  );
   const filteredOpts = options.filter((o) =>
     o.toLowerCase().includes(query.toLowerCase()),
   );
@@ -273,7 +269,7 @@ function FilterPopover({
         transition={springs.expanding}
         onClick={(e) => e.stopPropagation()}
       >
-        {(mode === "search" || mode === "search+list") && (
+        {mode === "search+list" && (
           <div className="usr-filter-pop__search">
             <SearchBar
               layout="normal"
@@ -284,60 +280,34 @@ function FilterPopover({
           </div>
         )}
 
-        {/* search-only: 2-line result cards w/ dividers (U03.2/U03.3). Hidden when empty (U03.4). */}
-        {mode === "search" && filteredData.length > 0 && (
-          <div className="usr-filter-pop__list usr-filter-pop__list--dividers">
-            {filteredData.map((row, i) => (
-              <button
-                key={`${row.primary}-${i}`}
-                type="button"
-                className="usr-filter-data"
-                onClick={() => onPick(row.primary)}
-              >
-                <span className="usr-filter-data__primary">{row.primary}</span>
-                {row.secondary && (
-                  <span className="usr-filter-data__secondary">{row.secondary}</span>
-                )}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* search+list: checkbox rows (U03/U03.5) */}
+        {/* search+list: multi-select checkbox rows (U03.2–U03.5) — DS CheckBox.
+            Toggling keeps the popover open so several options can be marked. */}
         {mode === "search+list" && (
           <div className="usr-filter-pop__list">
             {filteredOpts.map((opt, i) => (
               <button
                 key={`${opt}-${i}`}
                 type="button"
-                className={`usr-filter-row${i === selected ? " usr-filter-row--active" : ""}`}
-                onClick={() => {
-                  setSelected(i);
-                  onPick(opt);
-                }}
+                className="usr-filter-row"
+                onClick={() => toggle(i)}
               >
-                <FilterCheckbox active={i === selected} />
-                <span className="usr-filter-row__label">{opt}</span>
+                <CheckBox label={opt} checked={selected.has(i)} />
               </button>
             ))}
           </div>
         )}
 
-        {/* list (Estado U03.6): checkbox + label only, no status icons */}
+        {/* list (Estado U03.6): multi-select checkbox + label only — DS CheckBox */}
         {mode === "list" && estadoOptions && (
           <div className="usr-filter-pop__list">
             {estadoOptions.map((opt, i) => (
               <button
                 key={`${opt.label}-${i}`}
                 type="button"
-                className={`usr-filter-row${i === selected ? " usr-filter-row--active" : ""}`}
-                onClick={() => {
-                  setSelected(i);
-                  onPick(opt.label);
-                }}
+                className="usr-filter-row"
+                onClick={() => toggle(i)}
               >
-                <FilterCheckbox active={i === selected} />
-                <span className="usr-filter-row__label">{opt.label}</span>
+                <CheckBox label={opt.label} checked={selected.has(i)} />
               </button>
             ))}
           </div>
@@ -362,39 +332,151 @@ function Avatar({ size = 40 }: { size?: number }) {
 
 // ── NOT-IN-DS: MockField ────────────────────────────────────
 
+// Mock options per field label — only used when editMode is on, to give the
+// dropdown something to expand to. Not exhaustive lists; just enough to feel
+// real in the prototype.
+const MOCK_OPTIONS: Record<string, string[]> = {
+  "Género": ["Masculino", "Femenino", "Otro"],
+  "Fecha de nacimiento": ["Definir fecha", "Sin fecha"],
+  "País": ["Costa Rica", "Panamá", "Nicaragua", "Guatemala"],
+  "Provincia": ["San José", "Cartago", "Alajuela", "Heredia", "Guanacaste", "Puntarenas", "Limón"],
+  "Cantón": ["Central", "Escazú", "Santa Ana", "Mora", "Curridabat"],
+  "Distrito": ["Carmen", "Merced", "Hospital", "Catedral", "Zapote"],
+  "Departamento": ["Construcción", "Administración", "Ventas", "Logística", "Recursos Humanos"],
+  "Puesto": ["Maestro de obras", "Operario", "Bodeguero", "Transportista", "Capataz"],
+  "Fecha de ingreso": ["Definir fecha"],
+  "Fecha de salida": ["Definir fecha", "Sin fecha"],
+  "Estado": ["Activo", "Inactivo"],
+  "Talla de camisa": ["XS", "S", "M", "L", "XL", "XXL"],
+  "Talla de pantalón": ["28", "30", "32", "34", "36", "38"],
+  "Apps": ["Boletas", "Vacaciones", "Asistencia", "Reportes", "Inventario"],
+  "Fecha": ["Definir fecha", "Sin fecha"],
+};
+
+// ── NOT-IN-DS: MockCalendar ─────────────────────────────────
+// Visual-only month grid mock for U014.1. Static layout (Feb 2026, 5-week
+// month starting Sun Feb 1). Click on a day → onSelect(formattedLabel).
+// Not promoted to DS — date pickers need real date logic before that.
+const CAL_DOW = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+const CAL_WEEKS = [
+  [1, 2, 3, 4, 5, 6, 7],
+  [8, 9, 10, 11, 12, 13, 14],
+  [15, 16, 17, 18, 19, 20, 21],
+  [22, 23, 24, 25, 26, 27, 28],
+  [null, null, null, null, null, null, null],
+];
+function MockCalendar({ onSelect }: { onSelect: (label: string) => void }) {
+  return (
+    <div className="usr-mock-calendar">
+      <div className="usr-mock-calendar__head">
+        <button type="button" className="usr-mock-calendar__nav" aria-label="Mes anterior">
+          <Icon name="back" size="sm" />
+        </button>
+        <span className="usr-mock-calendar__month">Febrero 2026</span>
+        <button type="button" className="usr-mock-calendar__nav" aria-label="Mes siguiente">
+          <Icon name="arrow-right" size="sm" />
+        </button>
+      </div>
+      <div className="usr-mock-calendar__dow">
+        {CAL_DOW.map((d) => <span key={d}>{d}</span>)}
+      </div>
+      <div className="usr-mock-calendar__grid">
+        {CAL_WEEKS.flat().map((d, i) => (
+          <button
+            key={i}
+            type="button"
+            className={`usr-mock-calendar__cell${d == null ? " usr-mock-calendar__cell--empty" : ""}${d === 15 ? " usr-mock-calendar__cell--today" : ""}`}
+            disabled={d == null}
+            onClick={d == null ? undefined : () => onSelect(`${d} feb 2026`)}
+          >
+            {d ?? ""}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 interface MockFieldProps {
   label?: string;
   value: string;
   width?: "full" | "half";
   selectable?: boolean;
+  /** When true + editMode, the dropdown expands to a calendar instead of a text list. */
+  calendar?: boolean;
   editMode?: boolean;
   /** Create-mode: render Placeholder/Label text instead of the value (U012-U017). */
   placeholderMode?: boolean;
+  /** Fires when the user actually picks an option/day from the dropdown (not on open). */
+  onSelect?: (value: string) => void;
 }
 function MockField({
   label,
   value,
   width = "full",
   selectable = false,
+  calendar = false,
   editMode = false,
   placeholderMode = false,
+  onSelect,
 }: MockFieldProps) {
   // In create mode the value renders in placeholder gray; selectable fields show their
   // suggested value (e.g. "Boletas"), text fields show "Placeholder" (U012-U017 spec).
   const display = placeholderMode && !selectable ? "Placeholder" : value;
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const isCalendarField = selectable && calendar && editMode;
+  const isInteractive = selectable && editMode;
+  const [open, setOpen] = useState(false);
   if (selectable) {
     // In view mode the embedded ToggleCards is recolored to gray-200 via
     // scoped CSS (.usr-mock-sd). In edit mode we omit that class so the
     // DS default (black ToggleCards) renders, signalling "editable".
+    // Edit mode also enables real expand-on-click with mock options.
+    const itemList = editMode && label ? (MOCK_OPTIONS[label] ?? []) : [];
+    const headerLabel = selectedValue ?? display;
+    const sdClass = [
+      "usr-mock-sd",
+      editMode ? "usr-mock-sd--edit" : "",
+      isCalendarField ? "usr-mock-sd--calendar" : "",
+    ].filter(Boolean).join(" ");
+    // Picking an option/day saves it, closes the dropdown, and notifies the parent
+    // (e.g. to advance the createMode disclosure flow).
+    const handleSelect = (val: string) => {
+      setSelectedValue(val);
+      setOpen(false);
+      onSelect?.(val);
+    };
     return (
       <div className={`usr-mock-field usr-mock-field--${width}`}>
         {label && <span className="usr-mock-field__label">{label}</span>}
-        <SelectionDropdown
-          className={editMode ? "usr-mock-sd usr-mock-sd--edit" : "usr-mock-sd"}
-          label={display}
-          items={[]}
-          isOpen={true}
-        />
+        {/* sd-wrap: relative anchor so expanded options/calendar float ABOVE the
+            content below as an overlay (absolute) instead of pushing it down. */}
+        <div className="usr-mock-field__sd-wrap">
+          <SelectionDropdown
+            className={sdClass}
+            label={headerLabel}
+            items={isCalendarField ? [] : (editMode ? itemList.map((opt) => ({ label: opt, onClick: () => handleSelect(opt) })) : [])}
+            {...(isInteractive
+              ? { isOpen: open, onToggle: () => setOpen((o) => !o) }
+              : {})}
+          />
+          {isCalendarField && (
+            <AnimatePresence initial={false}>
+              {open && (
+                <motion.div
+                  key="cal"
+                  className="usr-mock-field__calendar"
+                  initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                  transition={springs.expanding}
+                >
+                  <MockCalendar onSelect={handleSelect} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+        </div>
       </div>
     );
   }
@@ -692,7 +774,7 @@ function PersonalDatosSection({ editMode = false, createMode = false }: { editMo
       <MockField label="Cédula" value={p.cedula} editMode={editMode} placeholderMode={ph} />
       <div className="usr-row">
         <MockField label="Género" value={p.genero} width="half" selectable editMode={editMode} placeholderMode={ph} />
-        <MockField label="Fecha de nacimiento" value={p.fechaNacimiento} width="half" selectable editMode={editMode} placeholderMode={ph} />
+        <MockField label="Fecha de nacimiento" value={p.fechaNacimiento} width="half" selectable calendar editMode={editMode} placeholderMode={ph} />
       </div>
     </div>
   );
@@ -733,8 +815,8 @@ function PuestoSection({ editMode = false, createMode = false }: { editMode?: bo
         <MockField label="Puesto" value={p.puesto} width="half" selectable editMode={editMode} placeholderMode={ph} />
       </div>
       <div className="usr-row">
-        <MockField label="Fecha de ingreso" value={p.fechaIngreso} width="half" selectable editMode={editMode} placeholderMode={ph} />
-        <MockField label="Fecha de salida" value={p.fechaSalida} width="half" selectable editMode={editMode} placeholderMode={ph} />
+        <MockField label="Fecha de ingreso" value={p.fechaIngreso} width="half" selectable calendar editMode={editMode} placeholderMode={ph} />
+        <MockField label="Fecha de salida" value={p.fechaSalida} width="half" selectable calendar editMode={editMode} placeholderMode={ph} />
       </div>
       <MockField label="Estado" value={p.estado} width="half" selectable editMode={editMode} placeholderMode={ph} />
 
@@ -892,6 +974,7 @@ function UsuarioSection({
                 transition={springs.expanding}
               >
                 <SlideButton
+                  mode="eliminar"
                   label="Eliminar"
                   confirmedLabel="Eliminado"
                   autoReset={false}
@@ -963,9 +1046,7 @@ function UsuarioSection({
         infoIcon
         tooltipText="Seleccioná las apps a las que este usuario va a poder ingresar. Solo podrá utilizar las que estén habilitadas acá."
       />
-      <div onClick={onPickApp} role={createMode ? "button" : undefined}>
-        <MockField label="Apps" value={u.apps} selectable editMode={editMode} placeholderMode={ph} />
-      </div>
+      <MockField label="Apps" value={u.apps} selectable editMode={editMode} placeholderMode={ph} onSelect={onPickApp} />
 
       <AnimatePresence initial={false}>
         {showRoles && (
@@ -1011,8 +1092,8 @@ function UsuarioSection({
         )}
 
         {showFecha && (
-          <motion.div key="fecha" {...reveal} onClick={onPickFecha} role={createMode ? "button" : undefined}>
-            <MockField label="Fecha" value={u.fecha} selectable editMode={editMode} placeholderMode={ph} />
+          <motion.div key="fecha" {...reveal}>
+            <MockField label="Fecha" value={u.fecha} selectable calendar editMode={editMode} placeholderMode={ph} onSelect={onPickFecha} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -1150,7 +1231,7 @@ export function Usuarios({
     const cellBox = cell.getBoundingClientRect();
     const mainBox = main.getBoundingClientRect();
     const col = COLUMNS.find((c) => c.key === filterOpen);
-    const popW = col?.mode === "search" ? 290 : col?.mode === "list" ? 240 : 330;
+    const popW = col?.mode === "list" ? 240 : 330;
     const cellCenter = cellBox.left - mainBox.left + cellBox.width / 2;
     let left = cellCenter - popW / 2;
     left = Math.max(8, Math.min(left, mainBox.width - popW - 8));
@@ -1259,25 +1340,22 @@ export function Usuarios({
             const col = COLUMNS.find((c) => c.key === filterOpen);
             if (!col) return null;
             const opts =
-              col.key === "departamento"
-                ? DEPARTAMENTO_OPTIONS
-                : col.key === "rol"
-                  ? ROL_LIST
-                  : [];
-            // For search-only columns, build 2-line cards (primary + secondary).
-            // Teléfono (U03.4) intentionally empty — only the search bar shows.
-            const dataRows =
               col.key === "trabajador"
-                ? USERS.map((u) => ({ primary: u.nombre, secondary: u.cedula }))
+                ? TRABAJADOR_OPTIONS
                 : col.key === "cedula"
-                  ? USERS.map((u) => ({ primary: u.cedula, secondary: u.nombre }))
-                  : [];
+                  ? CEDULA_OPTIONS
+                  : col.key === "telefono"
+                    ? TELEFONO_OPTIONS
+                    : col.key === "departamento"
+                      ? DEPARTAMENTO_OPTIONS
+                      : col.key === "rol"
+                        ? ROL_LIST
+                        : [];
             return (
               <FilterPopover
                 mode={col.mode}
                 placeholder={col.placeholder}
                 options={opts}
-                dataRows={dataRows}
                 estadoOptions={col.key === "estado" ? ESTADO_OPTIONS : undefined}
                 anchor={filterAnchor}
                 onPick={() => {

@@ -63,12 +63,12 @@ export const JUAN_DETAIL = {
   },
 };
 
-export type FilterMode = "search" | "search+list" | "list";
+export type FilterMode = "search+list" | "list";
 
 export const COLUMNS = [
-  { key: "trabajador", label: "Trabajador", mode: "search" as FilterMode, placeholder: "Búsqueda por trabajador" },
-  { key: "cedula", label: "Cédula", mode: "search" as FilterMode, placeholder: "Búsqueda por cédula" },
-  { key: "telefono", label: "Teléfono", mode: "search" as FilterMode, placeholder: "Búsqueda por teléfono" },
+  { key: "trabajador", label: "Trabajador", mode: "search+list" as FilterMode, placeholder: "Búsqueda por trabajador" },
+  { key: "cedula", label: "Cédula", mode: "search+list" as FilterMode, placeholder: "Búsqueda por cédula" },
+  { key: "telefono", label: "Teléfono", mode: "search+list" as FilterMode, placeholder: "Búsqueda por teléfono" },
   { key: "departamento", label: "Departamento", mode: "search+list" as FilterMode, placeholder: "Búsqueda por departamento" },
   { key: "rol", label: "Rol", mode: "search+list" as FilterMode, placeholder: "Búsqueda por rol" },
   { key: "estado", label: "Estado", mode: "list" as FilterMode, placeholder: "" },
@@ -76,7 +76,11 @@ export const COLUMNS = [
 
 export type ColumnKey = (typeof COLUMNS)[number]["key"];
 
-export const DEPARTAMENTO_OPTIONS = ["Todos", "Maestro de obra", "Ingeniero", "Maestro de obra", "Ingeniero", "Maestro de obra"];
+// U03.2–U03.6 filter option lists (search+list = checkbox multi-select). "Todos" is always first.
+export const TRABAJADOR_OPTIONS = ["Todos", "Juan Perez Castro", "Juan Perez Castro", "Juan Perez Castro", "Juan Perez Castro", "Juan Perez Castro", "Juan Perez Castro"];
+export const CEDULA_OPTIONS = ["Todos", "3-0138-0148", "3-0138-0145", "3-0138-0146", "3-0138-0147", "3-0138-0149", "3-0138-0140"];
+export const TELEFONO_OPTIONS = ["Todos", "8812-3232", "8812-3232", "8812-3232", "8812-3232", "8812-3232", "8812-3232"];
+export const DEPARTAMENTO_OPTIONS = ["Todos", "Producción", "Ingeniería", "Arquitectura", "Producción", "Ingeniería", "Ingeniería"];
 export const ROL_LIST = ["Todos", "Ingeniero", "Maestro de obra", "Ingeniero", "Maestro de obra", "Ingeniero", "Maestro de obra"];
 export const ESTADO_OPTIONS = [
   { label: "Todos", indicator: null as null | "activo" | "inactivo" },

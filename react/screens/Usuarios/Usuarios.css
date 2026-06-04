@@ -423,9 +423,6 @@
   gap: 12px;
   padding: 0;
 }
-.usr-filter-pop--search {
-  width: 330px;
-}
 .usr-filter-pop--compact {
   width: 280px;
 }
@@ -450,62 +447,12 @@
   display: flex;
   flex-direction: column;
 }
-/* Dividers only when explicitly enabled (search-only data rows) */
-.usr-filter-pop__list--dividers > * + * {
-  border-top: 1px solid var(--ds-color-gray-100);
-}
-
-/* Data card (search-only mode U03.2/U03.3): primary + secondary line stacked */
-.usr-filter-data {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2px;
-  min-height: 56px;
-  padding: 10px 24px;
-  border: none;
-  background: transparent;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: background 140ms ease;
-}
-.usr-filter-data:hover { background: var(--ds-color-gray-100); }
-.usr-filter-data__primary {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ds-color-black);
-}
-.usr-filter-data__secondary {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--ds-color-gray-400);
-}
-
-/* Checkbox square (NOT-IN-DS) — black-filled w/ white check when active, outlined when not.
-   U03 spec: 24px square with small radius. Replaces former radio circle. */
-.usr-checkbox {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  border: 2px solid var(--ds-color-gray-300);
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--ds-color-white);
-}
-.usr-checkbox--active {
-  background: var(--ds-color-black);
-  border-color: var(--ds-color-black);
-}
-.usr-checkbox--active svg { fill: var(--ds-color-white); width: 16px; height: 16px; }
-
-/* Filter row (search+list and list modes): checkbox + label */
+/* Filter row (search+list and list modes): wraps the DS CheckBox; the whole
+   row is clickable for selection, the CheckBox renders box + label (DS). */
 .usr-filter-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  width: 100%;
   height: 48px;
   padding: 0 20px;
   border: none;
@@ -517,8 +464,6 @@
   text-align: left;
   transition: background 140ms ease;
 }
-.usr-filter-row:hover { background: var(--ds-color-gray-100); }
-.usr-filter-row__label { flex: 1 1 auto; }
 
 /* ── Drawer ──────────────────────────────────────────────── */
 
@@ -603,12 +548,17 @@
   flex-direction: column;
 }
 
+/* Drawer footer — contained "recuadro" so scrolling body content doesn't
+   visually bleed under the nav buttons (per U014 spec). */
 .usr-drawer__foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 30px 21px;
   background: var(--ds-color-white);
+  border-top: 1px solid var(--ds-color-gray-200);
+  box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.04);
+  z-index: 1;
 }
 
 /* ── Drawer sections ─────────────────────────────────────── */
@@ -765,11 +715,13 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-/* Suppress the expanded items panel — we use isOpen=true only to force the
-   ToggleCards into "open" visibility (chevrons up-down icon) per Figma U04. */
-.usr-mock-sd .ds-sd__items-wrapper { display: none; }
+/* View mode — suppress the expanded items panel (isOpen=true forces the
+   ToggleCards into "open" visibility for the chevrons up-down icon per
+   Figma U04, but the list should stay hidden). Edit mode re-enables it. */
+.usr-mock-sd:not(.usr-mock-sd--edit) .ds-sd__items-wrapper { display: none; }
 
-/* Edit mode — overrides para que el ToggleCards vuelva al negro DS default. */
+/* Edit mode — overrides para que el ToggleCards vuelva al negro DS default
+   y el dropdown se expanda al click con sus opciones. */
 .usr-mock-sd--edit .ds-btn--black {
   background: var(--ds-color-black);
   color: var(--ds-color-white);
@@ -777,6 +729,122 @@
 }
 .usr-mock-sd--edit .ds-btn--black svg { fill: var(--ds-color-white); }
 .usr-mock-sd--edit .ds-sd__label { color: var(--ds-color-black); }
+
+/* Calendar variant — suppress the SD's own empty items-wrapper so only
+   our sibling MockCalendar renders below the header card. */
+.usr-mock-sd--calendar .ds-sd__items-wrapper { display: none; }
+
+/* ── Overlay: expanded options/calendar float ABOVE content below ───
+   The interface stays static (no layout shift) — the deployed panel is
+   absolutely positioned over the fields underneath, anchored to the
+   relative sd-wrap (calendar) or to .ds-sd (options list). */
+.usr-mock-field__sd-wrap {
+  position: relative;
+}
+.usr-mock-sd--edit .ds-sd__items-wrapper {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
+
+/* ── NOT-IN-DS: MockCalendar ─────────────────────────────── */
+/* Compact date picker — fixed narrow width, not stretched to the dropdown. */
+.usr-mock-field__calendar {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 288px;
+  max-width: 100%;
+  z-index: 20;
+}
+.usr-mock-calendar {
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-01);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.usr-mock-calendar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.usr-mock-calendar__month {
+  flex: 1 1 auto;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ds-color-black);
+  text-transform: capitalize;
+}
+.usr-mock-calendar__nav {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  border: 1px solid var(--ds-color-gray-200);
+  background: var(--ds-color-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-black);
+  transition: background 160ms ease;
+}
+.usr-mock-calendar__nav:hover { background: var(--ds-color-gray-100); }
+.usr-mock-calendar__nav svg { fill: var(--ds-color-black); }
+.usr-mock-calendar__dow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.usr-mock-calendar__dow span {
+  text-align: center;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ds-color-gray-400);
+  padding: 2px 0;
+}
+.usr-mock-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.usr-mock-calendar__cell {
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ds-color-black);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 140ms ease, color 140ms ease;
+}
+.usr-mock-calendar__cell:hover:not(:disabled) {
+  background: var(--ds-color-gray-100);
+}
+.usr-mock-calendar__cell--today {
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+}
+.usr-mock-calendar__cell--today:hover:not(:disabled) {
+  background: var(--ds-color-black);
+}
+.usr-mock-calendar__cell--empty {
+  visibility: hidden;
+  cursor: default;
+}
 
 /* ── Chips (Roles / Tipo) ────────────────────────────────── */
 
