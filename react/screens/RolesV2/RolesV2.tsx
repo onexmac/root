@@ -282,6 +282,12 @@ const PREMIUM_EASE = { type: "tween", duration: 0.22, ease: [0.32, 0.72, 0, 1] }
 // Slightly slower for big morph (220 → 457×560).
 const PREMIUM_MORPH = { type: "tween", duration: 0.32, ease: [0.32, 0.72, 0, 1] } as const;
 
+// Stagger variants for form fields entering the morphed panel.
+const FIELD_VARIANTS = {
+  hidden: { opacity: 0, y: 8 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.22, ease: [0.32, 0.72, 0, 1] } },
+};
+
 interface AddPermFabProps {
   stage: AddPermStage;
   onFabClick: () => void;
@@ -557,10 +563,6 @@ function AddRoleMorph({ stage, onClick, onClose }: AddRoleMorphProps) {
 }
 
 // ── Form inside the morphing panel (staggered fields) ───────
-const FIELD_VARIANTS = {
-  hidden: { opacity: 0, y: 8 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.22, ease: [0.32, 0.72, 0, 1] } },
-};
 
 function NuevoRolForm({
   onClose,
