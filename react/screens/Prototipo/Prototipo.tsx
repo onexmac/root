@@ -30,6 +30,10 @@ export function Prototipo({
   rolesProps = {},
 }: PrototipoProps = {}) {
   const [screen, setScreen] = useState<PrototipoScreen>(initialScreen);
+  // Estado del sidebar lifted al wrapper → se preserva al navegar entre Usuarios/Roles.
+  // Default: cerrado (collapsed), igual que RolesV2 por defecto.
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => setSidebarOpen((v) => !v);
 
   if (screen === "roles") {
     return (
@@ -37,6 +41,8 @@ export function Prototipo({
         {...rolesProps}
         currentScreen="roles"
         onNavigate={setScreen}
+        sidebarOpen={sidebarOpen}
+        onSidebarToggle={toggleSidebar}
       />
     );
   }
@@ -45,6 +51,8 @@ export function Prototipo({
       {...usuariosProps}
       currentScreen="usuarios"
       onNavigate={setScreen}
+      sidebarOpen={sidebarOpen}
+      onSidebarToggle={toggleSidebar}
     />
   );
 }

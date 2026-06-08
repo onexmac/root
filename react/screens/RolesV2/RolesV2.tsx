@@ -747,6 +747,9 @@ interface RolesV2Props {
   /** Navegación entre pantallas del prototipo unificado (Usuarios ↔ Roles). */
   onNavigate?: (screen: "usuarios" | "roles") => void;
   currentScreen?: "usuarios" | "roles";
+  /** Sidebar controlado externamente (prototipo unificado preserva el estado). */
+  sidebarOpen?: boolean;
+  onSidebarToggle?: () => void;
 }
 
 export function RolesV2({
@@ -758,8 +761,16 @@ export function RolesV2({
   initialActiveRoleId = "lider-losa",
   onNavigate,
   currentScreen = "roles",
+  sidebarOpen: sidebarOpenProp,
+  onSidebarToggle,
 }: RolesV2Props = {}) {
-  const [sidebarOpen, setSidebarOpen] = useState(!initialCollapsed);
+  const [sidebarOpenInternal, setSidebarOpenInternal] = useState(!initialCollapsed);
+  const sidebarControlled = sidebarOpenProp !== undefined && !!onSidebarToggle;
+  const sidebarOpen = sidebarControlled ? sidebarOpenProp! : sidebarOpenInternal;
+  const setSidebarOpen = (v: boolean | ((p: boolean) => boolean)) => {
+    if (sidebarControlled) { onSidebarToggle!(); return; }
+    setSidebarOpenInternal(v as any);
+  };
   const [appsOpen, setAppsOpen] = useState(false);
   const [appsValue, setAppsValue] = useState<string>("Boletas");
   const [activeRoleId, setActiveRoleId] = useState(initialActiveRoleId);

@@ -1258,6 +1258,9 @@ interface UsuariosProps {
   /** Navegación entre pantallas del prototipo unificado (Usuarios ↔ Roles). */
   onNavigate?: (screen: "usuarios" | "roles") => void;
   currentScreen?: "usuarios" | "roles";
+  /** Sidebar controlado externamente (prototipo unificado preserva el estado). */
+  sidebarOpen?: boolean;
+  onSidebarToggle?: () => void;
 }
 
 export function Usuarios({
@@ -1269,8 +1272,16 @@ export function Usuarios({
   stepperFooter = false,
   onNavigate,
   currentScreen = "usuarios",
+  sidebarOpen: sidebarOpenProp,
+  onSidebarToggle,
 }: UsuariosProps = {}) {
-  const [sidebarOpen, setSidebarOpen] = useState(!initialCollapsed);
+  const [sidebarOpenInternal, setSidebarOpenInternal] = useState(!initialCollapsed);
+  const sidebarControlled = sidebarOpenProp !== undefined && !!onSidebarToggle;
+  const sidebarOpen = sidebarControlled ? sidebarOpenProp! : sidebarOpenInternal;
+  const setSidebarOpen = (v: boolean | ((p: boolean) => boolean)) => {
+    if (sidebarControlled) { onSidebarToggle!(); return; }
+    setSidebarOpenInternal(v as any);
+  };
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
   const [hoveredHeader, setHoveredHeader] = useState<ColumnKey | null>(null);
   const [activeHeader, setActiveHeader] = useState<ColumnKey | null>(null);
