@@ -409,6 +409,8 @@ interface MockFieldProps {
   placeholderMode?: boolean;
   /** Fires when the user actually picks an option/day from the dropdown (not on open). */
   onSelect?: (value: string) => void;
+  /** Cuando se provee + editMode + !selectable → input controlado (live text editing). */
+  onChange?: (value: string) => void;
 }
 function MockField({
   label,
@@ -419,6 +421,7 @@ function MockField({
   editMode = false,
   placeholderMode = false,
   onSelect,
+  onChange,
 }: MockFieldProps) {
   // In create mode the value renders in placeholder gray; selectable fields show their
   // suggested value (e.g. "Boletas"), text fields show "Placeholder" (U012-U017 spec).
@@ -485,12 +488,22 @@ function MockField({
       {label && <span className="usr-mock-field__label">{label}</span>}
       <div className={`usr-mock-field__pill${editMode ? " usr-mock-field__pill--edit" : ""}${placeholderMode ? " usr-mock-field__pill--placeholder" : ""}`}>
         {editMode ? (
-          <input
-            className="usr-mock-field__input"
-            type="text"
-            placeholder={placeholderMode ? "Placeholder" : undefined}
-            defaultValue={placeholderMode ? "" : value}
-          />
+          onChange ? (
+            <input
+              className="usr-mock-field__input"
+              type="text"
+              placeholder={placeholderMode ? "Placeholder" : undefined}
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+            />
+          ) : (
+            <input
+              className="usr-mock-field__input"
+              type="text"
+              placeholder={placeholderMode ? "Placeholder" : undefined}
+              defaultValue={placeholderMode ? "" : value}
+            />
+          )
         ) : (
           <span className="usr-mock-field__value">{display}</span>
         )}
@@ -503,6 +516,14 @@ function MockField({
 
 type DrawerTab = "personal" | "puesto" | "usuario";
 
+interface FormDraft {
+  nombre: string;
+  primerApellido: string;
+  segundoApellido: string;
+  cedula: string;
+  telefono: string;
+}
+
 interface DrawerProps {
   open: boolean;
   tab: DrawerTab;
@@ -511,10 +532,15 @@ interface DrawerProps {
   setPersonalPage: (p: 0 | 1) => void;
   editMode: boolean;
   createMode?: boolean;
+  stepperFooter?: boolean;
+  draft: FormDraft;
+  setDraft: (d: FormDraft) => void;
+  onSubmitCreate: () => void;
+  onSubmitEdit: () => void;
   onStartEdit: () => void;
   onClose: () => void;
 }
-function SideDrawer({ open, tab, setTab, personalPage, setPersonalPage, editMode, createMode = false, onStartEdit, onClose }: DrawerProps) {
+function SideDrawer({ open, tab, setTab, personalPage, setPersonalPage, editMode, createMode = false, stepperFooter = false, draft, setDraft, onSubmitCreate, onSubmitEdit, onStartEdit, onClose }: DrawerProps) {
   // In create mode the form behaves like edit (inputs editable, ToggleCards negros)
   // but with empty values and "NUEVO USUARIO" header. Sections accept editMode=true.
   const inputsEditable = editMode || createMode;
@@ -542,6 +568,9 @@ function SideDrawer({ open, tab, setTab, personalPage, setPersonalPage, editMode
     setTab(t);
     if (t === "personal") setPersonalPage(0);
   };
+  // Stepper U014→U017: personal/0, personal/1, puesto, usuario.
+  const stepIndex =
+    tab === "personal" ? (personalPage === 0 ? 0 : 1) : tab === "puesto" ? 2 : 3;
   return (
     <AnimatePresence initial={false}>
       {open && (
@@ -597,8 +626,8 @@ function SideDrawer({ open, tab, setTab, personalPage, setPersonalPage, editMode
 
             {/* Content (scrollable) */}
             <div className="usr-drawer__body">
-              {tab === "personal" && personalPage === 0 && <PersonalDatosSection editMode={inputsEditable} createMode={createMode} />}
-              {tab === "personal" && personalPage === 1 && <PersonalContactoSection editMode={inputsEditable} createMode={createMode} />}
+              {tab === "personal" && personalPage === 0 && <PersonalDatosSection editMode={inputsEditable} createMode={createMode} draft={draft} setDraft={setDraft} />}
+              {tab === "personal" && personalPage === 1 && <PersonalContactoSection editMode={inputsEditable} createMode={createMode} draft={draft} setDraft={setDraft} />}
               {tab === "puesto" && <PuestoSection editMode={inputsEditable} createMode={createMode} />}
               {tab === "usuario" && (
                 <UsuarioSection
@@ -606,6 +635,8 @@ function SideDrawer({ open, tab, setTab, personalPage, setPersonalPage, editMode
                   createMode={createMode}
                   accessEditor={accessEditor}
                   setAccessEditor={setAccessEditor}
+                  stepperFooter={stepperFooter}
+                  onSubmit={onSubmitCreate}
                 />
               )}
 
@@ -625,7 +656,8 @@ function SideDrawer({ open, tab, setTab, personalPage, setPersonalPage, editMode
                   {!createMode && !editMode && (
                     <motion.div
                       key="editar"
-                      className="usr-edit-pill-wrap__inner"
+                      layout
+                      className="usr-edit-pill-wrap__inner usr-editar-hover"
                       initial={{ opacity: 0, scale: 0.92 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.92 }}
@@ -681,7 +713,7 @@ function SideDrawer({ open, tab, setTab, personalPage, setPersonalPage, editMode
                         confirmedLabel="Guardado"
                         autoReset={false}
                         onConfirm={() => {
-                          setTimeout(onClose, 600);
+                          setTimeout(onSubmitEdit, 600);
                         }}
                       />
                     </motion.div>
@@ -694,21 +726,46 @@ function SideDrawer({ open, tab, setTab, personalPage, setPersonalPage, editMode
             {/* Footer nav — back arrow + (forward / "Crear usuario" on Usuario tab).
                 Usuario tab footer shows Crear usuario per U07/U015 spec:
                   · createMode → black & enabled
-                  · editMode/read → gray & disabled (visible placeholder) */}
-            <div className="usr-drawer__foot">
-              <NavigationControls navigation="back" onClick={goBack} />
-              {tab !== "usuario" ? (
-                <NavigationControls navigation="go" onClick={goNext} />
+                  · editMode/read → gray & disabled (visible placeholder)
+                stepperFooter (U014-U017 nuevo flujo): back + 4-dot stepper + go.
+                  El go en el último paso (usuario) actúa como submit (cierra drawer). */}
+            <div className={`usr-drawer__foot${stepperFooter ? " usr-drawer__foot--stepper" : ""}`}>
+              {stepperFooter ? (
+                <>
+                  <NavigationControls navigation="back" onClick={goBack} />
+                  <div className="usr-stepper" role="progressbar" aria-valuemin={1} aria-valuemax={4} aria-valuenow={stepIndex + 1}>
+                    {[0, 1, 2, 3].map((i) => (
+                      <span
+                        key={i}
+                        className={`usr-stepper__dot${i === stepIndex ? " usr-stepper__dot--active" : ""}`}
+                      />
+                    ))}
+                  </div>
+                  {tab === "usuario" ? (
+                    <div className="usr-nav-disabled" aria-disabled="true">
+                      <NavigationControls navigation="go" />
+                    </div>
+                  ) : (
+                    <NavigationControls navigation="go" onClick={goNext} />
+                  )}
+                </>
               ) : (
-                <Button
-                  color={createMode && !accessEditor ? "black" : "gray"}
-                  layout="icon-left"
-                  icon="user"
-                  label="Crear usuario"
-                  size="md"
-                  state={createMode && !accessEditor ? "standard" : "disabled"}
-                  onClick={createMode && !accessEditor ? onClose : undefined}
-                />
+                <>
+                  <NavigationControls navigation="back" onClick={goBack} />
+                  {tab !== "usuario" ? (
+                    <NavigationControls navigation="go" onClick={goNext} />
+                  ) : (
+                    <Button
+                      color={createMode && !accessEditor ? "black" : "gray"}
+                      layout="icon-left"
+                      icon="user"
+                      label="Crear usuario"
+                      size="md"
+                      state={createMode && !accessEditor ? "standard" : "disabled"}
+                      onClick={createMode && !accessEditor ? onSubmitCreate : undefined}
+                    />
+                  )}
+                </>
               )}
             </div>
           </motion.aside>
@@ -762,16 +819,19 @@ function SectionTitle({
   );
 }
 
-function PersonalDatosSection({ editMode = false, createMode = false }: { editMode?: boolean; createMode?: boolean }) {
+function PersonalDatosSection({ editMode = false, createMode = false, draft, setDraft }: { editMode?: boolean; createMode?: boolean; draft?: FormDraft; setDraft?: (d: FormDraft) => void }) {
   const p = JUAN_DETAIL.personal;
   const ph = createMode;
+  // En read mode (sin draft) mostramos el mock estático; con draft (create/edit) controlamos.
+  const ctrl = !!draft && !!setDraft && editMode;
+  const update = (k: keyof FormDraft) => (v: string) => setDraft!({ ...draft!, [k]: v });
   return (
     <div className="usr-section">
       <SectionTitle title="DATOS PERSONALES" />
-      <MockField label="Nombre" value={p.nombre} editMode={editMode} placeholderMode={ph} />
-      <MockField label="Primer apellido" value={p.primerApellido} editMode={editMode} placeholderMode={ph} />
-      <MockField label="Segundo apellido" value={p.segundoApellido} editMode={editMode} placeholderMode={ph} />
-      <MockField label="Cédula" value={p.cedula} editMode={editMode} placeholderMode={ph} />
+      <MockField label="Nombre"          value={ctrl ? draft!.nombre          : p.nombre}          editMode={editMode} placeholderMode={ph} onChange={ctrl ? update("nombre")          : undefined} />
+      <MockField label="Primer apellido" value={ctrl ? draft!.primerApellido  : p.primerApellido}  editMode={editMode} placeholderMode={ph} onChange={ctrl ? update("primerApellido")  : undefined} />
+      <MockField label="Segundo apellido" value={ctrl ? draft!.segundoApellido : p.segundoApellido} editMode={editMode} placeholderMode={ph} onChange={ctrl ? update("segundoApellido") : undefined} />
+      <MockField label="Cédula"          value={ctrl ? draft!.cedula          : p.cedula}          editMode={editMode} placeholderMode={ph} onChange={ctrl ? update("cedula")          : undefined} />
       <div className="usr-row">
         <MockField label="Género" value={p.genero} width="half" selectable editMode={editMode} placeholderMode={ph} />
         <MockField label="Fecha de nacimiento" value={p.fechaNacimiento} width="half" selectable calendar editMode={editMode} placeholderMode={ph} />
@@ -780,9 +840,11 @@ function PersonalDatosSection({ editMode = false, createMode = false }: { editMo
   );
 }
 
-function PersonalContactoSection({ editMode = false, createMode = false }: { editMode?: boolean; createMode?: boolean }) {
+function PersonalContactoSection({ editMode = false, createMode = false, draft, setDraft }: { editMode?: boolean; createMode?: boolean; draft?: FormDraft; setDraft?: (d: FormDraft) => void }) {
   const c = JUAN_DETAIL.contacto;
   const ph = createMode;
+  const ctrl = !!draft && !!setDraft && editMode;
+  const onTel = ctrl ? (v: string) => setDraft!({ ...draft!, telefono: v }) : undefined;
   return (
     <div className="usr-section">
       <SectionTitle title="CONTACTO" />
@@ -797,7 +859,7 @@ function PersonalContactoSection({ editMode = false, createMode = false }: { edi
       <MockField label="Dirección" value={c.direccion} editMode={editMode} placeholderMode={ph} />
       <MockField label="Correo electrónico" value={c.correo} editMode={editMode} placeholderMode={ph} />
       <div className="usr-row">
-        <MockField label="Teléfono" value={c.telefono} width="half" editMode={editMode} placeholderMode={ph} />
+        <MockField label="Teléfono" value={ctrl ? draft!.telefono : c.telefono} width="half" editMode={editMode} placeholderMode={ph} onChange={onTel} />
         <MockField label="Teléfono secundario" value={c.telefono2} width="half" editMode={editMode} placeholderMode={ph} />
       </div>
     </div>
@@ -838,6 +900,8 @@ interface UsuarioSectionProps {
   createMode?: boolean;
   accessEditor?: AccessEditorState;
   setAccessEditor?: (s: AccessEditorState) => void;
+  stepperFooter?: boolean;
+  onSubmit?: () => void;
 }
 
 function UsuarioSection({
@@ -845,6 +909,8 @@ function UsuarioSection({
   createMode = false,
   accessEditor = null,
   setAccessEditor,
+  stepperFooter = false,
+  onSubmit,
 }: UsuarioSectionProps) {
   const u = JUAN_DETAIL.usuario;
   // In existing-user mode (edit/read) the form is fully filled (Líder + Definido by default).
@@ -1069,7 +1135,7 @@ function UsuarioSection({
         )}
 
         {showTipo && (
-          <motion.div key="tipo" {...reveal}>
+          <motion.div key="tipo" {...reveal} className="usr-block">
             <SectionTitle
               title="TIPO"
               infoIcon
@@ -1152,6 +1218,26 @@ function UsuarioSection({
         </div>
       </div>
       )}
+
+      {/* "Crear usuario" CTA — sólo cuando todas las selecciones del flujo
+          progresivo están completas (step === 'done'). U017 stepperFooter. */}
+      {createMode && stepperFooter && step === 'done' && (
+        <motion.div
+          className="usr-create-cta"
+          initial={{ opacity: 0, y: -8, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={springs.popping}
+        >
+          <Button
+            color="black"
+            layout="icon-left"
+            icon="user"
+            label="Crear usuario"
+            size="md"
+            onClick={onSubmit}
+          />
+        </motion.div>
+      )}
     </div>
   );
 }
@@ -1164,6 +1250,7 @@ interface UsuariosProps {
   initialFilter?: ColumnKey | null;
   initialEditMode?: boolean;
   initialCreateMode?: boolean;
+  stepperFooter?: boolean;
 }
 
 export function Usuarios({
@@ -1172,6 +1259,7 @@ export function Usuarios({
   initialFilter = null,
   initialEditMode = false,
   initialCreateMode = false,
+  stepperFooter = false,
 }: UsuariosProps = {}) {
   const [sidebarOpen, setSidebarOpen] = useState(!initialCollapsed);
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
@@ -1185,6 +1273,23 @@ export function Usuarios({
   const [createMode, setCreateMode] = useState(initialCreateMode);
   const [sort, setSort] = useState<{ col: ColumnKey; dir: "asc" | "desc" } | null>(null);
 
+  // Lista de usuarios (mutable) — empieza con los mocks importados.
+  const [users, setUsers] = useState<UserRow[]>(USERS);
+  // Cuál usuario se está visualizando/editando (null cuando es create o drawer cerrado).
+  const [editingId, setEditingId] = useState<number | null>(null);
+  // Form draft compartido por las secciones controladas (Personal Datos + Contacto).
+  const emptyDraft = {
+    nombre: "", primerApellido: "", segundoApellido: "", cedula: "", telefono: "",
+  };
+  const [draft, setDraft] = useState(emptyDraft);
+  const draftFromJuan = () => ({
+    nombre: JUAN_DETAIL.personal.nombre,
+    primerApellido: JUAN_DETAIL.personal.primerApellido,
+    segundoApellido: JUAN_DETAIL.personal.segundoApellido,
+    cedula: JUAN_DETAIL.personal.cedula,
+    telefono: JUAN_DETAIL.contacto.telefono,
+  });
+
   const toggleSort = (col: ColumnKey) => {
     setSort((prev) => {
       if (!prev || prev.col !== col) return { col, dir: "asc" };
@@ -1192,7 +1297,9 @@ export function Usuarios({
     });
   };
 
-  const openDrawerView = () => {
+  const openDrawerView = (userId: number) => {
+    setEditingId(userId);
+    setDraft(draftFromJuan());
     setEditMode(false);
     setCreateMode(false);
     setDrawerTab("personal");
@@ -1207,6 +1314,8 @@ export function Usuarios({
     setDrawerOpen(true);
   };
   const startCreate = () => {
+    setEditingId(null);
+    setDraft(emptyDraft);
     setCreateMode(true);
     setEditMode(false);
     setDrawerTab("personal");
@@ -1217,6 +1326,35 @@ export function Usuarios({
     setDrawerOpen(false);
     setEditMode(false);
     setCreateMode(false);
+  };
+  // Crear: aplana draft a nombre completo + agrega a la tabla.
+  const submitCreate = () => {
+    const fullName = [draft.nombre, draft.primerApellido, draft.segundoApellido]
+      .filter(Boolean).join(" ").trim() || "Nuevo Usuario";
+    const newId = Math.max(0, ...users.map(u => u.id)) + 1;
+    setUsers([...users, {
+      id: newId,
+      nombre: fullName,
+      cedula: draft.cedula || "—",
+      telefono: draft.telefono || "—",
+      departamento: "Producción",
+      rol: "Ingeniero",
+      estado: "activo",
+    }]);
+    closeDrawer();
+  };
+  // Editar: actualiza la fila correspondiente del draft.
+  const submitEdit = () => {
+    if (editingId == null) { closeDrawer(); return; }
+    const fullName = [draft.nombre, draft.primerApellido, draft.segundoApellido]
+      .filter(Boolean).join(" ").trim();
+    setUsers(users.map(u => u.id === editingId ? {
+      ...u,
+      nombre: fullName || u.nombre,
+      cedula: draft.cedula || u.cedula,
+      telefono: draft.telefono || u.telefono,
+    } : u));
+    closeDrawer();
   };
 
   // Anchor popover to real DOM position of the active header cell
@@ -1316,17 +1454,17 @@ export function Usuarios({
           {/* Rows */}
           <div className="usr-tbody-wrap">
           <ul className="usr-tbody">
-            {USERS.map((u) => (
+            {users.map((u) => (
               <li
                 key={u.id}
                 className={`usr-row${hoveredRow === u.id ? " usr-row--hover" : ""}`}
                 onMouseEnter={() => setHoveredRow(u.id)}
                 onMouseLeave={() => setHoveredRow(null)}
-                onClick={openDrawerView}
+                onClick={() => openDrawerView(u.id)}
               >
                 <UserCells user={u} />
                 <div className="usr-row__cell usr-row__cell--kebab">
-                  <OptionsMenu onEdit={startEdit} />
+                  <OptionsMenu onEdit={() => { openDrawerView(u.id); startEdit(); }} />
                 </div>
               </li>
             ))}
@@ -1381,6 +1519,11 @@ export function Usuarios({
         setPersonalPage={setPersonalPage}
         editMode={editMode}
         createMode={createMode}
+        stepperFooter={stepperFooter}
+        draft={draft}
+        setDraft={setDraft}
+        onSubmitCreate={submitCreate}
+        onSubmitEdit={submitEdit}
         onStartEdit={() => setEditMode(true)}
         onClose={closeDrawer}
       />

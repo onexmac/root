@@ -82,6 +82,13 @@
   justify-content: center;
   flex-shrink:    0;
   -webkit-tap-highlight-color: transparent;
+  transition:     box-shadow 160ms ease;
+}
+
+/* Hover = mismo aspecto que tabsMenu state="pressed":
+   halo negro semitransparente de 8px alrededor del pill. */
+.ds-sd__item:hover {
+  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.8);
 }
 
 .ds-dd__trigger-icon {

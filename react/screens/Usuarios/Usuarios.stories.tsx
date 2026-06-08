@@ -119,16 +119,42 @@ export const CreateMode: Story = {
 };
 
 /**
- * 📅 U014 — CreateMode, tab Personal/Datos.
- *  El campo "Fecha de nacimiento" arranca cerrado; al click en el dropdown se
- *  despliega el calendario como overlay (la interfaz no se mueve). Click en un
- *  día → cierra calendario y guarda el valor.
+ * 🧭 usuariosV02 — Copia de "Nuevo usuario" con footer stepper (U014–U017).
+ *  Reemplaza el footer back/go por: ◀ back · ●○○○ stepper 4 dots · ▶ go.
+ *  El dot activo indica el paso (Personal-Datos · Personal-Contacto · Puesto · Usuario).
+ *  En el paso 4 (Usuario), ▶ envía el formulario (cierra el drawer).
  */
 export const UsuariosV02: Story = {
   name: "usuariosV02",
   render: () => (
     <Frame>
-      <Usuarios initialCollapsed initialCreateMode />
+      <Usuarios initialCollapsed initialCreateMode stepperFooter />
+    </Frame>
+  ),
+};
+
+/**
+ * 👀 drawerViewV02 — Visualizar perfil (U04–U07) con footer stepper.
+ *  Botón "Editar" permanece en el body; navegación entre páginas vía footer.
+ */
+export const DrawerViewV02: Story = {
+  name: "drawerViewV02",
+  render: () => (
+    <Frame>
+      <Usuarios initialCollapsed initialDrawer stepperFooter />
+    </Frame>
+  ),
+};
+
+/**
+ * ✏️ editModeV02 — Editar perfil (U08–U011) con footer stepper.
+ *  "Cancelar + Guardar" siguen en el body; stepper sólo indica posición.
+ */
+export const EditModeV02: Story = {
+  name: "editModeV02",
+  render: () => (
+    <Frame>
+      <Usuarios initialCollapsed initialEditMode stepperFooter />
     </Frame>
   ),
 };
