@@ -23,7 +23,11 @@ import {
   type FilterMode,
   type UserRow,
 } from "./mock-data";
+import { ROLE_GROUPS } from "../RolesV2/mock-data";
 import "./Usuarios.css";
+
+// Lista de roles compartida con la pantalla RolesV2 (prototipo unificado).
+const ROLE_NAMES = ROLE_GROUPS.map((g) => g.title);
 
 /* ============================================================
  * H4 — Usuarios (desktop prototype, U01–U07)
@@ -1119,7 +1123,7 @@ function UsuarioSection({
           <motion.div key="roles" {...reveal} className="usr-block">
             <span className="usr-block__label">Roles</span>
             <div className="usr-chip-row">
-              {["Líder", "Maestro de obras", "Bodega", "Transportista"].map((r) => (
+              {ROLE_NAMES.map((r) => (
                 <button
                   key={r}
                   type="button"
@@ -1251,6 +1255,9 @@ interface UsuariosProps {
   initialEditMode?: boolean;
   initialCreateMode?: boolean;
   stepperFooter?: boolean;
+  /** Navegación entre pantallas del prototipo unificado (Usuarios ↔ Roles). */
+  onNavigate?: (screen: "usuarios" | "roles") => void;
+  currentScreen?: "usuarios" | "roles";
 }
 
 export function Usuarios({
@@ -1260,6 +1267,8 @@ export function Usuarios({
   initialEditMode = false,
   initialCreateMode = false,
   stepperFooter = false,
+  onNavigate,
+  currentScreen = "usuarios",
 }: UsuariosProps = {}) {
   const [sidebarOpen, setSidebarOpen] = useState(!initialCollapsed);
   const [hoveredRow, setHoveredRow] = useState<number | null>(null);
@@ -1389,13 +1398,17 @@ export function Usuarios({
         <div className="usr-sidebar__items">
           <TabsMenu
             label={sidebarOpen ? "ROLES" : ""}
-            layout={sidebarOpen ? "label+icon" : "label+icon"}
+            layout="label+icon"
             icon="rol"
+            state={currentScreen === "roles" ? "pressed" : "standard"}
+            onClick={() => onNavigate?.("roles")}
           />
           <TabsMenu
             label={sidebarOpen ? "USUARIOS" : ""}
             layout="label+icon"
             icon="user"
+            state={currentScreen === "usuarios" ? "pressed" : "standard"}
+            onClick={() => onNavigate?.("usuarios")}
           />
           <TabsMenu
             label={sidebarOpen ? "CUADRILLAS" : ""}

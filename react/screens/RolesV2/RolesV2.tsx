@@ -744,6 +744,9 @@ interface RolesV2Props {
   initialModal?: "edit" | "create" | null;
   initialAddPermStage?: AddPermStage;
   initialActiveRoleId?: string;
+  /** Navegación entre pantallas del prototipo unificado (Usuarios ↔ Roles). */
+  onNavigate?: (screen: "usuarios" | "roles") => void;
+  currentScreen?: "usuarios" | "roles";
 }
 
 export function RolesV2({
@@ -753,6 +756,8 @@ export function RolesV2({
   initialModal = null,
   initialAddPermStage = "fab",
   initialActiveRoleId = "lider-losa",
+  onNavigate,
+  currentScreen = "roles",
 }: RolesV2Props = {}) {
   const [sidebarOpen, setSidebarOpen] = useState(!initialCollapsed);
   const [appsOpen, setAppsOpen] = useState(false);
@@ -787,8 +792,20 @@ export function RolesV2({
         transition={springs.expanding}
       >
         <div className="rv-sidebar__items">
-          <TabsMenu label={sidebarOpen ? "ROLES" : ""}      layout="label+icon" icon="rol" />
-          <TabsMenu label={sidebarOpen ? "USUARIOS" : ""}   layout="label+icon" icon="user" />
+          <TabsMenu
+            label={sidebarOpen ? "ROLES" : ""}
+            layout="label+icon"
+            icon="rol"
+            state={currentScreen === "roles" ? "pressed" : "standard"}
+            onClick={() => onNavigate?.("roles")}
+          />
+          <TabsMenu
+            label={sidebarOpen ? "USUARIOS" : ""}
+            layout="label+icon"
+            icon="user"
+            state={currentScreen === "usuarios" ? "pressed" : "standard"}
+            onClick={() => onNavigate?.("usuarios")}
+          />
           <TabsMenu label={sidebarOpen ? "CUADRILLAS" : ""} layout="label+icon" icon="cuadrillas" />
         </div>
 
