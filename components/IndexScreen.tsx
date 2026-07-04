@@ -194,12 +194,14 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
             breathing room below the last card. */}
         <footer
           aria-label="Histok"
-          className="mt-28 md:mt-36 px-6 pb-6 flex items-end justify-center gap-4"
+          className="mt-28 md:mt-36 px-6 pb-6 flex items-center justify-center gap-3"
         >
-          <span className="text-8xl font-medium leading-none tracking-tight select-none">
+          {/* Same scale as the header wordmark — the footer is the monogram at
+              header size, not an enlarged version. */}
+          <span className="text-6xl md:text-7xl font-medium leading-none tracking-tight select-none">
             H
           </span>
-          <BrandPills w={11} tall={24} short={13} gap={7} />
+          <BrandPills />
         </footer>
       </motion.div>
 
