@@ -100,10 +100,10 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   const openIdx = opening ? topics.findIndex((t) => t.slug === opening.slug) : -1;
   const fading = opening !== null && !closing;
 
-  // "tap tap tap" cascade: each element fades FAST (short) with a clear gap
-  // between them, so you perceive discrete pops, not one soft dip.
-  const FADE = 0.12; // duration of one element's fade
-  const STEP = 0.11; // gap between consecutive elements (> FADE-ish = distinct)
+  // "pop pop pop" cascade: each element fades FAST with a clear gap between
+  // them, so you perceive crisp discrete pops that lead BEFORE the photo push.
+  const FADE = 0.07; // duration of one element's fade (fast pop)
+  const STEP = 0.085; // gap between consecutive pops
 
   // Order (pos: -1 = brand block, 0..n-1 = cards): the elements BELOW the tapped
   // card go first (nearest→down), then the brand, then the cards ABOVE
@@ -233,12 +233,14 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           transition={
             closing
               ? {
-                  default: { type: "spring", stiffness: 130, damping: 18, mass: 1 },
-                  opacity: { duration: 0.22, delay: 0.16 },
+                  default: { type: "spring", stiffness: 150, damping: 22, mass: 1 },
+                  opacity: { duration: 0.2, delay: 0.16 },
                 }
               : {
-                  default: { type: "spring", stiffness: 110, damping: 12, mass: 1, delay: 0.06 },
-                  opacity: { duration: 0.12, delay: 0.04 },
+                  // starts at 0.3s so the pop-pop-pop cascade leads; spring has
+                  // acceleration but little overshoot (ratio ~0.82) — barely bounces
+                  default: { type: "spring", stiffness: 120, damping: 18, mass: 1, delay: 0.3 },
+                  opacity: { duration: 0.1, delay: 0.28 },
                 }
           }
           onAnimationComplete={() => {
