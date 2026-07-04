@@ -100,27 +100,24 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   const openIdx = opening ? topics.findIndex((t) => t.slug === opening.slug) : -1;
   const fading = opening !== null && !closing;
 
-  // "pop pop pop" cascade: each element fades FAST with a clear gap between
-  // them, so you perceive crisp discrete pops that lead BEFORE the photo push.
-  const FADE = 0.07; // duration of one element's fade (fast pop)
-  const STEP = 0.085; // gap between consecutive pops
+  // Cascade (pos: -1 = brand/title, 0..n-1 = cards; tapped card never fades):
+  // the elements BELOW the tap pop out first, nearest→down, one per STEP. Then
+  // the whole TOP fades TOGETHER — the title and every card above the tap at
+  // once. Each fade is long enough to read as a fade, not a glitch.
+  const FADE = 0.13; // duration of one element's fade
+  const STEP = 0.09; // gap between the bottom pops
+  const belowCount = openIdx >= 0 ? topics.length - 1 - openIdx : 0;
+  const topDelay = belowCount * STEP; // when the top group (incl title) goes
+  // the photo push starts just as the fades finish (regardless of tap position)
+  const growDelay = topDelay + FADE * 0.7;
 
-  // Order (pos: -1 = brand block, 0..n-1 = cards): the elements BELOW the tapped
-  // card go first (nearest→down), then the brand, then the cards ABOVE
-  // farthest→nearest. So brand fades early and the card just above the tap fades
-  // last — matching the storyboard. The tapped card never fades.
-  const fadeOrder: number[] = [];
-  if (openIdx >= 0) {
-    for (let p = openIdx + 1; p < topics.length; p++) fadeOrder.push(p);
-    fadeOrder.push(-1);
-    for (let p = 0; p < openIdx; p++) fadeOrder.push(p);
-  }
-  const elementDelay = (pos: number) => {
-    const k = fadeOrder.indexOf(pos);
-    if (k < 0) return 0;
-    // reverse the rhythm on the way back (elements pop back in nearest-first)
-    return (closing ? fadeOrder.length - 1 - k : k) * STEP;
+  const openDelay = (pos: number) => {
+    if (openIdx < 0) return 0;
+    if (pos !== -1 && pos > openIdx) return (pos - openIdx - 1) * STEP; // below
+    return topDelay; // brand + everything above the tap, together
   };
+  const elementDelay = (pos: number) =>
+    closing ? topDelay - openDelay(pos) : openDelay(pos);
 
   // Warm the browser cache with the full-size reel images so opening a topic is
   // instant on iOS: each topic's cover first, then the rest on idle.
@@ -237,10 +234,11 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
                   opacity: { duration: 0.2, delay: 0.16 },
                 }
               : {
-                  // starts at 0.3s so the pop-pop-pop cascade leads; spring has
-                  // acceleration but little overshoot (ratio ~0.82) — barely bounces
-                  default: { type: "spring", stiffness: 120, damping: 18, mass: 1, delay: 0.3 },
-                  opacity: { duration: 0.1, delay: 0.28 },
+                  // grow starts as the fades finish (growDelay adapts to how many
+                  // elements are below the tap); spring accelerates but barely
+                  // overshoots (ratio ~0.82)
+                  default: { type: "spring", stiffness: 120, damping: 18, mass: 1, delay: growDelay },
+                  opacity: { duration: 0.1, delay: growDelay - 0.02 },
                 }
           }
           onAnimationComplete={() => {
