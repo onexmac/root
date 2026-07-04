@@ -97,14 +97,10 @@ export function ReelScreen({
             )}
           />
 
-          <div
-            className="absolute z-30 left-4 bottom-[calc(var(--sab)_+_16px)] md:bottom-auto md:top-[calc(var(--sat)_+_16px)]"
-            style={{
-              opacity: chromeVisible ? 1 : 0,
-              transition: "opacity 220ms ease-out",
-              pointerEvents: chromeVisible ? "auto" : "none",
-            }}
-          >
+          {/* Back button stays put — it's the only way out, so it must NOT get
+              hidden by the idle-fade (that was the "back button disappears" bug).
+              Only the pills follow chromeVisible. */}
+          <div className="absolute z-30 left-4 bottom-[calc(var(--sab)_+_16px)] md:bottom-auto md:top-[calc(var(--sat)_+_16px)]">
             <HaloPress
               onActivate={goHome}
               radius={24}

@@ -97,27 +97,10 @@ function BrandPills() {
 export function IndexScreen({ topics }: { topics: Topic[] }) {
   const [opening, setOpening] = useState<Topic | null>(null);
   const [closing, setClosing] = useState(false);
-  const openIdx = opening ? topics.findIndex((t) => t.slug === opening.slug) : -1;
   const fading = opening !== null && !closing;
-
-  // Cascade (pos: -1 = brand/title, 0..n-1 = cards; tapped card never fades):
-  // the elements BELOW the tap pop out first, nearest→down, one per STEP. Then
-  // the whole TOP fades TOGETHER — the title and every card above the tap at
-  // once. Each fade is long enough to read as a fade, not a glitch.
-  const FADE = 0.24; // duration of one element's fade (longer, softer)
-  const STEP = 0.09; // gap between starts — < FADE, so the fadeouts overlap
-  const belowCount = openIdx >= 0 ? topics.length - 1 - openIdx : 0;
-  const topDelay = belowCount * STEP; // when the top group (incl title) goes
-  // the photo push starts just as the fades finish (regardless of tap position)
-  const growDelay = topDelay + FADE * 0.7;
-
-  const openDelay = (pos: number) => {
-    if (openIdx < 0) return 0;
-    if (pos !== -1 && pos > openIdx) return (pos - openIdx - 1) * STEP; // below
-    return topDelay; // brand + everything above the tap, together
-  };
-  const elementDelay = (pos: number) =>
-    closing ? topDelay - openDelay(pos) : openDelay(pos);
+  // The whole main fades out as one group when a topic opens, and fades back in
+  // on return. The photo grows in over the top, overlapping the fade.
+  const growDelay = 0.06;
 
   // Warm the browser cache with the full-size reel images so opening a topic is
   // instant on iOS: each topic's cover first, then the rest on idle.
@@ -160,19 +143,14 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           pointerEvents: opening ? "none" : "auto",
         }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
+        animate={{ opacity: fading ? 0 : 1 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
       >
         <div
           className="grid grid-cols-1 gap-x-8 gap-y-9 px-6 md:grid-cols-2 md:gap-y-12 md:px-10"
           style={{ touchAction: "pan-y", overscrollBehaviorY: "contain" }}
         >
-          {/* Brand is the farthest "top" element — first of the top cascade */}
-          <motion.div
-            className="flex flex-col items-center text-center pt-6 pb-4 md:justify-center md:py-0"
-            animate={{ opacity: fading ? 0 : 1 }}
-            transition={{ duration: FADE, ease: "easeOut", delay: elementDelay(-1) }}
-          >
+          <div className="flex flex-col items-center text-center pt-6 pb-4 md:justify-center md:py-0">
             <div className="flex items-center gap-3">
               <h1 className="text-6xl md:text-7xl font-medium leading-none tracking-tight">
                 Histok
@@ -184,26 +162,17 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
               <br />
               menos Tik Tok
             </p>
-          </motion.div>
+          </div>
 
-          {/* Non-selected cards fade per the tap-relative cascade; the pressed
-              one keeps its ring and stays lit until the photo covers it */}
-          {topics.map((topic, i) => (
-            <motion.div
+          {topics.map((topic) => (
+            <TopicCard
               key={topic.slug}
-              animate={{
-                opacity: fading && i !== openIdx ? 0 : 1,
+              topic={topic}
+              highlighted={opening?.slug === topic.slug}
+              onOpen={() => {
+                if (!opening) setOpening(topic);
               }}
-              transition={{ duration: FADE, ease: "easeOut", delay: i === openIdx ? 0 : elementDelay(i) }}
-            >
-              <TopicCard
-                topic={topic}
-                highlighted={opening?.slug === topic.slug}
-                onOpen={() => {
-                  if (!opening) setOpening(topic);
-                }}
-              />
-            </motion.div>
+            />
           ))}
         </div>
       </motion.div>
