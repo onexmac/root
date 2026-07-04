@@ -9,12 +9,12 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
-  title: "Estudia Reels",
+  title: "Histok",
   description: "Repasa el temario en formato reel",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Estudia Reels",
+    title: "Histok",
   },
 };
 

@@ -30,7 +30,7 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           if (closingTo) router.push(closingTo);
         }}
       >
-        <h1 className="px-6 text-3xl font-medium mb-8">Repaso</h1>
+        <h1 className="px-6 text-3xl font-medium mb-8">Histok</h1>
         <div
           className="flex flex-col gap-8 px-6 overflow-y-auto"
           style={{ touchAction: "pan-y", overscrollBehaviorY: "contain" }}
