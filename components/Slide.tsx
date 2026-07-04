@@ -241,7 +241,13 @@ export function Slide({
           onScroll={onScroll}
           onPointerDown={scrollable ? (e) => e.stopPropagation() : undefined}
           className="absolute inset-x-0 bottom-0 px-6 pb-28 flex flex-col gap-4 max-h-[80dvh] overflow-y-auto overscroll-contain md:inset-0 md:max-h-none md:overflow-visible md:justify-center md:items-start md:px-16 md:pb-0 md:max-w-[660px]"
-          style={{ touchAction: scrollable ? "pan-y" : undefined }}
+          // When the panel actually overflows it scrolls (pan-y). When it does
+          // NOT overflow it must be "none", not the default "auto": the panel is
+          // its own scroll container (overflow-y-auto), so the pager's
+          // touch-action:none ancestor doesn't cover it. "auto" here lets the
+          // browser claim a touch as a no-op panel scroll and cancel the pointer
+          // stream, so the pager never pages — the reel "refuses to scroll".
+          style={{ touchAction: scrollable ? "pan-y" : "none" }}
         >
           <TextBlock status={status} enteredOnce={enteredOnce} delayMs={55}>
             <h2 className="text-4xl md:text-5xl leading-[1.15] font-medium text-white">

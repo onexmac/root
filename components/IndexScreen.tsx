@@ -144,7 +144,11 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: fading ? 0 : 1 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+        // Match the grow duration (~0.55s) instead of racing ahead at 0.3s:
+        // the index must stay visible BEHIND the growing card until it nearly
+        // fills, otherwise the index hits black before the card arrives and the
+        // photo reads as carrying a black box up with it (Bug A).
+        transition={{ duration: 0.55, ease: "easeInOut" }}
       >
         <div
           className="grid grid-cols-1 gap-x-8 gap-y-9 px-6 md:grid-cols-2 md:gap-y-12 md:px-10"
@@ -182,58 +186,78 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           flicker. The URL is updated with history.pushState once it settles;
           deep links still use the /tema/[slug] route with its own entrance. */}
       {opening && (
-        <motion.div
-          className="fixed inset-0 z-[60] overflow-hidden bg-black"
-          style={{ transformOrigin: "50% 100%", willChange: "transform" }}
-          // Starts SMALL and mostly OFF-SCREEN below (scale 0.42, y 52%), then
-          // rises AND grows to full at once — scale is a real 0.42->1 grow, so it
-          // reads as "grow while moving up", not a plain translate. Springy (low
-          // damping) for acceleration + overshoot; starts almost immediately so
-          // you see it grow WHILE the cards tap-tap fade.
-          initial={{ y: "52%", scale: 0.55, opacity: 0, borderRadius: 44 }}
-          animate={
-            closing
-              ? { y: "52%", scale: 0.55, opacity: 0, borderRadius: 44 }
-              : { y: "0%", scale: 1, opacity: 1, borderRadius: 0 }
-          }
-          transition={
-            closing
-              ? {
-                  default: { type: "spring", stiffness: 150, damping: 22, mass: 1 },
-                  opacity: { duration: 0.2, delay: 0.16 },
-                }
-              : {
-                  // grow starts as the fades finish (growDelay adapts to how many
-                  // elements are below the tap); spring accelerates but barely
-                  // overshoots (ratio ~0.82)
-                  default: { type: "spring", stiffness: 120, damping: 18, mass: 1, delay: growDelay },
-                  opacity: { duration: 0.1, delay: growDelay - 0.02 },
-                }
-          }
-          onAnimationComplete={() => {
-            try {
-              if (closing) {
-                window.history.pushState(null, "", "/");
-              } else {
-                window.history.pushState(null, "", `/tema/${opening.slug}`);
-              }
-            } catch {}
-            if (closing) {
-              setOpening(null);
-              setClosing(false);
-            }
-          }}
-        >
-          <ReelScreen topic={opening} embedded onClose={() => setClosing(true)} />
-          {/* dim that lifts as the card grows (and returns on the way back) */}
+        <div className="fixed inset-0 z-[60] overflow-hidden">
+          {/* Full-screen blurred backdrop of the cover photo. The card grows from
+              small; without this, the area AROUND the small card is the app's
+              black background, which reads as a black box/border the photo
+              "carries" as it grows. The backdrop fills that area with the same
+              image (blurred + dimmed), so the card emerges from its own photo and
+              never from black. It stays behind the card and is covered once the
+              card fills; on close it fades so the index shows through again. */}
           <motion.div
             aria-hidden
-            className="absolute inset-0 bg-black pointer-events-none"
-            initial={{ opacity: 0.5 }}
-            animate={{ opacity: closing ? 0.5 : 0 }}
-            transition={{ duration: 0.5, delay: closing ? 0 : 0.08 }}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url(${opening.slides[0].image})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "blur(30px) brightness(0.65)",
+              transform: "scale(1.2)",
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: closing ? 0 : 1 }}
+            transition={{ duration: closing ? 0.2 : 0.12 }}
           />
-        </motion.div>
+          <motion.div
+            className="absolute inset-0 overflow-hidden bg-black"
+            style={{ transformOrigin: "50% 100%", willChange: "transform" }}
+            // Starts SMALL and mostly OFF-SCREEN below (scale 0.55, y 52%), then
+            // rises AND grows to full at once — scale is a real grow, so it reads
+            // as "grow while moving up", not a plain translate. Springy (low
+            // damping) for acceleration + overshoot; starts almost immediately so
+            // you see it grow WHILE the cards fade.
+            initial={{ y: "52%", scale: 0.55, opacity: 0, borderRadius: 44 }}
+            animate={
+              closing
+                ? { y: "52%", scale: 0.55, opacity: 0, borderRadius: 44 }
+                : { y: "0%", scale: 1, opacity: 1, borderRadius: 0 }
+            }
+            transition={
+              closing
+                ? {
+                    default: { type: "spring", stiffness: 150, damping: 22, mass: 1 },
+                    opacity: { duration: 0.2, delay: 0.16 },
+                  }
+                : {
+                    default: { type: "spring", stiffness: 120, damping: 18, mass: 1, delay: growDelay },
+                    opacity: { duration: 0.1, delay: growDelay - 0.02 },
+                  }
+            }
+            onAnimationComplete={() => {
+              try {
+                if (closing) {
+                  window.history.pushState(null, "", "/");
+                } else {
+                  window.history.pushState(null, "", `/tema/${opening.slug}`);
+                }
+              } catch {}
+              if (closing) {
+                setOpening(null);
+                setClosing(false);
+              }
+            }}
+          >
+            <ReelScreen topic={opening} embedded onClose={() => setClosing(true)} />
+            {/* dim that lifts as the card grows (and returns on the way back) */}
+            <motion.div
+              aria-hidden
+              className="absolute inset-0 bg-black pointer-events-none"
+              initial={{ opacity: 0.5 }}
+              animate={{ opacity: closing ? 0.5 : 0 }}
+              transition={{ duration: 0.5, delay: closing ? 0 : 0.08 }}
+            />
+          </motion.div>
+        </div>
       )}
     </div>
   );

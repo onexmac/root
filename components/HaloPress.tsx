@@ -11,6 +11,7 @@ export function HaloPress({
   className,
   children,
   ariaLabel,
+  capturePointer = true,
 }: {
   onActivate: () => void;
   radius: number;
@@ -19,6 +20,11 @@ export function HaloPress({
   className?: string;
   children: ReactNode;
   ariaLabel: string;
+  /** When false, the button does NOT setPointerCapture on pointerdown, so a
+   *  drag that begins on it can bubble to an ancestor gesture handler (e.g. the
+   *  reel pager). Moving off the button then fires onPointerLeave → cancels the
+   *  press, so no accidental activation. Default true for standalone buttons. */
+  capturePointer?: boolean;
 }) {
   const [pressed, setPressed] = useState(false);
   const cancelled = useRef(false);
@@ -36,9 +42,11 @@ export function HaloPress({
       aria-label={ariaLabel}
       className={className}
       onPointerDown={(e) => {
-        try {
-          e.currentTarget.setPointerCapture(e.pointerId);
-        } catch {}
+        if (capturePointer) {
+          try {
+            e.currentTarget.setPointerCapture(e.pointerId);
+          } catch {}
+        }
         cancelled.current = false;
         setPressed(true);
         haptic.select();

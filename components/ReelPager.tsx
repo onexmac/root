@@ -63,6 +63,7 @@ export function ReelPager({
   onExit,
   y,
   onMeasure,
+  overlay,
 }: {
   pageCount: number;
   page: number;
@@ -73,6 +74,10 @@ export function ReelPager({
   onExit?: (direction: "start" | "end") => void;
   y: MotionValue<number>;
   onMeasure?: (pageH: number) => void;
+  /** Fixed chrome (back button, pills) rendered INSIDE the viewport so a
+   *  pointerdown on it bubbles to the pager's gesture handlers — otherwise
+   *  gestures starting on the chrome never reach the pager (Bug B). */
+  overlay?: ReactNode;
 }) {
   const [pageH, setPageH] = useState(0);
   const measured = useRef(false);
@@ -342,6 +347,7 @@ export function ReelPager({
           ),
         )}
       </motion.div>
+      {overlay}
     </div>
   );
 }

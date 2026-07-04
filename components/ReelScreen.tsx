@@ -95,45 +95,53 @@ export function ReelScreen({
                 ctx={ctx}
               />
             )}
-          />
+            // Chrome lives INSIDE the pager viewport so a gesture that starts on
+            // the back button (bottom-left) or the pills (right edge) bubbles to
+            // the pager and scrolls, instead of hitting a dead zone (Bug B).
+            overlay={
+              <>
+                {/* Back button stays put — it's the only way out, so it must NOT
+                    get hidden by the idle-fade (that was the "back button
+                    disappears" bug). Only the pills follow chromeVisible.
+                    capturePointer=false so a drag begun here reaches the pager. */}
+                <div className="absolute z-30 left-4 bottom-[calc(var(--sab)_+_16px)] md:bottom-auto md:top-[calc(var(--sat)_+_16px)]">
+                  <HaloPress
+                    onActivate={goHome}
+                    radius={24}
+                    haloColor="var(--accent-deep)"
+                    ariaLabel="Volver"
+                    capturePointer={false}
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 24,
+                      background: "var(--accent)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M12.5 4l-6 6 6 6"
+                        stroke="#fff"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </HaloPress>
+                </div>
 
-          {/* Back button stays put — it's the only way out, so it must NOT get
-              hidden by the idle-fade (that was the "back button disappears" bug).
-              Only the pills follow chromeVisible. */}
-          <div className="absolute z-30 left-4 bottom-[calc(var(--sab)_+_16px)] md:bottom-auto md:top-[calc(var(--sat)_+_16px)]">
-            <HaloPress
-              onActivate={goHome}
-              radius={24}
-              haloColor="var(--accent-deep)"
-              ariaLabel="Volver"
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 24,
-                background: "var(--accent)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M12.5 4l-6 6 6 6"
-                  stroke="#fff"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                <VerticalPills
+                  count={topic.slides.length}
+                  page={page}
+                  y={y}
+                  pageH={pageH}
+                  visible={chromeVisible}
                 />
-              </svg>
-            </HaloPress>
-          </div>
-
-          <VerticalPills
-            count={topic.slides.length}
-            page={page}
-            y={y}
-            pageH={pageH}
-            visible={chromeVisible}
+              </>
+            }
           />
 
           <GlossaryCard
