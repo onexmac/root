@@ -219,14 +219,15 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
         <motion.div
           className="fixed inset-0 z-[60] overflow-hidden bg-black"
           style={{ transformOrigin: "50% 100%", willChange: "transform" }}
-          // Starts as a SMALL card at the bottom (scale 0.42) and GROWS to full —
-          // scale is the dominant motion, not translation, so it reads as a grow.
-          // Springy (low damping) for acceleration + a little overshoot. Starts
-          // almost immediately so you see it grow WHILE the cards tap-tap fade.
-          initial={{ y: "6%", scale: 0.42, opacity: 0, borderRadius: 44 }}
+          // Starts SMALL and mostly OFF-SCREEN below (scale 0.42, y 52%), then
+          // rises AND grows to full at once — scale is a real 0.42->1 grow, so it
+          // reads as "grow while moving up", not a plain translate. Springy (low
+          // damping) for acceleration + overshoot; starts almost immediately so
+          // you see it grow WHILE the cards tap-tap fade.
+          initial={{ y: "52%", scale: 0.42, opacity: 0, borderRadius: 44 }}
           animate={
             closing
-              ? { y: "6%", scale: 0.42, opacity: 0, borderRadius: 44 }
+              ? { y: "52%", scale: 0.42, opacity: 0, borderRadius: 44 }
               : { y: "0%", scale: 1, opacity: 1, borderRadius: 0 }
           }
           transition={
