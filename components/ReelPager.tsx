@@ -108,7 +108,7 @@ export function ReelPager({
   const endPeek = () => {
     if (!isPeeking.current) return;
     isPeeking.current = false;
-    animate(peeking, 0, springs.snappy);
+    animate(peeking, 0, springs.settling);
   };
 
   const onPointerDown = (e: React.PointerEvent) => {
@@ -128,7 +128,7 @@ export function ReelPager({
       if (pointerId.current === null || axisLocked.current === "y") return;
       isPeeking.current = true;
       haptic.select();
-      animate(peeking, 1, springs.expanding);
+      animate(peeking, 1, springs.settling);
     }, PEEK_HOLD_MS);
   };
 

@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useTransform } from "motion/react";
-import Image from "next/image";
 import { springs, cascadeOut } from "@/lib/springs";
 import type { Slide as SlideData, BodyPart } from "@/data/topics";
 import type { SlideContext } from "@/components/ReelPager";
@@ -99,43 +98,97 @@ export function Slide({
   const localOffset = useTransform(ctx.y, (latest) => latest + index * ctx.pageH);
   const imageY = useTransform(localOffset, (v) => -v * PARALLAX_FACTOR);
 
-  // Peek: fade the (cropped) cover out and reveal a full object-contain copy of
-  // the photo, letterboxed against black — you never see a crop, just the whole
-  // frame shrinking into view.
-  const coverFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
-  const revealOpacity = useTransform(ctx.peeking, [0, 1], [0, 1]);
-  const revealScale = useTransform(ctx.peeking, [0, 1], [1.08, 1]);
-  const revealRadius = useTransform(ctx.peeking, [0, 1], [0, 24]);
+  // Peek: ONE image, sized to cover the viewport (overflowing + clipped so it
+  // reads as a normal full-bleed cover). On press it shrinks — same element,
+  // same pixels — down to the "contain" size so the whole frame is revealed
+  // letterboxed, while the desktop backdrop blur eases off. No second copy,
+  // no crossfade: the photo you were looking at is the photo that shrinks.
+  const containerRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const natRef = useRef<{ w: number; h: number } | null>(null);
+  const [box, setBox] = useState<{ w: number; h: number; r: number } | null>(null);
+
+  useEffect(() => {
+    const remeasure = () => {
+      const el = containerRef.current;
+      // an already-cached image is complete before onLoad can fire — grab its
+      // natural size here so the shrink ratio is known even on a warm load
+      const img = imgRef.current;
+      if (img && img.complete && img.naturalWidth) {
+        natRef.current = { w: img.naturalWidth, h: img.naturalHeight };
+      }
+      const nat = natRef.current;
+      if (!el || !nat) return;
+      const CW = el.clientWidth;
+      const CH = el.clientHeight;
+      if (!CW || !CH) return;
+      const imgA = nat.w / nat.h;
+      const contA = CW / CH;
+      let coverW: number;
+      let coverH: number;
+      if (imgA > contA) {
+        coverH = CH;
+        coverW = CH * imgA;
+      } else {
+        coverW = CW;
+        coverH = CW / imgA;
+      }
+      const r = Math.min(CW / coverW, CH / coverH);
+      setBox({ w: coverW, h: coverH, r });
+    };
+    remeasure();
+    window.addEventListener("resize", remeasure);
+    window.visualViewport?.addEventListener("resize", remeasure);
+    return () => {
+      window.removeEventListener("resize", remeasure);
+      window.visualViewport?.removeEventListener("resize", remeasure);
+    };
+  }, []);
+
+  const peekScale = useTransform(ctx.peeking, [0, 1], [1, box?.r ?? 1]);
+  const peekRadius = useTransform(ctx.peeking, [0, 1], [0, 18]);
   const textFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
 
   return (
     <div
+      ref={containerRef}
       className="relative w-full overflow-hidden bg-black"
       style={{ height: "100dvh", contain: "layout paint" }}
     >
-      {/* Cover layer — sharp full-bleed on mobile; blurred backdrop on desktop */}
-      <motion.div className="absolute inset-0" style={{ y: imageY, opacity: coverFade }}>
-        <div className="absolute inset-0 md:blur-[6px] md:scale-105">
-          <Image
-            src={slide.image}
-            alt=""
-            fill
-            sizes="100vw"
-            priority={isCurrent}
-            loading={isCurrent ? "eager" : "lazy"}
-            className="object-cover"
-          />
-        </div>
-      </motion.div>
-
-      {/* Reveal layer — the whole photo, letterboxed, shown while pressing */}
-      <motion.div
-        aria-hidden
-        className="absolute inset-0 bg-black"
-        style={{ opacity: revealOpacity, scale: revealScale, borderRadius: revealRadius, overflow: "hidden" }}
-      >
-        <Image src={slide.image} alt="" fill sizes="100vw" className="object-contain" />
-      </motion.div>
+      <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+        <motion.img
+          ref={imgRef}
+          src={slide.image}
+          alt=""
+          draggable={false}
+          loading={isCurrent ? "eager" : "lazy"}
+          onLoad={(e) => {
+            const img = e.currentTarget;
+            natRef.current = { w: img.naturalWidth, h: img.naturalHeight };
+            const el = containerRef.current;
+            if (!el) return;
+            const CW = el.clientWidth;
+            const CH = el.clientHeight;
+            if (!CW || !CH) return;
+            const imgA = img.naturalWidth / img.naturalHeight;
+            const contA = CW / CH;
+            const coverW = imgA > contA ? CH * imgA : CW;
+            const coverH = imgA > contA ? CH : CW / imgA;
+            setBox({ w: coverW, h: coverH, r: Math.min(CW / coverW, CH / coverH) });
+          }}
+          className="shrink-0 max-w-none [--base-blur:0px] md:[--base-blur:6px]"
+          style={{
+            width: box ? box.w : "100%",
+            height: box ? box.h : "100%",
+            objectFit: "cover",
+            scale: peekScale,
+            y: imageY,
+            borderRadius: peekRadius,
+            ["--peek" as string]: ctx.peeking,
+            filter: "blur(calc(var(--base-blur) * (1 - var(--peek))))",
+          }}
+        />
+      </div>
 
       {/* Text + gradient — fades out during peek */}
       <motion.div className="absolute inset-0" style={{ opacity: textFade }}>
