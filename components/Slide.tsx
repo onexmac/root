@@ -115,7 +115,7 @@ export function Slide({
     >
       {/* Cover layer — sharp full-bleed on mobile; blurred backdrop on desktop */}
       <motion.div className="absolute inset-0" style={{ y: imageY, opacity: coverFade }}>
-        <div className="absolute inset-0 md:blur-xl md:scale-110">
+        <div className="absolute inset-0 md:blur-[6px] md:scale-105">
           <Image
             src={slide.image}
             alt=""

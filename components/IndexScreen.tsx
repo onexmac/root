@@ -10,15 +10,15 @@ import type { Topic } from "@/data/topics";
 
 function BrandPills() {
   return (
-    <div className="flex flex-col gap-1.5 pt-2" aria-hidden>
+    <div className="flex flex-col gap-[5px]" aria-hidden>
       {[0, 1, 2, 3].map((i) => (
         <span
           key={i}
           style={{
-            width: 9,
-            height: i === 0 ? 30 : 18,
-            borderRadius: 5,
-            background: i === 0 ? "#fff" : "rgba(255,255,255,0.32)",
+            width: 8,
+            height: i === 0 ? 18 : 10,
+            borderRadius: 4,
+            background: i === 0 ? "#fff" : "rgba(255,255,255,0.3)",
           }}
         />
       ))}
@@ -50,12 +50,14 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           className="grid grid-cols-1 gap-x-8 gap-y-9 px-6 md:grid-cols-2 md:gap-y-12 md:px-10"
           style={{ touchAction: "pan-y", overscrollBehaviorY: "contain" }}
         >
-          <div className="flex flex-col md:justify-center md:pb-6">
-            <div className="flex items-start gap-4">
-              <h1 className="text-5xl md:text-6xl font-medium leading-none">Histok</h1>
+          <div className="flex flex-col items-center text-center pt-6 pb-4 md:justify-center md:py-0">
+            <div className="flex items-center gap-3">
+              <h1 className="text-6xl md:text-7xl font-medium leading-none tracking-tight">
+                Histok
+              </h1>
               <BrandPills />
             </div>
-            <p className="mt-4 text-xl md:text-2xl leading-snug text-white/60">
+            <p className="mt-4 text-xl md:text-2xl leading-snug text-white/55">
               Más Historia,
               <br />
               menos Tik Tok

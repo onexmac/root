@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Lora } from "next/font/google";
+import { Roboto_Serif } from "next/font/google";
 import "./globals.css";
 
-const lora = Lora({
+const robotoSerif = Roboto_Serif({
   variable: "--font-serif",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${lora.variable} h-full antialiased`}>
+    <html lang="es" className={`${robotoSerif.variable} h-full antialiased`}>
       <body data-app className="min-h-full bg-black text-white">
         {children}
       </body>

@@ -41,17 +41,24 @@ export function ReelScreen({ topic }: { topic: Topic }) {
   return (
     <div className="fixed inset-0 overflow-hidden bg-black">
       <motion.div
-        className="absolute inset-x-0 bottom-0 overflow-hidden"
-        initial={{ height: "58%", borderRadius: 32 }}
+        className="absolute inset-0 overflow-hidden"
+        style={{ transformOrigin: "50% 100%" }}
+        initial={{ y: "100%", scale: 0.9, opacity: 0, borderRadius: 44 }}
         animate={
-          exiting ? { height: "58%", borderRadius: 32 } : { height: "100%", borderRadius: 0 }
+          exiting
+            ? { y: "100%", scale: 0.9, opacity: 0, borderRadius: 44 }
+            : { y: "0%", scale: 1, opacity: 1, borderRadius: 0 }
         }
-        transition={exiting ? springs.snappy : springs.expanding}
+        transition={
+          exiting
+            ? { default: springs.deleting, opacity: { duration: 0.18 } }
+            : { default: springs.settling, opacity: { duration: 0.3 } }
+        }
         onAnimationComplete={() => {
           if (exiting) router.push("/");
         }}
       >
-        <div data-app className="absolute inset-x-0 bottom-0" style={{ height: "100dvh" }}>
+        <div data-app className="absolute inset-0">
           <ReelPager
             pageCount={topic.slides.length}
             page={page}
