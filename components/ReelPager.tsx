@@ -64,6 +64,11 @@ export function ReelPager({
   const peekTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isPeeking = useRef(false);
 
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const wheelLock = useRef(false);
+  const wheelAccum = useRef(0);
+  const wheelResetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     const measure = () => {
       if (dragging.current) return;
@@ -237,8 +242,49 @@ export function ReelPager({
     }
   };
 
+  // Desktop: mouse wheel / two-finger trackpad scroll advances one page per
+  // gesture. A burst of momentum events counts as one page (locked until the
+  // burst goes quiet), so a single flick doesn't fly through several slides.
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (disabled || !pageH) return;
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      onActivity?.();
+
+      if (wheelResetTimer.current) clearTimeout(wheelResetTimer.current);
+      wheelResetTimer.current = setTimeout(() => {
+        wheelLock.current = false;
+        wheelAccum.current = 0;
+      }, 140);
+      if (wheelLock.current) return;
+
+      let dy = e.deltaY;
+      if (e.deltaMode === 1) dy *= 16;
+      else if (e.deltaMode === 2) dy *= pageH;
+      wheelAccum.current += dy;
+      if (Math.abs(wheelAccum.current) < 30) return;
+
+      const dir = wheelAccum.current > 0 ? 1 : -1;
+      const target = Math.min(pageCount - 1, Math.max(0, page + dir));
+      wheelAccum.current = 0;
+      if (target === page) return;
+
+      wheelLock.current = true;
+      haptic.select();
+      y.stop();
+      animate(y, -target * pageH, springs.settling);
+      onPageChange(target);
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [page, pageH, disabled, pageCount, y, onPageChange, onActivity]);
+
   return (
     <div
+      ref={viewportRef}
       className="absolute inset-0 overflow-hidden"
       style={{ touchAction: "none" }}
       onPointerDown={onPointerDown}
