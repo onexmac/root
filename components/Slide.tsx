@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useTransform, useMotionValueEvent } from "motion/react";
+import { motion, useTransform, useMotionValue, useMotionValueEvent, animate } from "motion/react";
 import { springs, cascadeOut } from "@/lib/springs";
 import type { Slide as SlideData, BodyPart } from "@/data/topics";
 import type { SlideContext } from "@/components/ReelPager";
@@ -152,10 +152,32 @@ export function Slide({
   const peekScale = useTransform(ctx.peeking, [0, 1], [1, box?.r ?? 1]);
   const peekRadius = useTransform(ctx.peeking, [0, 1], [0, 18]);
   const textFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
-  // Caption reveal is a boolean (not a live map of peeking) so it can appear a
-  // beat AFTER the peek commits (small delay via CSS) and fade out fast.
+
+  // Photo-info caption. It sits just below the LIVE photo bottom edge, so as the
+  // photo grows back on release the edge descends and pushes the caption down
+  // with it — the photo never overlaps it. captionAnchor tracks that edge.
+  const captionAnchor = useTransform(ctx.peeking, (v) => {
+    if (!box) return 0;
+    const scale = 1 + v * (box.r - 1); // same value as peekScale, as a number
+    return (box.h * scale) / 2 + 18; // px below the vertical center + a small gap
+  });
+  const capWobble = useMotionValue(14);
+  const capOpacity = useMotionValue(0);
+  const capY = useTransform(() => captionAnchor.get() + capWobble.get());
   const [infoShown, setInfoShown] = useState(false);
   useMotionValueEvent(ctx.peeking, "change", (v) => setInfoShown(v > 0.55));
+  useEffect(() => {
+    if (infoShown) {
+      // appear: small delay, then fade in while rising a little from below
+      capWobble.set(14);
+      animate(capOpacity, 1, { duration: 0.28, delay: 0.2, ease: "easeOut" });
+      animate(capWobble, 0, { duration: 0.34, delay: 0.2, ease: [0.22, 1, 0.36, 1] });
+    } else {
+      // release: fade out fast, no delay — the growing photo pushes it down
+      animate(capOpacity, 0, { duration: 0.15, ease: "easeOut" });
+      animate(capWobble, 0, { duration: 0.15 });
+    }
+  }, [infoShown, capOpacity, capWobble]);
 
   // A slide can hold more text than fits: the text panel then scrolls on its
   // own (independent of paging) and the photo darkens as you read down. For
@@ -286,26 +308,18 @@ export function Slide({
         </div>
       </motion.div>
 
-      {/* Photo-info caption — revealed only while peeking (tap-and-hold), sitting
-          just below the shrunk photo, after a small delay. */}
+      {/* Photo-info caption — sits just below the live photo edge, so the photo
+          pushes it down as it grows back on release. Fades/rises in on a small
+          delay; fades out fast. */}
       {slide.info && (
-        <div
-          className="absolute inset-x-0 z-10 flex justify-center px-6 pointer-events-none"
-          style={{
-            // anchored to the peeked photo's bottom edge (center + half its
-            // shrunk height) + a small gap, not the screen bottom
-            top: box ? `calc(50% + ${(box.h * box.r) / 2 + 18}px)` : "72%",
-            opacity: infoShown ? 1 : 0,
-            transform: infoShown ? "translateY(0)" : "translateY(10px)",
-            transition: infoShown
-              ? "opacity 300ms ease-out 200ms, transform 360ms cubic-bezier(0.22,1,0.36,1) 200ms"
-              : "opacity 150ms ease-out, transform 150ms ease-out",
-          }}
+        <motion.div
+          className="absolute inset-x-0 top-1/2 z-10 flex justify-center px-6 pointer-events-none"
+          style={{ y: capY, opacity: capOpacity }}
         >
           <p className="max-w-[560px] text-center text-[15px] md:text-base leading-snug text-white/85">
             {slide.info}
           </p>
-        </div>
+        </motion.div>
       )}
     </div>
   );
