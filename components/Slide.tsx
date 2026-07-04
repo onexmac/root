@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useTransform } from "motion/react";
 import Image from "next/image";
 import { springs, cascadeOut } from "@/lib/springs";
@@ -98,72 +98,58 @@ export function Slide({
 
   const localOffset = useTransform(ctx.y, (latest) => latest + index * ctx.pageH);
   const imageY = useTransform(localOffset, (v) => -v * PARALLAX_FACTOR);
-  const peekRadius = useTransform(ctx.peeking, [0, 1], [0, 28]);
-  const peekFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [naturalSize, setNaturalSize] = useState<{ w: number; h: number } | null>(null);
-  const [containScale, setContainScale] = useState(0.85);
-
-  useEffect(() => {
-    if (!naturalSize) return;
-    const compute = () => {
-      const el = containerRef.current;
-      if (!el) return;
-      const cw = el.clientWidth;
-      const ch = el.clientHeight;
-      if (!cw || !ch) return;
-      const cover = Math.max(cw / naturalSize.w, ch / naturalSize.h);
-      const contain = Math.min(cw / naturalSize.w, ch / naturalSize.h);
-      setContainScale(contain / cover);
-    };
-    compute();
-    window.addEventListener("resize", compute);
-    return () => window.removeEventListener("resize", compute);
-  }, [naturalSize]);
-
-  const peekScale = useTransform(ctx.peeking, [0, 1], [1, containScale]);
+  // Peek: fade the (cropped) cover out and reveal a full object-contain copy of
+  // the photo, letterboxed against black — you never see a crop, just the whole
+  // frame shrinking into view.
+  const coverFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
+  const revealOpacity = useTransform(ctx.peeking, [0, 1], [0, 1]);
+  const revealScale = useTransform(ctx.peeking, [0, 1], [1.08, 1]);
+  const revealRadius = useTransform(ctx.peeking, [0, 1], [0, 24]);
+  const textFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
 
   return (
     <div
-      ref={containerRef}
       className="relative w-full overflow-hidden bg-black"
       style={{ height: "100dvh", contain: "layout paint" }}
     >
-      <motion.div
-        className="absolute inset-0"
-        style={{ y: imageY, scale: peekScale, borderRadius: peekRadius, overflow: "hidden" }}
-      >
-        <Image
-          src={slide.image}
-          alt=""
-          fill
-          sizes="100vw"
-          priority={isCurrent}
-          loading={isCurrent ? "eager" : "lazy"}
-          className="object-cover"
-          onLoad={(e) => {
-            const img = e.currentTarget;
-            if (img.naturalWidth && img.naturalHeight) {
-              setNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
-            }
-          }}
-        />
+      {/* Cover layer — sharp full-bleed on mobile; blurred backdrop on desktop */}
+      <motion.div className="absolute inset-0" style={{ y: imageY, opacity: coverFade }}>
+        <div className="absolute inset-0 md:blur-xl md:scale-110">
+          <Image
+            src={slide.image}
+            alt=""
+            fill
+            sizes="100vw"
+            priority={isCurrent}
+            loading={isCurrent ? "eager" : "lazy"}
+            className="object-cover"
+          />
+        </div>
       </motion.div>
-      <motion.div aria-hidden className="absolute inset-0" style={{ opacity: peekFade }}>
-        <div
-          className="absolute inset-0"
-          style={{ background: overlayGradient(slide) }}
-        />
-        <div className="absolute inset-x-0 bottom-0 px-6 pb-28 flex flex-col gap-4">
+
+      {/* Reveal layer — the whole photo, letterboxed, shown while pressing */}
+      <motion.div
+        aria-hidden
+        className="absolute inset-0 bg-black"
+        style={{ opacity: revealOpacity, scale: revealScale, borderRadius: revealRadius, overflow: "hidden" }}
+      >
+        <Image src={slide.image} alt="" fill sizes="100vw" className="object-contain" />
+      </motion.div>
+
+      {/* Text + gradient — fades out during peek */}
+      <motion.div className="absolute inset-0" style={{ opacity: textFade }}>
+        <div aria-hidden className="absolute inset-0" style={{ background: overlayGradient(slide) }} />
+        <div aria-hidden className="absolute inset-0 hidden md:block bg-black/35" />
+        <div className="absolute inset-x-0 bottom-0 px-6 pb-28 flex flex-col gap-4 md:inset-0 md:justify-center md:items-start md:px-16 md:pb-0 md:max-w-[660px]">
           <TextBlock status={status} enteredOnce={enteredOnce} delayMs={140}>
-            <h2 className="text-4xl leading-[1.15] font-medium text-white">
+            <h2 className="text-4xl md:text-5xl leading-[1.15] font-medium text-white">
               {slide.title}
             </h2>
           </TextBlock>
           {slide.body && (
             <TextBlock status={status} enteredOnce={enteredOnce} delayMs={100}>
-              <p className="text-lg leading-relaxed text-white/90">
+              <p className="text-lg md:text-xl leading-relaxed text-white/90">
                 {slide.body.map((part, i) =>
                   typeof part === "string" ? (
                     <span key={i}>{part}</span>

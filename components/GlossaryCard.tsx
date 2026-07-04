@@ -101,7 +101,7 @@ export function GlossaryCard({
           />
           <motion.div
             key="card"
-            className="absolute inset-x-0 z-50 rounded-[28px] bg-white px-6 pt-8 pb-7 text-black"
+            className="absolute inset-x-5 z-50 mx-auto max-w-[440px] rounded-[28px] bg-white px-6 pt-8 pb-7 text-black"
             style={{
               y,
               bottom: "calc(var(--sab) + 20px)",

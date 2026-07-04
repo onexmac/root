@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useMotionValue } from "motion/react";
-import Image from "next/image";
 import { HaloPress } from "@/components/HaloPress";
 import { VerticalPills } from "@/components/VerticalPills";
 import { ReelPager } from "@/components/ReelPager";
@@ -13,7 +12,6 @@ import { springs } from "@/lib/springs";
 import type { Topic } from "@/data/topics";
 
 const IDLE_MS = 2000;
-export const FRAME_MAX_WIDTH = 600;
 
 export function ReelScreen({ topic }: { topic: Topic }) {
   const router = useRouter();
@@ -42,21 +40,8 @@ export function ReelScreen({ topic }: { topic: Topic }) {
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-black">
-      <div className="absolute inset-0" aria-hidden>
-        <Image
-          src={topic.slides[page].image}
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover scale-125"
-          style={{ filter: "blur(48px)" }}
-        />
-        <div className="absolute inset-0 bg-black/45" />
-      </div>
-
       <motion.div
-        className="absolute inset-x-0 bottom-0 mx-auto overflow-hidden"
-        style={{ maxWidth: FRAME_MAX_WIDTH }}
+        className="absolute inset-x-0 bottom-0 overflow-hidden"
         initial={{ height: "58%", borderRadius: 32 }}
         animate={
           exiting ? { height: "58%", borderRadius: 32 } : { height: "100%", borderRadius: 0 }
