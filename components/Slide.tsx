@@ -109,6 +109,7 @@ export function Slide({
   const imgRef = useRef<HTMLImageElement>(null);
   const natRef = useRef<{ w: number; h: number } | null>(null);
   const [box, setBox] = useState<{ w: number; h: number; r: number } | null>(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const remeasure = () => {
@@ -118,6 +119,7 @@ export function Slide({
       const img = imgRef.current;
       if (img && img.complete && img.naturalWidth) {
         natRef.current = { w: img.naturalWidth, h: img.naturalHeight };
+        setLoaded(true);
       }
       const nat = natRef.current;
       if (!el || !nat) return;
@@ -205,6 +207,7 @@ export function Slide({
             const coverW = imgA > contA ? CH * imgA : CW;
             const coverH = imgA > contA ? CH : CW / imgA;
             setBox({ w: coverW, h: coverH, r: Math.min(CW / coverW, CH / coverH) });
+            setLoaded(true);
           }}
           className="shrink-0 max-w-none [--base-blur:0px] md:[--base-blur:6px]"
           style={{
@@ -217,6 +220,10 @@ export function Slide({
             ["--peek" as string]: ctx.peeking,
             filter: "blur(calc(var(--base-blur) * (1 - var(--peek))))",
           }}
+        />
+        <div
+          aria-hidden
+          className={`absolute inset-0 skeleton transition-opacity duration-500 ${loaded ? "opacity-0" : "opacity-100"}`}
         />
       </div>
 

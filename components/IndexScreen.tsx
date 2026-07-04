@@ -10,26 +10,36 @@ import type { Topic } from "@/data/topics";
 
 function TopicCard({ topic, onOpen }: { topic: Topic; onOpen: () => void }) {
   const ref = useRef<HTMLDivElement>(null);
-  // As the card rises into view from the bottom, grow it from slightly smaller
-  // to full size — a subtle carousel feel. Cards already in view sit at 1.
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [loaded, setLoaded] = useState(false);
+  // As the card rises into view from the bottom, grow it from clearly smaller
+  // to full size — a carousel feel. Cards already in view sit at 1.
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "start 68%"],
+    offset: ["start end", "start 55%"],
   });
-  const scale = useTransform(scrollYProgress, [0, 1], [0.94, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [0.7, 1]);
+  const scale = useTransform(scrollYProgress, [0, 1], [0.82, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.45, 1]);
+
+  useEffect(() => {
+    if (imgRef.current?.complete) setLoaded(true);
+  }, []);
 
   return (
     <motion.div ref={ref} style={{ scale, opacity, transformOrigin: "50% 100%" }}>
       <PressScale onActivate={onOpen} ariaLabel={topic.label} className="text-left w-full" downScale={0.96}>
         <span className="block text-2xl mb-3">{topic.label}</span>
         <span className="relative block w-full aspect-[16/8] rounded-[20px] overflow-hidden">
+          <span aria-hidden className={`absolute inset-0 skeleton transition-opacity duration-500 ${loaded ? "opacity-0" : "opacity-100"}`} />
           <Image
+            ref={imgRef}
             src={topic.thumbnail}
             alt=""
             fill
             sizes="(max-width: 768px) 100vw, 560px"
-            className="object-cover"
+            className="object-cover transition-opacity duration-500"
+            style={{ opacity: loaded ? 1 : 0 }}
+            onLoad={() => setLoaded(true)}
           />
           {topic.comingSoon && (
             <span className="absolute inset-0 bg-black/50 flex items-center justify-center text-sm tracking-wide uppercase">
