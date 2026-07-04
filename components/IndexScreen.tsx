@@ -104,8 +104,8 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   // the elements BELOW the tap pop out first, nearest→down, one per STEP. Then
   // the whole TOP fades TOGETHER — the title and every card above the tap at
   // once. Each fade is long enough to read as a fade, not a glitch.
-  const FADE = 0.13; // duration of one element's fade
-  const STEP = 0.09; // gap between the bottom pops
+  const FADE = 0.24; // duration of one element's fade (longer, softer)
+  const STEP = 0.09; // gap between starts — < FADE, so the fadeouts overlap
   const belowCount = openIdx >= 0 ? topics.length - 1 - openIdx : 0;
   const topDelay = belowCount * STEP; // when the top group (incl title) goes
   // the photo push starts just as the fades finish (regardless of tap position)
