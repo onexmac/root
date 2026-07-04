@@ -76,16 +76,26 @@ function TopicCard({
   );
 }
 
-function BrandPills() {
+function BrandPills({
+  w = 8,
+  tall = 18,
+  short = 10,
+  gap = 5,
+}: {
+  w?: number;
+  tall?: number;
+  short?: number;
+  gap?: number;
+}) {
   return (
-    <div className="flex flex-col gap-[5px]" aria-hidden>
+    <div className="flex flex-col" style={{ gap }} aria-hidden>
       {[0, 1, 2, 3].map((i) => (
         <span
           key={i}
           style={{
-            width: 8,
-            height: i === 0 ? 18 : 10,
-            borderRadius: 4,
+            width: w,
+            height: i === 0 ? tall : short,
+            borderRadius: w / 2,
             background: i === 0 ? "#fff" : "rgba(255,255,255,0.3)",
           }}
         />
@@ -179,6 +189,18 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
             />
           ))}
         </div>
+
+        {/* Footer sign-off: the "H" monogram + brand pills, centered with roomy
+            breathing room below the last card. */}
+        <footer
+          aria-label="Histok"
+          className="mt-28 md:mt-36 px-6 pb-6 flex items-end justify-center gap-4"
+        >
+          <span className="text-8xl font-medium leading-none tracking-tight select-none">
+            H
+          </span>
+          <BrandPills w={11} tall={24} short={13} gap={7} />
+        </footer>
       </motion.div>
 
       {/* The REAL reel, embedded, grows from under as a rounded dimmed card —
