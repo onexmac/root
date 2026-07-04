@@ -219,25 +219,25 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
         <motion.div
           className="fixed inset-0 z-[60] overflow-hidden bg-black"
           style={{ transformOrigin: "50% 100%", willChange: "transform" }}
-          // opacity resolves FAST (the card just appears, peeking at the bottom);
-          // the slow spring on y/scale is then the motion you actually feel — so
-          // it reads as a grow, not a fade-in. Grow starts while the cascade runs
-          // but its bulk lands after (they fade before it grows).
-          initial={{ y: "74%", scale: 0.9, opacity: 0, borderRadius: 40 }}
+          // Starts as a SMALL card at the bottom (scale 0.42) and GROWS to full —
+          // scale is the dominant motion, not translation, so it reads as a grow.
+          // Springy (low damping) for acceleration + a little overshoot. Starts
+          // almost immediately so you see it grow WHILE the cards tap-tap fade.
+          initial={{ y: "6%", scale: 0.42, opacity: 0, borderRadius: 44 }}
           animate={
             closing
-              ? { y: "74%", scale: 0.9, opacity: 0, borderRadius: 40 }
+              ? { y: "6%", scale: 0.42, opacity: 0, borderRadius: 44 }
               : { y: "0%", scale: 1, opacity: 1, borderRadius: 0 }
           }
           transition={
             closing
               ? {
-                  default: { type: "spring", stiffness: 92, damping: 16, mass: 1 },
-                  opacity: { duration: 0.2, delay: 0.14 },
+                  default: { type: "spring", stiffness: 130, damping: 18, mass: 1 },
+                  opacity: { duration: 0.22, delay: 0.16 },
                 }
               : {
-                  default: { type: "spring", stiffness: 58, damping: 15, mass: 1, delay: 0.16 },
-                  opacity: { duration: 0.1, delay: 0.03 },
+                  default: { type: "spring", stiffness: 110, damping: 12, mass: 1, delay: 0.06 },
+                  opacity: { duration: 0.12, delay: 0.04 },
                 }
           }
           onAnimationComplete={() => {
@@ -259,9 +259,9 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           <motion.div
             aria-hidden
             className="absolute inset-0 bg-black pointer-events-none"
-            initial={{ opacity: 0.45 }}
-            animate={{ opacity: closing ? 0.45 : 0 }}
-            transition={{ duration: 0.8, delay: closing ? 0 : 0.25 }}
+            initial={{ opacity: 0.5 }}
+            animate={{ opacity: closing ? 0.5 : 0 }}
+            transition={{ duration: 0.5, delay: closing ? 0 : 0.08 }}
           />
         </motion.div>
       )}
