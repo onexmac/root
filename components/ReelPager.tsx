@@ -143,7 +143,9 @@ export function ReelPager({
   const endPeek = () => {
     if (!isPeeking.current) return;
     isPeeking.current = false;
-    animate(peeking, 0, springs.settling);
+    // Snappier + smoother than settling: once the hold is committed the photo
+    // eagerly returns to full-bleed, no lazy overshoot.
+    animate(peeking, 0, springs.shrinking);
   };
 
   const onPointerDown = (e: React.PointerEvent) => {
@@ -163,7 +165,9 @@ export function ReelPager({
       if (pointerId.current === null || axisLocked.current === "y") return;
       isPeeking.current = true;
       haptic.select();
-      animate(peeking, 1, springs.settling);
+      // Eager, low-tension arrival: once committed, the photo wants to get into
+      // the revealed position fast and clean (no overshoot wobble).
+      animate(peeking, 1, springs.shrinking);
     }, PEEK_HOLD_MS);
   };
 

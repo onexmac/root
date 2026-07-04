@@ -4,13 +4,15 @@ import { useEffect, type ReactNode } from "react";
 import { motion, useMotionValue, useTransform, animate } from "motion/react";
 import { springs } from "@/lib/springs";
 
-// Same rubber easing the reel pager uses: 1:1 until the knee, then heavily
-// damped, so the pull feels increasingly resistant the further you go.
-const KNEE = 220;
-const FACTOR = 0.32;
+// A firm wall. Resist from the very first pixel (START_SLOPE < 1) and
+// asymptote to MAX_PULL, so the harder you push the harder it resists and the
+// content never travels far — the app clearly "doesn't want to go further".
+// The spring-back on release still fires, so the spring feel is preserved.
+const MAX_PULL = 70;
+const START_SLOPE = 0.5;
 function rubber(o: number) {
   const a = Math.abs(o);
-  const r = a < KNEE ? a : KNEE + (a - KNEE) * FACTOR;
+  const r = MAX_PULL * (1 - Math.exp(-(a * START_SLOPE) / MAX_PULL));
   return Math.sign(o) * r;
 }
 
@@ -28,7 +30,7 @@ export function OverscrollBounce({
   const pull = useMotionValue(0);
   // The harder you pull past the edge, the more the whole page eases down in
   // size — capped so it stays subtle.
-  const scale = useTransform(pull, (p) => 1 - (Math.min(Math.abs(p), 300) / 300) * 0.05);
+  const scale = useTransform(pull, (p) => 1 - (Math.min(Math.abs(p), MAX_PULL) / MAX_PULL) * 0.03);
   // Shrink toward whichever edge you're pulling from, so the content lifts away
   // from the edge you hit rather than floating in the middle.
   const origin = useTransform(pull, (p) => (p < 0 ? "50% 0%" : "50% 100%"));
