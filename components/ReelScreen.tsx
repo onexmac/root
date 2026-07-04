@@ -80,10 +80,8 @@ export function ReelScreen({ topic }: { topic: Topic }) {
           />
 
           <div
-            className="absolute z-30"
+            className="absolute z-30 left-4 bottom-[calc(var(--sab)_+_16px)] md:bottom-auto md:top-[calc(var(--sat)_+_16px)]"
             style={{
-              top: "calc(var(--sat) + 16px)",
-              left: 16,
               opacity: chromeVisible ? 1 : 0,
               transition: "opacity 220ms ease-out",
               pointerEvents: chromeVisible ? "auto" : "none",

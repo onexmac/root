@@ -149,6 +149,34 @@ export function Slide({
   const peekRadius = useTransform(ctx.peeking, [0, 1], [0, 18]);
   const textFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
 
+  // A slide can hold more text than fits: the text panel then scrolls on its
+  // own (independent of paging) and the photo darkens as you read down. For
+  // short text it never overflows, so this is a no-op and paging is unaffected.
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollable, setScrollable] = useState(false);
+  const [scrollDarken, setScrollDarken] = useState(0);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const check = () => {
+      const over = el.scrollHeight - el.clientHeight > 24;
+      setScrollable(over);
+      if (!over) setScrollDarken(0);
+    };
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const onScroll = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const max = el.scrollHeight - el.clientHeight;
+    setScrollDarken(max > 0 ? Math.min(1, el.scrollTop / max) : 0);
+  };
+
   return (
     <div
       ref={containerRef}
@@ -194,7 +222,18 @@ export function Slide({
       <motion.div className="absolute inset-0" style={{ opacity: textFade }}>
         <div aria-hidden className="absolute inset-0" style={{ background: overlayGradient(slide) }} />
         <div aria-hidden className="absolute inset-0 hidden md:block bg-black/35" />
-        <div className="absolute inset-x-0 bottom-0 px-6 pb-28 flex flex-col gap-4 md:inset-0 md:justify-center md:items-start md:px-16 md:pb-0 md:max-w-[660px]">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-black pointer-events-none"
+          style={{ opacity: scrollDarken * 0.5, transition: "opacity 120ms linear" }}
+        />
+        <div
+          ref={scrollRef}
+          onScroll={onScroll}
+          onPointerDown={scrollable ? (e) => e.stopPropagation() : undefined}
+          className="absolute inset-x-0 bottom-0 px-6 pb-28 flex flex-col gap-4 max-h-[80dvh] overflow-y-auto overscroll-contain md:inset-0 md:max-h-none md:overflow-visible md:justify-center md:items-start md:px-16 md:pb-0 md:max-w-[660px]"
+          style={{ touchAction: scrollable ? "pan-y" : undefined }}
+        >
           <TextBlock status={status} enteredOnce={enteredOnce} delayMs={140}>
             <h2 className="text-4xl md:text-5xl leading-[1.15] font-medium text-white">
               {slide.title}

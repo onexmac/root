@@ -28,6 +28,25 @@ function rubber(overshoot: number) {
     : RUBBER_KNEE + (overshoot - RUBBER_KNEE) * RUBBER_FACTOR;
 }
 
+/** Shared release decision for touch drag and wheel: how far past the current
+ *  page did we travel (+ predicted momentum), and which page should we land on. */
+function decideTarget(
+  page: number,
+  pageCount: number,
+  pageH: number,
+  translation: number,
+  vy: number,
+) {
+  const predicted = translation + vy * ADVANCE_VELOCITY_PX;
+  const advance =
+    Math.abs(translation) > pageH * ADVANCE_DISTANCE_RATIO ||
+    Math.abs(predicted) > ADVANCE_VELOCITY_PX;
+  if (!advance) return page;
+  return translation < 0
+    ? Math.min(pageCount - 1, page + 1)
+    : Math.max(0, page - 1);
+}
+
 export function ReelPager({
   pageCount,
   page,
@@ -65,8 +84,8 @@ export function ReelPager({
   const isPeeking = useRef(false);
 
   const viewportRef = useRef<HTMLDivElement>(null);
-  const wheelLock = useRef(false);
-  const wheelAccum = useRef(0);
+  const wheelActive = useRef(false);
+  const wheelSamples = useRef<Sample[]>([]);
   const wheelResetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -221,17 +240,7 @@ export function ReelPager({
       return;
     }
 
-    const advance =
-      Math.abs(translation) > pageH * ADVANCE_DISTANCE_RATIO ||
-      Math.abs(predicted) > ADVANCE_VELOCITY_PX;
-
-    let target = page;
-    if (advance) {
-      target =
-        translation < 0
-          ? Math.min(pageCount - 1, page + 1)
-          : Math.max(0, page - 1);
-    }
+    const target = decideTarget(page, pageCount, pageH, translation, vy);
 
     if (target !== page) {
       haptic.select();
@@ -242,41 +251,66 @@ export function ReelPager({
     }
   };
 
-  // Desktop: mouse wheel / two-finger trackpad scroll advances one page per
-  // gesture. A burst of momentum events counts as one page (locked until the
-  // burst goes quiet), so a single flick doesn't fly through several slides.
+  // Desktop: mouse wheel / two-finger trackpad scroll DRAGS the reel with the
+  // pointer (the photo follows the scroll, rubber-banding at the ends). Only
+  // when the scroll goes quiet do we decide — past the threshold it settles to
+  // the next photo, otherwise it springs back. Nothing advances on its own, so
+  // the user stays in control of the scroll.
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
+    const clamp = (raw: number) => {
+      const maxY = 0;
+      const minY = -(pageCount - 1) * pageH;
+      if (raw > maxY) return maxY + rubber(raw - maxY);
+      if (raw < minY) return minY - rubber(minY - raw);
+      return raw;
+    };
     const onWheel = (e: WheelEvent) => {
       if (disabled || !pageH) return;
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
       e.preventDefault();
       onActivity?.();
 
-      if (wheelResetTimer.current) clearTimeout(wheelResetTimer.current);
-      wheelResetTimer.current = setTimeout(() => {
-        wheelLock.current = false;
-        wheelAccum.current = 0;
-      }, 140);
-      if (wheelLock.current) return;
+      if (!wheelActive.current) {
+        wheelActive.current = true;
+        y.stop();
+        wheelSamples.current = [];
+      }
 
       let dy = e.deltaY;
       if (e.deltaMode === 1) dy *= 16;
       else if (e.deltaMode === 2) dy *= pageH;
-      wheelAccum.current += dy;
-      if (Math.abs(wheelAccum.current) < 30) return;
+      // cap travel to ~one page from the current rest so a big fling can't drag
+      // several pages before snapping back — keeps it to one page per gesture
+      const restY = -page * pageH;
+      const raw = Math.max(restY - pageH, Math.min(restY + pageH, y.get() - dy));
+      y.set(clamp(raw));
 
-      const dir = wheelAccum.current > 0 ? 1 : -1;
-      const target = Math.min(pageCount - 1, Math.max(0, page + dir));
-      wheelAccum.current = 0;
-      if (target === page) return;
+      wheelSamples.current.push({ y: y.get(), t: e.timeStamp });
+      const cutoff = e.timeStamp - VELOCITY_WINDOW_MS;
+      while (wheelSamples.current.length > 2 && wheelSamples.current[0].t < cutoff) {
+        wheelSamples.current.shift();
+      }
 
-      wheelLock.current = true;
-      haptic.select();
-      y.stop();
-      animate(y, -target * pageH, springs.settling);
-      onPageChange(target);
+      if (wheelResetTimer.current) clearTimeout(wheelResetTimer.current);
+      wheelResetTimer.current = setTimeout(() => {
+        wheelActive.current = false;
+        const translation = y.get() - restY;
+        const s = wheelSamples.current;
+        const first = s[0];
+        const last = s[s.length - 1];
+        const dt = first && last ? last.t - first.t : 0;
+        const vy = dt > 0 ? (last.y - first.y) / dt : 0;
+        const target = decideTarget(page, pageCount, pageH, translation, vy);
+        if (target !== page) {
+          haptic.select();
+          animate(y, -target * pageH, springs.settling);
+          onPageChange(target);
+        } else {
+          animate(y, restY, springs.snappy);
+        }
+      }, 150);
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);

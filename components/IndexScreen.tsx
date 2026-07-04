@@ -1,12 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { PressScale } from "@/components/PressScale";
 import { springs } from "@/lib/springs";
 import type { Topic } from "@/data/topics";
+
+function TopicCard({ topic, onOpen }: { topic: Topic; onOpen: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  // As the card rises into view from the bottom, grow it from slightly smaller
+  // to full size — a subtle carousel feel. Cards already in view sit at 1.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "start 68%"],
+  });
+  const scale = useTransform(scrollYProgress, [0, 1], [0.94, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [0.7, 1]);
+
+  return (
+    <motion.div ref={ref} style={{ scale, opacity, transformOrigin: "50% 100%" }}>
+      <PressScale onActivate={onOpen} ariaLabel={topic.label} className="text-left w-full" downScale={0.96}>
+        <span className="block text-2xl mb-3">{topic.label}</span>
+        <span className="relative block w-full aspect-[16/8] rounded-[20px] overflow-hidden">
+          <Image
+            src={topic.thumbnail}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 560px"
+            className="object-cover"
+          />
+          {topic.comingSoon && (
+            <span className="absolute inset-0 bg-black/50 flex items-center justify-center text-sm tracking-wide uppercase">
+              Próximamente
+            </span>
+          )}
+        </span>
+      </PressScale>
+    </motion.div>
+  );
+}
 
 function BrandPills() {
   return (
@@ -95,29 +129,11 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           </div>
 
           {topics.map((topic) => (
-            <PressScale
+            <TopicCard
               key={topic.slug}
-              onActivate={() => setClosingTo(`/tema/${topic.slug}`)}
-              ariaLabel={topic.label}
-              className="text-left"
-              downScale={0.96}
-            >
-              <span className="block text-2xl mb-3">{topic.label}</span>
-              <span className="relative block w-full aspect-[16/8] rounded-[20px] overflow-hidden">
-                <Image
-                  src={topic.thumbnail}
-                  alt=""
-                  fill
-                  sizes="(max-width: 768px) 100vw, 560px"
-                  className="object-cover"
-                />
-                {topic.comingSoon && (
-                  <span className="absolute inset-0 bg-black/50 flex items-center justify-center text-sm tracking-wide uppercase">
-                    Próximamente
-                  </span>
-                )}
-              </span>
-            </PressScale>
+              topic={topic}
+              onOpen={() => setClosingTo(`/tema/${topic.slug}`)}
+            />
           ))}
         </div>
       </motion.div>
