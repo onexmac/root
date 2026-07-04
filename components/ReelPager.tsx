@@ -134,7 +134,21 @@ export function ReelPager({
 
   const onPointerMove = (e: React.PointerEvent) => {
     if (disabled || !pageH || pointerId.current !== e.pointerId) return;
-    if (isPeeking.current) return;
+
+    if (isPeeking.current) {
+      const dx0 = e.clientX - startX.current;
+      const dy0 = e.clientY - startY.current;
+      if (Math.abs(dx0) < SLOP && Math.abs(dy0) < SLOP) return;
+      // the user started scrolling mid-peek: cancel the peek and hand off into
+      // a fresh drag gesture anchored at this point, so it still tracks 1:1
+      isPeeking.current = false;
+      animate(peeking, 0, springs.snappy);
+      startX.current = e.clientX;
+      startY.current = e.clientY;
+      baseY.current = y.get();
+      samples.current = [{ y: e.clientY, t: e.timeStamp }];
+    }
+
     const dx = e.clientX - startX.current;
     const dy = e.clientY - startY.current;
 

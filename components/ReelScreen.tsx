@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useMotionValue } from "motion/react";
+import Image from "next/image";
 import { HaloPress } from "@/components/HaloPress";
 import { VerticalPills } from "@/components/VerticalPills";
 import { ReelPager } from "@/components/ReelPager";
@@ -12,6 +13,7 @@ import { springs } from "@/lib/springs";
 import type { Topic } from "@/data/topics";
 
 const IDLE_MS = 2000;
+export const FRAME_MAX_WIDTH = 600;
 
 export function ReelScreen({ topic }: { topic: Topic }) {
   const router = useRouter();
@@ -39,87 +41,104 @@ export function ReelScreen({ topic }: { topic: Topic }) {
   const goHome = () => setExiting(true);
 
   return (
-    <motion.div
-      data-app
-      className="relative w-full bg-black"
-      style={{ height: "100dvh" }}
-      initial={{ opacity: 0, scale: 0.97 }}
-      animate={exiting ? { opacity: 0, scale: 1.04 } : { opacity: 1, scale: 1 }}
-      transition={exiting ? springs.snappy : springs.expanding}
-      onAnimationComplete={() => {
-        if (exiting) router.push("/");
-      }}
-    >
-      <ReelPager
-        pageCount={topic.slides.length}
-        page={page}
-        onPageChange={setPage}
-        disabled={activeTerm !== null}
-        onActivity={bumpActivity}
-        onExit={goHome}
-        y={y}
-        onMeasure={setPageH}
-        renderSlide={(index, isCurrent, ctx) => (
-          <Slide
-            slide={topic.slides[index]}
-            index={index}
-            isCurrent={isCurrent}
-            onTermPress={(term) => setActiveTerm(term)}
-            ctx={ctx}
-          />
-        )}
-      />
-
-      <div
-        className="absolute z-30"
-        style={{
-          top: "calc(var(--sat) + 16px)",
-          left: 16,
-          opacity: chromeVisible ? 1 : 0,
-          transition: "opacity 220ms ease-out",
-          pointerEvents: chromeVisible ? "auto" : "none",
-        }}
-      >
-        <HaloPress
-          onActivate={goHome}
-          radius={24}
-          haloColor="var(--accent-deep)"
-          ariaLabel="Volver"
-          style={{
-            width: 48,
-            height: 48,
-            borderRadius: 24,
-            background: "var(--accent)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M12.5 4l-6 6 6 6"
-              stroke="#fff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </HaloPress>
+    <div className="fixed inset-0 overflow-hidden bg-black">
+      <div className="absolute inset-0" aria-hidden>
+        <Image
+          src={topic.slides[page].image}
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover scale-125"
+          style={{ filter: "blur(48px)" }}
+        />
+        <div className="absolute inset-0 bg-black/45" />
       </div>
 
-      <VerticalPills
-        count={topic.slides.length}
-        page={page}
-        y={y}
-        pageH={pageH}
-        visible={chromeVisible}
-      />
+      <motion.div
+        className="absolute inset-x-0 bottom-0 mx-auto overflow-hidden"
+        style={{ maxWidth: FRAME_MAX_WIDTH }}
+        initial={{ height: "58%", borderRadius: 32 }}
+        animate={
+          exiting ? { height: "58%", borderRadius: 32 } : { height: "100%", borderRadius: 0 }
+        }
+        transition={exiting ? springs.snappy : springs.expanding}
+        onAnimationComplete={() => {
+          if (exiting) router.push("/");
+        }}
+      >
+        <div data-app className="absolute inset-x-0 bottom-0" style={{ height: "100dvh" }}>
+          <ReelPager
+            pageCount={topic.slides.length}
+            page={page}
+            onPageChange={setPage}
+            disabled={activeTerm !== null}
+            onActivity={bumpActivity}
+            onExit={goHome}
+            y={y}
+            onMeasure={setPageH}
+            renderSlide={(index, isCurrent, ctx) => (
+              <Slide
+                slide={topic.slides[index]}
+                index={index}
+                isCurrent={isCurrent}
+                onTermPress={(term) => setActiveTerm(term)}
+                ctx={ctx}
+              />
+            )}
+          />
 
-      <GlossaryCard
-        term={activeTerm}
-        definition={activeTerm ? topic.glossary[activeTerm] ?? "" : ""}
-        onClose={() => setActiveTerm(null)}
-      />
-    </motion.div>
+          <div
+            className="absolute z-30"
+            style={{
+              top: "calc(var(--sat) + 16px)",
+              left: 16,
+              opacity: chromeVisible ? 1 : 0,
+              transition: "opacity 220ms ease-out",
+              pointerEvents: chromeVisible ? "auto" : "none",
+            }}
+          >
+            <HaloPress
+              onActivate={goHome}
+              radius={24}
+              haloColor="var(--accent-deep)"
+              ariaLabel="Volver"
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 24,
+                background: "var(--accent)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M12.5 4l-6 6 6 6"
+                  stroke="#fff"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </HaloPress>
+          </div>
+
+          <VerticalPills
+            count={topic.slides.length}
+            page={page}
+            y={y}
+            pageH={pageH}
+            visible={chromeVisible}
+          />
+
+          <GlossaryCard
+            term={activeTerm}
+            definition={activeTerm ? topic.glossary[activeTerm] ?? "" : ""}
+            onClose={() => setActiveTerm(null)}
+          />
+        </div>
+      </motion.div>
+    </div>
   );
 }

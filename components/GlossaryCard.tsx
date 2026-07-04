@@ -101,10 +101,10 @@ export function GlossaryCard({
           />
           <motion.div
             key="card"
-            className="absolute inset-x-0 bottom-0 z-50 rounded-t-[28px] bg-white px-6 pt-8 text-black"
+            className="absolute inset-x-0 z-50 rounded-[28px] bg-white px-6 pt-8 pb-7 text-black"
             style={{
               y,
-              paddingBottom: "calc(var(--sab) + 32px)",
+              bottom: "calc(var(--sab) + 20px)",
               willChange: "transform",
             }}
             initial={{ y: "100%" }}

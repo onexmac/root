@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useTransform } from "motion/react";
 import Image from "next/image";
 import { springs, cascadeOut } from "@/lib/springs";
@@ -98,12 +98,35 @@ export function Slide({
 
   const localOffset = useTransform(ctx.y, (latest) => latest + index * ctx.pageH);
   const imageY = useTransform(localOffset, (v) => -v * PARALLAX_FACTOR);
-  const peekScale = useTransform(ctx.peeking, [0, 1], [1, 0.82]);
   const peekRadius = useTransform(ctx.peeking, [0, 1], [0, 28]);
   const peekFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [naturalSize, setNaturalSize] = useState<{ w: number; h: number } | null>(null);
+  const [containScale, setContainScale] = useState(0.85);
+
+  useEffect(() => {
+    if (!naturalSize) return;
+    const compute = () => {
+      const el = containerRef.current;
+      if (!el) return;
+      const cw = el.clientWidth;
+      const ch = el.clientHeight;
+      if (!cw || !ch) return;
+      const cover = Math.max(cw / naturalSize.w, ch / naturalSize.h);
+      const contain = Math.min(cw / naturalSize.w, ch / naturalSize.h);
+      setContainScale(contain / cover);
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, [naturalSize]);
+
+  const peekScale = useTransform(ctx.peeking, [0, 1], [1, containScale]);
+
   return (
     <div
+      ref={containerRef}
       className="relative w-full overflow-hidden bg-black"
       style={{ height: "100dvh", contain: "layout paint" }}
     >
@@ -119,6 +142,12 @@ export function Slide({
           priority={isCurrent}
           loading={isCurrent ? "eager" : "lazy"}
           className="object-cover"
+          onLoad={(e) => {
+            const img = e.currentTarget;
+            if (img.naturalWidth && img.naturalHeight) {
+              setNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
+            }
+          }}
         />
       </motion.div>
       <motion.div aria-hidden className="absolute inset-0" style={{ opacity: peekFade }}>
