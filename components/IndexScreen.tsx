@@ -221,10 +221,10 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           // reads as "grow while moving up", not a plain translate. Springy (low
           // damping) for acceleration + overshoot; starts almost immediately so
           // you see it grow WHILE the cards tap-tap fade.
-          initial={{ y: "52%", scale: 0.42, opacity: 0, borderRadius: 44 }}
+          initial={{ y: "52%", scale: 0.55, opacity: 0, borderRadius: 44 }}
           animate={
             closing
-              ? { y: "52%", scale: 0.42, opacity: 0, borderRadius: 44 }
+              ? { y: "52%", scale: 0.55, opacity: 0, borderRadius: 44 }
               : { y: "0%", scale: 1, opacity: 1, borderRadius: 0 }
           }
           transition={
