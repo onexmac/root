@@ -88,10 +88,12 @@ export function Slide({
 
   useEffect(() => {
     if (!isCurrent || status !== "idle") return;
+    // reveal almost immediately (one tick, just enough for the rise to play) so
+    // the text doesn't lag behind the photo when you move between slides
     const t = setTimeout(() => {
       setStatus("shown");
       setEnteredOnce(true);
-    }, 100);
+    }, 16);
     return () => clearTimeout(t);
   }, [isCurrent, status]);
 
@@ -234,13 +236,13 @@ export function Slide({
           className="absolute inset-x-0 bottom-0 px-6 pb-28 flex flex-col gap-4 max-h-[80dvh] overflow-y-auto overscroll-contain md:inset-0 md:max-h-none md:overflow-visible md:justify-center md:items-start md:px-16 md:pb-0 md:max-w-[660px]"
           style={{ touchAction: scrollable ? "pan-y" : undefined }}
         >
-          <TextBlock status={status} enteredOnce={enteredOnce} delayMs={140}>
+          <TextBlock status={status} enteredOnce={enteredOnce} delayMs={55}>
             <h2 className="text-4xl md:text-5xl leading-[1.15] font-medium text-white">
               {slide.title}
             </h2>
           </TextBlock>
           {slide.body && (
-            <TextBlock status={status} enteredOnce={enteredOnce} delayMs={100}>
+            <TextBlock status={status} enteredOnce={enteredOnce} delayMs={0}>
               <p className="text-lg md:text-xl leading-relaxed text-white/90">
                 {slide.body.map((part, i) =>
                   typeof part === "string" ? (

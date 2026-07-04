@@ -21,6 +21,11 @@ const ADVANCE_VELOCITY_PX = 250;
 const VELOCITY_WINDOW_MS = 120;
 const EXIT_OVERSHOOT_PX = 130;
 const PEEK_HOLD_MS = 160;
+// Wheel: amplify the scroll so a normal gesture visibly drags the photo, and
+// commit at a low fraction of a page so it advances readily instead of fighting
+// you. Only a tiny accidental scroll snaps back.
+const WHEEL_GAIN = 1.6;
+const WHEEL_ADVANCE_RATIO = 0.12;
 
 function rubber(overshoot: number) {
   return overshoot < RUBBER_KNEE
@@ -36,10 +41,11 @@ function decideTarget(
   pageH: number,
   translation: number,
   vy: number,
+  ratio = ADVANCE_DISTANCE_RATIO,
 ) {
   const predicted = translation + vy * ADVANCE_VELOCITY_PX;
   const advance =
-    Math.abs(translation) > pageH * ADVANCE_DISTANCE_RATIO ||
+    Math.abs(translation) > pageH * ratio ||
     Math.abs(predicted) > ADVANCE_VELOCITY_PX;
   if (!advance) return page;
   return translation < 0
@@ -281,6 +287,7 @@ export function ReelPager({
       let dy = e.deltaY;
       if (e.deltaMode === 1) dy *= 16;
       else if (e.deltaMode === 2) dy *= pageH;
+      dy *= WHEEL_GAIN;
       // cap travel to ~one page from the current rest so a big fling can't drag
       // several pages before snapping back — keeps it to one page per gesture
       const restY = -page * pageH;
@@ -302,7 +309,7 @@ export function ReelPager({
         const last = s[s.length - 1];
         const dt = first && last ? last.t - first.t : 0;
         const vy = dt > 0 ? (last.y - first.y) / dt : 0;
-        const target = decideTarget(page, pageCount, pageH, translation, vy);
+        const target = decideTarget(page, pageCount, pageH, translation, vy, WHEEL_ADVANCE_RATIO);
         if (target !== page) {
           haptic.select();
           animate(y, -target * pageH, springs.settling);
@@ -310,7 +317,7 @@ export function ReelPager({
         } else {
           animate(y, restY, springs.snappy);
         }
-      }, 150);
+      }, 90);
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
