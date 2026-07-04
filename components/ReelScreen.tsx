@@ -13,7 +13,17 @@ import type { Topic } from "@/data/topics";
 
 const IDLE_MS = 2000;
 
-export function ReelScreen({ topic }: { topic: Topic }) {
+export function ReelScreen({
+  topic,
+  embedded = false,
+  onClose,
+}: {
+  topic: Topic;
+  /** Rendered inside the index's growing container: no own entrance/exit,
+   *  closing is delegated to the parent via onClose. */
+  embedded?: boolean;
+  onClose?: () => void;
+}) {
   const router = useRouter();
   const [page, setPage] = useState(0);
   const [activeTerm, setActiveTerm] = useState<string | null>(null);
@@ -22,23 +32,6 @@ export function ReelScreen({ topic }: { topic: Topic }) {
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const y = useMotionValue(0);
   const [pageH, setPageH] = useState(0);
-
-  // When the index already played the grow-from-under transition, it sets this
-  // flag right before navigating — we mount full-bleed (no second entrance) so
-  // the reel's first frame matches the overlay's last frame.
-  const [seamless] = useState(() => {
-    if (typeof window === "undefined") return false;
-    try {
-      return sessionStorage.getItem("histok-seamless") === "1";
-    } catch {
-      return false;
-    }
-  });
-  useEffect(() => {
-    try {
-      sessionStorage.removeItem("histok-seamless");
-    } catch {}
-  }, []);
 
   const bumpActivity = useCallback(() => {
     setChromeVisible(true);
@@ -53,18 +46,22 @@ export function ReelScreen({ topic }: { topic: Topic }) {
     };
   }, []);
 
-  const goHome = () => setExiting(true);
+  const goHome = () => {
+    if (embedded) {
+      onClose?.();
+      return;
+    }
+    setExiting(true);
+  };
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-black">
       <motion.div
         className="absolute inset-0 overflow-hidden"
         style={{ transformOrigin: "50% 100%" }}
-        // seamless mounts render directly at the target — the server HTML
-        // (hidden initial) intentionally differs, and framer corrects the DOM
-        // on mount, so silence just this known mismatch
-        suppressHydrationWarning
-        initial={seamless ? false : { y: "100%", scale: 0.9, opacity: 0, borderRadius: 44 }}
+        // embedded: the parent container animates the grow/shrink — render
+        // static at rest. Standalone (deep link): keep the rise entrance.
+        initial={embedded ? false : { y: "100%", scale: 0.9, opacity: 0, borderRadius: 44 }}
         animate={
           exiting
             ? { y: "100%", scale: 0.9, opacity: 0, borderRadius: 44 }

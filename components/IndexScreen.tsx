@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { motion, useScroll, useTransform } from "motion/react";
 import { PressScale } from "@/components/PressScale";
+import { ReelScreen } from "@/components/ReelScreen";
 import { springs } from "@/lib/springs";
 import type { Topic } from "@/data/topics";
 
@@ -96,8 +96,27 @@ function BrandPills() {
 }
 
 export function IndexScreen({ topics }: { topics: Topic[] }) {
-  const router = useRouter();
   const [opening, setOpening] = useState<Topic | null>(null);
+  const [closing, setClosing] = useState(false);
+  const openIdx = opening ? topics.findIndex((t) => t.slug === opening.slug) : -1;
+  const fading = opening !== null && !closing;
+
+  // Cascade radiating from the tap: everything BELOW the pressed card drops
+  // first, then the elements ABOVE fall toward it, farthest first (brand, then
+  // cards top-down). The pressed card never fades — the photo covers it.
+  // pos: -1 = brand block, 0..n-1 = topic cards.
+  const fadeDelay = (pos: number) => {
+    if (openIdx < 0) return 0;
+    if (pos > openIdx) return (pos - openIdx - 1) * 0.05;
+    const rankFromTop = pos + 1; // brand = 0, first card = 1, ...
+    return 0.14 + rankFromTop * 0.09;
+  };
+  // Coming back: radiate outward from the returning card, nearest first.
+  const returnDelay = (pos: number) => {
+    if (openIdx < 0) return 0;
+    return 0.12 + Math.abs(pos - openIdx) * 0.06;
+  };
+  const elementDelay = (pos: number) => (fading ? fadeDelay(pos) : returnDelay(pos));
 
   // Warm the browser cache with the full-size reel images so opening a topic is
   // instant on iOS: each topic's cover first, then the rest on idle.
@@ -147,11 +166,11 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           className="grid grid-cols-1 gap-x-8 gap-y-9 px-6 md:grid-cols-2 md:gap-y-12 md:px-10"
           style={{ touchAction: "pan-y", overscrollBehaviorY: "contain" }}
         >
-          {/* Brand fades first when a topic opens */}
+          {/* Brand is the farthest "top" element — first of the top cascade */}
           <motion.div
             className="flex flex-col items-center text-center pt-6 pb-4 md:justify-center md:py-0"
-            animate={{ opacity: opening ? 0 : 1 }}
-            transition={{ duration: 0.2 }}
+            animate={{ opacity: fading ? 0 : 1 }}
+            transition={{ duration: 0.3, delay: elementDelay(-1) }}
           >
             <div className="flex items-center gap-3">
               <h1 className="text-6xl md:text-7xl font-medium leading-none tracking-tight">
@@ -166,15 +185,15 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
             </p>
           </motion.div>
 
-          {/* Non-selected cards fade out; the pressed one keeps its ring and
-              stays lit until the growing photo covers it */}
+          {/* Non-selected cards fade per the tap-relative cascade; the pressed
+              one keeps its ring and stays lit until the photo covers it */}
           {topics.map((topic, i) => (
             <motion.div
               key={topic.slug}
               animate={{
-                opacity: opening && opening.slug !== topic.slug ? 0 : 1,
+                opacity: fading && i !== openIdx ? 0 : 1,
               }}
-              transition={{ duration: 0.22, delay: opening ? i * 0.04 : 0 }}
+              transition={{ duration: 0.3, delay: i === openIdx ? 0 : elementDelay(i) }}
             >
               <TopicCard
                 topic={topic}
@@ -188,70 +207,49 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
         </div>
       </motion.div>
 
-      {/* The topic's cover grows from under as a rounded, dimmed card with its
-          chrome (back button + pills) already in place. When it settles
-          full-bleed, we navigate — the reel mounts matching this exact frame. */}
+      {/* The REAL reel, embedded, grows from under as a rounded dimmed card —
+          one tree, no route swap mid-transition, so there is nothing to
+          flicker. The URL is updated with history.pushState once it settles;
+          deep links still use the /tema/[slug] route with its own entrance. */}
       {opening && (
-        <div className="fixed inset-0 z-50 pointer-events-none">
+        <motion.div
+          className="fixed inset-0 z-50 overflow-hidden bg-black"
+          style={{ transformOrigin: "50% 100%", willChange: "transform" }}
+          initial={{ y: "62%", scale: 0.92, opacity: 0, borderRadius: 40 }}
+          animate={
+            closing
+              ? { y: "62%", scale: 0.92, opacity: 0, borderRadius: 40 }
+              : { y: "0%", scale: 1, opacity: 1, borderRadius: 0 }
+          }
+          transition={
+            closing
+              ? { default: springs.deleting, opacity: { duration: 0.22, delay: 0.08 } }
+              : { default: springs.settling, delay: 0.18, opacity: { duration: 0.25, delay: 0.18 } }
+          }
+          onAnimationComplete={() => {
+            try {
+              if (closing) {
+                window.history.pushState(null, "", "/");
+              } else {
+                window.history.pushState(null, "", `/tema/${opening.slug}`);
+              }
+            } catch {}
+            if (closing) {
+              setOpening(null);
+              setClosing(false);
+            }
+          }}
+        >
+          <ReelScreen topic={opening} embedded onClose={() => setClosing(true)} />
+          {/* dim that lifts as the card grows (and returns on the way back) */}
           <motion.div
-            className="absolute inset-0 overflow-hidden bg-black"
-            style={{ transformOrigin: "50% 100%", willChange: "transform" }}
-            initial={{ y: "60%", scale: 0.92, opacity: 0, borderRadius: 40 }}
-            animate={{ y: "0%", scale: 1, opacity: 1, borderRadius: 0 }}
-            transition={{ default: springs.settling, opacity: { duration: 0.28 } }}
-            onAnimationComplete={() => {
-              try {
-                sessionStorage.setItem("histok-seamless", "1");
-              } catch {}
-              router.push(`/tema/${opening.slug}`);
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={opening.slides[0].image}
-              alt=""
-              draggable={false}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <motion.div
-              aria-hidden
-              className="absolute inset-0 bg-black"
-              initial={{ opacity: 0.55 }}
-              animate={{ opacity: 0.15 }}
-              transition={{ duration: 0.7 }}
-            />
-            <div
-              className="absolute left-4 bottom-[calc(var(--sab)_+_16px)] md:bottom-auto md:top-[calc(var(--sat)_+_16px)] flex h-12 w-12 items-center justify-center rounded-full"
-              style={{ background: "var(--accent)" }}
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M12.5 4l-6 6 6 6"
-                  stroke="#fff"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            <div
-              className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col"
-              style={{ gap: 6 }}
-            >
-              {opening.slides.map((_, i) => (
-                <span
-                  key={i}
-                  style={{
-                    width: 8,
-                    height: 26,
-                    borderRadius: 4,
-                    background: i === 0 ? "#fff" : "rgba(255,255,255,0.28)",
-                  }}
-                />
-              ))}
-            </div>
-          </motion.div>
-        </div>
+            aria-hidden
+            className="absolute inset-0 bg-black pointer-events-none"
+            initial={{ opacity: 0.45 }}
+            animate={{ opacity: closing ? 0.45 : 0 }}
+            transition={{ duration: 0.8, delay: closing ? 0 : 0.25 }}
+          />
+        </motion.div>
       )}
     </div>
   );
