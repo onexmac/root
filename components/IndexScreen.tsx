@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
@@ -29,6 +29,36 @@ function BrandPills() {
 export function IndexScreen({ topics }: { topics: Topic[] }) {
   const router = useRouter();
   const [closingTo, setClosingTo] = useState<string | null>(null);
+
+  // Warm the browser cache with the full-size reel images so opening a topic is
+  // instant on iOS: each topic's cover first, then the rest on idle.
+  useEffect(() => {
+    const seen = new Set<string>();
+    const covers: string[] = [];
+    const rest: string[] = [];
+    for (const t of topics) {
+      t.slides.forEach((s, i) => {
+        if (seen.has(s.image)) return;
+        seen.add(s.image);
+        (i === 0 ? covers : rest).push(s.image);
+      });
+    }
+    const warm = (src: string) => {
+      const img = new window.Image();
+      img.decoding = "async";
+      img.src = src;
+    };
+    covers.forEach(warm);
+    const idle =
+      (window as unknown as { requestIdleCallback?: (cb: () => void) => number })
+        .requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 400));
+    const handle = idle(() => rest.forEach(warm));
+    return () => {
+      const cancel = (window as unknown as { cancelIdleCallback?: (h: number) => void })
+        .cancelIdleCallback;
+      if (cancel && typeof handle === "number") cancel(handle);
+    };
+  }, [topics]);
 
   return (
     <div className="min-h-dvh bg-black">

@@ -35,7 +35,7 @@ export const topics: Topic[] = [
     slides: [
       { image: "/images/imperialismo.jpg", title: "Imperialismo Europeo" },
       {
-        image: "/images/imperialismo.jpg",
+        image: "/images/imp-rhodes.jpg",
         title: "¿Qué fue el imperialismo?",
         body: [
           "Durante los siglos XIX y XX, las potencias europeas se expandieron por África, Asia y Oceanía. El ",
@@ -44,39 +44,32 @@ export const topics: Topic[] = [
         ],
       },
       {
-        image: "/images/imperialismo.jpg",
-        title: "Tres ideas clave",
+        image: "/images/imp-delacroix.jpg",
+        title: "Colonialismo y nacionalismo",
         body: [
           "El ",
           { term: "colonialismo" },
-          " era la ocupación directa de un territorio; el ",
+          " era la ocupación directa de un territorio. Y el ",
           { term: "nacionalismo" },
-          " alimentaba el orgullo y la rivalidad entre las potencias.",
+          " —el orgullo por la propia nación— alimentaba la rivalidad entre las potencias.",
         ],
       },
       {
-        image: "/images/imperialismo.jpg",
-        title: "¿De dónde salió?",
+        image: "/images/imp-menzel.jpg",
+        title: "El motor: la Revolución Industrial",
         body: [
           "La ",
           { term: "Revolución Industrial" },
-          " llenó a Europa de fábricas que necesitaban materias primas baratas y nuevos mercados donde vender. Las colonias ofrecían ambas cosas.",
+          " llenó a Europa de fábricas que necesitaban materias primas baratas y nuevos mercados. Las colonias ofrecían ambas cosas.",
         ],
       },
       {
-        image: "/images/imperialismo.jpg",
+        image: "/images/imp-berlin.jpg",
         title: "El reparto del mundo",
         body: [
-          "Gran Bretaña, Francia, Alemania y Bélgica, entre otras, se repartieron continentes enteros. En la ",
+          "En la ",
           { term: "Conferencia de Berlín" },
-          " dividieron África sobre un mapa, sin consultar a nadie.",
-        ],
-      },
-      {
-        image: "/images/imperialismo.jpg",
-        title: "Consecuencias",
-        body: [
-          "Explotación de recursos y personas, fronteras artificiales, pérdida de culturas locales y una fuerte rivalidad entre potencias que, años después, estallaría en guerra.",
+          " (1884) las potencias dividieron África sobre un mapa, sin consultar a nadie. El resultado: fronteras artificiales y rivalidades que años después estallarían en guerra.",
         ],
       },
     ],
@@ -92,10 +85,6 @@ export const topics: Topic[] = [
         "Periodo previo a 1914 en el que las potencias europeas, sin estar en guerra, competían acumulando armas y ejércitos cada vez más grandes.",
       Balcanes:
         "Región del sureste de Europa con muchos pueblos y tensiones; era tan inestable que se le llamó «el polvorín de Europa».",
-      "Triple Alianza":
-        "Bloque formado por Alemania, Austria-Hungría e Italia antes de la guerra.",
-      "Triple Entente":
-        "Bloque formado por Francia, el Reino Unido y Rusia, frente a la Triple Alianza.",
       "guerra de trincheras":
         "Combate en el que los ejércitos se enterraban en largas zanjas y avanzaban muy poco durante meses, con enormes pérdidas humanas.",
       "Tratado de Versalles":
@@ -104,66 +93,41 @@ export const topics: Topic[] = [
     slides: [
       { image: "/images/primera-guerra.jpg", title: "Primera Guerra Mundial" },
       {
-        image: "/images/primera-guerra.jpg",
+        image: "/images/pgm-dreadnought.jpg",
         title: "Las causas de fondo",
         body: [
           "Rivalidades imperialistas, ",
           { term: "nacionalismo" },
           ", una carrera de armas (la ",
           { term: "Paz Armada" },
-          ") y un sistema de alianzas dividieron Europa en dos bloques enfrentados.",
-        ],
-      },
-      {
-        image: "/images/primera-guerra.jpg",
-        title: "El polvorín de los Balcanes",
-        body: [
-          "Los ",
+          ") y un sistema de alianzas dividieron Europa. Los ",
           { term: "Balcanes" },
-          " hervían de tensiones nacionales, y en Marruecos chocaban los intereses de Francia y Alemania. Faltaba solo una chispa.",
+          " eran el «polvorín».",
         ],
       },
       {
-        image: "/images/primera-guerra.jpg",
+        image: "/images/pgm-princip.jpg",
         title: "La chispa (1914)",
         body: [
           "El asesinato del archiduque Francisco Fernando en Sarajevo fue la causa inmediata: en pocas semanas, las alianzas arrastraron a toda Europa a la guerra.",
         ],
       },
       {
-        image: "/images/primera-guerra.jpg",
-        title: "Dos bandos",
-        body: [
-          "La ",
-          { term: "Triple Alianza" },
-          " se enfrentó a la ",
-          { term: "Triple Entente" },
-          ". Cada país entró apoyando a sus aliados.",
-        ],
-      },
-      {
-        image: "/images/primera-guerra.jpg",
+        image: "/images/pgm-trincheras.jpg",
         title: "Las fases",
         body: [
-          "Empezó con una guerra de movimientos rápida, pero pronto se convirtió en una larga ",
+          "Empezó con una guerra de movimientos rápida, pero se estancó en una larga ",
           { term: "guerra de trincheras" },
           ". El final llegó con la entrada de EE. UU. y la salida de Rusia.",
         ],
       },
       {
         image: "/images/tratado-versalles.jpg",
-        title: "Los tratados",
+        title: "Tratados y consecuencias",
         body: [
           "El ",
           { term: "Tratado de Versalles" },
-          " (1919) castigó duramente a Alemania. Cuatro grandes imperios desaparecieron del mapa.",
-        ],
-      },
-      {
-        image: "/images/primera-guerra.jpg",
-        title: "Consecuencias",
-        body: [
-          "Millones de muertos, nuevos países, un mapa de Europa redibujado y un profundo resentimiento que alimentaría la siguiente guerra.",
+          " (1919) castigó duramente a Alemania. Cuatro imperios desaparecieron y quedó un resentimiento que alimentaría la siguiente guerra.",
         ],
       },
     ],
@@ -190,59 +154,38 @@ export const topics: Topic[] = [
     slides: [
       { image: "/images/revolucion-rusa.jpg", title: "Revolución Rusa" },
       {
-        image: "/images/revolucion-rusa.jpg",
+        image: "/images/rr-zar.jpg",
         title: "La Rusia de los zares",
         body: [
-          "A inicios del siglo XX, Rusia era un imperio atrasado gobernado por el ",
+          "Rusia era un imperio atrasado gobernado por el ",
           { term: "zar" },
-          " Nicolás II: millones de campesinos pobres y muy poca industria.",
-        ],
-      },
-      {
-        image: "/images/revolucion-rusa.jpg",
-        title: "El desgaste",
-        body: [
-          "Las derrotas militares, el hambre y el enorme costo de la ",
+          " Nicolás II. Las derrotas y el hambre de la ",
           { term: "Primera Guerra Mundial" },
-          " hicieron insoportable la vida y debilitaron por completo al régimen.",
+          " terminaron por hundir al régimen.",
         ],
       },
       {
-        image: "/images/revolucion-rusa.jpg",
+        image: "/images/rr-1917.jpg",
         title: "1917: dos revoluciones",
         body: [
           "En febrero cae el zar. En octubre, los ",
           { term: "bolcheviques" },
           " de ",
           { term: "Lenin" },
-          " toman el poder con la promesa de «paz, pan y tierra».",
-        ],
-      },
-      {
-        image: "/images/revolucion-rusa.jpg",
-        title: "Guerra civil",
-        body: [
-          "Los «rojos» (revolucionarios) vencieron a los «blancos» en una dura guerra civil, y se implantó el ",
+          " toman el poder con la promesa de «paz, pan y tierra» e implantan el ",
           { term: "comunismo" },
-          " como nuevo sistema.",
+          ".",
         ],
       },
       {
-        image: "/images/revolucion-rusa.jpg",
+        image: "/images/rr-stalin.jpg",
         title: "Nace la URSS",
         body: [
           "En 1922 se crea la ",
           { term: "URSS" },
           ". Tras la muerte de Lenin, ",
           { term: "Stalin" },
-          " toma el control y gobierna con mano de hierro.",
-        ],
-      },
-      {
-        image: "/images/revolucion-rusa.jpg",
-        title: "Consecuencias",
-        body: [
-          "Nació el primer Estado comunista del mundo. Se industrializó a marchas forzadas y surgió una potencia que rivalizaría con Occidente durante todo el siglo XX.",
+          " toma el control con mano de hierro. Nace la primera gran potencia comunista.",
         ],
       },
     ],
@@ -264,46 +207,32 @@ export const topics: Topic[] = [
     slides: [
       { image: "/images/gran-depresion.jpg", title: "La Gran Depresión" },
       {
-        image: "/images/gran-depresion.jpg",
+        image: "/images/gd-crack.jpg",
         title: "El crack del 29",
         body: [
-          "El 29 de octubre de 1929, la Bolsa de Nueva York se desplomó. En un solo día, millones de personas perdieron sus ahorros en el mercado ",
+          "El 29 de octubre de 1929, la Bolsa de Nueva York se desplomó y millones perdieron sus ahorros en el mercado ",
           { term: "bursátil" },
-          ".",
-        ],
-      },
-      {
-        image: "/images/gran-depresion.jpg",
-        title: "¿Por qué pasó?",
-        body: [
-          "Años de ",
+          ". Detrás había años de ",
           { term: "especulación" },
-          " excesiva, préstamos fáciles y sobreproducción inflaron una burbuja que terminó por reventar.",
+          " y una burbuja que reventó.",
         ],
       },
       {
-        image: "/images/gran-depresion.jpg",
-        title: "Palabras clave",
-        body: [
-          "Los años 30 trajeron ",
-          { term: "inflación" },
-          ", ",
-          { term: "escasez" },
-          ", quiebras de bancos y un desempleo enorme en casi todo el mundo.",
-        ],
-      },
-      {
-        image: "/images/gran-depresion.jpg",
+        image: "/images/gd-impacto.jpg",
         title: "El impacto",
         body: [
-          "Fábricas cerradas, familias en la pobreza y largas filas para conseguir comida. La crisis se extendió desde Estados Unidos hasta Europa y el resto del planeta.",
+          "Llegaron el desempleo masivo, la ",
+          { term: "inflación" },
+          ", la ",
+          { term: "escasez" },
+          " y la pobreza. La crisis se extendió desde Estados Unidos hasta Europa y el resto del mundo.",
         ],
       },
       {
-        image: "/images/gran-depresion.jpg",
+        image: "/images/gd-consecuencias.jpg",
         title: "Consecuencias",
         body: [
-          "Desempleo masivo, desconfianza en el sistema económico y un clima de desesperación que facilitó el ascenso de líderes autoritarios.",
+          "Filas para conseguir comida, desconfianza en el sistema económico y un clima de desesperación que facilitó el ascenso de líderes autoritarios.",
         ],
       },
     ],
@@ -321,11 +250,6 @@ export const topics: Topic[] = [
         "Movimiento político autoritario y nacionalista, surgido en Italia con Mussolini, que exalta al Estado y al líder y rechaza la democracia.",
       nazismo:
         "La versión alemana del fascismo, liderada por Hitler, basada en el nacionalismo extremo, el racismo y la expansión territorial.",
-      "Tratado de Versalles":
-        "Tratado de 1919 que castigó a Alemania tras la Primera Guerra Mundial; el resentimiento que causó fue aprovechado por los nazis.",
-      Blitzkrieg:
-        "«Guerra relámpago»: táctica alemana de ataques rápidos y coordinados con tanques y aviación para vencer antes de que el enemigo reaccione.",
-      Eje: "Alianza militar de la Segunda Guerra Mundial formada principalmente por Alemania, Italia y Japón.",
       Holocausto:
         "Exterminio sistemático de unos seis millones de judíos —y de otros grupos— por parte del régimen nazi durante la guerra.",
     },
@@ -339,25 +263,18 @@ export const topics: Topic[] = [
           { term: "Benito Mussolini" },
           " en Italia y Adolf Hitler en Alemania promovieron el militarismo, el ",
           { term: "nacionalismo" },
-          " extremo y la expansión territorial.",
+          " extremo y el ",
+          { term: "fascismo" },
+          ".",
         ],
       },
       {
-        image: "/images/fascismo-nazismo.jpg",
+        image: "/images/sgm-jjoo.jpg",
         title: "Caso: los Juegos Olímpicos de 1936",
         body: [
-          "Hitler convirtió los Juegos de Berlín en un escaparate del ",
+          "Hitler usó los Juegos de Berlín como propaganda del ",
           { term: "nazismo" },
-          ": pura propaganda para mostrarle al mundo una supuesta «superioridad» alemana.",
-        ],
-      },
-      {
-        image: "/images/tratado-versalles.jpg",
-        title: "Los antecedentes",
-        body: [
-          "El ",
-          { term: "Tratado de Versalles" },
-          ", la Gran Depresión y el afán de expansión de Alemania e Italia prepararon el terreno para la guerra.",
+          ". Pero el atleta afroamericano Jesse Owens ganó cuatro oros y desmintió el mito de la «superioridad» aria.",
         ],
       },
       {
@@ -368,23 +285,12 @@ export const topics: Topic[] = [
         ],
       },
       {
-        image: "/images/cover-wwii.jpg",
-        title: "Las fases",
-        body: [
-          "Primero, la ",
-          { term: "Blitzkrieg" },
-          " dio la ventaja al ",
-          { term: "Eje" },
-          ". Luego, la derrota en Stalingrado y la entrada de EE. UU. cambiaron el rumbo, hasta la caída del Eje en 1945.",
-        ],
-      },
-      {
-        image: "/images/cover-wwii.jpg",
+        image: "/images/sgm-consecuencias.jpg",
         title: "Consecuencias",
         body: [
           "Decenas de millones de muertos, el horror del ",
           { term: "Holocausto" },
-          ", una Europa dividida y el comienzo de una nueva rivalidad: la Guerra Fría.",
+          " y una Europa que las potencias vencedoras se repartieron, dando inicio a la Guerra Fría.",
         ],
       },
     ],
@@ -400,41 +306,30 @@ export const topics: Topic[] = [
         "Sistema en el que el Estado controla la economía y la propiedad para repartir la riqueza; era el modelo de la URSS.",
       "Muro de Berlín":
         "Muro levantado en 1961 que dividió la ciudad de Berlín y se volvió el símbolo de la separación entre el bloque comunista y el capitalista.",
-      "mundo bipolar":
-        "El orden mundial de la Guerra Fría, dividido en dos grandes bloques liderados por Estados Unidos y la Unión Soviética.",
       "Primavera de Praga":
         "Intento de Checoslovaquia, en 1968, de suavizar el comunismo; fue aplastado por la invasión soviética.",
       "Crisis de los Misiles":
         "Enfrentamiento de 1962 en el que la URSS instaló misiles nucleares en Cuba y el mundo estuvo al borde de una guerra nuclear.",
-      Sputnik:
-        "Primer satélite artificial de la historia, lanzado por la URSS en 1957; marcó el inicio de la carrera espacial.",
+      "carrera espacial":
+        "Competencia entre EE. UU. y la URSS por dominar el espacio: incluyó el primer satélite (Sputnik, 1957) y la llegada del hombre a la Luna (1969).",
     },
     slides: [
       { image: "/images/guerra-fria.jpg", title: "Guerra Fría" },
       {
-        image: "/images/guerra-fria.jpg",
-        title: "¿Qué fue la Guerra Fría?",
+        image: "/images/gf-bipolar.jpg",
+        title: "Un mundo bipolar",
         body: [
-          "Tras 1945, Estados Unidos (",
+          "Estados Unidos (",
           { term: "capitalismo" },
           ") y la URSS (",
           { term: "comunismo" },
-          ") se enfrentaron sin combatir directamente: una guerra de tensión, espionaje e influencia.",
-        ],
-      },
-      {
-        image: "/images/guerra-fria.jpg",
-        title: "Un mundo bipolar",
-        body: [
-          "El planeta quedó partido en dos bloques: un ",
-          { term: "mundo bipolar" },
-          ". El ",
+          ") se enfrentaron sin combatir directamente. El ",
           { term: "Muro de Berlín" },
-          " (1961) se volvió el símbolo de esa división.",
+          " (1961) partió el mundo en dos bloques.",
         ],
       },
       {
-        image: "/images/guerra-fria.jpg",
+        image: "/images/gf-conflictos.jpg",
         title: "Conflictos indirectos",
         body: [
           "Los bloques chocaron en otros países: la Guerra de Corea, la de Vietnam, la ",
@@ -443,7 +338,7 @@ export const topics: Topic[] = [
         ],
       },
       {
-        image: "/images/guerra-fria.jpg",
+        image: "/images/gf-abismo.jpg",
         title: "Al borde del abismo",
         body: [
           "La ",
@@ -452,19 +347,12 @@ export const topics: Topic[] = [
         ],
       },
       {
-        image: "/images/guerra-fria.jpg",
-        title: "Carrera espacial y nuclear",
+        image: "/images/gf-espacial.jpg",
+        title: "La carrera espacial",
         body: [
-          "Ambas potencias compitieron en armas nucleares y en el espacio: la URSS lanzó el ",
-          { term: "Sputnik" },
-          " y EE. UU. respondió llegando a la Luna en 1969.",
-        ],
-      },
-      {
-        image: "/images/guerra-fria.jpg",
-        title: "El final",
-        body: [
-          "La Guerra Fría terminó con la caída del Muro de Berlín (1989) y la disolución de la Unión Soviética en 1991.",
+          "La ",
+          { term: "carrera espacial" },
+          " y nuclear llevó a la URSS a lanzar el Sputnik y a EE. UU. a la Luna en 1969. La Guerra Fría terminó en 1991, con el fin de la Unión Soviética.",
         ],
       },
     ],
