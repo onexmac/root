@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useTransform } from "motion/react";
+import { motion, useTransform, useMotionValueEvent } from "motion/react";
 import { springs, cascadeOut } from "@/lib/springs";
 import type { Slide as SlideData, BodyPart } from "@/data/topics";
 import type { SlideContext } from "@/components/ReelPager";
@@ -152,10 +152,10 @@ export function Slide({
   const peekScale = useTransform(ctx.peeking, [0, 1], [1, box?.r ?? 1]);
   const peekRadius = useTransform(ctx.peeking, [0, 1], [0, 18]);
   const textFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
-  // The photo-info caption rises into the revealed area as the peek settles —
-  // it comes in after the photo has begun shrinking, not immediately.
-  const infoOpacity = useTransform(ctx.peeking, [0.35, 1], [0, 1]);
-  const infoY = useTransform(ctx.peeking, [0.35, 1], [12, 0]);
+  // Caption reveal is a boolean (not a live map of peeking) so it can appear a
+  // beat AFTER the peek commits (small delay via CSS) and fade out fast.
+  const [infoShown, setInfoShown] = useState(false);
+  useMotionValueEvent(ctx.peeking, "change", (v) => setInfoShown(v > 0.55));
 
   // A slide can hold more text than fits: the text panel then scrolls on its
   // own (independent of paging) and the photo darkens as you read down. For
@@ -286,16 +286,26 @@ export function Slide({
         </div>
       </motion.div>
 
-      {/* Photo-info caption — revealed only while peeking (tap-and-hold). */}
+      {/* Photo-info caption — revealed only while peeking (tap-and-hold), sitting
+          just below the shrunk photo, after a small delay. */}
       {slide.info && (
-        <motion.div
-          className="absolute inset-x-0 bottom-0 z-10 flex justify-center px-6 pb-[calc(var(--sab)_+_24px)] pointer-events-none"
-          style={{ opacity: infoOpacity, y: infoY }}
+        <div
+          className="absolute inset-x-0 z-10 flex justify-center px-6 pointer-events-none"
+          style={{
+            // anchored to the peeked photo's bottom edge (center + half its
+            // shrunk height) + a small gap, not the screen bottom
+            top: box ? `calc(50% + ${(box.h * box.r) / 2 + 18}px)` : "72%",
+            opacity: infoShown ? 1 : 0,
+            transform: infoShown ? "translateY(0)" : "translateY(10px)",
+            transition: infoShown
+              ? "opacity 300ms ease-out 200ms, transform 360ms cubic-bezier(0.22,1,0.36,1) 200ms"
+              : "opacity 150ms ease-out, transform 150ms ease-out",
+          }}
         >
           <p className="max-w-[560px] text-center text-[15px] md:text-base leading-snug text-white/85">
             {slide.info}
           </p>
-        </motion.div>
+        </div>
       )}
     </div>
   );
