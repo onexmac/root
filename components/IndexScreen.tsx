@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 import { PressScale } from "@/components/PressScale";
 import { ReelScreen } from "@/components/ReelScreen";
-import { springs } from "@/lib/springs";
 import type { Topic } from "@/data/topics";
 
 function TopicCard({
@@ -101,22 +100,27 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   const openIdx = opening ? topics.findIndex((t) => t.slug === opening.slug) : -1;
   const fading = opening !== null && !closing;
 
-  // Cascade radiating from the tap: everything BELOW the pressed card drops
-  // first, then the elements ABOVE fall toward it, farthest first (brand, then
-  // cards top-down). The pressed card never fades — the photo covers it.
-  // pos: -1 = brand block, 0..n-1 = topic cards.
-  const fadeDelay = (pos: number) => {
-    if (openIdx < 0) return 0;
-    if (pos > openIdx) return (pos - openIdx - 1) * 0.05;
-    const rankFromTop = pos + 1; // brand = 0, first card = 1, ...
-    return 0.14 + rankFromTop * 0.09;
+  // "tap tap tap" cascade: each element fades FAST (short) with a clear gap
+  // between them, so you perceive discrete pops, not one soft dip.
+  const FADE = 0.12; // duration of one element's fade
+  const STEP = 0.11; // gap between consecutive elements (> FADE-ish = distinct)
+
+  // Order (pos: -1 = brand block, 0..n-1 = cards): the elements BELOW the tapped
+  // card go first (nearest→down), then the brand, then the cards ABOVE
+  // farthest→nearest. So brand fades early and the card just above the tap fades
+  // last — matching the storyboard. The tapped card never fades.
+  const fadeOrder: number[] = [];
+  if (openIdx >= 0) {
+    for (let p = openIdx + 1; p < topics.length; p++) fadeOrder.push(p);
+    fadeOrder.push(-1);
+    for (let p = 0; p < openIdx; p++) fadeOrder.push(p);
+  }
+  const elementDelay = (pos: number) => {
+    const k = fadeOrder.indexOf(pos);
+    if (k < 0) return 0;
+    // reverse the rhythm on the way back (elements pop back in nearest-first)
+    return (closing ? fadeOrder.length - 1 - k : k) * STEP;
   };
-  // Coming back: radiate outward from the returning card, nearest first.
-  const returnDelay = (pos: number) => {
-    if (openIdx < 0) return 0;
-    return 0.12 + Math.abs(pos - openIdx) * 0.06;
-  };
-  const elementDelay = (pos: number) => (fading ? fadeDelay(pos) : returnDelay(pos));
 
   // Warm the browser cache with the full-size reel images so opening a topic is
   // instant on iOS: each topic's cover first, then the rest on idle.
@@ -170,7 +174,7 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           <motion.div
             className="flex flex-col items-center text-center pt-6 pb-4 md:justify-center md:py-0"
             animate={{ opacity: fading ? 0 : 1 }}
-            transition={{ duration: 0.3, delay: elementDelay(-1) }}
+            transition={{ duration: FADE, ease: "easeOut", delay: elementDelay(-1) }}
           >
             <div className="flex items-center gap-3">
               <h1 className="text-6xl md:text-7xl font-medium leading-none tracking-tight">
@@ -193,7 +197,7 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
               animate={{
                 opacity: fading && i !== openIdx ? 0 : 1,
               }}
-              transition={{ duration: 0.3, delay: i === openIdx ? 0 : elementDelay(i) }}
+              transition={{ duration: FADE, ease: "easeOut", delay: i === openIdx ? 0 : elementDelay(i) }}
             >
               <TopicCard
                 topic={topic}
@@ -213,18 +217,28 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           deep links still use the /tema/[slug] route with its own entrance. */}
       {opening && (
         <motion.div
-          className="fixed inset-0 z-50 overflow-hidden bg-black"
+          className="fixed inset-0 z-[60] overflow-hidden bg-black"
           style={{ transformOrigin: "50% 100%", willChange: "transform" }}
-          initial={{ y: "62%", scale: 0.92, opacity: 0, borderRadius: 40 }}
+          // opacity resolves FAST (the card just appears, peeking at the bottom);
+          // the slow spring on y/scale is then the motion you actually feel — so
+          // it reads as a grow, not a fade-in. Grow starts while the cascade runs
+          // but its bulk lands after (they fade before it grows).
+          initial={{ y: "74%", scale: 0.9, opacity: 0, borderRadius: 40 }}
           animate={
             closing
-              ? { y: "62%", scale: 0.92, opacity: 0, borderRadius: 40 }
+              ? { y: "74%", scale: 0.9, opacity: 0, borderRadius: 40 }
               : { y: "0%", scale: 1, opacity: 1, borderRadius: 0 }
           }
           transition={
             closing
-              ? { default: springs.deleting, opacity: { duration: 0.22, delay: 0.08 } }
-              : { default: springs.settling, delay: 0.18, opacity: { duration: 0.25, delay: 0.18 } }
+              ? {
+                  default: { type: "spring", stiffness: 92, damping: 16, mass: 1 },
+                  opacity: { duration: 0.2, delay: 0.14 },
+                }
+              : {
+                  default: { type: "spring", stiffness: 58, damping: 15, mass: 1, delay: 0.16 },
+                  opacity: { duration: 0.1, delay: 0.03 },
+                }
           }
           onAnimationComplete={() => {
             try {
