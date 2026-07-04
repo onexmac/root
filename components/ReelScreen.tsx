@@ -23,6 +23,23 @@ export function ReelScreen({ topic }: { topic: Topic }) {
   const y = useMotionValue(0);
   const [pageH, setPageH] = useState(0);
 
+  // When the index already played the grow-from-under transition, it sets this
+  // flag right before navigating — we mount full-bleed (no second entrance) so
+  // the reel's first frame matches the overlay's last frame.
+  const [seamless] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return sessionStorage.getItem("histok-seamless") === "1";
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    try {
+      sessionStorage.removeItem("histok-seamless");
+    } catch {}
+  }, []);
+
   const bumpActivity = useCallback(() => {
     setChromeVisible(true);
     if (idleTimer.current) clearTimeout(idleTimer.current);
@@ -43,7 +60,11 @@ export function ReelScreen({ topic }: { topic: Topic }) {
       <motion.div
         className="absolute inset-0 overflow-hidden"
         style={{ transformOrigin: "50% 100%" }}
-        initial={{ y: "100%", scale: 0.9, opacity: 0, borderRadius: 44 }}
+        // seamless mounts render directly at the target — the server HTML
+        // (hidden initial) intentionally differs, and framer corrects the DOM
+        // on mount, so silence just this known mismatch
+        suppressHydrationWarning
+        initial={seamless ? false : { y: "100%", scale: 0.9, opacity: 0, borderRadius: 44 }}
         animate={
           exiting
             ? { y: "100%", scale: 0.9, opacity: 0, borderRadius: 44 }

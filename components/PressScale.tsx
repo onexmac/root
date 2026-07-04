@@ -12,6 +12,7 @@ export function PressScale({
   children,
   ariaLabel,
   downScale = 0.96,
+  onPressChange,
 }: {
   onActivate: () => void;
   style?: CSSProperties;
@@ -19,8 +20,13 @@ export function PressScale({
   children: ReactNode;
   ariaLabel: string;
   downScale?: number;
+  onPressChange?: (pressed: boolean) => void;
 }) {
-  const [pressed, setPressed] = useState(false);
+  const [pressed, setPressedState] = useState(false);
+  const setPressed = (v: boolean) => {
+    setPressedState(v);
+    onPressChange?.(v);
+  };
   const cancelled = useRef(false);
   const activateTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
