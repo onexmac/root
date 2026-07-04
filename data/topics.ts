@@ -4,6 +4,9 @@ export interface Slide {
   image: string;
   title: string;
   body?: BodyPart[];
+  /** Caption shown while peeking (tap-and-hold) the photo — what the image is
+   *  and its real source. Researched per image; see git history for provenance. */
+  info?: string;
 }
 
 export interface Topic {
@@ -33,7 +36,11 @@ export const topics: Topic[] = [
         "Reunión de 1884-1885 en la que las potencias europeas se repartieron África entre ellas, trazando fronteras sin tomar en cuenta a sus pueblos.",
     },
     slides: [
-      { image: "/images/imperialismo.jpg", title: "Imperialismo Europeo" },
+      {
+        image: "/images/imperialismo.jpg",
+        title: "Imperialismo Europeo",
+        info: "Ceremonia imperial británica en la India (un Durbar de Delhi): tropas y multitudes rodean el pabellón real, símbolo del poder colonial. Fotografía de inicios del siglo XX.",
+      },
       {
         image: "/images/imp-rhodes.jpg",
         title: "¿Qué fue el imperialismo?",
@@ -42,6 +49,7 @@ export const topics: Topic[] = [
           { term: "imperialismo" },
           " era dominar esos territorios para extraer sus recursos y ganar poder.",
         ],
+        info: "«El Coloso de Rhodes»: caricatura de Cecil Rhodes a horcajadas sobre África, de El Cabo a El Cairo. Revista Punch, 10 de diciembre de 1892.",
       },
       {
         image: "/images/imp-delacroix.jpg",
@@ -53,6 +61,7 @@ export const topics: Topic[] = [
           { term: "nacionalismo" },
           " —el orgullo por la propia nación— alimentaba la rivalidad entre las potencias.",
         ],
+        info: "«La libertad guiando al pueblo», de Eugène Delacroix (1830). Alegoría de la Revolución de Julio en Francia; ilustra el nacionalismo. Museo del Louvre, París.",
       },
       {
         image: "/images/imp-menzel.jpg",
@@ -62,6 +71,7 @@ export const topics: Topic[] = [
           { term: "Revolución Industrial" },
           " llenó a Europa de fábricas que necesitaban materias primas baratas y nuevos mercados. Las colonias ofrecían ambas cosas.",
         ],
+        info: "«La fábrica de laminado de hierro» («Eisenwalzwerk»), de Adolph Menzel (1872-1875). Retrata el trabajo industrial de la época. Alte Nationalgalerie, Berlín.",
       },
       {
         image: "/images/imp-berlin.jpg",
@@ -71,6 +81,7 @@ export const topics: Topic[] = [
           { term: "Conferencia de Berlín" },
           " (1884) las potencias dividieron África sobre un mapa, sin consultar a nadie. El resultado: fronteras artificiales y rivalidades que años después estallarían en guerra.",
         ],
+        info: "Sesión de la Conferencia de Berlín (1884-1885), donde las potencias europeas repartieron África. Al fondo, un mapa del continente; preside Bismarck. Grabado de época.",
       },
     ],
   },
@@ -91,7 +102,11 @@ export const topics: Topic[] = [
         "Tratado de 1919 que puso fin a la guerra e impuso a Alemania duras condiciones: pérdida de territorios, desarme y una enorme deuda de guerra.",
     },
     slides: [
-      { image: "/images/primera-guerra.jpg", title: "Primera Guerra Mundial" },
+      {
+        image: "/images/primera-guerra.jpg",
+        title: "Primera Guerra Mundial",
+        info: "Fotografía aérea de una red de trincheras del frente occidental, con anotaciones en inglés («dugouts», «communication trench»). Primera Guerra Mundial (1914-1918).",
+      },
       {
         image: "/images/pgm-dreadnought.jpg",
         title: "Las causas de fondo",
@@ -104,6 +119,7 @@ export const topics: Topic[] = [
           { term: "Balcanes" },
           " eran el «polvorín».",
         ],
+        info: "El acorazado británico HMS Dreadnought (1906), cuyo diseño revolucionario desató la carrera naval anglo-alemana previa a la guerra.",
       },
       {
         image: "/images/pgm-princip.jpg",
@@ -111,6 +127,7 @@ export const topics: Topic[] = [
         body: [
           "El asesinato del archiduque Francisco Fernando en Sarajevo fue la causa inmediata: en pocas semanas, las alianzas arrastraron a toda Europa a la guerra.",
         ],
+        info: "Sarajevo, 28 de junio de 1914: la policía detiene a un sospechoso tras el atentado contra Francisco Fernando. Durante años se creyó que era Gavrilo Princip, pero era otro detenido.",
       },
       {
         image: "/images/pgm-trincheras.jpg",
@@ -120,6 +137,7 @@ export const topics: Topic[] = [
           { term: "guerra de trincheras" },
           ". El final llegó con la entrada de EE. UU. y la salida de Rusia.",
         ],
+        info: "Soldados del Regimiento de Cheshire en una trinchera del Somme; un centinela vigila mientras sus compañeros descansan. Julio de 1916.",
       },
       {
         image: "/images/tratado-versalles.jpg",
@@ -129,6 +147,7 @@ export const topics: Topic[] = [
           { term: "Tratado de Versalles" },
           " (1919) castigó duramente a Alemania. Cuatro imperios desaparecieron y quedó un resentimiento que alimentaría la siguiente guerra.",
         ],
+        info: "La Galería de los Espejos de Versalles repleta de asistentes durante la firma del Tratado de Versalles, que puso fin a la guerra. 28 de junio de 1919.",
       },
     ],
   },
@@ -152,7 +171,11 @@ export const topics: Topic[] = [
         "Líder de la URSS tras la muerte de Lenin; gobernó con un régimen totalitario e industrializó el país a la fuerza.",
     },
     slides: [
-      { image: "/images/revolucion-rusa.jpg", title: "Revolución Rusa" },
+      {
+        image: "/images/revolucion-rusa.jpg",
+        title: "Revolución Rusa",
+        info: "Lenin arenga a las tropas del Ejército Rojo en la plaza Sverdlov de Moscú, 5 de mayo de 1920. Trotsky aparece junto a la tribuna (luego borrado en versiones estalinistas).",
+      },
       {
         image: "/images/rr-zar.jpg",
         title: "La Rusia de los zares",
@@ -163,6 +186,7 @@ export const topics: Topic[] = [
           { term: "Primera Guerra Mundial" },
           " terminaron por hundir al régimen.",
         ],
+        info: "El zar Nicolás II de Rusia con uniforme militar, en un retrato firmado y fechado en 1898.",
       },
       {
         image: "/images/rr-1917.jpg",
@@ -176,6 +200,7 @@ export const topics: Topic[] = [
           { term: "comunismo" },
           ".",
         ],
+        info: "La multitud huye tras la represión con ametralladoras en la avenida Nevski de Petrogrado, durante las Jornadas de Julio, 4 de julio de 1917.",
       },
       {
         image: "/images/rr-stalin.jpg",
@@ -187,6 +212,7 @@ export const topics: Topic[] = [
           { term: "Stalin" },
           " toma el control con mano de hierro. Nace la primera gran potencia comunista.",
         ],
+        info: "Iósif Stalin en un retrato de los primeros años soviéticos (hacia 1918), con gorra militar con estrella roja.",
       },
     ],
   },
@@ -205,7 +231,11 @@ export const topics: Topic[] = [
         "Falta de productos básicos disponibles, que suele encarecerlos y dificultar la vida diaria.",
     },
     slides: [
-      { image: "/images/gran-depresion.jpg", title: "La Gran Depresión" },
+      {
+        image: "/images/gran-depresion.jpg",
+        title: "La Gran Depresión",
+        info: "Fila del pan frente a la panadería Fleischmann en Nueva York, 2 de enero de 1908 (colección Bain, Biblioteca del Congreso de EE. UU.).",
+      },
       {
         image: "/images/gd-crack.jpg",
         title: "El crack del 29",
@@ -216,6 +246,7 @@ export const topics: Topic[] = [
           { term: "especulación" },
           " y una burbuja que reventó.",
         ],
+        info: "Multitudes se agolpan en Wall Street, junto a la Bolsa de Nueva York, durante el crac bursátil de octubre de 1929.",
       },
       {
         image: "/images/gd-impacto.jpg",
@@ -227,6 +258,7 @@ export const topics: Topic[] = [
           { term: "escasez" },
           " y la pobreza. La crisis se extendió desde Estados Unidos hasta Europa y el resto del mundo.",
         ],
+        info: "«Madre migrante»: Florence Owens Thompson, jornalera de 32 años, y sus hijos en Nipomo, California. Foto de Dorothea Lange, marzo de 1936.",
       },
       {
         image: "/images/gd-consecuencias.jpg",
@@ -234,6 +266,7 @@ export const topics: Topic[] = [
         body: [
           "Filas para conseguir comida, desconfianza en el sistema económico y un clima de desesperación que facilitó el ascenso de líderes autoritarios.",
         ],
+        info: "Desempleados hacen fila en el comedor de beneficencia abierto por Al Capone en Chicago: «Sopa, café y donas gratis». Febrero de 1931.",
       },
     ],
   },
@@ -254,7 +287,11 @@ export const topics: Topic[] = [
         "Exterminio sistemático de unos seis millones de judíos —y de otros grupos— por parte del régimen nazi durante la guerra.",
     },
     slides: [
-      { image: "/images/cover-wwii.jpg", title: "Segunda Guerra Mundial" },
+      {
+        image: "/images/cover-wwii.jpg",
+        title: "Segunda Guerra Mundial",
+        info: "«Hacia las fauces de la muerte»: soldados de EE. UU. desembarcan bajo fuego en la playa Omaha, Normandía, el Día D, 6 de junio de 1944.",
+      },
       {
         image: "/images/fascismo-nazismo.jpg",
         title: "El ascenso del fascismo y el nazismo",
@@ -267,6 +304,7 @@ export const topics: Topic[] = [
           { term: "fascismo" },
           ".",
         ],
+        info: "Mussolini (izq.) y Hitler pasan revista a las tropas: los líderes del fascismo italiano y del nazismo alemán, aliados del Eje.",
       },
       {
         image: "/images/sgm-jjoo.jpg",
@@ -276,6 +314,7 @@ export const topics: Topic[] = [
           { term: "nazismo" },
           ". Pero el atleta afroamericano Jesse Owens ganó cuatro oros y desmintió el mito de la «superioridad» aria.",
         ],
+        info: "Jesse Owens, atleta afroamericano de EE. UU. que ganó cuatro medallas de oro en los Juegos Olímpicos de Berlín 1936.",
       },
       {
         image: "/images/invasion-polonia.jpg",
@@ -283,6 +322,7 @@ export const topics: Topic[] = [
         body: [
           "El 1 de setiembre de 1939, Alemania invadió Polonia sin declaración previa. Dos días después, Francia y el Reino Unido le declararon la guerra.",
         ],
+        info: "Soldados alemanes rompen la barrera fronteriza con Polonia el 1 de septiembre de 1939: comienza la Segunda Guerra Mundial. (Foto propagandística escenificada.)",
       },
       {
         image: "/images/sgm-consecuencias.jpg",
@@ -292,6 +332,7 @@ export const topics: Topic[] = [
           { term: "Holocausto" },
           " y una Europa que las potencias vencedoras se repartieron, dando inicio a la Guerra Fría.",
         ],
+        info: "Conferencia de Yalta, febrero de 1945: Churchill, Roosevelt y Stalin acuerdan cómo repartir y reorganizar Europa tras la guerra.",
       },
     ],
   },
@@ -314,7 +355,11 @@ export const topics: Topic[] = [
         "Competencia entre EE. UU. y la URSS por dominar el espacio: incluyó el primer satélite (Sputnik, 1957) y la llegada del hombre a la Luna (1969).",
     },
     slides: [
-      { image: "/images/guerra-fria.jpg", title: "Guerra Fría" },
+      {
+        image: "/images/guerra-fria.jpg",
+        title: "Guerra Fría",
+        info: "Reapertura de la Puerta de Brandeburgo en Berlín, 22 de diciembre de 1989, bajo la lluvia: el símbolo del fin de la división de la Guerra Fría.",
+      },
       {
         image: "/images/gf-bipolar.jpg",
         title: "Un mundo bipolar",
@@ -327,6 +372,7 @@ export const topics: Topic[] = [
           { term: "Muro de Berlín" },
           " (1961) partió el mundo en dos bloques.",
         ],
+        info: "Obreros de Alemania Oriental construyen el Muro de Berlín con una grúa, 1961. La ciudad quedó dividida entre los dos bloques.",
       },
       {
         image: "/images/gf-conflictos.jpg",
@@ -336,6 +382,7 @@ export const topics: Topic[] = [
           { term: "Primavera de Praga" },
           " y la invasión de Afganistán.",
         ],
+        info: "Helicópteros UH-1 «Huey» y soldados estadounidenses en la Guerra de Vietnam, 1966: un conflicto indirecto de la Guerra Fría.",
       },
       {
         image: "/images/gf-abismo.jpg",
@@ -345,6 +392,7 @@ export const topics: Topic[] = [
           { term: "Crisis de los Misiles" },
           " de Cuba (1962) puso al mundo al filo de una guerra nuclear. Fue el momento más tenso de todo el periodo.",
         ],
+        info: "Foto aérea de EE. UU. de un emplazamiento de misiles soviéticos en Cuba (Los Palacios), octubre de 1962: la Crisis de los Misiles.",
       },
       {
         image: "/images/gf-espacial.jpg",
@@ -354,6 +402,7 @@ export const topics: Topic[] = [
           { term: "carrera espacial" },
           " y nuclear llevó a la URSS a lanzar el Sputnik y a EE. UU. a la Luna en 1969. La Guerra Fría terminó en 1991, con el fin de la Unión Soviética.",
         ],
+        info: "El astronauta Buzz Aldrin sobre la Luna, misión Apolo 11, 20 de julio de 1969. El punto culminante de la carrera espacial.",
       },
     ],
   },

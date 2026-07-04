@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { PressScale } from "@/components/PressScale";
 import { ReelScreen } from "@/components/ReelScreen";
 import { OverscrollBounce } from "@/components/OverscrollBounce";
+import { BrandPills, BrandMonogram } from "@/components/BrandMark";
 import type { Topic } from "@/data/topics";
 
 function TopicCard({
@@ -74,34 +75,6 @@ function TopicCard({
         </span>
       </PressScale>
     </motion.div>
-  );
-}
-
-function BrandPills({
-  w = 8,
-  tall = 18,
-  short = 10,
-  gap = 5,
-}: {
-  w?: number;
-  tall?: number;
-  short?: number;
-  gap?: number;
-}) {
-  return (
-    <div className="flex flex-col" style={{ gap }} aria-hidden>
-      {[0, 1, 2, 3].map((i) => (
-        <span
-          key={i}
-          style={{
-            width: w,
-            height: i === 0 ? tall : short,
-            borderRadius: w / 2,
-            background: i === 0 ? "#fff" : "rgba(255,255,255,0.3)",
-          }}
-        />
-      ))}
-    </div>
   );
 }
 
@@ -194,16 +167,8 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
 
         {/* Footer sign-off: the "H" monogram + brand pills, centered with roomy
             breathing room below the last card. */}
-        <footer
-          aria-label="Histok"
-          className="mt-28 md:mt-36 px-6 pb-6 flex items-center justify-center gap-3"
-        >
-          {/* Same scale as the header wordmark — the footer is the monogram at
-              header size, not an enlarged version. */}
-          <span className="text-6xl md:text-7xl font-medium leading-none tracking-tight select-none">
-            H
-          </span>
-          <BrandPills />
+        <footer className="mt-28 md:mt-36 px-6 pb-6 flex justify-center">
+          <BrandMonogram />
         </footer>
       </motion.div>
       </OverscrollBounce>

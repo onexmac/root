@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { motion, useMotionValue, animate, type MotionValue } from "motion/react";
+import { motion, useMotionValue, useTransform, animate, type MotionValue } from "motion/react";
 import { springs } from "@/lib/springs";
 import { haptic } from "@/lib/haptic";
 
@@ -20,6 +20,9 @@ const ADVANCE_DISTANCE_RATIO = 0.25;
 const ADVANCE_VELOCITY_PX = 250;
 const VELOCITY_WINDOW_MS = 120;
 const EXIT_OVERSHOOT_PX = 130;
+// The end-of-story pull travels further before it commits to leaving, so the
+// "H" sign-off has room to rise into view first.
+const EXIT_OVERSHOOT_END = 260;
 const PEEK_HOLD_MS = 160;
 // Wheel: amplify the scroll so a normal gesture visibly drags the photo, and
 // commit at a low fraction of a page so it advances readily instead of fighting
@@ -64,6 +67,7 @@ export function ReelPager({
   y,
   onMeasure,
   overlay,
+  endSlot,
 }: {
   pageCount: number;
   page: number;
@@ -78,10 +82,18 @@ export function ReelPager({
    *  pointerdown on it bubbles to the pager's gesture handlers — otherwise
    *  gestures starting on the chrome never reach the pager (Bug B). */
   overlay?: ReactNode;
+  /** Sign-off revealed just past the last slide when you overscroll the end. */
+  endSlot?: ReactNode;
 }) {
   const [pageH, setPageH] = useState(0);
   const measured = useRef(false);
   const peeking = useMotionValue(0);
+  // How far the end-of-story sign-off has been pulled into view (0..1), driven
+  // by how far y is overscrolled past the last slide.
+  const endReveal = useTransform(y, (v) =>
+    pageH ? Math.max(0, Math.min(1, (-v - (pageCount - 1) * pageH) / 140)) : 0,
+  );
+  const endRevealScale = useTransform(endReveal, (r) => 0.82 + r * 0.18);
 
   const dragging = useRef(false);
   const axisLocked = useRef<"x" | "y" | null>(null);
@@ -242,8 +254,9 @@ export function ReelPager({
     const atStart = page === 0 && translation > 0;
     const atEnd = page === pageCount - 1 && translation < 0;
     if (atStart || atEnd) {
+      const exitDist = atEnd ? EXIT_OVERSHOOT_END : EXIT_OVERSHOOT_PX;
       const pastExitThreshold =
-        Math.abs(translation) > EXIT_OVERSHOOT_PX ||
+        Math.abs(translation) > exitDist ||
         Math.abs(predicted) > ADVANCE_VELOCITY_PX;
       if (pastExitThreshold && onExit) {
         haptic.select();
@@ -349,6 +362,16 @@ export function ReelPager({
           ) : (
             <div key={i} style={{ height: pageH || "100dvh" }} />
           ),
+        )}
+        {endSlot && (
+          <div
+            className="flex items-start justify-center"
+            style={{ height: pageH || "100dvh" }}
+          >
+            <motion.div style={{ opacity: endReveal, scale: endRevealScale }} className="pt-20">
+              {endSlot}
+            </motion.div>
+          </div>
         )}
       </motion.div>
       {overlay}

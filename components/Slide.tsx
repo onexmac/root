@@ -152,6 +152,10 @@ export function Slide({
   const peekScale = useTransform(ctx.peeking, [0, 1], [1, box?.r ?? 1]);
   const peekRadius = useTransform(ctx.peeking, [0, 1], [0, 18]);
   const textFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
+  // The photo-info caption rises into the revealed area as the peek settles —
+  // it comes in after the photo has begun shrinking, not immediately.
+  const infoOpacity = useTransform(ctx.peeking, [0.35, 1], [0, 1]);
+  const infoY = useTransform(ctx.peeking, [0.35, 1], [12, 0]);
 
   // A slide can hold more text than fits: the text panel then scrolls on its
   // own (independent of paging) and the photo darkens as you read down. For
@@ -281,6 +285,18 @@ export function Slide({
           )}
         </div>
       </motion.div>
+
+      {/* Photo-info caption — revealed only while peeking (tap-and-hold). */}
+      {slide.info && (
+        <motion.div
+          className="absolute inset-x-0 bottom-0 z-10 flex justify-center px-6 pb-[calc(var(--sab)_+_24px)] pointer-events-none"
+          style={{ opacity: infoOpacity, y: infoY }}
+        >
+          <p className="max-w-[560px] text-center text-[15px] md:text-base leading-snug text-white/85">
+            {slide.info}
+          </p>
+        </motion.div>
+      )}
     </div>
   );
 }

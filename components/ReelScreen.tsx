@@ -8,6 +8,7 @@ import { VerticalPills } from "@/components/VerticalPills";
 import { ReelPager } from "@/components/ReelPager";
 import { Slide } from "@/components/Slide";
 import { GlossaryCard } from "@/components/GlossaryCard";
+import { BrandMonogram } from "@/components/BrandMark";
 import { springs } from "@/lib/springs";
 import type { Topic } from "@/data/topics";
 
@@ -86,6 +87,7 @@ export function ReelScreen({
             onExit={goHome}
             y={y}
             onMeasure={setPageH}
+            endSlot={<BrandMonogram />}
             renderSlide={(index, isCurrent, ctx) => (
               <Slide
                 slide={topic.slides[index]}
