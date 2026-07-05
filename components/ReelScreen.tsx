@@ -56,12 +56,11 @@ export function ReelScreen({
   const backIn = useMotionValue(embedded ? 0 : 1);
   const pillsIn = useMotionValue(embedded ? 0 : 1);
   const backDragProgress = useMotionValue(0);
-  // On close each control exits to ITS OWN edge (back button off the left, pills
-  // off the right) — the reverse of how they enter. The back button also fades
-  // so it doesn't linger at the edge.
-  const backX = useTransform(() => (backIn.get() - 1) * 84 - backDragProgress.get() * 160);
+  // During a back-drag the back button follows the finger to the RIGHT and fades
+  // out (as it did before), while the pills slide off to the LEFT.
+  const backX = useTransform(() => (backIn.get() - 1) * 84 + backDragProgress.get() * BACK_DISTANCE);
   const backOpacity = useTransform(backDragProgress, [0, 0.5], [1, 0]);
-  const pillsX = useTransform(() => (1 - pillsIn.get()) * 64 + backDragProgress.get() * 240);
+  const pillsX = useTransform(() => (1 - pillsIn.get()) * 64 - backDragProgress.get() * 420);
 
   useEffect(() => {
     if (!embedded) return;
@@ -249,6 +248,7 @@ export function ReelScreen({
             onPageChange={setPage}
             disabled={activeTerm !== null}
             onActivity={bumpActivity}
+            onExit={goHome}
             y={y}
             onMeasure={setPageH}
             endSlot={<BrandMonogram />}

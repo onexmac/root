@@ -59,9 +59,13 @@ function Pill({
   progress: MotionValue<number>;
 }) {
   const fill = useTransform(progress, (p) => {
-    if (index === page) return Math.max(0, Math.min(1, p));
-    if (index === page - 1 && p < 0) return Math.max(0, Math.min(1, 1 + p));
-    return index < page ? 1 : 0;
+    // The pill for the slide you're ON is full (so the last slide reads as "the
+    // end", not "one more to go"). The NEXT pill fills as you drag toward it;
+    // the current one drains as you drag back toward the previous.
+    if (index < page) return 1;
+    if (index === page) return p < 0 ? Math.max(0, 1 + p) : 1;
+    if (index === page + 1) return p > 0 ? Math.min(1, p) : 0;
+    return 0;
   });
   const fillHeight = useTransform(fill, (f) => `${f * 100}%`);
 

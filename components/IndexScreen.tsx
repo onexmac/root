@@ -107,6 +107,12 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   // reveals plain black behind the shrinking card — not the blurred gray photo.
   const backdropShow = useMotionValue(0);
   const dimOpacity = useTransform(openAmt, [0, 1], [0.5, 0]);
+  // Menu fades OUT as a reel opens and fades back IN as it closes.
+  const indexOpacity = useTransform(openAmt, [0, 0.6], [1, 0]);
+  // Elastic shrink layered on top of the native scroll bounce at the top/bottom
+  // (the native bounce provides the momentum; this adds the rubbery squish).
+  const bounceScale = useMotionValue(1);
+  const bounceOrigin = useMotionValue("50% 50%");
 
   // No history.pushState: a same-document history entry is exactly what iOS
   // Safari's edge-swipe-back animates into (the duplicated-reel artifact). We
@@ -126,6 +132,7 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   };
 
   const commitClose = () => {
+    backdropShow.set(0); // black behind the shrinking card, never blurred gray
     animate(openAmt, 0, {
       ...CLOSE_SPRING,
       onComplete: () => setOpening(null),
@@ -136,6 +143,7 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   // reel back toward the menu, tracking the finger.
   const handleBackDrag = (progress: number) => {
     openAmt.stop();
+    backdropShow.set(0); // the moment we start going back, BG is black
     const p = progress < 0 ? 0 : progress > 1 ? 1 : progress;
     openAmt.set(1 - p);
   };
@@ -143,6 +151,49 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
     if (commit) commitClose();
     else animate(openAmt, 1, CANCEL_SPRING);
   };
+
+  // Rubbery shrink at the very top/bottom of the menu. We DON'T preventDefault,
+  // so the native iOS elastic scroll (momentum + inertia) still runs — this just
+  // adds a subtle scale toward whichever edge you're pushing against.
+  useEffect(() => {
+    if (opening) return;
+    let pinnedY: number | null = null;
+    let edge: "top" | "bottom" = "top";
+    const maxScroll = () =>
+      Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const onMove = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return;
+      const cy = e.touches[0].clientY;
+      const sy = window.scrollY;
+      const atTop = sy <= 0;
+      const atBottom = sy >= maxScroll() - 1;
+      if (atTop || atBottom) {
+        if (pinnedY === null) {
+          pinnedY = cy;
+          edge = atTop ? "top" : "bottom";
+        }
+        const delta = cy - pinnedY;
+        const overshoot = edge === "top" ? Math.max(0, delta) : Math.max(0, -delta);
+        bounceOrigin.set(edge === "top" ? "50% 0%" : "50% 100%");
+        bounceScale.set(1 - (Math.min(overshoot, 300) / 300) * 0.05);
+      } else if (pinnedY !== null) {
+        pinnedY = null;
+        bounceScale.set(1);
+      }
+    };
+    const onEnd = () => {
+      pinnedY = null;
+      animate(bounceScale, 1, CANCEL_SPRING);
+    };
+    window.addEventListener("touchmove", onMove, { passive: true });
+    window.addEventListener("touchend", onEnd);
+    window.addEventListener("touchcancel", onEnd);
+    return () => {
+      window.removeEventListener("touchmove", onMove);
+      window.removeEventListener("touchend", onEnd);
+      window.removeEventListener("touchcancel", onEnd);
+    };
+  }, [opening, bounceScale, bounceOrigin]);
 
   // Warm the browser cache with the full-size reel images so opening a topic is
   // instant on iOS: each topic's cover first, then the rest on idle.
@@ -183,12 +234,12 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           paddingTop: "calc(var(--sat) + 32px)",
           paddingBottom: "calc(var(--sab) + 32px)",
           pointerEvents: opening ? "none" : "auto",
+          // Fades out as a reel opens, back in as it closes.
+          opacity: indexOpacity,
+          // Rubbery overscroll shrink at the top/bottom.
+          scale: bounceScale,
+          transformOrigin: bounceOrigin,
         }}
-        // Load fade-in only. While a reel is open the blurred backdrop covers
-        // the index; it's revealed again as the reel shrinks back on close.
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
       >
         <div
           className="grid grid-cols-1 gap-x-8 gap-y-9 px-6 md:grid-cols-2 md:gap-y-12 md:px-10"

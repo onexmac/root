@@ -16,8 +16,10 @@ export type SlideContext = {
 const SLOP = 8;
 const RUBBER_KNEE = 240;
 const RUBBER_FACTOR = 0.35;
-const ADVANCE_DISTANCE_RATIO = 0.25;
+const ADVANCE_DISTANCE_RATIO = 0.18;
 const ADVANCE_VELOCITY_PX = 250;
+// Pull the FIRST slide down past this (px) to go back to the menu.
+const PULL_BACK_PX = 90;
 const VELOCITY_WINDOW_MS = 120;
 const PEEK_HOLD_MS = 160;
 // Wheel: amplify the scroll so a normal gesture visibly drags the photo, and
@@ -59,6 +61,7 @@ export function ReelPager({
   disabled,
   renderSlide,
   onActivity,
+  onExit,
   y,
   onMeasure,
   overlay,
@@ -70,6 +73,8 @@ export function ReelPager({
   disabled?: boolean;
   renderSlide: (index: number, isCurrent: boolean, ctx: SlideContext) => ReactNode;
   onActivity?: () => void;
+  /** Pull the first slide down past a threshold → go back to the menu. */
+  onExit?: () => void;
   y: MotionValue<number>;
   onMeasure?: (pageH: number) => void;
   /** Fixed chrome (back button, pills) rendered INSIDE the viewport so a
@@ -248,9 +253,13 @@ export function ReelPager({
     dragging.current = false;
     axisLocked.current = null;
 
-    // Overscrolled past an end → spring the resize back (going home is the back
-    // gesture, not a vertical pull).
-    if (overscroll.get() !== 0) {
+    // Overscrolled past an end.
+    const os = overscroll.get();
+    if (os !== 0) {
+      // First slide pulled DOWN far enough → go back to the menu.
+      if (page === 0 && os > PULL_BACK_PX && onExit) {
+        onExit();
+      }
       animate(overscroll, 0, springs.settling);
       return;
     }
