@@ -102,6 +102,7 @@ export function ReelPager({
   const endLift = useTransform(overscroll, (v) => (v < 0 ? 200 * (1 - Math.exp((v * 0.6) / 200)) : 0));
   const slideShift = useTransform(endLift, (t) => -t); // lift the photo up
   const slideScale = useTransform(endLift, (t) => 1 - (t / 200) * 0.28); // shrink up to ~28%
+  const slideRadius = useTransform(endLift, (t) => Math.min(t / 50, 1) * 44); // rounds as it shrinks
   const endReveal = useTransform(endLift, (t) => Math.min(1, t / 90));
   const endRevealScale = useTransform(endReveal, (r) => 0.9 + r * 0.1);
 
@@ -383,7 +384,13 @@ export function ReelPager({
               key={i}
               style={
                 i === page
-                  ? { scale: slideScale, y: slideShift, transformOrigin: "50% 0%" }
+                  ? {
+                      scale: slideScale,
+                      y: slideShift,
+                      borderRadius: slideRadius,
+                      overflow: "hidden",
+                      transformOrigin: "50% 0%",
+                    }
                   : undefined
               }
             >
