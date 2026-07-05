@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useMotionValue, animate } from "motion/react";
 import { PressScale } from "@/components/PressScale";
 import { ReelScreen } from "@/components/ReelScreen";
 import { OverscrollBounce } from "@/components/OverscrollBounce";
@@ -62,9 +62,16 @@ function TopicCard({
             src={topic.thumbnail}
             alt=""
             fill
+            draggable={false}
             sizes="(max-width: 768px) 100vw, 560px"
             className="object-cover transition-opacity duration-500"
-            style={{ opacity: loaded ? 1 : 0 }}
+            style={{
+              opacity: loaded ? 1 : 0,
+              WebkitTouchCallout: "none",
+              WebkitUserSelect: "none",
+              userSelect: "none",
+              pointerEvents: "none",
+            }}
             onLoad={() => setLoaded(true)}
           />
           {topic.comingSoon && (
@@ -78,13 +85,62 @@ function TopicCard({
   );
 }
 
+const OPEN_SPRING = { type: "spring" as const, stiffness: 120, damping: 18, mass: 1 };
+const CLOSE_SPRING = { type: "spring" as const, stiffness: 150, damping: 22, mass: 1 };
+const CANCEL_SPRING = { type: "spring" as const, stiffness: 210, damping: 26, mass: 1 };
+const GROW_DELAY = 0.06;
+
 export function IndexScreen({ topics }: { topics: Topic[] }) {
   const [opening, setOpening] = useState<Topic | null>(null);
-  const [closing, setClosing] = useState(false);
-  const fading = opening !== null && !closing;
-  // The whole main fades out as one group when a topic opens, and fades back in
-  // on return. The photo grows in over the top, overlapping the fade.
-  const growDelay = 0.06;
+  // One value drives the whole open/close: 0 = at the menu (small card), 1 =
+  // fully-open reel. Opening springs it 0→1; the back gesture drags it 1→0 and
+  // commits on release; the back button taps it to 0. No timed jump.
+  const openAmt = useMotionValue(0);
+  const cScale = useTransform(openAmt, [0, 1], [0.55, 1]);
+  const cY = useTransform(openAmt, [0, 1], ["52%", "0%"]);
+  const cRadius = useTransform(openAmt, [0, 1], [44, 0]);
+  const cardOpacity = useTransform(openAmt, [0, 0.12], [0, 1]);
+  const backdropOpacity = useTransform(openAmt, [0, 0.15, 1], [0, 1, 1]);
+  const dimOpacity = useTransform(openAmt, [0, 1], [0.5, 0]);
+
+  const open = (topic: Topic) => {
+    if (opening) return;
+    setOpening(topic);
+    openAmt.set(0);
+    animate(openAmt, 1, {
+      ...OPEN_SPRING,
+      delay: GROW_DELAY,
+      onComplete: () => {
+        try {
+          window.history.pushState(null, "", `/tema/${topic.slug}`);
+        } catch {}
+      },
+    });
+  };
+
+  const commitClose = () => {
+    animate(openAmt, 0, {
+      ...CLOSE_SPRING,
+      onComplete: () => {
+        try {
+          window.history.pushState(null, "", "/");
+        } catch {}
+        setOpening(null);
+      },
+    });
+  };
+
+  // Live drag from the reel's left edge / back button: progress 0→1 shrinks the
+  // reel back toward the menu, tracking the finger.
+  const handleBackDrag = (progress: number) => {
+    openAmt.stop();
+    const p = progress < 0 ? 0 : progress > 1 ? 1 : progress;
+    openAmt.set(1 - p);
+  };
+  const handleBackRelease = (commit: boolean) => {
+    if (commit) commitClose();
+    else animate(openAmt, 1, CANCEL_SPRING);
+  };
 
   // Warm the browser cache with the full-size reel images so opening a topic is
   // instant on iOS: each topic's cover first, then the rest on idle.
@@ -127,13 +183,11 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           paddingBottom: "calc(var(--sab) + 32px)",
           pointerEvents: opening ? "none" : "auto",
         }}
+        // Load fade-in only. While a reel is open the blurred backdrop covers
+        // the index; it's revealed again as the reel shrinks back on close.
         initial={{ opacity: 0 }}
-        animate={{ opacity: fading ? 0 : 1 }}
-        // Match the grow duration (~0.55s) instead of racing ahead at 0.3s:
-        // the index must stay visible BEHIND the growing card until it nearly
-        // fills, otherwise the index hits black before the card arrives and the
-        // photo reads as carrying a black box up with it (Bug A).
-        transition={{ duration: 0.55, ease: "easeInOut" }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
       >
         <div
           className="grid grid-cols-1 gap-x-8 gap-y-9 px-6 md:grid-cols-2 md:gap-y-12 md:px-10"
@@ -158,9 +212,7 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
               key={topic.slug}
               topic={topic}
               highlighted={opening?.slug === topic.slug}
-              onOpen={() => {
-                if (!opening) setOpening(topic);
-              }}
+              onOpen={() => open(topic)}
             />
           ))}
         </div>
@@ -179,13 +231,9 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           deep links still use the /tema/[slug] route with its own entrance. */}
       {opening && (
         <div className="fixed inset-0 z-[60] overflow-hidden">
-          {/* Full-screen blurred backdrop of the cover photo. The card grows from
-              small; without this, the area AROUND the small card is the app's
-              black background, which reads as a black box/border the photo
-              "carries" as it grows. The backdrop fills that area with the same
-              image (blurred + dimmed), so the card emerges from its own photo and
-              never from black. It stays behind the card and is covered once the
-              card fills; on close it fades so the index shows through again. */}
+          {/* Full-screen blurred backdrop of the cover photo, so the area around
+              the growing/shrinking card is its own image, never black. Fades in
+              fast at the start of the grow, out at the end of the close. */}
           <motion.div
             aria-hidden
             className="absolute inset-0"
@@ -195,58 +243,35 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
               backgroundPosition: "center",
               filter: "blur(30px) brightness(0.65)",
               transform: "scale(1.2)",
+              opacity: backdropOpacity,
             }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: closing ? 0 : 1 }}
-            transition={{ duration: closing ? 0.2 : 0.12 }}
           />
+          {/* The card: every transform derives from openAmt, so opening springs
+              it up, the back-drag tracks the finger, and closing springs it back
+              — one continuous value, never a jump. */}
           <motion.div
             className="absolute inset-0 overflow-hidden bg-black"
-            style={{ transformOrigin: "50% 100%", willChange: "transform" }}
-            // Starts SMALL and mostly OFF-SCREEN below (scale 0.55, y 52%), then
-            // rises AND grows to full at once — scale is a real grow, so it reads
-            // as "grow while moving up", not a plain translate. Springy (low
-            // damping) for acceleration + overshoot; starts almost immediately so
-            // you see it grow WHILE the cards fade.
-            initial={{ y: "52%", scale: 0.55, opacity: 0, borderRadius: 44 }}
-            animate={
-              closing
-                ? { y: "52%", scale: 0.55, opacity: 0, borderRadius: 44 }
-                : { y: "0%", scale: 1, opacity: 1, borderRadius: 0 }
-            }
-            transition={
-              closing
-                ? {
-                    default: { type: "spring", stiffness: 150, damping: 22, mass: 1 },
-                    opacity: { duration: 0.2, delay: 0.16 },
-                  }
-                : {
-                    default: { type: "spring", stiffness: 120, damping: 18, mass: 1, delay: growDelay },
-                    opacity: { duration: 0.1, delay: growDelay - 0.02 },
-                  }
-            }
-            onAnimationComplete={() => {
-              try {
-                if (closing) {
-                  window.history.pushState(null, "", "/");
-                } else {
-                  window.history.pushState(null, "", `/tema/${opening.slug}`);
-                }
-              } catch {}
-              if (closing) {
-                setOpening(null);
-                setClosing(false);
-              }
+            style={{
+              transformOrigin: "50% 100%",
+              willChange: "transform",
+              scale: cScale,
+              y: cY,
+              borderRadius: cRadius,
+              opacity: cardOpacity,
             }}
           >
-            <ReelScreen topic={opening} embedded onClose={() => setClosing(true)} />
-            {/* dim that lifts as the card grows (and returns on the way back) */}
+            <ReelScreen
+              topic={opening}
+              embedded
+              onClose={commitClose}
+              onBackDrag={handleBackDrag}
+              onBackRelease={handleBackRelease}
+            />
+            {/* dim that lifts as the card grows (and returns as it shrinks) */}
             <motion.div
               aria-hidden
               className="absolute inset-0 bg-black pointer-events-none"
-              initial={{ opacity: 0.5 }}
-              animate={{ opacity: closing ? 0.5 : 0 }}
-              transition={{ duration: 0.5, delay: closing ? 0 : 0.08 }}
+              style={{ opacity: dimOpacity }}
             />
           </motion.div>
         </div>

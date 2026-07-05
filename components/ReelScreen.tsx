@@ -18,12 +18,18 @@ export function ReelScreen({
   topic,
   embedded = false,
   onClose,
+  onBackDrag,
+  onBackRelease,
 }: {
   topic: Topic;
   /** Rendered inside the index's growing container: no own entrance/exit,
    *  closing is delegated to the parent via onClose. */
   embedded?: boolean;
   onClose?: () => void;
+  /** Interactive back gesture (embedded only): live drag progress 0→1 shrinks
+   *  the reel toward the menu; release commits or cancels. */
+  onBackDrag?: (progress: number) => void;
+  onBackRelease?: (commit: boolean) => void;
 }) {
   const router = useRouter();
   const [page, setPage] = useState(0);
@@ -88,6 +94,9 @@ export function ReelScreen({
             y={y}
             onMeasure={setPageH}
             endSlot={<BrandMonogram />}
+            backEnabled={embedded}
+            onBackDrag={onBackDrag}
+            onBackRelease={onBackRelease}
             renderSlide={(index, isCurrent, ctx) => (
               <Slide
                 slide={topic.slides[index]}

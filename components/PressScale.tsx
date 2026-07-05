@@ -68,6 +68,11 @@ export function PressScale({
       style={{
         WebkitTapHighlightColor: "transparent",
         touchAction: "manipulation",
+        // Behave like a button on touch-and-hold: no iOS image share/save
+        // callout, no text/image selection.
+        WebkitTouchCallout: "none",
+        WebkitUserSelect: "none",
+        userSelect: "none",
         ...style,
       }}
     >

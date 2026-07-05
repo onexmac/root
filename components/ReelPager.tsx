@@ -24,6 +24,13 @@ const EXIT_OVERSHOOT_PX = 130;
 // "H" sign-off has room to rise into view first.
 const EXIT_OVERSHOOT_END = 260;
 const PEEK_HOLD_MS = 160;
+// Interactive back: a rightward drag starting in the left edge zone (which also
+// covers the back button) shrinks the reel toward the menu, tracking the finger.
+// It commits past a fraction of BACK_DISTANCE or on a fast rightward flick.
+const EDGE_ZONE = 72;
+const BACK_DISTANCE = 260;
+const BACK_THRESHOLD = 0.3;
+const BACK_FLICK_VX = 0.45; // px/ms
 // Wheel: amplify the scroll so a normal gesture visibly drags the photo, and
 // commit at a low fraction of a page so it advances readily instead of fighting
 // you. Only a tiny accidental scroll snaps back.
@@ -68,6 +75,9 @@ export function ReelPager({
   onMeasure,
   overlay,
   endSlot,
+  backEnabled,
+  onBackDrag,
+  onBackRelease,
 }: {
   pageCount: number;
   page: number;
@@ -84,6 +94,10 @@ export function ReelPager({
   overlay?: ReactNode;
   /** Sign-off revealed just past the last slide when you overscroll the end. */
   endSlot?: ReactNode;
+  /** Enables the interactive back gesture (embedded reel only). */
+  backEnabled?: boolean;
+  onBackDrag?: (progress: number) => void;
+  onBackRelease?: (commit: boolean) => void;
 }) {
   const [pageH, setPageH] = useState(0);
   const measured = useRef(false);
@@ -105,6 +119,10 @@ export function ReelPager({
   const [initialPage] = useState(() => page);
   const peekTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isPeeking = useRef(false);
+  const backDragging = useRef(false);
+  const backStartT = useRef(0);
+  const backLastX = useRef(0);
+  const backLastT = useRef(0);
 
   const viewportRef = useRef<HTMLDivElement>(null);
   const wheelActive = useRef(false);
@@ -173,14 +191,19 @@ export function ReelPager({
     onActivity?.();
 
     clearPeekTimer();
-    peekTimer.current = setTimeout(() => {
-      if (pointerId.current === null || axisLocked.current === "y") return;
-      isPeeking.current = true;
-      haptic.select();
-      // Eager, low-tension arrival: once committed, the photo wants to get into
-      // the revealed position fast and clean (no overshoot wobble).
-      animate(peeking, 1, springs.shrinking);
-    }, PEEK_HOLD_MS);
+    // Don't arm the peek in the back-gesture zone (left edge / back button) —
+    // a hold there is for going back, not peeking the photo.
+    const inBackZone = !!backEnabled && e.clientX < EDGE_ZONE;
+    if (!inBackZone) {
+      peekTimer.current = setTimeout(() => {
+        if (pointerId.current === null || axisLocked.current === "y") return;
+        isPeeking.current = true;
+        haptic.select();
+        // Eager, low-tension arrival: once committed, the photo wants to get into
+        // the revealed position fast and clean (no overshoot wobble).
+        animate(peeking, 1, springs.shrinking);
+      }, PEEK_HOLD_MS);
+    }
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
@@ -206,14 +229,30 @@ export function ReelPager({
     if (!axisLocked.current) {
       if (Math.abs(dx) < SLOP && Math.abs(dy) < SLOP) return;
       axisLocked.current = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+      clearPeekTimer(); // any directional drag cancels a pending peek
       if (axisLocked.current === "y") {
         dragging.current = true;
-        clearPeekTimer();
+        try {
+          e.currentTarget.setPointerCapture(e.pointerId);
+        } catch {}
+        haptic.drag();
+      } else if (backEnabled && onBackDrag && startX.current < EDGE_ZONE && dx > 0) {
+        // rightward drag from the left edge / back button → interactive back
+        backDragging.current = true;
+        backStartT.current = e.timeStamp;
         try {
           e.currentTarget.setPointerCapture(e.pointerId);
         } catch {}
         haptic.drag();
       }
+    }
+
+    if (backDragging.current) {
+      const p = Math.max(0, Math.min(1, (e.clientX - startX.current) / BACK_DISTANCE));
+      backLastX.current = e.clientX;
+      backLastT.current = e.timeStamp;
+      onBackDrag?.(p);
+      return;
     }
 
     if (axisLocked.current !== "y") return;
@@ -234,6 +273,16 @@ export function ReelPager({
     pointerId.current = null;
     clearPeekTimer();
     endPeek();
+
+    if (backDragging.current) {
+      backDragging.current = false;
+      axisLocked.current = null;
+      const p = Math.max(0, Math.min(1, (backLastX.current - startX.current) / BACK_DISTANCE));
+      const dtb = backLastT.current - backStartT.current;
+      const vx = dtb > 0 ? (backLastX.current - startX.current) / dtb : 0;
+      onBackRelease?.(p >= BACK_THRESHOLD || vx > BACK_FLICK_VX);
+      return;
+    }
 
     if (!dragging.current) {
       axisLocked.current = null;
