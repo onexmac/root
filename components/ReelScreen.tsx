@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, useMotionValue } from "motion/react";
+import { motion, useMotionValue, useTransform, animate } from "motion/react";
 import { HaloPress } from "@/components/HaloPress";
 import { VerticalPills } from "@/components/VerticalPills";
 import { ReelPager } from "@/components/ReelPager";
@@ -39,6 +39,52 @@ export function ReelScreen({
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const y = useMotionValue(0);
   const [pageH, setPageH] = useState(0);
+
+  // Chrome (back button + pills) moves independently of the shrinking card:
+  // it enters from its own border on open, and slides out horizontally while
+  // you drag back — following the finger, no vertical movement.
+  const backIn = useMotionValue(embedded ? 0 : 1);
+  const pillsIn = useMotionValue(embedded ? 0 : 1);
+  const backDragProgress = useMotionValue(0);
+  const backX = useTransform(() => (backIn.get() - 1) * 84 + backDragProgress.get() * 260);
+  const pillsX = useTransform(() => (1 - pillsIn.get()) * 64 + backDragProgress.get() * 220);
+
+  useEffect(() => {
+    if (!embedded) return;
+    // Come in after the image has grown into place: the back button springs from
+    // the left with a little bounce, the pills glide from the right.
+    const a = animate(backIn, 1, { type: "spring", stiffness: 520, damping: 17, mass: 1, delay: 0.34 });
+    const b = animate(pillsIn, 1, { type: "spring", stiffness: 280, damping: 30, mass: 1, delay: 0.42 });
+    return () => {
+      a.stop();
+      b.stop();
+    };
+  }, [embedded, backIn, pillsIn]);
+
+  const edgeRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!embedded) return;
+    const el = edgeRef.current;
+    if (!el) return;
+    // Suppress iOS Safari's system edge-swipe-back at the very left edge, so our
+    // own back-drag runs there instead of the browser's history navigation.
+    const prevent = (e: TouchEvent) => e.preventDefault();
+    el.addEventListener("touchstart", prevent, { passive: false });
+    el.addEventListener("touchmove", prevent, { passive: false });
+    return () => {
+      el.removeEventListener("touchstart", prevent);
+      el.removeEventListener("touchmove", prevent);
+    };
+  }, [embedded]);
+
+  const onPagerBackDrag = (p: number) => {
+    backDragProgress.set(p);
+    onBackDrag?.(p);
+  };
+  const onPagerBackRelease = (commit: boolean) => {
+    if (!commit) animate(backDragProgress, 0, springs.settling);
+    onBackRelease?.(commit);
+  };
 
   const bumpActivity = useCallback(() => {
     setChromeVisible(true);
@@ -95,8 +141,8 @@ export function ReelScreen({
             onMeasure={setPageH}
             endSlot={<BrandMonogram />}
             backEnabled={embedded}
-            onBackDrag={onBackDrag}
-            onBackRelease={onBackRelease}
+            onBackDrag={onPagerBackDrag}
+            onBackRelease={onPagerBackRelease}
             renderSlide={(index, isCurrent, ctx) => (
               <Slide
                 slide={topic.slides[index]}
@@ -111,11 +157,24 @@ export function ReelScreen({
             // the pager and scrolls, instead of hitting a dead zone (Bug B).
             overlay={
               <>
-                {/* Back button stays put — it's the only way out, so it must NOT
-                    get hidden by the idle-fade (that was the "back button
-                    disappears" bug). Only the pills follow chromeVisible.
-                    capturePointer=false so a drag begun here reaches the pager. */}
-                <div className="absolute z-30 left-4 bottom-[calc(var(--sab)_+_16px)] md:bottom-auto md:top-[calc(var(--sat)_+_16px)]">
+                {/* Left-edge catcher: absorbs the iOS system back-swipe (see the
+                    touch listeners above) while still bubbling pointer events to
+                    the pager so our own back-drag runs. */}
+                {embedded && (
+                  <div
+                    ref={edgeRef}
+                    aria-hidden
+                    className="absolute left-0 top-0 bottom-0 z-40"
+                    style={{ width: 24 }}
+                  />
+                )}
+                {/* Back button follows the finger horizontally during a back-drag
+                    (backX) and springs in from the left on open. capturePointer
+                    =false so a drag begun here reaches the pager. */}
+                <motion.div
+                  className="absolute z-30 left-4 bottom-[calc(var(--sab)_+_16px)] md:bottom-auto md:top-[calc(var(--sat)_+_16px)]"
+                  style={{ x: backX }}
+                >
                   <HaloPress
                     onActivate={goHome}
                     radius={24}
@@ -142,7 +201,7 @@ export function ReelScreen({
                       />
                     </svg>
                   </HaloPress>
-                </div>
+                </motion.div>
 
                 <VerticalPills
                   count={topic.slides.length}
@@ -150,6 +209,7 @@ export function ReelScreen({
                   y={y}
                   pageH={pageH}
                   visible={chromeVisible}
+                  x={pillsX}
                 />
               </>
             }

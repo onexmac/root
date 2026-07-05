@@ -12,12 +12,16 @@ export function VerticalPills({
   y,
   pageH,
   visible,
+  x,
 }: {
   count: number;
   page: number;
   y: MotionValue<number>;
   pageH: number;
   visible: boolean;
+  /** Horizontal offset (slides the pills off to the right during a back-drag,
+   *  and in from the right on open). */
+  x?: MotionValue<number>;
 }) {
   const signedProgress = useTransform(y, (latest) => {
     if (!pageH) return 0;
@@ -26,11 +30,12 @@ export function VerticalPills({
   });
 
   return (
-    <div
+    <motion.div
       className="absolute right-4 z-30 flex flex-col"
       style={{
         top: "50%",
-        transform: "translateY(-50%)",
+        x,
+        y: "-50%",
         gap: GAP,
         opacity: visible ? 1 : 0,
         transition: "opacity 220ms ease-out",
@@ -39,7 +44,7 @@ export function VerticalPills({
       {Array.from({ length: count }).map((_, i) => (
         <Pill key={i} index={i} page={page} progress={signedProgress} />
       ))}
-    </div>
+    </motion.div>
   );
 }
 
