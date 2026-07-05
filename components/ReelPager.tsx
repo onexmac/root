@@ -18,8 +18,15 @@ const RUBBER_KNEE = 240;
 const RUBBER_FACTOR = 0.35;
 const ADVANCE_DISTANCE_RATIO = 0.18;
 const ADVANCE_VELOCITY_PX = 250;
-// Pull the FIRST slide down past this (px) to go back to the menu.
-const PULL_BACK_PX = 90;
+// Overscroll past an end maps to close progress over this distance (after a
+// small deadzone); release past the threshold fraction commits to the menu.
+const END_CLOSE_DISTANCE = 200;
+const END_CLOSE_DEADZONE = 24;
+const END_CLOSE_THRESHOLD = 0.38;
+function closeProgress(overscroll: number) {
+  const a = Math.abs(overscroll);
+  return Math.max(0, Math.min(1, (a - END_CLOSE_DEADZONE) / (END_CLOSE_DISTANCE - END_CLOSE_DEADZONE)));
+}
 const VELOCITY_WINDOW_MS = 120;
 const PEEK_HOLD_MS = 160;
 // Wheel: amplify the scroll so a normal gesture visibly drags the photo, and
@@ -61,7 +68,8 @@ export function ReelPager({
   disabled,
   renderSlide,
   onActivity,
-  onExit,
+  onEndPull,
+  onEndRelease,
   y,
   onMeasure,
   overlay,
@@ -73,8 +81,10 @@ export function ReelPager({
   disabled?: boolean;
   renderSlide: (index: number, isCurrent: boolean, ctx: SlideContext) => ReactNode;
   onActivity?: () => void;
-  /** Pull the first slide down past a threshold → go back to the menu. */
-  onExit?: () => void;
+  /** Overscroll past an end (first slide down / last slide up): progress 0→1
+   *  drives the close-to-menu transition; release commits or cancels. */
+  onEndPull?: (progress: number) => void;
+  onEndRelease?: (commit: boolean) => void;
   y: MotionValue<number>;
   onMeasure?: (pageH: number) => void;
   /** Fixed chrome (back button, pills) rendered INSIDE the viewport so a
@@ -93,13 +103,9 @@ export function ReelPager({
   // mirroring the open grow and revealing the sign-off; at the first it's a
   // small squish. No black box.
   const overscroll = useMotionValue(0);
-  const slideScale = useTransform(overscroll, (v) =>
-    v < 0 ? 1 - (Math.min(-v, 320) / 320) * 0.22 : 1 - (Math.min(v, 320) / 320) * 0.08,
-  );
-  const slideShift = useTransform(overscroll, (v) => (v < 0 ? v * 0.4 : 0));
+  // The sign-off (H) fades in behind the last slide as you start pulling past it.
   const endReveal = useTransform(overscroll, (v) => (v < 0 ? Math.min(1, -v / 130) : 0));
   const endRevealScale = useTransform(endReveal, (r) => 0.9 + r * 0.1);
-  const reelOrigin = page === pageCount - 1 ? "50% 0%" : "50% 50%";
 
   const dragging = useRef(false);
   const axisLocked = useRef<"x" | "y" | null>(null);
@@ -227,16 +233,21 @@ export function ReelPager({
     const maxY = 0;
     const minY = -(pageCount - 1) * pageH;
     if (naive > maxY) {
-      // past the FIRST slide → resize (squish), don't translate into black
+      // past the FIRST slide (pull down) → drive the close-to-menu transition
       y.set(maxY);
       overscroll.set(naive - maxY);
+      onEndPull?.(closeProgress(naive - maxY));
     } else if (naive < minY) {
-      // past the LAST slide → resize + push the photo up, revealing the sign-off
+      // past the LAST slide (pull up) → same close-to-menu transition
       y.set(minY);
       overscroll.set(naive - minY);
+      onEndPull?.(closeProgress(naive - minY));
     } else {
       y.set(naive);
-      if (overscroll.get() !== 0) overscroll.set(0);
+      if (overscroll.get() !== 0) {
+        overscroll.set(0);
+        onEndPull?.(0); // back inside the content → cancel the close progress
+      }
     }
   };
 
@@ -253,13 +264,11 @@ export function ReelPager({
     dragging.current = false;
     axisLocked.current = null;
 
-    // Overscrolled past an end.
+    // Overscrolled past an end → commit the close if pulled far enough,
+    // otherwise let it spring back.
     const os = overscroll.get();
     if (os !== 0) {
-      // First slide pulled DOWN far enough → go back to the menu.
-      if (page === 0 && os > PULL_BACK_PX && onExit) {
-        onExit();
-      }
+      onEndRelease?.(closeProgress(os) >= END_CLOSE_THRESHOLD);
       animate(overscroll, 0, springs.settling);
       return;
     }
@@ -372,16 +381,7 @@ export function ReelPager({
       <motion.div style={{ y, willChange: "transform" }}>
         {Array.from({ length: pageCount }).map((_, i) =>
           Math.abs(i - page) <= 1 ? (
-            <motion.div
-              key={i}
-              style={
-                i === page
-                  ? { scale: slideScale, y: slideShift, transformOrigin: reelOrigin }
-                  : undefined
-              }
-            >
-              {renderSlide(i, i === page, { y, pageH, peeking })}
-            </motion.div>
+            <div key={i}>{renderSlide(i, i === page, { y, pageH, peeking })}</div>
           ) : (
             <div key={i} style={{ height: pageH || "100dvh" }} />
           ),

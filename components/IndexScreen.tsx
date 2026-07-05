@@ -102,13 +102,11 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   const cY = useTransform(openAmt, [0, 1], ["52%", "0%"]);
   const cRadius = useTransform(openAmt, [0, 1], [44, 0]);
   const cardOpacity = useTransform(openAmt, [0, 0.12], [0, 1]);
-  // Blurred backdrop shows ONLY during the opening grow (to avoid black around
-  // the growing card). It's switched off once open, so closing/back-dragging
-  // reveals plain black behind the shrinking card — not the blurred gray photo.
-  const backdropShow = useMotionValue(0);
+  // Solid BLACK behind the card for the WHOLE open/close transition — never a
+  // blurred photo. It covers the menu while the card is mid-transition and
+  // fades out near the menu so the index shows through again (its fade-in).
+  const backdropBlack = useTransform(openAmt, [0, 0.16, 1], [0, 1, 1]);
   const dimOpacity = useTransform(openAmt, [0, 1], [0.5, 0]);
-  // Menu fades OUT as a reel opens and fades back IN as it closes.
-  const indexOpacity = useTransform(openAmt, [0, 0.6], [1, 0]);
   // Elastic shrink layered on top of the native scroll bounce at the top/bottom
   // (the native bounce provides the momentum; this adds the rubbery squish).
   const bounceScale = useMotionValue(1);
@@ -121,18 +119,10 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
     if (opening) return;
     setOpening(topic);
     openAmt.set(0);
-    backdropShow.set(0);
-    animate(backdropShow, 1, { duration: 0.12 });
-    animate(openAmt, 1, {
-      ...OPEN_SPRING,
-      delay: GROW_DELAY,
-      // once open, drop the blurred backdrop so the close reveals black
-      onComplete: () => backdropShow.set(0),
-    });
+    animate(openAmt, 1, { ...OPEN_SPRING, delay: GROW_DELAY });
   };
 
   const commitClose = () => {
-    backdropShow.set(0); // black behind the shrinking card, never blurred gray
     animate(openAmt, 0, {
       ...CLOSE_SPRING,
       onComplete: () => setOpening(null),
@@ -143,7 +133,6 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   // reel back toward the menu, tracking the finger.
   const handleBackDrag = (progress: number) => {
     openAmt.stop();
-    backdropShow.set(0); // the moment we start going back, BG is black
     const p = progress < 0 ? 0 : progress > 1 ? 1 : progress;
     openAmt.set(1 - p);
   };
@@ -234,9 +223,8 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           paddingTop: "calc(var(--sat) + 32px)",
           paddingBottom: "calc(var(--sab) + 32px)",
           pointerEvents: opening ? "none" : "auto",
-          // Fades out as a reel opens, back in as it closes.
-          opacity: indexOpacity,
-          // Rubbery overscroll shrink at the top/bottom.
+          // Rubbery overscroll shrink at the top/bottom. (The menu's fade-in on
+          // close is handled by the black backdrop above it fading out.)
           scale: bounceScale,
           transformOrigin: bounceOrigin,
         }}
@@ -282,20 +270,13 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           deep links still use the /tema/[slug] route with its own entrance. */}
       {opening && (
         <div className="fixed inset-0 z-[60] overflow-hidden">
-          {/* Full-screen blurred backdrop of the cover photo, so the area around
-              the growing/shrinking card is its own image, never black. Fades in
-              fast at the start of the grow, out at the end of the close. */}
+          {/* Solid BLACK behind the growing/shrinking card — never a blurred
+              photo. Covers the menu mid-transition, fades near the menu so the
+              index shows through again. */}
           <motion.div
             aria-hidden
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url(${opening.slides[0].image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "blur(30px) brightness(0.65)",
-              transform: "scale(1.2)",
-              opacity: backdropShow,
-            }}
+            className="absolute inset-0 bg-black"
+            style={{ opacity: backdropBlack }}
           />
           {/* The card: every transform derives from openAmt, so opening springs
               it up, the back-drag tracks the finger, and closing springs it back

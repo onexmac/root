@@ -168,6 +168,23 @@ export function ReelScreen({
     }
   };
 
+  // Vertical end-of-reel pull (first slide down / last slide up): drives the
+  // SAME close transition as the back gesture — the card shrinks toward the menu
+  // (gaining its corner radius) while the chrome fades/moves out. Commit past a
+  // threshold → back to main; otherwise spring back.
+  const onEndPull = (p: number) => {
+    backDragProgress.set(p);
+    onBackDrag?.(p);
+  };
+  const onEndRelease = (commit: boolean) => {
+    if (commit) {
+      goHome();
+    } else {
+      animate(backDragProgress, 0, springs.settling);
+      onBackRelease?.(false);
+    }
+  };
+
   const chrome = (
     <>
       {embedded && (
@@ -258,7 +275,8 @@ export function ReelScreen({
             onPageChange={setPage}
             disabled={activeTerm !== null}
             onActivity={bumpActivity}
-            onExit={goHome}
+            onEndPull={onEndPull}
+            onEndRelease={onEndRelease}
             y={y}
             onMeasure={setPageH}
             endSlot={<BrandMonogram />}
