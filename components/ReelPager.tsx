@@ -18,15 +18,8 @@ const RUBBER_KNEE = 240;
 const RUBBER_FACTOR = 0.35;
 const ADVANCE_DISTANCE_RATIO = 0.18;
 const ADVANCE_VELOCITY_PX = 250;
-// Overscroll past an end maps to close progress over this distance (after a
-// small deadzone); release past the threshold fraction commits to the menu.
-const END_CLOSE_DISTANCE = 200;
-const END_CLOSE_DEADZONE = 24;
-const END_CLOSE_THRESHOLD = 0.38;
-function closeProgress(overscroll: number) {
-  const a = Math.abs(overscroll);
-  return Math.max(0, Math.min(1, (a - END_CLOSE_DEADZONE) / (END_CLOSE_DISTANCE - END_CLOSE_DEADZONE)));
-}
+// Release past this much overscroll (px) commits the close-to-menu.
+const END_CLOSE_PX = 110;
 const VELOCITY_WINDOW_MS = 120;
 const PEEK_HOLD_MS = 160;
 // Wheel: amplify the scroll so a normal gesture visibly drags the photo, and
@@ -233,20 +226,20 @@ export function ReelPager({
     const maxY = 0;
     const minY = -(pageCount - 1) * pageH;
     if (naive > maxY) {
-      // past the FIRST slide (pull down) → drive the close-to-menu transition
+      // past the FIRST slide (pull DOWN, +) → drag the card down toward the menu
       y.set(maxY);
       overscroll.set(naive - maxY);
-      onEndPull?.(closeProgress(naive - maxY));
+      onEndPull?.(naive - maxY);
     } else if (naive < minY) {
-      // past the LAST slide (pull up) → same close-to-menu transition
+      // past the LAST slide (pull UP, −) → shrink the card toward the menu
       y.set(minY);
       overscroll.set(naive - minY);
-      onEndPull?.(closeProgress(naive - minY));
+      onEndPull?.(naive - minY);
     } else {
       y.set(naive);
       if (overscroll.get() !== 0) {
         overscroll.set(0);
-        onEndPull?.(0); // back inside the content → cancel the close progress
+        onEndPull?.(0); // back inside the content → cancel
       }
     }
   };
@@ -268,7 +261,7 @@ export function ReelPager({
     // otherwise let it spring back.
     const os = overscroll.get();
     if (os !== 0) {
-      onEndRelease?.(closeProgress(os) >= END_CLOSE_THRESHOLD);
+      onEndRelease?.(Math.abs(os) > END_CLOSE_PX);
       animate(overscroll, 0, springs.settling);
       return;
     }

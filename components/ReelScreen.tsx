@@ -25,6 +25,8 @@ export function ReelScreen({
   onClose,
   onBackDrag,
   onBackRelease,
+  onEndPull,
+  onEndRelease,
   chromeLayer,
 }: {
   topic: Topic;
@@ -36,6 +38,10 @@ export function ReelScreen({
    *  the reel toward the menu; release commits or cancels. */
   onBackDrag?: (progress: number) => void;
   onBackRelease?: (commit: boolean) => void;
+  /** Vertical end-of-reel pull, raw signed overscroll px: + = first slide pulled
+   *  DOWN (drag toward menu), − = last slide pulled UP (shrink toward menu). */
+  onEndPull?: (overscroll: number) => void;
+  onEndRelease?: (commit: boolean) => void;
   /** Portal target in the index's fixed layer, OUTSIDE the shrinking card, so
    *  chrome can move independently of the card (embedded only). */
   chromeLayer?: HTMLElement | null;
@@ -168,21 +174,15 @@ export function ReelScreen({
     }
   };
 
-  // Vertical end-of-reel pull (first slide down / last slide up): drives the
-  // SAME close transition as the back gesture — the card shrinks toward the menu
-  // (gaining its corner radius) while the chrome fades/moves out. Commit past a
-  // threshold → back to main; otherwise spring back.
-  const onEndPull = (p: number) => {
-    backDragProgress.set(p);
-    onBackDrag?.(p);
+  // Vertical end-of-reel pull. Forward the raw overscroll to the parent (which
+  // decides pull-DOWN vs shrink) and fade/move the chrome out proportionally.
+  const pagerEndPull = (os: number) => {
+    backDragProgress.set(Math.min(Math.abs(os) / 200, 1));
+    onEndPull?.(os);
   };
-  const onEndRelease = (commit: boolean) => {
-    if (commit) {
-      goHome();
-    } else {
-      animate(backDragProgress, 0, springs.settling);
-      onBackRelease?.(false);
-    }
+  const pagerEndRelease = (commit: boolean) => {
+    animate(backDragProgress, commit ? 1 : 0, commit ? springs.snappy : springs.settling);
+    onEndRelease?.(commit);
   };
 
   const chrome = (
@@ -275,8 +275,8 @@ export function ReelScreen({
             onPageChange={setPage}
             disabled={activeTerm !== null}
             onActivity={bumpActivity}
-            onEndPull={onEndPull}
-            onEndRelease={onEndRelease}
+            onEndPull={pagerEndPull}
+            onEndRelease={pagerEndRelease}
             y={y}
             onMeasure={setPageH}
             endSlot={<BrandMonogram />}

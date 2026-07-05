@@ -100,12 +100,23 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   const [chromeLayer, setChromeLayer] = useState<HTMLDivElement | null>(null);
   const cScale = useTransform(openAmt, [0, 1], [0.55, 1]);
   const cY = useTransform(openAmt, [0, 1], ["52%", "0%"]);
-  const cRadius = useTransform(openAmt, [0, 1], [44, 0]);
   const cardOpacity = useTransform(openAmt, [0, 0.12], [0, 1]);
-  // Solid BLACK behind the card for the WHOLE open/close transition — never a
-  // blurred photo. It covers the menu while the card is mid-transition and
-  // fades out near the menu so the index shows through again (its fade-in).
-  const backdropBlack = useTransform(openAmt, [0, 0.16, 1], [0, 1, 1]);
+  // First-slide drag-down: the card translates DOWN following the finger (with a
+  // little lag) instead of shrinking. openAmt stays 1 during this.
+  const pullDownY = useMotionValue(0);
+  const endMode = useRef<"pulldown" | "shrink">("shrink");
+  // Corner radius from EITHER the shrink close (openAmt) or the pull-down drag.
+  const cardRadius = useTransform(() =>
+    Math.max((1 - openAmt.get()) * 44, Math.min(pullDownY.get() / 90, 1) * 40),
+  );
+  // Solid BLACK behind the card for the whole transition — never a blurred
+  // photo. Covers the menu mid-transition, fades near the menu (its fade-in),
+  // and ALSO fades as the card is pulled down (revealing the menu behind it).
+  const backdropOpacity = useTransform(() => {
+    const o = openAmt.get();
+    const base = o <= 0 ? 0 : o < 0.16 ? o / 0.16 : 1;
+    return base * (1 - Math.min(pullDownY.get() / 420, 1));
+  });
   const dimOpacity = useTransform(openAmt, [0, 1], [0.5, 0]);
   // Elastic shrink layered on top of the native scroll bounce at the top/bottom
   // (the native bounce provides the momentum; this adds the rubbery squish).
@@ -139,6 +150,39 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   const handleBackRelease = (commit: boolean) => {
     if (commit) commitClose();
     else animate(openAmt, 1, CANCEL_SPRING);
+  };
+
+  // Vertical end-of-reel pull. First slide pulled DOWN (os > 0): the card
+  // translates down following the finger (a little behind it). Last slide pulled
+  // UP (os < 0): the card shrinks toward the menu.
+  const handleEndPull = (os: number) => {
+    if (os > 0) {
+      endMode.current = "pulldown";
+      pullDownY.set(os * 0.85); // follows the finger, a touch behind it
+    } else {
+      endMode.current = "shrink";
+      openAmt.set(1 - Math.min(-os / 200, 1));
+    }
+  };
+  const handleEndRelease = (commit: boolean) => {
+    if (endMode.current === "pulldown") {
+      if (commit) {
+        // fling the card the rest of the way down; the menu is already showing
+        animate(pullDownY, window.innerHeight * 1.1, {
+          ...CLOSE_SPRING,
+          onComplete: () => {
+            setOpening(null);
+            pullDownY.set(0);
+          },
+        });
+      } else {
+        animate(pullDownY, 0, CANCEL_SPRING);
+      }
+    } else if (commit) {
+      commitClose();
+    } else {
+      animate(openAmt, 1, CANCEL_SPRING);
+    }
   };
 
   // Rubbery shrink at the very top/bottom of the menu. We DON'T preventDefault,
@@ -276,36 +320,42 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           <motion.div
             aria-hidden
             className="absolute inset-0 bg-black"
-            style={{ opacity: backdropBlack }}
+            style={{ opacity: backdropOpacity }}
           />
-          {/* The card: every transform derives from openAmt, so opening springs
-              it up, the back-drag tracks the finger, and closing springs it back
-              — one continuous value, never a jump. */}
-          <motion.div
-            className="absolute inset-0 overflow-hidden bg-black"
-            style={{
-              transformOrigin: "50% 100%",
-              willChange: "transform",
-              scale: cScale,
-              y: cY,
-              borderRadius: cRadius,
-              opacity: cardOpacity,
-            }}
-          >
-            <ReelScreen
-              topic={opening}
-              embedded
-              onClose={commitClose}
-              onBackDrag={handleBackDrag}
-              onBackRelease={handleBackRelease}
-              chromeLayer={chromeLayer}
-            />
-            {/* dim that lifts as the card grows (and returns as it shrinks) */}
+          {/* Pull-down wrapper: the first-slide drag-down translates the whole
+              card down with the finger (pullDownY), separate from the openAmt
+              scale used by every other close. */}
+          <motion.div className="absolute inset-0" style={{ y: pullDownY }}>
+            {/* The card: scale/y/radius derive from openAmt (grow/shrink), plus
+                the pull-down corner radius. */}
             <motion.div
-              aria-hidden
-              className="absolute inset-0 bg-black pointer-events-none"
-              style={{ opacity: dimOpacity }}
-            />
+              className="absolute inset-0 overflow-hidden bg-black"
+              style={{
+                transformOrigin: "50% 100%",
+                willChange: "transform",
+                scale: cScale,
+                y: cY,
+                borderRadius: cardRadius,
+                opacity: cardOpacity,
+              }}
+            >
+              <ReelScreen
+                topic={opening}
+                embedded
+                onClose={commitClose}
+                onBackDrag={handleBackDrag}
+                onBackRelease={handleBackRelease}
+                onEndPull={handleEndPull}
+                onEndRelease={handleEndRelease}
+                chromeLayer={chromeLayer}
+              />
+              {/* dim that lifts as the card grows (and returns as it shrinks) */}
+              <motion.div
+                aria-hidden
+                className="absolute inset-0 bg-black pointer-events-none"
+                style={{ opacity: dimOpacity }}
+              />
+            </motion.div>
           </motion.div>
           {/* Chrome layer — a sibling of the card, so it is NOT scaled by
               openAmt. The reel portals its back button + pills in here so they
