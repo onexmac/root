@@ -1,18 +1,23 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { motion, useMotionValue, useTransform, animate } from "motion/react";
-import { HaloPress } from "@/components/HaloPress";
 import { VerticalPills } from "@/components/VerticalPills";
 import { ReelPager } from "@/components/ReelPager";
 import { Slide } from "@/components/Slide";
 import { GlossaryCard } from "@/components/GlossaryCard";
 import { BrandMonogram } from "@/components/BrandMark";
 import { springs } from "@/lib/springs";
+import { haptic } from "@/lib/haptic";
 import type { Topic } from "@/data/topics";
 
 const IDLE_MS = 2000;
+const BACK_DISTANCE = 260;
+const BACK_THRESHOLD = 0.3;
+const BACK_FLICK_VX = 0.45;
+const DRAG_SLOP = 6;
 
 export function ReelScreen({
   topic,
@@ -20,6 +25,7 @@ export function ReelScreen({
   onClose,
   onBackDrag,
   onBackRelease,
+  chromeLayer,
 }: {
   topic: Topic;
   /** Rendered inside the index's growing container: no own entrance/exit,
@@ -30,24 +36,28 @@ export function ReelScreen({
    *  the reel toward the menu; release commits or cancels. */
   onBackDrag?: (progress: number) => void;
   onBackRelease?: (commit: boolean) => void;
+  /** Portal target in the index's fixed layer, OUTSIDE the shrinking card, so
+   *  chrome can move independently of the card (embedded only). */
+  chromeLayer?: HTMLElement | null;
 }) {
   const router = useRouter();
   const [page, setPage] = useState(0);
   const [activeTerm, setActiveTerm] = useState<string | null>(null);
   const [chromeVisible, setChromeVisible] = useState(true);
   const [exiting, setExiting] = useState(false);
+  const [backPressed, setBackPressed] = useState(false);
   const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const y = useMotionValue(0);
   const [pageH, setPageH] = useState(0);
 
-  // Chrome (back button + pills) moves independently of the shrinking card:
-  // it enters from its own border on open, and slides out horizontally while
-  // you drag back — following the finger, no vertical movement.
+  // Chrome transforms — the chrome lives OUTSIDE the shrinking card, so these
+  // are in screen space: enter from the borders on open; during a back-drag the
+  // back button follows the finger (1:1) and the pills slide off to the right.
   const backIn = useMotionValue(embedded ? 0 : 1);
   const pillsIn = useMotionValue(embedded ? 0 : 1);
   const backDragProgress = useMotionValue(0);
-  const backX = useTransform(() => (backIn.get() - 1) * 84 + backDragProgress.get() * 260);
-  const pillsX = useTransform(() => (1 - pillsIn.get()) * 64 + backDragProgress.get() * 220);
+  const backX = useTransform(() => (backIn.get() - 1) * 84 + backDragProgress.get() * BACK_DISTANCE);
+  const pillsX = useTransform(() => (1 - pillsIn.get()) * 64 + backDragProgress.get() * 240);
 
   useEffect(() => {
     if (!embedded) return;
@@ -61,30 +71,17 @@ export function ReelScreen({
     };
   }, [embedded, backIn, pillsIn]);
 
-  const edgeRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!embedded) return;
-    const el = edgeRef.current;
-    if (!el) return;
-    // Suppress iOS Safari's system edge-swipe-back at the very left edge, so our
-    // own back-drag runs there instead of the browser's history navigation.
-    const prevent = (e: TouchEvent) => e.preventDefault();
-    el.addEventListener("touchstart", prevent, { passive: false });
-    el.addEventListener("touchmove", prevent, { passive: false });
-    return () => {
-      el.removeEventListener("touchstart", prevent);
-      el.removeEventListener("touchmove", prevent);
+    // Suppress iOS Safari's system edge-swipe-back near the left edge so our own
+    // back-drag runs there instead of the browser's history animation.
+    const onTouchStart = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (t && t.clientX < 30) e.preventDefault();
     };
+    document.addEventListener("touchstart", onTouchStart, { passive: false });
+    return () => document.removeEventListener("touchstart", onTouchStart);
   }, [embedded]);
-
-  const onPagerBackDrag = (p: number) => {
-    backDragProgress.set(p);
-    onBackDrag?.(p);
-  };
-  const onPagerBackRelease = (commit: boolean) => {
-    if (!commit) animate(backDragProgress, 0, springs.settling);
-    onBackRelease?.(commit);
-  };
 
   const bumpActivity = useCallback(() => {
     setChromeVisible(true);
@@ -99,13 +96,124 @@ export function ReelScreen({
     };
   }, []);
 
-  const goHome = () => {
+  const goHome = useCallback(() => {
     if (embedded) {
       onClose?.();
       return;
     }
     setExiting(true);
+  }, [embedded, onClose]);
+
+  // Shared back-drag handling for the back button + left-edge strip. A drag
+  // tracks the finger and drives onBackDrag; release commits past a threshold /
+  // flick; a tap (no movement) just closes.
+  const dragStartX = useRef(0);
+  const dragActive = useRef(false);
+  const dragMoved = useRef(false);
+  const dragStartT = useRef(0);
+  const dragLastX = useRef(0);
+  const dragLastT = useRef(0);
+
+  const onBackDown = (e: React.PointerEvent) => {
+    if (!embedded) return;
+    dragStartX.current = e.clientX;
+    dragActive.current = true;
+    dragMoved.current = false;
+    dragStartT.current = e.timeStamp;
+    dragLastX.current = e.clientX;
+    dragLastT.current = e.timeStamp;
+    setBackPressed(true);
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {}
+    haptic.select();
   };
+  const onBackMove = (e: React.PointerEvent) => {
+    if (!dragActive.current) return;
+    const dx = e.clientX - dragStartX.current;
+    if (Math.abs(dx) > DRAG_SLOP) dragMoved.current = true;
+    const p = Math.max(0, Math.min(1, dx / BACK_DISTANCE));
+    dragLastX.current = e.clientX;
+    dragLastT.current = e.timeStamp;
+    backDragProgress.set(p);
+    onBackDrag?.(p);
+  };
+  const onBackUp = () => {
+    if (!dragActive.current) return;
+    dragActive.current = false;
+    setBackPressed(false);
+    if (!dragMoved.current) {
+      goHome(); // tap
+      return;
+    }
+    const dx = dragLastX.current - dragStartX.current;
+    const p = Math.max(0, Math.min(1, dx / BACK_DISTANCE));
+    const dt = dragLastT.current - dragStartT.current;
+    const vx = dt > 0 ? dx / dt : 0;
+    const commit = p >= BACK_THRESHOLD || vx > BACK_FLICK_VX;
+    if (!commit) animate(backDragProgress, 0, springs.settling);
+    onBackRelease?.(commit);
+  };
+
+  const chrome = (
+    <>
+      {embedded && (
+        <div
+          aria-hidden
+          onPointerDown={onBackDown}
+          onPointerMove={onBackMove}
+          onPointerUp={onBackUp}
+          onPointerCancel={onBackUp}
+          className="absolute left-0 top-0 bottom-0 z-[62]"
+          style={{ width: 24, pointerEvents: "auto", touchAction: "none" }}
+        />
+      )}
+      <motion.button
+        type="button"
+        aria-label="Volver"
+        onPointerDown={embedded ? onBackDown : undefined}
+        onPointerMove={embedded ? onBackMove : undefined}
+        onPointerUp={embedded ? onBackUp : undefined}
+        onPointerCancel={embedded ? onBackUp : undefined}
+        onClick={embedded ? undefined : goHome}
+        className="absolute z-[62] left-4 bottom-[calc(var(--sab)_+_16px)] md:bottom-auto md:top-[calc(var(--sat)_+_16px)] flex items-center justify-center"
+        style={{
+          x: backX,
+          width: 48,
+          height: 48,
+          borderRadius: 24,
+          background: "var(--accent)",
+          pointerEvents: "auto",
+          touchAction: "none",
+          WebkitTapHighlightColor: "transparent",
+        }}
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M12.5 4l-6 6 6 6" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: -8,
+            borderRadius: 32,
+            border: "8px solid var(--accent-deep)",
+            pointerEvents: "none",
+            opacity: backPressed ? 1 : 0,
+            transition: backPressed ? "opacity 80ms ease-out" : "opacity 180ms ease-out 120ms",
+          }}
+        />
+      </motion.button>
+      <VerticalPills
+        count={topic.slides.length}
+        page={page}
+        y={y}
+        pageH={pageH}
+        visible={chromeVisible}
+        x={pillsX}
+      />
+    </>
+  );
 
   return (
     <div className="fixed inset-0 overflow-hidden bg-black">
@@ -140,9 +248,6 @@ export function ReelScreen({
             y={y}
             onMeasure={setPageH}
             endSlot={<BrandMonogram />}
-            backEnabled={embedded}
-            onBackDrag={onPagerBackDrag}
-            onBackRelease={onPagerBackRelease}
             renderSlide={(index, isCurrent, ctx) => (
               <Slide
                 slide={topic.slides[index]}
@@ -152,67 +257,6 @@ export function ReelScreen({
                 ctx={ctx}
               />
             )}
-            // Chrome lives INSIDE the pager viewport so a gesture that starts on
-            // the back button (bottom-left) or the pills (right edge) bubbles to
-            // the pager and scrolls, instead of hitting a dead zone (Bug B).
-            overlay={
-              <>
-                {/* Left-edge catcher: absorbs the iOS system back-swipe (see the
-                    touch listeners above) while still bubbling pointer events to
-                    the pager so our own back-drag runs. */}
-                {embedded && (
-                  <div
-                    ref={edgeRef}
-                    aria-hidden
-                    className="absolute left-0 top-0 bottom-0 z-40"
-                    style={{ width: 24 }}
-                  />
-                )}
-                {/* Back button follows the finger horizontally during a back-drag
-                    (backX) and springs in from the left on open. capturePointer
-                    =false so a drag begun here reaches the pager. */}
-                <motion.div
-                  className="absolute z-30 left-4 bottom-[calc(var(--sab)_+_16px)] md:bottom-auto md:top-[calc(var(--sat)_+_16px)]"
-                  style={{ x: backX }}
-                >
-                  <HaloPress
-                    onActivate={goHome}
-                    radius={24}
-                    haloColor="var(--accent-deep)"
-                    ariaLabel="Volver"
-                    capturePointer={false}
-                    style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 24,
-                      background: "var(--accent)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path
-                        d="M12.5 4l-6 6 6 6"
-                        stroke="#fff"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </HaloPress>
-                </motion.div>
-
-                <VerticalPills
-                  count={topic.slides.length}
-                  page={page}
-                  y={y}
-                  pageH={pageH}
-                  visible={chromeVisible}
-                  x={pillsX}
-                />
-              </>
-            }
           />
 
           <GlossaryCard
@@ -222,6 +266,10 @@ export function ReelScreen({
           />
         </div>
       </motion.div>
+
+      {/* Chrome renders OUTSIDE the shrinking card: portaled into the index's
+          fixed layer when embedded, inline for the standalone deep-link. */}
+      {embedded ? (chromeLayer ? createPortal(chrome, chromeLayer) : null) : chrome}
     </div>
   );
 }

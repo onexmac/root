@@ -96,6 +96,9 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   // fully-open reel. Opening springs it 0→1; the back gesture drags it 1→0 and
   // commits on release; the back button taps it to 0. No timed jump.
   const openAmt = useMotionValue(0);
+  // Chrome (back button + pills) renders in this fixed layer, OUTSIDE the
+  // shrinking card, so it can move independently of the card's scale.
+  const [chromeLayer, setChromeLayer] = useState<HTMLDivElement | null>(null);
   const cScale = useTransform(openAmt, [0, 1], [0.55, 1]);
   const cY = useTransform(openAmt, [0, 1], ["52%", "0%"]);
   const cRadius = useTransform(openAmt, [0, 1], [44, 0]);
@@ -103,30 +106,20 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   const backdropOpacity = useTransform(openAmt, [0, 0.15, 1], [0, 1, 1]);
   const dimOpacity = useTransform(openAmt, [0, 1], [0.5, 0]);
 
+  // No history.pushState: a same-document history entry is exactly what iOS
+  // Safari's edge-swipe-back animates into (the duplicated-reel artifact). We
+  // drive open/close entirely with openAmt and our own back-drag instead.
   const open = (topic: Topic) => {
     if (opening) return;
     setOpening(topic);
     openAmt.set(0);
-    animate(openAmt, 1, {
-      ...OPEN_SPRING,
-      delay: GROW_DELAY,
-      onComplete: () => {
-        try {
-          window.history.pushState(null, "", `/tema/${topic.slug}`);
-        } catch {}
-      },
-    });
+    animate(openAmt, 1, { ...OPEN_SPRING, delay: GROW_DELAY });
   };
 
   const commitClose = () => {
     animate(openAmt, 0, {
       ...CLOSE_SPRING,
-      onComplete: () => {
-        try {
-          window.history.pushState(null, "", "/");
-        } catch {}
-        setOpening(null);
-      },
+      onComplete: () => setOpening(null),
     });
   };
 
@@ -266,6 +259,7 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
               onClose={commitClose}
               onBackDrag={handleBackDrag}
               onBackRelease={handleBackRelease}
+              chromeLayer={chromeLayer}
             />
             {/* dim that lifts as the card grows (and returns as it shrinks) */}
             <motion.div
@@ -274,6 +268,10 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
               style={{ opacity: dimOpacity }}
             />
           </motion.div>
+          {/* Chrome layer — a sibling of the card, so it is NOT scaled by
+              openAmt. The reel portals its back button + pills in here so they
+              move in screen space (follow the finger, enter from borders). */}
+          <div ref={setChromeLayer} className="absolute inset-0 z-[61] pointer-events-none" />
         </div>
       )}
     </div>

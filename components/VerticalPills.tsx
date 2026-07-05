@@ -39,6 +39,7 @@ export function VerticalPills({
         gap: GAP,
         opacity: visible ? 1 : 0,
         transition: "opacity 220ms ease-out",
+        pointerEvents: "none",
       }}
     >
       {Array.from({ length: count }).map((_, i) => (
