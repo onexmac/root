@@ -56,11 +56,13 @@ export function ReelScreen({
   const backIn = useMotionValue(embedded ? 0 : 1);
   const pillsIn = useMotionValue(embedded ? 0 : 1);
   const backDragProgress = useMotionValue(0);
-  // During a back-drag the back button follows the finger to the RIGHT and fades
-  // out (as it did before), while the pills slide off to the LEFT.
+  // Closing (any way): the back button follows/flies to the RIGHT and fades out,
+  // the pills slide off to their OWN edge — the RIGHT. backDragProgress drives
+  // both; it's set live during a drag and animated to 1 on any close (tap,
+  // pull-down, edge/button drag) so every close plays the same exit.
   const backX = useTransform(() => (backIn.get() - 1) * 84 + backDragProgress.get() * BACK_DISTANCE);
   const backOpacity = useTransform(backDragProgress, [0, 0.5], [1, 0]);
-  const pillsX = useTransform(() => (1 - pillsIn.get()) * 64 - backDragProgress.get() * 420);
+  const pillsX = useTransform(() => (1 - pillsIn.get()) * 64 + backDragProgress.get() * 240);
 
   useEffect(() => {
     if (!embedded) return;
@@ -99,13 +101,17 @@ export function ReelScreen({
     };
   }, []);
 
+  // Every close path runs through here: play the chrome exit (back button +
+  // pills off to the right, back button fading) AND close the content. Used by a
+  // tap, a pull-down on the first slide, and an edge/button drag commit.
   const goHome = useCallback(() => {
+    animate(backDragProgress, 1, springs.snappy);
     if (embedded) {
       onClose?.();
       return;
     }
     setExiting(true);
-  }, [embedded, onClose]);
+  }, [embedded, onClose, backDragProgress]);
 
   // Shared back-drag handling for the back button + left-edge strip. A drag
   // tracks the finger and drives onBackDrag; release commits past a threshold /
@@ -154,8 +160,12 @@ export function ReelScreen({
     const dt = dragLastT.current - dragStartT.current;
     const vx = dt > 0 ? dx / dt : 0;
     const commit = p >= BACK_THRESHOLD || vx > BACK_FLICK_VX;
-    if (!commit) animate(backDragProgress, 0, springs.settling);
-    onBackRelease?.(commit);
+    if (commit) {
+      goHome(); // same exit as a tap/pull-down (chrome flies right, content closes)
+    } else {
+      animate(backDragProgress, 0, springs.settling); // chrome snaps back
+      onBackRelease?.(false); // content springs back open
+    }
   };
 
   const chrome = (
