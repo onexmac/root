@@ -88,6 +88,9 @@ const OPEN_SPRING = { type: "spring" as const, stiffness: 120, damping: 18, mass
 const CLOSE_SPRING = { type: "spring" as const, stiffness: 150, damping: 22, mass: 1 };
 const CANCEL_SPRING = { type: "spring" as const, stiffness: 210, damping: 26, mass: 1 };
 const GROW_DELAY = 0.06;
+// Asymptote for the first-slide pull-down: the card approaches this much travel
+// no matter how far you drag, so it resists (grips) rather than tracking 1:1.
+const PULL_MAX = 400;
 
 export function IndexScreen({ topics }: { topics: Topic[] }) {
   const [opening, setOpening] = useState<Topic | null>(null);
@@ -104,7 +107,7 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   // First-slide drag-down: the card translates DOWN following the finger (with a
   // little lag) instead of shrinking. openAmt stays 1 during this.
   const pullDownY = useMotionValue(0);
-  const endMode = useRef<"pulldown" | "shrink">("shrink");
+  const endMode = useRef<"pulldown" | "liftup">("liftup");
   // Corner radius from EITHER the shrink close (openAmt) or the pull-down drag.
   const cardRadius = useTransform(() =>
     Math.max((1 - openAmt.get()) * 44, Math.min(pullDownY.get() / 90, 1) * 40),
@@ -157,11 +160,14 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   // UP (os < 0): the card shrinks toward the menu.
   const handleEndPull = (os: number) => {
     if (os > 0) {
+      // FIRST slide pulled down → card follows the finger down, with tension
+      // (resists, so it grips the finger rather than slipping away).
       endMode.current = "pulldown";
-      pullDownY.set(os * 0.85); // follows the finger, a touch behind it
+      pullDownY.set(PULL_MAX * (1 - Math.exp((-os * 0.6) / PULL_MAX)));
     } else {
-      endMode.current = "shrink";
-      openAmt.set(1 - Math.min(-os / 200, 1));
+      // LAST slide pulled up → the pager shrinks the photo upward + reveals the
+      // H footer; the card itself stays open until you commit.
+      endMode.current = "liftup";
     }
   };
   const handleEndRelease = (commit: boolean) => {
@@ -179,9 +185,9 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
         animate(pullDownY, 0, CANCEL_SPRING);
       }
     } else if (commit) {
+      // liftup committed → shrink the card back to the menu. (Not committed:
+      // the pager springs its own upward-resize back, nothing to do here.)
       commitClose();
-    } else {
-      animate(openAmt, 1, CANCEL_SPRING);
     }
   };
 

@@ -96,8 +96,13 @@ export function ReelPager({
   // mirroring the open grow and revealing the sign-off; at the first it's a
   // small squish. No black box.
   const overscroll = useMotionValue(0);
-  // The sign-off (H) fades in behind the last slide as you start pulling past it.
-  const endReveal = useTransform(overscroll, (v) => (v < 0 ? Math.min(1, -v / 130) : 0));
+  // LAST slide only (overscroll < 0): the photo shrinks UPWARD (origin top) with
+  // resistance, revealing the H sign-off below. Tensioned so it grips the finger
+  // rather than slipping. (First slide is handled by the parent's pull-down.)
+  const endLift = useTransform(overscroll, (v) => (v < 0 ? 200 * (1 - Math.exp((v * 0.6) / 200)) : 0));
+  const slideShift = useTransform(endLift, (t) => -t); // lift the photo up
+  const slideScale = useTransform(endLift, (t) => 1 - (t / 200) * 0.28); // shrink up to ~28%
+  const endReveal = useTransform(endLift, (t) => Math.min(1, t / 90));
   const endRevealScale = useTransform(endReveal, (r) => 0.9 + r * 0.1);
 
   const dragging = useRef(false);
@@ -374,7 +379,16 @@ export function ReelPager({
       <motion.div style={{ y, willChange: "transform" }}>
         {Array.from({ length: pageCount }).map((_, i) =>
           Math.abs(i - page) <= 1 ? (
-            <div key={i}>{renderSlide(i, i === page, { y, pageH, peeking })}</div>
+            <motion.div
+              key={i}
+              style={
+                i === page
+                  ? { scale: slideScale, y: slideShift, transformOrigin: "50% 0%" }
+                  : undefined
+              }
+            >
+              {renderSlide(i, i === page, { y, pageH, peeking })}
+            </motion.div>
           ) : (
             <div key={i} style={{ height: pageH || "100dvh" }} />
           ),
