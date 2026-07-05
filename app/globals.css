@@ -20,14 +20,14 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  overscroll-behavior-y: none;
   font-family: var(--font-serif), Georgia, serif;
 }
 
 html,
 body {
   height: 100%;
-  overscroll-behavior-y: none;
+  /* No overscroll-behavior:none here — it kills the native elastic rubber-band.
+     The menu should bounce with real momentum/inertia at the top and bottom. */
 }
 
 /* Dark shimmer placeholder shown until an image loads */

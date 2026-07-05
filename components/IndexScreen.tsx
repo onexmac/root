@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion, useScroll, useTransform, useMotionValue, animate } from "motion/react";
 import { PressScale } from "@/components/PressScale";
 import { ReelScreen } from "@/components/ReelScreen";
-import { OverscrollBounce } from "@/components/OverscrollBounce";
 import { BrandPills, BrandMonogram } from "@/components/BrandMark";
 import type { Topic } from "@/data/topics";
 
@@ -177,7 +176,6 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
 
   return (
     <div className="min-h-dvh bg-black">
-      <OverscrollBounce enabled={!opening}>
       <motion.div
         data-app
         className="min-h-dvh mx-auto max-w-[1180px] text-white"
@@ -226,7 +224,6 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
           <BrandMonogram />
         </footer>
       </motion.div>
-      </OverscrollBounce>
 
       {/* The REAL reel, embedded, grows from under as a rounded dimmed card —
           one tree, no route swap mid-transition, so there is nothing to
