@@ -103,7 +103,10 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
   const cY = useTransform(openAmt, [0, 1], ["52%", "0%"]);
   const cRadius = useTransform(openAmt, [0, 1], [44, 0]);
   const cardOpacity = useTransform(openAmt, [0, 0.12], [0, 1]);
-  const backdropOpacity = useTransform(openAmt, [0, 0.15, 1], [0, 1, 1]);
+  // Blurred backdrop shows ONLY during the opening grow (to avoid black around
+  // the growing card). It's switched off once open, so closing/back-dragging
+  // reveals plain black behind the shrinking card — not the blurred gray photo.
+  const backdropShow = useMotionValue(0);
   const dimOpacity = useTransform(openAmt, [0, 1], [0.5, 0]);
 
   // No history.pushState: a same-document history entry is exactly what iOS
@@ -113,7 +116,14 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
     if (opening) return;
     setOpening(topic);
     openAmt.set(0);
-    animate(openAmt, 1, { ...OPEN_SPRING, delay: GROW_DELAY });
+    backdropShow.set(0);
+    animate(backdropShow, 1, { duration: 0.12 });
+    animate(openAmt, 1, {
+      ...OPEN_SPRING,
+      delay: GROW_DELAY,
+      // once open, drop the blurred backdrop so the close reveals black
+      onComplete: () => backdropShow.set(0),
+    });
   };
 
   const commitClose = () => {
@@ -236,7 +246,7 @@ export function IndexScreen({ topics }: { topics: Topic[] }) {
               backgroundPosition: "center",
               filter: "blur(30px) brightness(0.65)",
               transform: "scale(1.2)",
-              opacity: backdropOpacity,
+              opacity: backdropShow,
             }}
           />
           {/* The card: every transform derives from openAmt, so opening springs

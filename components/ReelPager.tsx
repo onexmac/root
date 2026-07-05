@@ -19,10 +19,6 @@ const RUBBER_FACTOR = 0.35;
 const ADVANCE_DISTANCE_RATIO = 0.25;
 const ADVANCE_VELOCITY_PX = 250;
 const VELOCITY_WINDOW_MS = 120;
-const EXIT_OVERSHOOT_PX = 130;
-// The end-of-story pull travels further before it commits to leaving, so the
-// "H" sign-off has room to rise into view first.
-const EXIT_OVERSHOOT_END = 260;
 const PEEK_HOLD_MS = 160;
 // Wheel: amplify the scroll so a normal gesture visibly drags the photo, and
 // commit at a low fraction of a page so it advances readily instead of fighting
@@ -63,7 +59,6 @@ export function ReelPager({
   disabled,
   renderSlide,
   onActivity,
-  onExit,
   y,
   onMeasure,
   overlay,
@@ -75,7 +70,6 @@ export function ReelPager({
   disabled?: boolean;
   renderSlide: (index: number, isCurrent: boolean, ctx: SlideContext) => ReactNode;
   onActivity?: () => void;
-  onExit?: (direction: "start" | "end") => void;
   y: MotionValue<number>;
   onMeasure?: (pageH: number) => void;
   /** Fixed chrome (back button, pills) rendered INSIDE the viewport so a
@@ -88,12 +82,19 @@ export function ReelPager({
   const [pageH, setPageH] = useState(0);
   const measured = useRef(false);
   const peeking = useMotionValue(0);
-  // How far the end-of-story sign-off has been pulled into view (0..1), driven
-  // by how far y is overscrolled past the last slide.
-  const endReveal = useTransform(y, (v) =>
-    pageH ? Math.max(0, Math.min(1, (-v - (pageCount - 1) * pageH) / 140)) : 0,
+  // Overscroll past an end: signed px (negative past the LAST slide, positive
+  // past the FIRST). Instead of translating the strip into empty black, the
+  // current slide RESIZES — at the last slide the photo shrinks + pushes up,
+  // mirroring the open grow and revealing the sign-off; at the first it's a
+  // small squish. No black box.
+  const overscroll = useMotionValue(0);
+  const slideScale = useTransform(overscroll, (v) =>
+    v < 0 ? 1 - (Math.min(-v, 320) / 320) * 0.22 : 1 - (Math.min(v, 320) / 320) * 0.08,
   );
-  const endRevealScale = useTransform(endReveal, (r) => 0.82 + r * 0.18);
+  const slideShift = useTransform(overscroll, (v) => (v < 0 ? v * 0.4 : 0));
+  const endReveal = useTransform(overscroll, (v) => (v < 0 ? Math.min(1, -v / 130) : 0));
+  const endRevealScale = useTransform(endReveal, (r) => 0.9 + r * 0.1);
+  const reelOrigin = page === pageCount - 1 ? "50% 0%" : "50% 50%";
 
   const dragging = useRef(false);
   const axisLocked = useRef<"x" | "y" | null>(null);
@@ -136,14 +137,6 @@ export function ReelPager({
     if (dragging.current) return;
     animate(y, -page * pageH, springs.settling);
   }, [page, pageH, y]);
-
-  const clampBounds = (raw: number) => {
-    const maxY = 0;
-    const minY = -(pageCount - 1) * pageH;
-    if (raw > maxY) return maxY + rubber(raw - maxY);
-    if (raw < minY) return minY - rubber(minY - raw);
-    return raw;
-  };
 
   const clearPeekTimer = () => {
     if (peekTimer.current) {
@@ -226,7 +219,20 @@ export function ReelPager({
     }
 
     const naive = baseY.current + dy;
-    y.set(clampBounds(naive));
+    const maxY = 0;
+    const minY = -(pageCount - 1) * pageH;
+    if (naive > maxY) {
+      // past the FIRST slide → resize (squish), don't translate into black
+      y.set(maxY);
+      overscroll.set(naive - maxY);
+    } else if (naive < minY) {
+      // past the LAST slide → resize + push the photo up, revealing the sign-off
+      y.set(minY);
+      overscroll.set(naive - minY);
+    } else {
+      y.set(naive);
+      if (overscroll.get() !== 0) overscroll.set(0);
+    }
   };
 
   const endDrag = (e: React.PointerEvent) => {
@@ -242,6 +248,13 @@ export function ReelPager({
     dragging.current = false;
     axisLocked.current = null;
 
+    // Overscrolled past an end → spring the resize back (going home is the back
+    // gesture, not a vertical pull).
+    if (overscroll.get() !== 0) {
+      animate(overscroll, 0, springs.settling);
+      return;
+    }
+
     const restY = -page * pageH;
     const translation = y.get() - restY;
 
@@ -249,24 +262,6 @@ export function ReelPager({
     const last = samples.current[samples.current.length - 1];
     const dt = last.t - first.t;
     const vy = dt > 0 ? (last.y - first.y) / dt : 0;
-    const predicted = translation + vy * ADVANCE_VELOCITY_PX;
-
-    const atStart = page === 0 && translation > 0;
-    const atEnd = page === pageCount - 1 && translation < 0;
-    if (atStart || atEnd) {
-      const exitDist = atEnd ? EXIT_OVERSHOOT_END : EXIT_OVERSHOOT_PX;
-      const pastExitThreshold =
-        Math.abs(translation) > exitDist ||
-        Math.abs(predicted) > ADVANCE_VELOCITY_PX;
-      if (pastExitThreshold && onExit) {
-        haptic.select();
-        animate(y, translation > 0 ? pageH * 1.15 : -((pageCount - 1) * pageH + pageH * 1.15), springs.settling);
-        onExit(atStart ? "start" : "end");
-        return;
-      }
-      animate(y, restY, springs.snappy);
-      return;
-    }
 
     const target = decideTarget(page, pageCount, pageH, translation, vy);
 
@@ -355,23 +350,32 @@ export function ReelPager({
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
     >
+      {/* Sign-off sits behind the slides at the bottom; the last photo shrinking
+          up on overscroll reveals it. */}
+      {endSlot && (
+        <motion.div
+          className="absolute inset-x-0 bottom-0 flex items-end justify-center pb-[calc(var(--sab)_+_48px)] pointer-events-none"
+          style={{ opacity: endReveal, scale: endRevealScale }}
+        >
+          {endSlot}
+        </motion.div>
+      )}
       <motion.div style={{ y, willChange: "transform" }}>
         {Array.from({ length: pageCount }).map((_, i) =>
           Math.abs(i - page) <= 1 ? (
-            <div key={i}>{renderSlide(i, i === page, { y, pageH, peeking })}</div>
+            <motion.div
+              key={i}
+              style={
+                i === page
+                  ? { scale: slideScale, y: slideShift, transformOrigin: reelOrigin }
+                  : undefined
+              }
+            >
+              {renderSlide(i, i === page, { y, pageH, peeking })}
+            </motion.div>
           ) : (
             <div key={i} style={{ height: pageH || "100dvh" }} />
           ),
-        )}
-        {endSlot && (
-          <div
-            className="flex items-start justify-center"
-            style={{ height: pageH || "100dvh" }}
-          >
-            <motion.div style={{ opacity: endReveal, scale: endRevealScale }} className="pt-20">
-              {endSlot}
-            </motion.div>
-          </div>
         )}
       </motion.div>
       {overlay}
