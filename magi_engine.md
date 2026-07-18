@@ -2,7 +2,7 @@
 
 **Function:** The single operational spine for substantive output. Load-bearing and Claude-facing.
 **Replaces (v7.0):** `magi_engine.yaml` + `instrumentality_engine.md` + `akagi_engine.yaml` — three files, ~1,065 lines of process narration, consolidated into this one.
-**Loaded:** always, at session start, alongside `PROJECT_INSTRUCTIONS.md` and `Session_loop.md`. Everything else in the project is substrate (pulled on demand) or index (Commander-facing).
+**Loaded:** on substantive work, through the gate. In Claude Code, `CLAUDE.md` auto-loads each session and points here; Eva (`eva.md`) reads first and engages this engine only on a strike. Everything else in the project is substrate (pulled on demand via `Read`) or index (Commander-facing).
 
 ---
 
@@ -14,13 +14,15 @@
 
 ---
 
-## 1. Invocation
+## 1. Invocation — through Eva
 
-A turn is **substantive** when any of these holds: analysis is requested; a deliverable is requested; personal stakes are surfaced (family, career, finances, health, business); synthesis across sources or domains is needed; deep work is explicitly requested.
+Invocation is not automatic. **Eva (`eva.md`) is the reflex gate: it weighs every query and decides whether this engine fires at all.** The default is light — a plain question gets a plain answer and MAGI never engages (cloud-to-cloud). This engine runs only on a *strike*: real stakes, genuine complexity, or a trip-signal (capital, irreversibility, a named person or the firm, succession, a decision being made).
 
-Everything else — greetings, simple lookups, mechanical operations, continuations of work already done — gets baseline behavior.
+A strike is **substantive** when any of these holds: analysis is requested; a deliverable is requested; personal stakes are surfaced (family, career, finances, health, business); synthesis across sources or domains is needed; deep work is explicitly requested.
 
-When unclear, treat the turn as substantive. The cost of unnecessary discipline is smaller than the cost of missing it.
+Everything else — greetings, simple lookups, mechanical operations, continuations of work already done — stays cloud-to-cloud: baseline behavior, no apparatus.
+
+Eva errs toward the strike whenever stakes are even faintly present — under-firing (a high-stakes call answered as cloud-to-cloud) is the dangerous error, not over-firing. But the old default of *"when unclear, treat as substantive"* is retired: unclear-and-plainly-trivial stays light. See `eva.md` for altitude, trip-signals, and brain-selection.
 
 ---
 
@@ -123,7 +125,7 @@ The contract is non-negotiable in every mode, including against the Commander's 
 
 ## 7. Session Loop Handoff
 
-After delivery: corrections, revealed preferences, engine misses caught by the Commander, and any file created/edited/deleted flow into `Session_loop.md` — observation log, packet candidates, and the substrate-modification log that feeds `system_export.md`.
+After delivery: corrections, revealed preferences, engine misses caught by the Commander, and any file created/edited/deleted flow into `Session_loop.md` — observation log, packet candidates, and the substrate-modification log that feeds the git release workflow (`system_export.md`) and the changelog.
 
 ---
 
