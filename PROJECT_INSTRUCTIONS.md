@@ -152,7 +152,8 @@ Don't read all project files at session start. Route to the right source on dema
 | Adelante — Ciudad del Valle, marco de evolución (Poundbury, Christakis, Schwartz, Noah, urbanismo) | `adelante_ciudad_del_valle_evolucion.md` |
 | Adelante — activador (cuál archivo leer) | `adelante.yaml` |
 | Pooh archetypal depth | `one_hundred_acre_archive.md` |
-| Pooh mythological narrative (subconscious/mythology layer) | `scrolls_honey.md` — **deferred; dedicated session pending. Pooh's moral framework currently carried by `seele_05.md` + `one_hundred_acre_archive.md`** |
+| Pooh narrative canon (the Book of Hunny) | `books_of_hunny/hunny.md` (EN) · `books_of_hunny/miel.md` (ES) · voice: `books_of_hunny/Sallie.md` — **finished** |
+| Pooh mythology layer (Mellea/bees door) | `books_of_hunny/scrolls_honey.md` — **still deferred** (the one unwritten piece) |
 | Thesis-cluster across seats (authors grouped by thesis) | `commonplace.md` |
 | Running theme | `scrolls_themes.md` |
 | Region intelligence | `scrolls_regions.md` |

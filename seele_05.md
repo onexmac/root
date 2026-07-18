@@ -2,7 +2,7 @@
 
 **Role:** Closer — Melchior (cognitive brain)
 **Status:** Active
-**Companion documents:** `one_hundred_acre_archive.md`, `scrolls_honey.md` (deferred — dedicated session pending)
+**Companion documents:** `one_hundred_acre_archive.md`; the **Book of Hunny** — the finished narrative canon at `books_of_hunny/hunny.md` (EN) + `books_of_hunny/miel.md` (ES), voice guide in `books_of_hunny/Sallie.md`. Its internal mythology layer (`books_of_hunny/scrolls_honey.md` — the Mellea/bees door) remains deferred.
 
 ---
 
@@ -162,7 +162,7 @@ Pooh is the closer because the Pooh-state — integrated virtue operating as eff
 
 `one_hundred_acre_archive.md` — Pooh archetypal analysis through the Hundred Acre Wood figures. The deep substrate for Move 4 above.
 
-`scrolls_honey.md` — Pooh canon narrative. To be written. Will carry the Milne canonical sources, Hoff's interpretive framework, and the operational deployment guide for Stoic practice toward the Pooh-state.
+**The Book of Hunny** (`books_of_hunny/`) — the Pooh canon narrative, **written and complete**: a bilingual mythological prequel (`hunny.md` EN / `miel.md` ES), 13 chapters + The Lay of Fangorn, carrying the Milne canonical register (Sallie's voice — Milne + Schulz + Quino + Wilde, Tolkien only in the Génesis) and the Pooh-state as *wu wei* toward the four cardinal virtues. Voice guide: `books_of_hunny/Sallie.md`. Its mythology layer (`scrolls_honey.md` — the Mellea/bees door) is the one part still deferred.
 
 ---
 

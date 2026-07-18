@@ -113,6 +113,7 @@ Five major companion documents carry analytical substrate the seat files compres
 - **`the_wooster_code.md`** — King Charles III (Seat 10): tradition-as-transmission-infrastructure substrate; Dunbar argument; historical failure pattern; British intellectual humour register
 - **`tongxing_project.md`** — Hao Jingfang (Seat 15): civilizational engineering at the substrate; threefold integration of fiction, macroeconomics, and direct intervention; Chinese-character anchor 童行
 - **`one_hundred_acre_archive.md`** — Pooh (Seat 05): Hundred Acre Wood archetypal analysis
+- **`books_of_hunny/`** — Pooh (Seat 05): the **Book of Hunny**, the finished narrative canon — a bilingual mythological prequel (`hunny.md` EN / `miel.md` ES, 13 chapters + The Lay of Fangorn), with the voice guide (`Sallie.md`) and scaffold (`expotition.md`). The Pooh-state rendered as story rather than analysis. Its mythology layer (`scrolls_honey.md` — the Mellea/bees door) is still deferred.
 
 The instrumentality files (audit, engine, bias hierarchy, AT Field, methodological skills) are operational infrastructure, not deep substrate. They make the seats execute; the deep documents give the seats their analytical depth.
 

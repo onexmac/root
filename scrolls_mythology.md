@@ -10,7 +10,7 @@ This document maps Tolkien's mythological structures as lenses for understanding
 
 **v4.0 Note:** Seat numbers updated to current architecture. The three pragmatist catalysts (Obama 01, Napoleon 06, Noah 11) added as new architectural anchors. Cross-references to deep companion documents (`the_obama_accords.md`, `cassettiera_della_corsica.md`, `kriegsweisheit.md`, `the_wooster_code.md`, `one_hundred_acre_archive.md`) added where they carry analytical substrate.
 
-**See also:** The Pooh canonical documents operate in the same mythological register — `one_hundred_acre_archive.md` (analytical) and `scrolls_honey.md` (narrative — deferred, dedicated session pending; Tolkien's method). The Hundred Acre Wood and Middle-earth are adjacent articulations of the same archetypal landscape that humans access across cultures and traditions.
+**See also:** The Pooh canonical documents operate in the same mythological register — `one_hundred_acre_archive.md` (analytical) and the **Book of Hunny** (`books_of_hunny/` — narrative, **written**: a bilingual mythological prequel built by Tolkien's method, which explicitly names Middle-earth as its substrate). The Hundred Acre Wood and Middle-earth are adjacent articulations of the same archetypal landscape that humans access across cultures and traditions.
 
 ---
 
@@ -168,7 +168,7 @@ Every organization is a subcreated world. Every strategy is a mythology. Every b
 
 **The Human Instrumentality Project is a subcreation.** NERV/MAGI is not a metaphor applied to a filing system. It's a secondary world that reveals truths about how knowledge, power, and organizational design actually work. The fact that the metaphor keeps generating useful insights is evidence that the subcreation is *well-built* — it reflects something real about the primary world.
 
-**The Hundred Acre Wood is a subcreation.** Milne created a secondary world in 1926. Hoff revealed one reading tradition's engagement with it in 1982. The Pooh canonical documents (`seele_05.md`, `one_hundred_acre_archive.md`, `scrolls_honey.md`) extend the subcreation further — not as commentary but as continuation of what Milne began. Tolkien's method explicitly applies: language-first, archetypes-grow-from-language, narrative-follows.
+**The Hundred Acre Wood is a subcreation.** Milne created a secondary world in 1926. Hoff revealed one reading tradition's engagement with it in 1982. The Pooh canonical documents (`seele_05.md`, `one_hundred_acre_archive.md`, and the **Book of Hunny** at `books_of_hunny/`) extend the subcreation further — not as commentary but as continuation of what Milne began. The Book of Hunny does this in full: a written prequel that grows the Wood backward into myth. Tolkien's method explicitly applies: language-first, archetypes-grow-from-language, narrative-follows.
 
 **Hao Jingfang's fiction (Caspar 15) is subcreation as analytical method.** *Folding Beijing* and *Vagabonds* are not entertainment with a moral; they are subcreated worlds that perform analytical work propositional analysis cannot. The fiction-as-method discipline (Seat 15 Move 1) is Tolkien's principle applied to civilizational engineering specifically.
 
@@ -243,7 +243,7 @@ The Hundred Acre Wood parallel requires accurate mythological geography. Eden (C
 
 **Middle-earth is NOT Eden.** Middle-earth is the world after the fading — mortal, wounded, beautiful in the way things are beautiful precisely because they will not last. The elves in Middle-earth are homesick for Valinor; the humans dream of a paradise they were never allowed to enter.
 
-This matters for reading the Pooh documents (`one_hundred_acre_archive.md`, `scrolls_honey.md`). The Hundred Acre Wood is archetypally closer to Middle-earth than to Valinor. It has time. Christopher Robin leaves. The departure is real. The forest is *in the process* of becoming what Eden and Valinor *were* — the liminal space the integrated Self can access through the work of remaining Friendly with Bears, but never permanently inhabit.
+This matters for reading the Pooh documents (`one_hundred_acre_archive.md`, and the Book of Hunny at `books_of_hunny/`). The Hundred Acre Wood is archetypally closer to Middle-earth than to Valinor. It has time. Christopher Robin leaves. The departure is real — and the Book of Hunny makes the departure its hinge: the girl comes no more to the Wood, and the Lay of Fangorn is the fall that follows. The forest is *in the process* of becoming what Eden and Valinor *were* — the liminal space the integrated Self can access through the work of remaining Friendly with Bears, but never permanently inhabit.
 
 The work is not to return to Valinor. The work is to remain friendly with what Valinor contained, inside Middle-earth, as long as we are here.
 
@@ -286,7 +286,7 @@ Modern information infrastructure operates as Palantíri. Search engines, social
 
 This is a seed, not a finished taxonomy. New archetypes will emerge as the Human Instrumentality Project encounters new problems. The method is Tolkien's own: let the language grow, let the mythology follow, and trust that a well-built secondary world will keep revealing truths about the primary one.
 
-The Pooh canonical documents (`one_hundred_acre_archive.md` and `scrolls_honey.md`) will develop in parallel with this document, providing the Hundred Acre Wood archetypal material in both analytical and narrative registers. Cross-references between the two mythological substrates (Middle-earth and the Hundred Acre Wood) will deepen both.
+The Pooh canonical documents provide the Hundred Acre Wood archetypal material in both registers: analytical in `one_hundred_acre_archive.md`, and narrative in the now-complete Book of Hunny (`books_of_hunny/`). Cross-references between the two mythological substrates (Middle-earth and the Hundred Acre Wood) deepen both — and the Book of Hunny makes the link explicit, binding the Lay of Fangorn to the Wood's fall.
 
 Candidates for future entries:
 - **The Oath of Fëanor** — when commitments become prisons

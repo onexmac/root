@@ -255,13 +255,13 @@ Living intelligence documents updated as new signal arrives.
 - `scrolls_themes.md` — Running interpretive frameworks (deglobalization, AI geopolitics, energy transition, financial architecture, civilizational capability decline, formation infrastructure decline)
 - `scrolls_regions.md` — Regional intelligence briefs (US-China, Latin America, Europe, Global South/BRICS, China standalone, Russia, India, Africa)
 - `scrolls_mythology.md` — Tolkien archetypes as analytical lenses (Ainulindalë, Morgoth's Ring, Silmarils, Gandalf vs Saruman, Númenórean Fall, Subcreation, Eucatastrophe, the Shire, Valinor, the Palantíri)
-- `scrolls_honey.md` — Mythological-scriptural canon for Pooh — deferred, dedicated session pending (Tolkien method)
+- `books_of_hunny/` — the **Book of Hunny**, the mythological-scriptural canon for Pooh — **written and complete** (Tolkien method; its internal mythology layer `scrolls_honey.md` still deferred)
 
 ### Pooh's Canonical Documents
 The closing seat of Melchior requires three canonical sources read together:
 - A.A. Milne's original books (*Winnie-the-Pooh*, *The House at Pooh Corner*) — primary canon
 - `one_hundred_acre_archive.md` — analytical register (Peterson's Maps of Meaning deployed fully)
-- `scrolls_honey.md` — mythological-scriptural register (Tolkien method — deferred, dedicated session pending)
+- **The Book of Hunny** (`books_of_hunny/hunny.md` EN · `miel.md` ES) — mythological-scriptural register, **written**: Marcos's own amendment of Peterson — myth as the facts→values bridge, but *subcreated* (Tolkien method) and wu-wei rather than heroic. Voice guide: `books_of_hunny/Sallie.md`.
 
 ---
 
@@ -296,7 +296,8 @@ Four-layer depth/clearance framework: Surface, GeoFront, Central Dogma, Terminal
 | Charles III deep substrate (closer) | `the_wooster_code.md` |
 | Hao Jingfang deep substrate (closer) | `tongxing_project.md` |
 | Pooh archetypal analysis | `one_hundred_acre_archive.md` |
-| Pooh canon narrative | `scrolls_honey.md` — deferred (dedicated mythology session pending; moral framework carried by `seele_05.md` + `one_hundred_acre_archive.md`) |
+| Pooh canon narrative (the Book of Hunny) | `books_of_hunny/hunny.md` (EN) · `books_of_hunny/miel.md` (ES) — **finished** |
+| Pooh mythology layer (Mellea/bees door) | `books_of_hunny/scrolls_honey.md` — **still deferred** |
 | Running theme check | `scrolls_themes.md` |
 | Region intelligence | `scrolls_regions.md` |
 | Mythology / archetypes | `scrolls_mythology.md` |
@@ -327,14 +328,17 @@ Four-layer depth/clearance framework: Surface, GeoFront, Central Dogma, Terminal
   - `the_wooster_code.md` (Seat 10 closer)
   - `tongxing_project.md` (Seat 15 closer)
   - `one_hundred_acre_archive.md` (Seat 05 closer companion)
-  - `scrolls_honey.md` (Seat 05 closer mythological-narrative — deferred, dedicated session pending)
+  - `books_of_hunny/` (Seat 05 closer narrative canon — the **Book of Hunny**, finished; EN `hunny.md` / ES `miel.md`, voice `Sallie.md`; internal `scrolls_honey.md` mythology layer still deferred)
 - `nerv_[position].md` — NERV command and branch profiles
 - `instrumentality_*.md` — Cognitive audit layer (method audit, bias audit, deep dives, methodological skills)
 - `instrumentality_tversky##_*.md` — Layer 2 bias deep dives, numbered by direction in the Sephirot tree
+- `CLAUDE.md` — Auto-loaded operating context (Claude Code spine bootstrap)
+- `eva.md` — Eva reflex gate (Unit-00): invocation altitude, trip-signals, brain-selection
 - `magi_engine.md` — Unified engine spine (v7: output contract, draft audit, shape routing, depth, WILLE tripwire)
 - `wille_protocol.md` — WILLE apostate council protocol
 - `at_field_protocol.md` — Architectural-level boundary discipline
-- `scrolls_*.md` — Running themes, regions, mythology, Honey Scrolls
+- `scrolls_*.md` — Running themes, regions, mythology
+- `books_of_hunny/` — The Book of Hunny (Pooh narrative canon, EN/ES) + support files
 - `un_*.md` — United Nations intelligence files
 - `seele.yaml` — Master system config (honest configuration reflecting current holders, currently v4.1 holders)
 - `nerv.yaml` — Operational center config (currently v4.2.0)

@@ -98,7 +98,7 @@ Maintained by Science (`nerv_science.md`). Updates required when:
 - A packet graduates to its own document (replace the in-file body with a pointer; update the index table status)
 - A seatless author in a packet is later promoted to a seat (cross-update `reading_list_overview.md`)
 
-The index table at the top must always reflect actual file state. Never list a graduated-to document before it exists (the `scrolls_honey.md` lesson).
+The index table at the top must always reflect actual file state. Never list a graduated-to document before it exists (the `scrolls_honey.md` lesson — since resolved: the Book of Hunny was written and is now committed at `books_of_hunny/`, so the pointer finally has a file behind it).
 
 ---
 
