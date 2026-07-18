@@ -6,28 +6,58 @@ Versioning scheme: **MAJOR.MINOR**. MAJOR = architectural change (how MAGI route
 
 ---
 
-## Current System Version: **v7.1.0**
+## Current System Version: **v7.2.0**
 
-### Component manifest (v7.1.0)
+### Component manifest (v7.2.0)
 
 | Component | Version | Notes |
 |---|---|---|
-| Engine spine (`magi_engine.md`) | 7.0 | unchanged |
+| Eva reflex gate (`eva.md`) | 1.0 | **new** — Unit-00, pre-MAGI invocation gate (light by default) |
+| Operating context (`CLAUDE.md`) | 1.0 | **new** — CC auto-loaded spine bootstrap |
+| Engine spine (`magi_engine.md`) | 7.1 | §1 invocation now Eva-gated; CC loading model |
 | WILLE (`wille_protocol.md`) | 1.0 | unchanged |
 | SEELE council (`seele.yaml`) | 4.1.1 | unchanged |
 | NERV center (`nerv.yaml`) | 4.2.0 | unchanged |
-| Session Loop (`Session_loop.md`) | 3.0 | unchanged |
+| Session Loop (`Session_loop.md`) | 4.0 | **git persistence** (no memory tool, no 30-edit cap) |
+| System Release (`system_export.md`) | 2.0 | **git-native** (rewrote the zip/delete-and-reupload workflow) |
 | Bias Layer 0 (`instrumentality_ai_biases.md`) | 1.1 | unchanged |
 | Bias Layer 1 (`instrumentality_kabbalah_bias.md`) | 1.1 | unchanged |
 | Method audit (`instrumentality_cognitive_filters.md`) | 3.0 | unchanged |
-| AT Field (`at_field_protocol.md`) | 1.1 | unchanged |
+| AT Field (`at_field_protocol.md`) | 1.2 | Limit 5 leak closed under CC; memory refs → git |
 | Commonplace (`commonplace.md`) | 1.0 | unchanged |
-| Book ingest (`ingest_book.md`) | 1.0 | **new** — book absorption protocol with read-triage verdict |
-| Manual de Salto (`manual_de_salto.md`) | 2.0 | **new to project** — 43 → 47 rules; previously lived only in chat history |
+| Book ingest (`ingest_book.md`) | 1.0 | unchanged |
+| Manual de Salto (`manual_de_salto.md`) | 2.0 | unchanged |
+| Book of Hunny (`books_of_hunny/`) | 1.0 | **new** — finished bilingual work; realizes the reserved `scrolls_honey` |
 
 ---
 
 ## History
+
+### v7.2.0 — The Migration Release: Off Claude Projects, onto Claude Code
+*The release that moves the system to its real home — git as source of truth, whole-file reads instead of RAG fragments, an accessible-from-the-phone repo — and adds the Eva reflex gate so the apparatus is light by default.*
+
+**Architectural changes**
+- **Eva founded** (`eva.md`) — Unit-00, the reflex gate before MAGI. One primer, three fused lenses (circumferential sense / coup d'œil + economy of force / restraint + long view — Obama, Napoleon, King Charles, deployed silently). Three altitudes (cloud-to-cloud / heat lightning / ground strike); trip-signals force a strike on hidden stakes; brain-selection is near-automatic from the strike shape, guarded against Melchior-gravity; the fired brain's catalyst fetches seats proportional to strike depth. **Invocation default flipped from "when unclear, treat as substantive" to light-by-default.** Under-firing is the dangerous error, so trip-signals err sensitive.
+- **`CLAUDE.md` founded** — the CC auto-loaded operating context; replaces the Projects "always-load the spine" convention. Lean: identity, attribution rule core, Eva gate, git-as-truth, read-on-demand.
+- **`magi_engine.md` → 7.1.** §1 rewritten around Eva; loading + §7 handoff repointed to the CC/git model.
+
+**Off the Projects mechanics**
+- **Git is now the source of truth.** `system_export.md` rewritten (v2.0) from the zip/delete-and-reupload workflow to a git-native release (bump → changelog → commit → tag). The "project is the source of truth; do not edit files locally" discipline is *inverted* — local files + git are the truth.
+- **Session Loop → 4.0.** "commit" = `git commit`; memory is file-based + `CLAUDE.md`; the **30-edit cap is gone**; session start is `CLAUDE.md` auto-load, not "load memory edits."
+- **AT Field → 1.2.** Limit 5 (the platform's automatic memory generation modeling the Commander outside the consent loop) is **closed under CC** — no silent platform memory; every durable trace is a reviewable commit. Memory-edit references updated throughout.
+- The "changelog-in-every-batch or history is lost on delete-and-reupload" rule (v7.1.0) is retired — git preserves history.
+
+**Substrate**
+- **The Book of Hunny committed** (`books_of_hunny/`): the finished bilingual mythological prequel — `hunny.md` (EN) + `miel.md` (ES), 13 chapters + The Lay of Fangorn, mirrored, ~57k words — plus its support files (`Sallie.md` voice guide, `expotition.md`, `bob.md`, `scrolls_honey.md`). This realizes what `scrolls_honey.md` was reserved for; stale "deferred/unwritten" references reconciled across the substrate. Its *internal* mythology layer (`scrolls_honey.md` — the Mellea/bees door) remains genuinely deferred.
+
+**Known-deferred (carried, not resolved)**
+- WILLE demotion — plug WILLE into MAGI as a Catalyst-fetchable lens (design agreed; not yet implemented in `wille_protocol.md`/engine §5).
+- Skills → `.claude/commands/` (ingest_*, author_brief, weekly_digest, absorption_checklist) — optional CC-native conversion, pending.
+- Book of Hunny mythology session (`scrolls_honey.md`, Mellea door) and the Second Movement / more Lay of Fangorn.
+- Eva `unit00/01/02` split — deferred upgrade path if register-misfire proves recurrent.
+- Commander→Marcos rename pass (~299 instances) — pending.
+
+---
 
 ### v7.1.0 — The Absorption Release: Manual de Salto Committed, Book Ingest Protocol, Navarro Génesis
 *The release that turns the walk into artifacts: the playbook becomes a committed file, book reviews become a system, and the founding scar gets written at company level.*

@@ -1,65 +1,66 @@
-# Skill: System Export
+# Skill: System Release (git-native)
 
-**Function:** Compile the entire Human Instrumentality Project into a single versioned zip the Commander can use to delete-and-reupload the whole knowledge base, eliminating drift between files.
+**Function:** Cut a coherent, versioned release of the Human Instrumentality Project — bump the version, write the changelog entry, commit, and tag. Under Claude Code the git history *is* the system's source of truth; this skill is the discipline for stamping a clean version across it.
 **Triggered by:** *inferred intent*, not a fixed command string.
-**Writes to:** `changelog.md` (version entry) before packaging.
+**Writes to:** `changelog.md` (version entry) + a git commit and tag.
 
 ---
 
-## Why This Exists
+## Why This Exists (and what changed)
 
-The Commander's update workflow is **delete-everything-and-reupload**. That makes the export the source of truth at update time: whatever the zip contains *becomes* the project. The risk this defends against is partial updates — a few files changed in place while others drift — producing silent inconsistency across a 60+ file system. The export guarantees a coherent snapshot: changed files rewritten, unchanged files copied verbatim, one version stamped across the whole set.
+Under the old Claude Projects workflow this skill compiled the whole system into a **zip for delete-and-reupload**, because the uploaded project was the source of truth and partial updates caused silent drift. **That world is gone.** In Claude Code:
+
+- **Git is the source of truth.** Files are edited in place and committed; history is preserved automatically. There is no zip, no delete-and-reupload, no "copy unchanged files verbatim."
+- **Drift is prevented by version control, not by snapshotting.** Every change is already a reviewable diff.
+
+What remains worth doing deliberately is the **release stamp**: bumping the version, writing the changelog entry, and tagging — so any point in history can be named and returned to.
 
 ---
 
 ## Trigger — Inferred, Not Literal
 
-There is no magic command. MAGI infers export intent from any phrasing that means *"give me the files to update the system."* Examples that should fire it:
+There is no magic command. MAGI infers release intent from any phrasing that means *"stamp a new version of the system."* Examples:
 
-- "dame los archivos para actualizar el sistema"
-- "exporta el sistema" / "export the system"
-- "quiero resubir todo" / "I want to re-upload everything"
-- "empaca v6" / "package the new version"
-- "dame el zip del sistema"
+- "cut a release" / "tag a version" / "bump the version"
+- "empaca vX" / "package the new version"
+- "actualiza el changelog y commiteá"
+- "quiero dejar esto versionado"
 
-If intent is ambiguous (e.g. "give me the file" referring to one specific artifact just discussed), ask one clarifying question rather than exporting the whole system.
+If intent is ambiguous (e.g. "commit this" referring to one file just discussed), do the ordinary commit rather than a full release.
 
 ---
 
 ## Mechanics
 
-When export intent is inferred, MAGI runs this sequence:
+When release intent is inferred, MAGI runs this sequence:
 
-1. **Read the substrate-modification log** from the Session Loop (`Session_loop.md` Part 1, "Substrate modifications"). This is the list of files created/edited/deleted this session, each with a one-line description. If the log is empty but the Commander clearly wants an export, confirm there were no changes and export a verbatim snapshot at the current version.
+1. **Gather the change set.** `git status` / `git diff` and the Session Loop's substrate-modification log — the files created/edited/deleted since the last release tag. If nothing changed, say so; don't cut an empty release.
 
-2. **Determine the version bump.** MAJOR if the session changed how MAGI routes, attributes, or audits. MINOR otherwise (packets, refinements, fixes). State the proposed version to the Commander and proceed unless corrected.
+2. **Determine the version bump.** MAJOR if the session changed how MAGI routes, attributes, gates, or audits. MINOR otherwise (packets, refinements, fixes). State the proposed version and proceed unless corrected.
 
-3. **Write the `changelog.md` entry.** New version section at the top of History, with: a one-line release title, the architectural/discipline/substrate changes grouped, and any known-deferred items carried forward. Update the "Current System Version" line and the component manifest table.
+3. **Write the `changelog.md` entry.** New version section at the top of History: a one-line release title, the architectural/discipline/substrate changes grouped, and any known-deferred items carried forward. Update the "Current System Version" line and the component manifest. **Never rewrite past history entries** — they are the record; append.
 
-4. **Apply pending edits** to the affected files (the ones in the modification log).
+4. **Commit.** Stage the changed files and the changelog; `git commit` with a message whose subject matches the release title.
 
-5. **Assemble the full snapshot.** Copy *every* project file into the export directory. Unchanged files are copied **verbatim** — never regenerated, never paraphrased (regeneration risks silent drift and is the failure this skill prevents). Only files in the modification log are rewritten.
+5. **Tag.** `git tag vX.Y.Z` at that commit, so the version is a named point in history.
 
-6. **Package as one zip.** Single archive, never loose files (loose-file delivery is error-prone for delete-and-reupload). Name it with the version, e.g. `magi_system_v6.0.0.zip`.
-
-7. **Deliver via `present_files`** with a short manifest: version, count of files changed vs. carried verbatim, and the one-line changelog title. No long postamble.
+6. **Report.** A short manifest: version, count of files changed, the one-line changelog title, and the tag. No long postamble.
 
 ---
 
 ## The One Discipline This Imposes
 
-**The project is the source of truth; do not edit files locally without re-uploading.** Because the export copies unchanged files verbatim from the current project state, any local edit the Commander made *outside* this workflow and did not re-upload would be silently reverted by the next export's "verbatim" copy. The contract: edits happen in-session (logged, exported) or get re-uploaded immediately so the project reflects them before the next export.
+**Commit as you go; don't let the working tree drift far from a clean state.** The value of the git model is that every change is reviewable — but only if changes are actually committed. Large uncommitted working trees recreate the exact drift the old zip workflow fought. Edit, commit, and let the changelog + tags mark the coherent versions.
 
 ---
 
-## Verification Before Delivery
+## Verification Before Tagging
 
-- File count matches the previous export ± intended additions/deletions (flag any unexpected delta).
-- `changelog.md` "Current System Version" matches the zip name.
+- `changelog.md` "Current System Version" matches the tag you're about to write.
 - No file still asserts a *system* version that contradicts the changelog (component versions are fine).
-- Any "(to be written)" / deferred reference is honest, not an orphan pointing at a missing required file.
-- Every file the modification log marked as changed is actually different from the prior snapshot.
+- Any deferred reference is honest, not an orphan pointing at a missing required file.
+- `git status` is clean after the release commit (nothing important left unstaged).
 
 ---
 
-*Maintained by Science (`nerv_science.md`). The export is the project's reproducibility guarantee: from one zip, the entire system can be reconstituted at a known version.*
+*Maintained by Science (`nerv_science.md`). The release is the project's reproducibility guarantee: from one tag, the entire system can be checked out at a known version.*

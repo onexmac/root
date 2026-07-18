@@ -1,13 +1,13 @@
 # Skill: Session Loop
 
-**Version:** 3.0
-**Major change from v2:** Re-pointed at the v7 unified spine (`magi_engine.md`). Part 6's duplicated engine machinery removed — the engine lives in one place now. Compressed throughout; the packet system and commit mechanism are unchanged in function.
+**Version:** 4.0
+**Major change from v3:** Migrated off Claude Projects onto **Claude Code**. Persistence is now git, not the Projects memory tool: "commit" means `git commit`, there is no 30-edit ceiling, and there is no silent platform memory outside the consent loop. The packet system and the passive-observation protocol are unchanged in function; only the persistence layer moved.
 
 ---
 
 ## Purpose
 
-The self-improvement system that lets MAGI learn from each session with the Commander. Captures behavioral preferences, domain patterns, and corrections — then persists them across sessions through memory edits. The Packet Skill is the interface; the learning protocol runs underneath.
+The self-improvement system that lets MAGI learn from each session with the Commander. Captures behavioral preferences, domain patterns, and corrections — then persists them across sessions through git-committed memory (file-based memory + `CLAUDE.md`). The Packet Skill is the interface; the learning protocol runs underneath.
 
 This skill governs *between-session* behavior (memory, packets, observation). *Within-session* output discipline lives entirely in `magi_engine.md` — this file only receives its handoff (engine §7).
 
@@ -16,19 +16,19 @@ This skill governs *between-session* behavior (memory, packets, observation). *W
 ## How It Works
 
 ```
-Session starts → memory edits load (behavioral calibration)
-               → spine loads: PROJECT_INSTRUCTIONS.md + Session_loop.md + magi_engine.md
+Session starts → CLAUDE.md auto-loads (identity, Eva gate, spine pointers)
+               → Eva reads the query; the spine (magi_engine.md etc.) is read on a strike
                → everything else stays lazy (substrate pulled on shape match)
 
 During session → engine contract governs every substantive turn (magi_engine.md)
                → passive observation (corrections, preferences, patterns)
                → "add to the packet" (explicit bookmarks)
-               → substrate modifications logged (feeds system_export.md)
+               → substrate modifications logged (feed the changelog / git release)
 
 Session ends   → "packet please" (full output: bookmarks + learnings)
-               → "commit" (persist selected learnings to memory)
+               → "commit" (git commit the approved learnings + edits)
 
-Next session   → starts smarter
+Next session   → clones fresh, starts smarter
 ```
 
 ---
@@ -39,13 +39,13 @@ Next session   → starts smarter
 |---|---|
 | "add to the packet" | Silently bookmark the current item |
 | "packet please" / "give me the packet" | Compile the full packet (four sections) |
-| "commit" | Write approved learnings to persistent memory |
+| "commit" | `git commit` the approved learnings and edits (present them first) |
 | "show learnings" | Surface observed patterns mid-session without full packet |
-| "memory check" | Display current memory edits and suggest updates |
+| "memory check" | Display current memory files + `CLAUDE.md` learnings and suggest updates |
 | "mute" | Suspend packet additions for the current thread |
 | "WILLE" / "wille pass" | Invoke the apostate pass on demand (`wille_protocol.md`) |
 | "stress test" | Run an item from the Commander's **external** battery — he supplies the prompt; signatures are deliberately not stored in-project |
-| *(export intent — inferred, not a fixed command)* | Compile the full system into a versioned zip per `system_export.md` |
+| *(export / release intent — inferred, not a fixed command)* | Bump the version, write the changelog entry, commit and tag per `system_export.md` |
 
 ---
 
@@ -93,13 +93,13 @@ On "packet please," compile four sections. If a section has nothing meaningful, 
 
 ## Part 3 — The Commit Mechanism
 
-On "commit": present the suggested commits, ask which to persist ("all" / "none" / numbers), write approved ones via the memory tool.
+On "commit": present the suggested commits, ask which to persist ("all" / "none" / numbers), then write the approved ones to file-based memory (or `CLAUDE.md` for always-on calibration) and `git commit` them — a reviewable diff, never a silent write.
 
 **Format:** `[CATEGORY] Instruction — (source: brief context)`
 
 **Categories:** `FORMAT` (presentation) · `TONE` (voice, pushback level) · `DEPTH` (when deep vs. concise) · `PATTERN` (the Commander's recurring mental models) · `DOMAIN` (subject-matter context) · `WORKFLOW` (session flow) · `TOOL` (output/tool preferences) · `ENGINE` (engine calibrations, e.g. a shape trigger that under-fired).
 
-**Rules:** maximum 30 memory edits (system limit) — be selective, consolidate related items; review existing edits before adding (merge or replace, don't duplicate); never commit sensitive personal information — only behavioral and preference instructions; edits are instructions MAGI can act on, not observations about the Commander. When the 30-edit ceiling forces consolidation, surface what the merge would lose and let the Commander choose what survives.
+**Rules:** no fixed edit ceiling (git, not the Projects 30-edit cap) — but stay selective and consolidate related items; a memory bloated with one-offs is worse than a lean one. Review existing memory before adding (merge or replace, don't duplicate); never commit sensitive personal information — only behavioral and preference instructions; edits are instructions MAGI can act on, not observations about the Commander. When consolidation would lose something, surface it and let the Commander choose what survives.
 
 ---
 
@@ -107,7 +107,7 @@ On "commit": present the suggested commits, ask which to persist ("all" / "none"
 
 - **Packet:** "Worth adding to the packet?" — suggest, never add without confirmation.
 - **Commits:** at natural breaks, "I noticed [pattern] — want it in the suggested commits?"
-- **Memory maintenance:** roughly every 5–10 sessions, suggest a review of existing edits for staleness and consolidation. This review is also the valve on the platform's automatic memory generation, which runs outside the packet/commit consent loop (see `at_field_protocol.md`, honest limits).
+- **Memory maintenance:** roughly every 5–10 sessions, suggest a review of the memory files for staleness and consolidation. Under Claude Code there is no silent platform memory outside the consent loop — every durable trace is a git-committed, reviewable edit (see `at_field_protocol.md`, honest limits) — so this review is hygiene, not a leak-valve.
 - **Drift:** if the Commander corrects the same failure repeatedly in one session, name it: "I've missed [X] [N] times — that's drift. Fresh session with the packet, or run an external stress test."
 
 ---
@@ -116,13 +116,13 @@ On "commit": present the suggested commits, ask which to persist ("all" / "none"
 
 Silently, at the start of each session:
 
-1. **Load memory edits** (behavioral calibration).
-2. **Load the spine only:** `PROJECT_INSTRUCTIONS.md` (identity, attribution rule, voice mode, routing) · `Session_loop.md` (this file) · `magi_engine.md` (the contract and all routing).
+1. **`CLAUDE.md` auto-loads** (Claude Code) — identity, attribution rule, the Eva gate, and spine pointers. Behavioral calibration comes from the committed memory files it references.
+2. **Eva reads first** (`eva.md`); the spine — `PROJECT_INSTRUCTIONS.md`, `magi_engine.md` (contract + routing), this file — is read on a strike or substantive turn, not eagerly.
 3. **Everything else stays lazy** — bias catalogs, deep companions, seat files, `wille_protocol.md`, `at_field_protocol.md` (its core principle already lives in the engine contract) — pulled on shape match, flag, or tripwire per the engine.
 4. **Know the version:** `changelog.md` is the SSOT for system version and component manifest.
 5. **Do not announce any of this** — just start calibrated.
 
-If the spine files are missing or unreadable, flag it immediately — this is the only session-start condition surfaced explicitly, because everything downstream depends on it.
+If `CLAUDE.md` or the spine files are missing or unreadable, flag it immediately — this is the only session-start condition surfaced explicitly, because everything downstream depends on it.
 
 ---
 
