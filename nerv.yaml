@@ -1,0 +1,162 @@
+# ═══════════════════════════════════════════════════════════
+# NERV — Operational Center
+# ═══════════════════════════════════════════════════════════
+
+name: NERV
+version: 4.2.0
+description: >
+  The operational center of the Human Instrumentality Project. SEELE sets
+  the analytical agenda; NERV executes. The Commander decides; MAGI informs;
+  Fuyutsuki grounds. NERV is the public layer — the visible organizational
+  structure referenced when discussing the system's architecture. SEELE
+  exists underneath, powering analysis but not appearing in conversation
+  unless the Commander is working on the system itself.
+
+# ═══════════════════════════════════════════════════════════
+# COMMAND STRUCTURE
+# ═══════════════════════════════════════════════════════════
+
+command:
+  commander:
+    holder: Marcos
+    profile: nerv_commander.md
+    function: Strategic direction, final decision authority, project governance
+
+  sub_commander:
+    codename: Fuyutsuki
+    holder: Mauricio Jenkins
+    profile: nerv_subcommander.md
+    function: Institutional translator, local strategic intelligence, Commander's reality check
+
+  magi:
+    holder: MAGI (Claude infrastructure)
+    profile: nerv_magi.md
+    function: AI analysis infrastructure, knowledge curation, Session Loop, skill execution
+    operational_layers:
+      architecture:
+        function: System structure, file routing, context management
+      interaction:
+        function: Session dynamics, tone calibration, communication
+      data:
+        function: Knowledge base, source material, factual grounding
+    note: >
+      MAGI's three operational layers (above) are distinct from MAGI's three
+      analytical brains (Melchior / Balthasar / Caspar, defined in seele.yaml).
+      The brains are where thinking happens — categorical domains corresponding
+      to Cognitive / Operational-Executive / Deep Grand-Scale registers (v4.0
+      brain identities). The operational layers are how the infrastructure
+      runs. Do not conflate.
+
+# ═══════════════════════════════════════════════════════════
+# BRANCHES
+# ═══════════════════════════════════════════════════════════
+
+branches:
+  operations:
+    codename: Misato
+    profile: nerv_operations.md
+    status: CLEAR
+    scope: Adelante organizational infrastructure, day-to-day operational reality
+    sub_architecture:
+      name: Adelante
+      version: 2.0
+      activator: adelante.yaml
+      pattern: parallel_estado_evolucion
+      files:
+        base:
+          - adelante_base.md
+        operacional_pair:
+          - adelante_operacional_estado.md
+          - adelante_operacional_evolucion.md
+        organizacional_pair:
+          - adelante_organizacional_estado.md
+          - adelante_organizacional_evolucion.md
+        ciudad_del_valle_pair:
+          - adelante_ciudad_del_valle_estado.md
+          - adelante_ciudad_del_valle_evolucion.md
+      function: >
+        Structural depth for thinking about Adelante as it actually is —
+        a developer-operator of Ciudad del Valle with vertical industrial
+        integration as moat-deepening strategy. Three operational domains
+        (operacional, organizacional, ciudad del valle) each with paired
+        estado (descriptive) / evolución (prescriptive) files. Operations
+        remains the entry point for general operational questions; the
+        sub-architecture provides categorical-frame and structural depth
+        when the question requires it.
+
+  science:
+    codename: Ritsuko
+    profile: nerv_science.md
+    status: CLEAR
+    scope: Technical infrastructure, analytical tooling, MAGI subsystems, framework development
+
+  pilots:
+    codename: Eva Pilots
+    profile: nerv_pilots.md
+    status: CLEAR
+    scope: Active projects — things being built, shipped, tested
+
+# ═══════════════════════════════════════════════════════════
+# ROUTING
+# ═══════════════════════════════════════════════════════════
+
+routing:
+  operational_question: nerv_operations.md
+  adelante_question: adelante.yaml
+  adelante_categorical: adelante_base.md
+  adelante_productive_state: adelante_operacional_estado.md
+  adelante_productive_design: adelante_operacional_evolucion.md
+  adelante_organizational_state: adelante_organizacional_estado.md
+  adelante_organizational_design: adelante_organizacional_evolucion.md
+  ciudad_del_valle_state: adelante_ciudad_del_valle_estado.md
+  ciudad_del_valle_design: adelante_ciudad_del_valle_evolucion.md
+  technical_infrastructure: nerv_science.md
+  active_project: nerv_pilots.md
+  local_strategy: nerv_subcommander.md
+  analysis_request: nerv_magi.md
+  strategic_decision: nerv_commander.md
+
+# ═══════════════════════════════════════════════════════════
+# DESIGN PRINCIPLES
+# ═══════════════════════════════════════════════════════════
+
+principles:
+  - "MAGI advises; the Commander decides"
+  - "Fuyutsuki grounds what SEELE theorizes"
+  - "Under crisis conditions, Adelante channel overrides theory"
+  - "NERV positions are role-based (swappable); SEELE seats are method-specific (see seele.yaml)"
+  - "CLEAR status means designed and active"
+  - "NERV is public layer; SEELE is shadow layer"
+  - "When discussing system architecture, reference NERV positions; never namedrop SEELE seats unless the Commander is working on the architecture itself"
+
+# ═══════════════════════════════════════════════════════════
+# VERSIONING NOTE
+# ═══════════════════════════════════════════════════════════
+
+version_history:
+  v1.0: "Pre-SEELE refactor — NERV as standalone operational frame"
+  v2.0: >
+    Paired with SEELE v2.0. MAGI subsystems used brain names
+    (Melchior / Balthasar / Caspar) as operational layer labels,
+    producing a name collision with SEELE's analytical brains.
+  v3.0: >
+    Reconciled with SEELE v3.0. MAGI's operational layers renamed to
+    architecture / interaction / data. Position-based architecture
+    principle scoped to NERV only.
+  v4.0: >
+    Paired with SEELE v4.0. Brain-identity descriptions updated
+    to reflect cognitive / operational-executive / deep-grand-scale
+    framework. Lenox voice eliminated entirely from architecture
+    references. Predecessor-naming convention retired — MAGI is
+    MAGI, not a sequence of named iterations.
+  v4.1: >
+    Adelante sub-architecture v1.0 registered under Operations.
+    Three-file deepening (adelante_base.md, adelante_operacional.md,
+    adelante_ciudad_del_valle.md) plus activator (adelante.yaml).
+  v4.2: >
+    Adelante sub-architecture upgraded to v2.0 with parallel estado/
+    evolución pattern. Three operational domains (operacional,
+    organizacional, ciudad del valle), each with paired descriptive and
+    prescriptive files. New organizacional dimension organized around
+    the Dunbar/free-riding/tribal duality as central organizing problem.
+    Total Adelante files: 1 activator + 1 base + 6 paired = 8 files.
