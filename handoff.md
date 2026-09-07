@@ -2,6 +2,19 @@
 
 _For a fresh Claude Code session with zero memory. Read this top to bottom before touching anything. It is self-contained — you do not need any external memory files to continue._
 
+> **Estado: instantánea histórica, tomada en `5300579`.** Sigue siendo útil
+> por el §8 (trampas ya pagadas) y el §4 (por qué la transición está armada
+> así). Tres cosas quedaron superadas — no las tomes de aquí:
+>
+> 1. **Despliegue (§2).** Vercel ya está conectado por Git: push a `main` es
+>    producción. No corras `vercel link` ni `alias set`. La fuente es
+>    `AGENTS.md`.
+> 2. **Los dos bugs abiertos (§6) están arreglados.** `ReelPager` tiene el
+>    prop `overlay` y `HaloPress` el opt-out `capturePointer`; el `pushState`
+>    se eliminó. No los vuelvas a "arreglar".
+> 3. **Sí hay remoto de git** (`onexmac/histok`), y la ruta local del §1 ya
+>    no aplica.
+
 ---
 
 ## 0. TL;DR — what you're picking up
