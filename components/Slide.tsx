@@ -104,8 +104,11 @@ export function Slide({
   }, [isCurrent, status]);
 
   const localOffset = useTransform(ctx.y, (latest) => latest + index * ctx.pageH);
-  // A diagram is content, not scenery: it is letterboxed whole instead of
-  // cropped to cover, and it does not drift with the pager.
+  // A diagram is content, not scenery: CSS letterboxes it whole instead of
+  // cropping it to cover, and it does not drift with the pager. Note this is
+  // deliberately NOT driven by the measured box — that measurement can land
+  // late (or never, if the container is still sized 0 mid-transition), and a
+  // diagram that falls back to cover comes out cropped.
   const isDiagram = !!slide.diagram;
   const imageY = useTransform(localOffset, (v) => (isDiagram ? 0 : -v * PARALLAX_FACTOR));
 
@@ -137,12 +140,9 @@ export function Slide({
       if (!CW || !CH) return;
       const imgA = nat.w / nat.h;
       const contA = CW / CH;
-      const fill = isDiagram ? imgA < contA : imgA > contA;
-      const w = fill ? CH * imgA : CW;
-      const h = fill ? CH : CW / imgA;
-      // Cover overflows, so peek shrinks it to the contain size. A diagram is
-      // already contained: there is nothing hidden left to reveal.
-      setBox({ w, h, r: isDiagram ? 1 : Math.min(CW / w, CH / h) });
+      const coverW = imgA > contA ? CH * imgA : CW;
+      const coverH = imgA > contA ? CH : CW / imgA;
+      setBox({ w: coverW, h: coverH, r: Math.min(CW / coverW, CH / coverH) });
     };
     remeasure();
     window.addEventListener("resize", remeasure);
@@ -151,9 +151,9 @@ export function Slide({
       window.removeEventListener("resize", remeasure);
       window.visualViewport?.removeEventListener("resize", remeasure);
     };
-  }, [isDiagram]);
+  }, []);
 
-  const peekScale = useTransform(ctx.peeking, [0, 1], [1, box?.r ?? 1]);
+  const peekScale = useTransform(ctx.peeking, [0, 1], [1, isDiagram ? 1 : (box?.r ?? 1)]);
   const peekRadius = useTransform(ctx.peeking, [0, 1], [0, 18]);
   const textFade = useTransform(ctx.peeking, [0, 1], [1, 0]);
 
@@ -234,17 +234,16 @@ export function Slide({
             if (!CW || !CH) return;
             const imgA = img.naturalWidth / img.naturalHeight;
             const contA = CW / CH;
-            const fill = isDiagram ? imgA < contA : imgA > contA;
-            const w = fill ? CH * imgA : CW;
-            const h = fill ? CH : CW / imgA;
-            setBox({ w, h, r: isDiagram ? 1 : Math.min(CW / w, CH / h) });
+            const coverW = imgA > contA ? CH * imgA : CW;
+            const coverH = imgA > contA ? CH : CW / imgA;
+            setBox({ w: coverW, h: coverH, r: Math.min(CW / coverW, CH / coverH) });
             setLoaded(true);
           }}
           className="shrink-0 max-w-none [--base-blur:0px] md:[--base-blur:6px]"
           style={{
-            width: box ? box.w : "100%",
-            height: box ? box.h : "100%",
-            objectFit: "cover",
+            width: isDiagram || !box ? "100%" : box.w,
+            height: isDiagram || !box ? "100%" : box.h,
+            objectFit: isDiagram ? "contain" : "cover",
             scale: peekScale,
             y: imageY,
             borderRadius: peekRadius,

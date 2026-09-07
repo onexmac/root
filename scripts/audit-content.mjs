@@ -13,10 +13,9 @@ const consts = Object.fromEntries([...src.matchAll(/const (\w+) = "(\/images\/[^
 //     (si lo hace, tocar la palabra roja no enseña nada)
 const start = src.indexOf("const socialesI:");
 const end = src.lastIndexOf("\n];")+3;
-let body = src.slice(start,end).replace(new RegExp('^const \\w+ = "/images/[^"]+";\\n',"gm"),"").replace(/export const materias[^=]*=/,"const __m =").replace(/const (socialesI|civicaII|socialesII): Topic\[\] =/g,"const $1 =")+"; return __m.flatMap(m=>m.topics.map(t=>({...t,slug:m.slug+'/'+t.slug})));";
+let body = src.slice(start,end).replace(new RegExp('^const \\w+ = "/images/[^"]+";\\n',"gm"),"").replace(/export const materias[^=]*=/,"const __m =").replace(/const (\w+): Topic\[\] =/g,"const $1 =")+"; return __m.flatMap(m=>m.topics.map(t=>({...t,slug:m.slug+'/'+t.slug})));";
 const fn = new Function(...Object.keys(consts), body);
 const topics = fn(...Object.values(consts));
-const rev = Object.fromEntries(Object.entries(consts).map(([k,v])=>[v,k]));
 let issues=[];
 const seen = new Map();
 for (const t of topics){

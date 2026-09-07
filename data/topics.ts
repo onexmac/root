@@ -740,6 +740,7 @@ const SII_PER_QUWATLI = "/images/sii-per-quwatli.jpg";
 const SII_PER_GANDHI = "/images/sii-per-gandhi.jpg";
 const SII_DICT_1 = "/images/sii-dict-1.jpg";
 const SII_DICT_GF = "/images/sii-dict-gf.jpg";
+const SII_DICTADORES = "/images/sii-dictadores.svg";
 const SII_DICT_2 = "/images/sii-dict-2.jpg";
 const SII_DICT_3 = "/images/sii-dict-3.jpg";
 const SII_DICT_4 = "/images/sii-dict-4.jpg";
@@ -978,6 +979,8 @@ const socialesII: Topic[] = [
     label: "Dictaduras en Latinoamérica",
     thumbnail: SII_DICT_1,
     glossary: {
+      "Estado de excepción":
+        "Situación en la que un gobierno suspende garantías y derechos alegando una emergencia, y concentra el mando.",
       dictadura:
         "Régimen en el que una persona o un grupo concentra todo el poder, sin elecciones libres ni división de poderes.",
       "golpe de Estado":
@@ -1001,6 +1004,17 @@ const socialesII: Topic[] = [
           "Estados Unidos y la URSS convirtieron América Latina en un tablero de su conflicto. Washington entrenó a los ejércitos de la región en la ",
           { term: "doctrina de seguridad nacional" },
           ", y con ese argumento los militares tomaron el poder en casi todo el continente.",
+        ],
+      },
+      {
+        image: SII_DICTADORES,
+        title: "Los dictadores",
+        diagram: true,
+        info: "Los siete dictadores del temario, con su país y sus años en el poder, más tres nombres de Centroamérica.",
+        body: [
+          "Casi todos llegaron por un golpe militar y gobernaron con el ",
+          { term: "Estado de excepción" },
+          ": sin elecciones, sin prensa libre y con la oposición perseguida. Las excepciones marcan la diferencia — Somoza heredó el poder de su familia, Castro llegó por una revolución y Chávez por las urnas.",
         ],
       },
       {
@@ -1346,10 +1360,489 @@ const socialesII: Topic[] = [
   },
 ];
 
+// ── Biología I ────────────────────────────────────────────────────────────
+// Los gráficos son SVG dibujados para la app (fondo azul oscuro, trazo neón),
+// no fotos: van con `diagram: true` para que se vean enteros. Se generan a
+// mano; el original de cada uno está en el propio archivo.
+const BIO_PORTADA = "/images/bio-portada.svg";
+const BIO_NUCLEOTIDO = "/images/bio-nucleotido.svg";
+const BIO_BASES = "/images/bio-bases.svg";
+const BIO_ANTIPARALELO = "/images/bio-antiparalelo.svg";
+const BIO_HORQUILLA = "/images/bio-horquilla.svg";
+const BIO_DOGMA = "/images/bio-dogma.svg";
+const BIO_ADN_ARN = "/images/bio-adn-arn.svg";
+const BIO_TIPOS_ARN = "/images/bio-tipos-arn.svg";
+const BIO_SPLICING = "/images/bio-splicing.svg";
+const BIO_TRADUCCION = "/images/bio-traduccion.svg";
+const BIO_MUTAGENOS = "/images/bio-mutagenos.svg";
+const BIO_CLASIFICACION = "/images/bio-clasificacion.svg";
+const BIO_MARCO = "/images/bio-marco.svg";
+const BIO_MUTACIONES = "/images/bio-mutaciones.svg";
+const BIO_VARIABILIDAD = "/images/bio-variabilidad.svg";
+const BIO_CROMOSOMAS = "/images/bio-cromosomas.svg";
+const BIO_NODISYUNCION = "/images/bio-nodisyuncion.svg";
+const BIO_SINDROMES = "/images/bio-sindromes.svg";
+const BIO_GENOMA = "/images/bio-genoma.svg";
+const BIO_BIOTECNOLOGIA = "/images/bio-biotecnologia.svg";
+const BIO_RIESGOS = "/images/bio-riesgos.svg";
+const BIO_VOCABULARIO = "/images/bio-vocabulario.svg";
+const BIO_MENDEL = "/images/bio-mendel.svg";
+const BIO_DOMINANCIA = "/images/bio-dominancia.svg";
+const BIO_ABO = "/images/bio-abo.svg";
+const BIO_PEDIGRI = "/images/bio-pedigri.svg";
+const BIO_PUNNETT = "/images/bio-punnett.svg";
+
+const biologiaI: Topic[] = [
+  {
+    slug: "adn-replicacion",
+    label: "ADN y replicación",
+    thumbnail: BIO_PORTADA,
+    glossary: {
+      "enlace fosfodiéster":
+        "Unión química que engancha el carbono 3' de una pieza con el 5' de la que sigue.",
+      purinas: "Bases de anillo doble: adenina y guanina.",
+      pirimidinas: "Bases de anillo simple: timina y citosina.",
+      antiparalelas:
+        "Que van en sentidos contrarios: mientras una sube 5'→3', la de enfrente baja 3'→5'.",
+      "fragmentos de Okazaki":
+        "Los trozos sueltos que quedan cuando una cadena no se puede armar de un solo tirón.",
+      semiconservativa:
+        "Cada molécula hija se queda con una cadena vieja y una recién hecha.",
+    },
+    slides: [
+      {
+        image: BIO_PORTADA,
+        title: "ADN y replicación",
+        diagram: true,
+        info: "La doble hélice del ADN: dos cadenas enrolladas una sobre la otra, unidas por los pares de bases.",
+      },
+      {
+        image: BIO_NUCLEOTIDO,
+        title: "El nucleótido",
+        diagram: true,
+        info: "Las tres partes de un nucleótido y los carbonos numerados del azúcar.",
+        body: [
+          "El ADN es una sola pieza repetida millones de veces. Cada una se engancha con la siguiente por un ",
+          { term: "enlace fosfodiéster" },
+          ", y por eso la cadena tiene dos extremos distintos: uno 5' y otro 3'. Esa dirección va a decidir después cómo se copia.",
+        ],
+      },
+      {
+        image: BIO_BASES,
+        title: "A con T, C con G",
+        diagram: true,
+        info: "Los dos pares de bases, con sus puentes de hidrógeno.",
+        body: [
+          "Las ",
+          { term: "purinas" },
+          " son grandes y las ",
+          { term: "pirimidinas" },
+          " chicas. Como cada par junta una de cada tamaño, la hélice mide siempre lo mismo de ancho. El par C-G aguanta más: lo sostienen tres puentes de hidrógeno en vez de dos.",
+        ],
+      },
+      {
+        image: BIO_ANTIPARALELO,
+        title: "Antiparalelismo",
+        diagram: true,
+        info: "Las dos cadenas del ADN con sus extremos 5' y 3' enfrentados.",
+        body: [
+          "Las dos cadenas son ",
+          { term: "antiparalelas" },
+          ", y la ADN polimerasa solo sabe trabajar hacia un lado: lee 3'→5' y construye 5'→3'. De ahí sale todo el enredo — una se puede copiar de corrido y la otra no.",
+        ],
+      },
+      {
+        image: BIO_HORQUILLA,
+        title: "La horquilla",
+        diagram: true,
+        info: "La horquilla de replicación con las cinco enzimas y los fragmentos de Okazaki.",
+        body: [
+          "Topo desenrolla, helicasa abre, primasa marca, polimerasa construye, ligasa pega. La conductora sale de un tirón; la retrasada va al revés de la apertura, así que se arma en ",
+          { term: "fragmentos de Okazaki" },
+          ". Y la replicación es ",
+          { term: "semiconservativa" },
+          ": nada se hace desde cero.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "arn-expresion",
+    label: "ARN y expresión génica",
+    thumbnail: BIO_DOGMA,
+    glossary: {
+      transcripción:
+        "Pasar un tramo de ADN a ARN, dentro del núcleo.",
+      traducción:
+        "Armar la cadena de aminoácidos siguiendo lo que dice el mensajero.",
+      "ARN polimerasa": "La enzima que fabrica el ARN leyendo el ADN.",
+      ribosoma: "La máquina del citoplasma donde se ensambla la proteína.",
+      splicing:
+        "Tijera y pegamento: se quitan los tramos que no sirven y se unen los que sí.",
+      codón: "Grupo de tres letras seguidas del ARN, la unidad mínima que el ribosoma sabe leer.",
+      anticodón: "El trío del ARN de transferencia que encaja, base por base, con el del mensajero.",
+    },
+    slides: [
+      {
+        image: BIO_DOGMA,
+        title: "El dogma central",
+        diagram: true,
+        info: "El recorrido de la información genética: ADN, ARN y proteína.",
+        body: [
+          "El ADN nunca sale del núcleo: manda una copia. La ",
+          { term: "transcripción" },
+          " pasa el mensaje a ARN, el ARN viaja al citoplasma y ahí la ",
+          { term: "traducción" },
+          " lo vuelve proteína. El ADN además se duplica a sí mismo cuando la célula se va a dividir.",
+        ],
+      },
+      {
+        image: BIO_ADN_ARN,
+        title: "ADN y ARN",
+        diagram: true,
+        info: "Las cuatro diferencias entre ADN y ARN, y la regla de conversión de bases.",
+        body: [
+          "Cambia el azúcar, hay una sola cadena y la timina se sustituye por uracilo. La que hace el trabajo es la ",
+          { term: "ARN polimerasa" },
+          ". Ojo con la trampa del examen: pasar de ADN a ARN no es copiar igual, es poner la base contraria.",
+        ],
+      },
+      {
+        image: BIO_TIPOS_ARN,
+        title: "Los tres ARN",
+        diagram: true,
+        info: "Mensajero, de transferencia y ribosomal: qué hace cada uno.",
+        body: [
+          "Salen del mismo ADN pero no hacen lo mismo: uno lleva el recado, otro acarrea los ladrillos y el tercero es parte del ",
+          { term: "ribosoma" },
+          " mismo.",
+        ],
+      },
+      {
+        image: BIO_SPLICING,
+        title: "Intrones y exones",
+        diagram: true,
+        info: "El corte y empalme del ARN: se eliminan los intrones y se unen los exones.",
+        body: [
+          "El ARN recién copiado es un borrador con relleno en medio. Antes de salir del núcleo pasa por el ",
+          { term: "splicing" },
+          ", y solo entonces vale la pena leerlo. El ARN se queda con la información que le sirve.",
+        ],
+      },
+      {
+        image: BIO_TRADUCCION,
+        title: "Traducción",
+        diagram: true,
+        info: "El ribosoma leyendo el ARN mensajero mientras un ARN de transferencia trae su aminoácido.",
+        body: [
+          "El ribosoma avanza de tres en tres. Cada ",
+          { term: "codón" },
+          " del mensajero se encuentra con el ",
+          { term: "anticodón" },
+          " de un transferente que trae el aminoácido correcto. Empieza en AUG y se detiene en UAA, UAG o UGA.",
+        ],
+      },
+    ],
+  },
+{
+    slug: "mutaciones",
+    label: "Mutaciones y variabilidad",
+    thumbnail: BIO_MUTAGENOS,
+    glossary: {
+      "agente mutagénico":
+        "Cualquier cosa del ambiente capaz de dañar el material hereditario.",
+      somáticas: "Las que ocurren en el cuerpo y mueren con él.",
+      germinales: "Las que ocurren en óvulos o espermatozoides y viajan a los hijos.",
+      transición: "El cambio suave: una base por otra de su misma familia.",
+      transversión: "El cambio brusco: se sustituye una base grande por una chica, o al revés.",
+      "cambio de marco":
+        "Meter o quitar una letra corre todo el texto de ahí en adelante y lo vuelve ilegible.",
+      "sentido erróneo": "La proteína sale con una pieza equivocada en su lugar.",
+      "sin sentido": "Aparece una orden de parar donde no correspondía.",
+      "selección natural":
+        "El ambiente decide cuáles individuos dejan más descendencia, y con ellos cuáles variantes se quedan.",
+    },
+    slides: [
+      {
+        image: BIO_MUTAGENOS,
+        title: "¿Por qué muta el ADN?",
+        diagram: true,
+        info: "Las causas de las mutaciones: espontáneas y los tres tipos de agentes que las inducen.",
+        body: [
+          "Unas pasan solas, por errores de copiado que nadie provocó. Otras las causa un ",
+          { term: "agente mutagénico" },
+          ": químicos, radiación o ciertos virus. Todos llevamos alguna que nuestros papás no tenían.",
+        ],
+      },
+      {
+        image: BIO_CLASIFICACION,
+        title: "Cómo se clasifican",
+        diagram: true,
+        info: "Los tres criterios de clasificación: tejido, efecto y nivel.",
+        body: [
+          "Tres preguntas distintas. ¿Dónde ocurrió? Las ",
+          { term: "somáticas" },
+          " no salen de ahí; las ",
+          { term: "germinales" },
+          " sí. ¿Cómo le fue al individuo? Benéfica, perjudicial o neutra. ¿Qué tan grande fue el daño? Una letra, un pedazo de cromosoma, o un cromosoma entero.",
+        ],
+      },
+      {
+        image: BIO_MARCO,
+        title: "Cambios en la base",
+        diagram: true,
+        info: "Transición, transversión y cambio de marco, con un ejemplo de cada uno.",
+        body: [
+          "Una ",
+          { term: "transición" },
+          " apenas se nota; una ",
+          { term: "transversión" },
+          " altera más la forma de la hélice. Pero el peor es el ",
+          { term: "cambio de marco" },
+          ": no cambia una letra, cambia dónde empieza cada palabra.",
+        ],
+      },
+      {
+        image: BIO_MUTACIONES,
+        title: "Qué le pasa a la proteína",
+        diagram: true,
+        info: "Los tres efectos posibles sobre la proteína, con la misma secuencia de partida.",
+        body: [
+          "La silenciosa no se nota, porque varios codones dan el mismo aminoácido. La de ",
+          { term: "sentido erróneo" },
+          " puede arruinar la función o no, según qué tan importante sea ese punto. La ",
+          { term: "sin sentido" },
+          " casi siempre es grave: corta la proteína antes de tiempo.",
+        ],
+      },
+      {
+        image: BIO_VARIABILIDAD,
+        title: "De dónde sale la variedad",
+        diagram: true,
+        info: "La relación entre mutación, variabilidad genética y selección natural.",
+        body: [
+          "Solo la mutación inventa alelos nuevos; la reproducción sexual apenas los baraja. Sobre esa materia prima actúa la ",
+          { term: "selección natural" },
+          ", que no dirige nada: la mutación es al azar y el ambiente después pasa la factura.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "cromosomas-herencia",
+    label: "Alteraciones cromosómicas",
+    thumbnail: BIO_SINDROMES,
+    glossary: {
+      deleción: "Un pedazo se pierde y ya no vuelve.",
+      duplicación: "Un pedazo aparece repetido dos veces o más.",
+      inversión: "Un pedazo se da vuelta y queda al revés.",
+      translocación: "Un pedazo se muda a un cromosoma de otro par.",
+      "no disyunción":
+        "El error de reparto: dos piezas que debían irse a células distintas se van juntas.",
+      trisomía: "Hay tres copias donde debía haber dos.",
+      monosomía: "Falta una de las dos copias.",
+    },
+    slides: [
+      {
+        image: BIO_CROMOSOMAS,
+        title: "Cuando se rompe el cromosoma",
+        diagram: true,
+        info: "Las cuatro alteraciones de estructura, comparando el cromosoma antes y después.",
+        body: [
+          "Cuatro maneras de dañarlo: ",
+          { term: "deleción" },
+          ", ",
+          { term: "duplicación" },
+          ", ",
+          { term: "inversión" },
+          " y ",
+          { term: "translocación" },
+          ". Fijate en la última: tiene que ser hacia otro par, porque entre homólogos el intercambio es normal y no es mutación.",
+        ],
+      },
+      {
+        image: BIO_NODISYUNCION,
+        title: "No disyunción",
+        diagram: true,
+        info: "Una meiosis normal comparada con una donde los cromosomas no se separan.",
+        body: [
+          "La ",
+          { term: "no disyunción" },
+          " deja un gameto cargado de más y otro incompleto. Si el cargado se fecunda sale una ",
+          { term: "trisomía" },
+          "; si es el otro, una ",
+          { term: "monosomía" },
+          ". Casi todas las enfermedades cromosómicas empiezan aquí.",
+        ],
+      },
+      {
+        image: BIO_SINDROMES,
+        title: "Las cinco del examen",
+        diagram: true,
+        info: "Los cinco síndromes cromosómicos del temario, con su alteración y sus efectos.",
+        body: [
+          "Down, Edwards y Patau van con los números 21, 18 y 13 — de mayor a menor, y también de mayor a menor esperanza de vida. Klinefelter y Turner son de los cromosomas sexuales: un X de más o un X de menos.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "genoma-biotecnologia",
+    label: "Genoma humano y biotecnología",
+    thumbnail: BIO_GENOMA,
+    glossary: {
+      "Proyecto Genoma Humano":
+        "El esfuerzo internacional que se propuso leer y ordenar todo el material hereditario de nuestra especie.",
+      secuenciar: "Averiguar en qué orden exacto están las letras.",
+      "terapia génica":
+        "Tratar la enfermedad en su raíz en vez de tratar los síntomas.",
+      biofármacos:
+        "Medicinas que ya no se extraen de animales: las produce un organismo al que le pusimos el gen humano.",
+      "línea germinal":
+        "Las células reproductoras: lo que se toque ahí lo heredan también los nietos.",
+      "discriminación genética":
+        "Que a alguien le nieguen un trabajo o un seguro por lo que dice su ADN.",
+    },
+    slides: [
+      {
+        image: BIO_GENOMA,
+        title: "El Proyecto Genoma Humano",
+        diagram: true,
+        info: "Las cifras del Proyecto Genoma Humano: años, pares de bases y número de genes.",
+        body: [
+          "El ",
+          { term: "Proyecto Genoma Humano" },
+          " se propuso ",
+          { term: "secuenciar" },
+          " los 3 200 millones de pares de bases de una persona. Trece años de trabajo para descubrir que tenemos unos 20 000 genes: bastante menos de lo que todos esperaban.",
+        ],
+      },
+      {
+        image: BIO_BIOTECNOLOGIA,
+        title: "Para qué sirve",
+        diagram: true,
+        info: "Las cinco aplicaciones de la biotecnología genética en salud.",
+        body: [
+          "Saber leer el ADN cambió la medicina: se detecta la enfermedad antes de que aparezca, y con la ",
+          { term: "terapia génica" },
+          " se corrige el gen mismo. Los ",
+          { term: "biofármacos" },
+          " ya son rutina — la insulina de hoy la fabrican bacterias.",
+        ],
+      },
+      {
+        image: BIO_RIESGOS,
+        title: "Lo que preocupa",
+        diagram: true,
+        info: "Riesgos ecológicos, sanitarios, sociales y bioéticos de la biotecnología.",
+        body: [
+          "Poder hacerlo no significa que se deba. Tocar la ",
+          { term: "línea germinal" },
+          " cambia a los que todavía no nacen y no pueden opinar. Y con los datos en la mano aparece la ",
+          { term: "discriminación genética" },
+          ": la pregunta ya no es qué se puede, sino quién decide.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "mendel-herencia",
+    label: "Mendel y patrones de herencia",
+    thumbnail: BIO_PUNNETT,
+    glossary: {
+      alelos: "Las versiones distintas que puede tener un mismo gen.",
+      genotipo: "Las letras que llevás escritas, se noten o no.",
+      fenotipo: "Lo que se ve por fuera.",
+      heterocigoto: "Las dos versiones que lleva son diferentes.",
+      homocigoto: "Las dos versiones que lleva son iguales.",
+      "dominancia incompleta": "Ninguna de las dos gana y el resultado queda a medio camino.",
+      codominancia: "Las dos se muestran enteras y al mismo tiempo.",
+      portadora: "Lo lleva escrito pero no lo padece, y se lo puede pasar a un hijo.",
+      hemicigoto: "Tiene una sola copia del gen, así que no hay con qué taparla.",
+    },
+    slides: [
+      {
+        image: BIO_VOCABULARIO,
+        title: "El vocabulario",
+        diagram: true,
+        info: "Genotipo y fenotipo, homocigoto y heterocigoto, y los cromosomas sexuales.",
+        body: [
+          "Los ",
+          { term: "alelos" },
+          " son las variantes de un gen. El ",
+          { term: "genotipo" },
+          " es lo que está escrito y el ",
+          { term: "fenotipo" },
+          " lo que se ve — no siempre coinciden, porque un ",
+          { term: "heterocigoto" },
+          " esconde una versión detrás de la otra. El ",
+          { term: "homocigoto" },
+          " no esconde nada.",
+        ],
+      },
+      {
+        image: BIO_MENDEL,
+        title: "Las tres leyes",
+        diagram: true,
+        info: "Las tres leyes de Mendel con su cruce y su proporción.",
+        body: [
+          "Los números son lo que cae en el examen: 3 : 1 en la segunda ley y 9 : 3 : 3 : 1 en la tercera. Y cuidado con la trampa — el 3 : 1 es de fenotipos; los genotipos van 1 : 2 : 1.",
+        ],
+      },
+      {
+        image: BIO_DOMINANCIA,
+        title: "Cuando no gana el dominante",
+        diagram: true,
+        info: "Los cuatro patrones de dominancia con un ejemplo de cada uno.",
+        body: [
+          "Mendel trabajó con dominancia completa, pero no siempre es así. En la ",
+          { term: "dominancia incompleta" },
+          " la flor sale rosada, ni roja ni blanca. En la ",
+          { term: "codominancia" },
+          " no hay mezcla: se ven las dos, como en el grupo AB.",
+        ],
+      },
+      {
+        image: BIO_ABO,
+        title: "Grupos sanguíneos",
+        diagram: true,
+        info: "Los cuatro grupos del sistema ABO con sus genotipos, antígenos y anticuerpos.",
+        body: [
+          "Tres alelos para un solo gen. El AB recibe de todos porque no fabrica anticuerpos contra nada; el O dona a todos porque no tiene antígenos que delatarlo. Aparte va el Rh: una madre Rh negativa con un bebé Rh positivo necesita seguimiento.",
+        ],
+      },
+      {
+        image: BIO_PEDIGRI,
+        title: "Leer un pedigrí",
+        diagram: true,
+        info: "Un árbol familiar de herencia recesiva ligada al cromosoma X.",
+        body: [
+          "Si afecta sobre todo a hombres y salta generaciones, es recesiva ligada al X — hemofilia, daltonismo, Duchenne. El hijo la recibe de una madre ",
+          { term: "portadora" },
+          ", nunca del papá. El varón es ",
+          { term: "hemicigoto" },
+          " para todo lo que va en ese cromosoma.",
+        ],
+      },
+      {
+        image: BIO_PUNNETT,
+        title: "El cuadro de Punnett",
+        diagram: true,
+        info: "El cuadro de Punnett del cruce del pedigrí, con los cuatro resultados.",
+        body: [
+          "Gametos del papá arriba, de la mamá al lado, y se llena combinando. Fijate en la respuesta: ninguna hija sale afectada, pero la mitad de los varones sí. Contá primero genotipos y después fenotipos — son cuentas distintas.",
+        ],
+      },
+    ],
+  },
+
+];
+
 export const materias: Materia[] = [
   { slug: "sociales-i", label: "Sociales I", accent: "#8a4a4a", topics: socialesI },
   { slug: "civica-ii", label: "Cívica II", accent: "#b58a2e", topics: civicaII },
   { slug: "sociales-ii", label: "Sociales II", accent: "#3f6b5e", topics: socialesII },
+  { slug: "biologia-i", label: "Biología I", accent: "#3f5c8a", topics: biologiaI },
 ];
 
 // Flat list of every topic across materias (image warming, deep-link lookup).
