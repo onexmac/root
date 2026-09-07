@@ -25,20 +25,19 @@ node scripts/audit-content.mjs   # auditoría de contenido — corré esto SIEMP
 
 ## Desplegar
 
-Vercel **no** está conectado a este repo: los despliegues salen del CLI, y la
-carpeta `.vercel/` que guarda el enlace está en `.gitignore`. Desde una
-máquina nueva hay que enlazar el proyecto una vez (`vercel link`, proyecto
-`estudia-reels` de la cuenta `onexmac`) y después:
+**Un push a `main` despliega solo.** El proyecto de Vercel (`histok`, cuenta
+`onexmac`) está conectado a este repo por integración de Git:
 
-```bash
-npx vercel --prod --yes
-npx vercel alias set <deploy-que-devolvió> histok.vercel.app
-```
+- `main` → producción → **https://histok.vercel.app** (dominio del proyecto,
+  se asigna automáticamente; no hay que tocar ningún alias).
+- Cualquier otra rama → despliegue de preview con su propia URL, que Vercel
+  publica como check en el PR.
 
-El alias es necesario porque `histok.vercel.app` no sigue automáticamente al
-último despliegue de producción. Si preferís que cada push despliegue solo,
-conectá el repo desde el panel de Vercel (Project → Settings → Git) y el paso
-del alias desaparece.
+No hace falta token de Vercel, `vercel link` ni CLI. Si trabajás desde un
+entorno sin credenciales de Vercel (Claude en la nube, por ejemplo), está
+bien: commiteá, pusheá, y en un par de minutos está en vivo. Antes de
+pushear a `main`, que pasen `npx tsc --noEmit`, `npx eslint .` y
+`node scripts/audit-content.mjs`.
 
 ## Modelo de contenido
 
