@@ -13,7 +13,13 @@ const PARALLAX_FACTOR = 0.28;
 function bodyLength(body?: BodyPart[]) {
   if (!body) return 0;
   return body.reduce(
-    (sum, part) => sum + (typeof part === "string" ? part.length : part.term.length),
+    (sum, part) =>
+      sum +
+      (typeof part === "string"
+        ? part.length
+        : "term" in part
+          ? part.term.length
+          : part.name.length),
     0,
   );
 }
@@ -98,7 +104,10 @@ export function Slide({
   }, [isCurrent, status]);
 
   const localOffset = useTransform(ctx.y, (latest) => latest + index * ctx.pageH);
-  const imageY = useTransform(localOffset, (v) => -v * PARALLAX_FACTOR);
+  // A diagram is content, not scenery: it is letterboxed whole instead of
+  // cropped to cover, and it does not drift with the pager.
+  const isDiagram = !!slide.diagram;
+  const imageY = useTransform(localOffset, (v) => (isDiagram ? 0 : -v * PARALLAX_FACTOR));
 
   // Peek: ONE image, sized to cover the viewport (overflowing + clipped so it
   // reads as a normal full-bleed cover). On press it shrinks — same element,
@@ -128,17 +137,12 @@ export function Slide({
       if (!CW || !CH) return;
       const imgA = nat.w / nat.h;
       const contA = CW / CH;
-      let coverW: number;
-      let coverH: number;
-      if (imgA > contA) {
-        coverH = CH;
-        coverW = CH * imgA;
-      } else {
-        coverW = CW;
-        coverH = CW / imgA;
-      }
-      const r = Math.min(CW / coverW, CH / coverH);
-      setBox({ w: coverW, h: coverH, r });
+      const fill = isDiagram ? imgA < contA : imgA > contA;
+      const w = fill ? CH * imgA : CW;
+      const h = fill ? CH : CW / imgA;
+      // Cover overflows, so peek shrinks it to the contain size. A diagram is
+      // already contained: there is nothing hidden left to reveal.
+      setBox({ w, h, r: isDiagram ? 1 : Math.min(CW / w, CH / h) });
     };
     remeasure();
     window.addEventListener("resize", remeasure);
@@ -147,7 +151,7 @@ export function Slide({
       window.removeEventListener("resize", remeasure);
       window.visualViewport?.removeEventListener("resize", remeasure);
     };
-  }, []);
+  }, [isDiagram]);
 
   const peekScale = useTransform(ctx.peeking, [0, 1], [1, box?.r ?? 1]);
   const peekRadius = useTransform(ctx.peeking, [0, 1], [0, 18]);
@@ -230,9 +234,10 @@ export function Slide({
             if (!CW || !CH) return;
             const imgA = img.naturalWidth / img.naturalHeight;
             const contA = CW / CH;
-            const coverW = imgA > contA ? CH * imgA : CW;
-            const coverH = imgA > contA ? CH : CW / imgA;
-            setBox({ w: coverW, h: coverH, r: Math.min(CW / coverW, CH / coverH) });
+            const fill = isDiagram ? imgA < contA : imgA > contA;
+            const w = fill ? CH * imgA : CW;
+            const h = fill ? CH : CW / imgA;
+            setBox({ w, h, r: isDiagram ? 1 : Math.min(CW / w, CH / h) });
             setLoaded(true);
           }}
           className="shrink-0 max-w-none [--base-blur:0px] md:[--base-blur:6px]"
@@ -286,6 +291,12 @@ export function Slide({
                 {slide.body.map((part, i) =>
                   typeof part === "string" ? (
                     <span key={i}>{part}</span>
+                  ) : "name" in part ? (
+                    // Personaje histórico: resaltado pero no tocable — no tiene
+                    // definición de glosario, solo hay que reconocer el nombre.
+                    <strong key={i} className="font-semibold text-white">
+                      {part.name}
+                    </strong>
                   ) : (
                     <button
                       key={i}

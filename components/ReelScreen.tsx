@@ -22,6 +22,7 @@ const DRAG_SLOP = 6;
 export function ReelScreen({
   topic,
   embedded = false,
+  contained = false,
   onClose,
   onBackDrag,
   onBackRelease,
@@ -33,6 +34,9 @@ export function ReelScreen({
   /** Rendered inside the index's growing container: no own entrance/exit,
    *  closing is delegated to the parent via onClose. */
   embedded?: boolean;
+  /** Fills its positioned parent instead of the viewport — the desktop
+   *  three-pane layout renders the reel inside its detail column. */
+  contained?: boolean;
   onClose?: () => void;
   /** Interactive back gesture (embedded only): live drag progress 0→1 shrinks
    *  the reel toward the menu; release commits or cancels. */
@@ -247,7 +251,7 @@ export function ReelScreen({
   );
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-black">
+    <div className={`${contained ? "absolute" : "fixed"} inset-0 overflow-hidden bg-black`}>
       <motion.div
         className="absolute inset-0 overflow-hidden"
         style={{ transformOrigin: "50% 100%" }}
