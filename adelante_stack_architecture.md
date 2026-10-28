@@ -80,6 +80,24 @@ This dissolves the most common failure mode in design-led teams: prototype quali
 
 The SwiftUI-equivalent throwaway prototype environment remains separate — that lives in its own Xcode project with hardcoded mocks, for interaction studies meant to be discarded. The React prototypes (Losa Flotante and successors) are stage-one production work.
 
+## Losa Flotante — the design language
+
+*Source: `DavidpcAD/adelante-design-system` (`docs/Losa.md`, `docs/Flotante.md`, `react/springs.ts`, `react/haptic.ts`); tokens transcribed from the Figma page `Losa Flotante / Core`. Read 2026-10-27. For detail, read the repo, not this summary.*
+
+Losa Flotante is the name of Adelante's prototyping design language and its component system. Entry door is `Losa.md` (thin, five rules + routing); `Flotante.md` is the web library; `INFRA.md` the SwiftUI parallel.
+
+**Five governing rules.** (1) Vocabulary, not inline values: springs, haptics, halos, colors, spacing are all named. (2) Halo and press delay on every interactive element. (3) Design system before custom code; anything missing ships as a `NOT-IN-DS:` stub flagged for promotion. (4) DS-first for every fix: change the component in the DS repo, then re-vendor; the prototype never originates a component fix. (5) GitHub is the documentation system: PRs, labels, milestones; no CHANGELOG.
+
+**Press contract (is the brand).** Halo in 80 ms, held 120 ms after release, out in 180 ms; the action fires 100 ms after release. Haptic on touchdown.
+
+**Springs (motion.dev, by meaning).** `snappy` 400/30 taps · `completing` 300/28 confirm · `deleting` 500/25 destructive · `expanding` 170/30 reveal · `settling` 150/28 rest · `shrinking` 224/29 close side of morphs · `popping` 385/22 ephemera. Reduced motion substitutes 200 ms ease-out.
+
+**Haptics (by meaning).** `select`, `complete`, `drag`, `delete`. Android only; iOS Safari no-ops.
+
+**Look.** Forced light mode. Background `#F3F3F3`, white cards, brand green `#ADD010`, charcoal `#1C1C1C`, destructive red `#C96C6C`, warning yellow `#F0C802`.
+
+**Stack.** Next.js 16, TypeScript strict, Tailwind v4, motion.dev, dnd-kit, Phosphor icons. Signature components: morphing Sheet (3 states, drag dismiss), SlideToConfirm / SlideArm, halo `Button`.
+
 ## A3 — measuring success on home production tasks
 
 A3 imports Three Amigos vocabulary from software practice into home construction. The instrumentation question is *how to measure whether the import is working* without building a process layer that suffocates the team it serves.
