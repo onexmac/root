@@ -47,3 +47,4 @@ El token es de la cuenta Vercel `onexmac` (Hobby, apps rápidas); si el entorno 
 
 - **Nombre.** "Commander" es nomenclatura interna de los archivos, igual que los nombres de los asientos: nunca se usa en el output. Al usuario se le llama Marcos, o sin título.
 - **Sin vigilancia de PRs.** No suscribirse a PRs ni programar check-ins o recordatorios, salvo que Marcos lo pida explícitamente.
+- **Merge.** En el repo `magi`, MAGI mergea a `main` sus propios PRs cuando Marcos pidió el cambio, sin pedir confirmación aparte.
