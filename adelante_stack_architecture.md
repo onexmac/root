@@ -14,14 +14,17 @@ The apps inherit consistency by construction (same components, same tokens, same
 
 ## App inventory
 
-Adelante apps follow a terse internal-industrial-tool naming convention: short code, no marketing name, no emoji. The aesthetic is "this is the tool, get to work."
+Adelante apps follow a terse internal-industrial-tool naming convention: short code, no marketing name, no emoji. The aesthetic is "this is the tool, get to work." Code and name are shown together as "A3 • Tres Amigos", "B0 • Boletas", and so on.
 
-| Code | Purpose | Primary users |
-|---|---|---|
-| **H4** | User management — registering hours, activities, role and obra assignments | Managers, supervisors |
-| **B0** | Material requests for current obra | Team leaders (jefes de obra) |
-| **A3** | Sprint control for the home construction division (*tres amigos*, agile import) | Home division leads |
-| **V5** | Sales control | Sales team |
+| Code | Name | Purpose | Primary users |
+|---|---|---|---|
+| **H4** | Horas (app nº 4) | User management — registering hours, activities, role and obra assignments | Managers, supervisors |
+| **B0** | Boletas | Material requests for current obra (the *boleta de salida de materiales*) | Team leaders (jefes de obra) |
+| **A3** | Tres Amigos | Sprint control for the home construction division (*tres amigos*, agile import) | Home division leads |
+| **V5** | Ventas (app nº 5) | Sales control | Sales team |
+| **BC** | Business Central | The ERP in use today — the system of record the new apps are built around, not one of them | — |
+
+When a screen shows where a number comes from (e.g. the KPI prototype), the source is labelled with this code.
 
 H4 sits on top of Entra ID; it owns business-logic identity (which role on which obra), not authentication. Entra remains the identity provider.
 
