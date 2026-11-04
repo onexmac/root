@@ -1,0 +1,329 @@
+# ═══════════════════════════════════════════════════════════
+# ADELANTE — Sub-Architecture Under NERV Operations
+# ═══════════════════════════════════════════════════════════
+
+name: Adelante
+version: 2.1.0
+parent: NERV / Operations (Misato)
+description: >
+  Adelante is the Commander's operational reality — the company he runs
+  in Costa Rica. This sub-architecture deepens NERV Operations with the
+  specific structural understanding needed to think well about Adelante
+  as it actually is.
+
+  Adelante is not a construction company that grew. Adelante is a
+  vertically-integrated industrial holding building a generational
+  walkable-city project (Ciudad del Valle), with vivienda as the lead
+  product and progressive process absorption as the strategic operating
+  principle.
+
+# ═══════════════════════════════════════════════════════════
+# ARCHITECTURE PATTERN — Parallel Estado / Evolución
+# ═══════════════════════════════════════════════════════════
+# Each analytical domain has parallel files:
+#
+#   estado:    "Cómo es" — descriptive substrate. What exists, what is
+#              in operation, the current configuration. Encyclopedic
+#              register. Updated as substrate accumulates from sessions.
+#
+#   evolución: "Bajo qué marco evoluciona" — prescriptive substrate.
+#              Principles, references, decision criteria, the lens
+#              applied when evolving the organization or the product.
+#
+# The two co-evolve: evolución guides the next chapter of estado;
+# estado refines and corrects evolución when reality contradicts it.
+#
+# The Plataforma dimension uses a slight variation: estado pairs with
+# a technical companion (stack_architecture) and its prescriptive
+# evolución file is pending until substrate accumulates.
+
+architecture_pattern:
+  estado_files:
+    register: "Encyclopedic, descriptive, observational"
+    function: "Capture Adelante as it actually is, with explicit prompts where substrate is thin"
+    update_cadence: "As observations accumulate from sessions"
+
+  evolucion_files:
+    register: "Prescriptive, principle-driven, reference-rich"
+    function: "Articulate the design discipline for evolving organization and product"
+    update_cadence: "When new analytical apparatus is recognized as load-bearing"
+
+  technical_companion_files:
+    register: "Operating reference for technical decisions"
+    function: "Capture architectural pattern, inventory, boundaries"
+    update_cadence: "As decisions evolve"
+
+# ═══════════════════════════════════════════════════════════
+# CATEGORICAL FRAMING
+# ═══════════════════════════════════════════════════════════
+
+categorical_frame:
+  what_adelante_is_not:
+    - "A construction company scaling up"
+    - "A real estate developer with a portfolio of projects"
+    - "A diversified industrial group with multiple verticals"
+    - "A software-style growth company with network effects"
+
+  what_adelante_is:
+    primary: "A developer-operator of Ciudad del Valle"
+    secondary: "A vertically-integrated industrial system that produces vivienda as its lead product"
+    horizon: "Multi-generational — 5,000+ solutions at 2/week per cuadrilla puts the project at decadal scale"
+    strategic_logic: >
+      Surplus utility absorbs adjacent processes. Each vertical absorption
+      deepens the moat around a single project rather than diversifying
+      into parallel businesses. The opposite of conglomerate logic.
+
+  why_the_distinction_matters:
+    - "Growth-company frameworks (Hacking Growth, Blitzscaling) are largely irrelevant"
+    - "Construction-company frameworks miss the integration logic"
+    - "Conglomerate frameworks miss the focus discipline (no external verticals)"
+    - "The relevant comparables are city-companies and walkable-city developments"
+    - "Decisions five years out are about urban operation, not just building velocity"
+
+# ═══════════════════════════════════════════════════════════
+# STRUCTURE
+# ═══════════════════════════════════════════════════════════
+
+files:
+  base:
+    path: adelante_base.md
+    register: foundational
+    function: >
+      Conceptual foundation shared across the entire sub-architecture.
+      Categorical frame, structural principles, the developer-operator-
+      of-Ciudad-del-Valle definition. Read first when establishing context.
+
+  operacional_estado:
+    path: adelante_operacional_estado.md
+    register: descriptive
+    function: >
+      How Adelante's productive system actually runs today. Two-tempo
+      problem and its current solution, complete 12-station cuadrilla
+      chain, molécula concept (proprietary scaling primitive),
+      horizontal services, Tres Amigos ritual with sprint vocabulary,
+      ultra-actividad as budget-production bridge, vertical integration
+      inventory, demand-following capacity (not static throughput),
+      upstream quality as structural property.
+
+  operacional_evolucion:
+    path: adelante_operacional_evolucion.md
+    register: prescriptive
+    function: >
+      The design discipline for evolving the productive system. Theory
+      of Constraints applied to the full chain, Pace Layers for capability
+      portfolio, Wardley Mapping for component maturity, principles of
+      absorption decisions, automation roadmap logic.
+
+  organizacional_estado:
+    path: adelante_organizacional_estado.md
+    register: descriptive
+    function: >
+      Adelante's organizational reality today. 330 total headcount with
+      Campo/Oficina/Comercio split, Dunbar band 150-500 as binding,
+      4:1 asymmetry as structural property, five poroso sovereignties
+      at executive layer (father + four siblings), maestros de obra
+      intermediate layer, Plataforma as distinct dimension, ritual
+      inventory (Tres Amigos, Scrum), friction surfaces with absence
+      of cross-management coordination as central.
+
+  organizacional_evolucion:
+    path: adelante_organizacional_evolucion.md
+    register: prescriptive
+    function: >
+      The design discipline for evolving organizational structure as
+      Adelante scales. The Dunbar / free-riding / tribal duality as the
+      central organizing problem. Ostrom on nested governance, McChrystal
+      on team-of-teams, Laloux on interface roles, the Schultz/Sinek
+      cultural-identity toolkit and its limits at scale.
+
+  ciudad_del_valle_estado:
+    path: adelante_ciudad_del_valle_estado.md
+    register: descriptive
+    function: >
+      Ciudad del Valle as the project currently exists in plan and partial
+      execution. Located in Sabana Grande de Cartago. Scale, scope, the
+      mixed-use ambition, commercial already operating (9Round + Pops),
+      current phase status, what has been built, what is planned next.
+
+  ciudad_del_valle_evolucion:
+    path: adelante_ciudad_del_valle_evolucion.md
+    register: prescriptive
+    function: >
+      The design discipline for evolving Ciudad del Valle as product and
+      project. Poundbury as primary comparable, the community-formation
+      apparatus (Christakis, Schwartz, Noah), the urbanism literature
+      (Alexander, Jacobs, Gehl, Marohn), post-delivery operator question
+      (already active at small scale), succession architecture.
+
+  plataforma_estado:
+    path: adelante_plataforma_estado.md
+    register: descriptive
+    function: >
+      The team that builds Adelante's internal software (H4, B0, A3, V5).
+      Five people including the Commander as advisor. Daniel (brother)
+      as team lead and primary builder via AI-assisted vibe coding.
+      Located inside Ciudad del Valle's commercial parcel. Scrum classic
+      cadence. Sequential build. Risk surfaces specific to this
+      configuration (library erosion, structural memory concentration,
+      advisor-vs-constructor protocol).
+
+  plataforma_companion:
+    path: adelante_stack_architecture.md
+    register: technical_operating_reference
+    function: >
+      The constellation pattern. Standalone Next.js apps over shared
+      substrate (component library, Auth.js/Entra ID, Business Central +
+      Azure SQL data layer, shared domain types). Boundaries that must
+      hold against fragmentation and against monolith collapse. App
+      inventory with H4 first. Build sequence. PPC and miss reason
+      codes as A3 instrumentation.
+
+  plataforma_evolucion:
+    path: adelante_plataforma_evolucion.md
+    status: pending
+    function: >
+      Prescriptive principles for evolving the platform team and its
+      output. Will be written when sufficient substrate accumulates —
+      governance principles, team growth thresholds, AI-tooling policy,
+      cross-team integration discipline, succession of architectural
+      memory.
+
+# ═══════════════════════════════════════════════════════════
+# ROUTING
+# ═══════════════════════════════════════════════════════════
+
+routing:
+  what_is_adelante: adelante_base.md
+  categorical_question: adelante_base.md
+
+  funnel_state: adelante_operacional_estado.md
+  production_state: adelante_operacional_estado.md
+  cuadrilla_chain_question: adelante_operacional_estado.md
+  molecula_question: adelante_operacional_estado.md
+  tres_amigos_ritual: adelante_operacional_estado.md
+  vertical_integration_inventory: adelante_operacional_estado.md
+  current_funnel_rates: adelante_operacional_estado.md
+  capacity_question: adelante_operacional_estado.md
+
+  funnel_optimization_question: adelante_operacional_evolucion.md
+  production_design_question: adelante_operacional_evolucion.md
+  absorption_decision_question: adelante_operacional_evolucion.md
+  automation_roadmap_question: adelante_operacional_evolucion.md
+  toc_application: adelante_operacional_evolucion.md
+  pace_layers_application: adelante_operacional_evolucion.md
+
+  headcount_question: adelante_organizacional_estado.md
+  current_organizational_structure: adelante_organizacional_estado.md
+  current_headcount_or_team_layout: adelante_organizacional_estado.md
+  current_friction_observation: adelante_organizacional_estado.md
+  executive_layer_question: adelante_organizacional_estado.md
+  maestros_de_obra_question: adelante_organizacional_estado.md
+
+  organizational_design_question: adelante_organizacional_evolucion.md
+  scaling_organizational_question: adelante_organizacional_evolucion.md
+  dunbar_or_tribal_problem: adelante_organizacional_evolucion.md
+  team_structure_design: adelante_organizacional_evolucion.md
+  culture_engineering_question: adelante_organizacional_evolucion.md
+
+  ciudad_del_valle_current_state: adelante_ciudad_del_valle_estado.md
+  ciudad_del_valle_phase_status: adelante_ciudad_del_valle_estado.md
+  ciudad_del_valle_location: adelante_ciudad_del_valle_estado.md
+  comercio_operativo_question: adelante_ciudad_del_valle_estado.md
+
+  ciudad_del_valle_design_question: adelante_ciudad_del_valle_evolucion.md
+  urbanism_question: adelante_ciudad_del_valle_evolucion.md
+  community_formation_question: adelante_ciudad_del_valle_evolucion.md
+  post_delivery_operator_question: adelante_ciudad_del_valle_evolucion.md
+  succession_question: adelante_ciudad_del_valle_evolucion.md
+  poundbury_reference: adelante_ciudad_del_valle_evolucion.md
+
+  plataforma_team_question: adelante_plataforma_estado.md
+  plataforma_governance: adelante_plataforma_estado.md
+  plataforma_geography: adelante_plataforma_estado.md
+  plataforma_risk_question: adelante_plataforma_estado.md
+
+  stack_architecture_question: adelante_stack_architecture.md
+  constellation_pattern: adelante_stack_architecture.md
+  app_inventory: adelante_stack_architecture.md
+  h4_b0_a3_v5_question: adelante_stack_architecture.md
+  component_library_question: adelante_stack_architecture.md
+  build_sequence_question: adelante_stack_architecture.md
+  ppc_a3_instrumentation: adelante_stack_architecture.md
+
+# ═══════════════════════════════════════════════════════════
+# DESIGN PRINCIPLES
+# ═══════════════════════════════════════════════════════════
+
+principles:
+  - "Adelante is the developer-operator of Ciudad del Valle. The vertical integration serves that, not the other way around."
+  - "Surplus utility absorbs adjacent processes. No external verticals."
+  - "Vivienda is the lead product, not the only product — the city is the product."
+  - "Industrial integration is moat-deepening, not diversification."
+  - "Production runs at takt time; cuadrillas are stations in a synchronized line."
+  - "Capacity is demand-following with elasticity by layers (molécula → cuadrilla → vertical), not static throughput."
+  - "Capital propio buffers commercial-production tempo mismatch — eliminating mura is worth the financial cost."
+  - "Upstream quality (~1% Reparaciones) is a scarce structural asset, not a neutral data point."
+  - "The horizon is generational. Decisions today should account for who operates Adelante after the Commander."
+  - "Organizational design above Dunbar scale is patch-work for a body plan evolution did not produce; the work is managing tension, not solving it."
+  - "Executive layer is five poroso sovereignties (father + four siblings); coordination is emergent and family-substrate dependent."
+  - "Platform team's product is categorically distinct from Adelante's main product and warrants its own analytical surface."
+  - "Estado captures what is; evolución captures the discipline for evolving what is. They co-evolve."
+
+# ═══════════════════════════════════════════════════════════
+# RELATIONSHIP TO NERV
+# ═══════════════════════════════════════════════════════════
+
+nerv_integration:
+  parent_branch: Operations (Misato)
+  relationship: >
+    Adelante is the primary operational reality covered by NERV Operations.
+    Operations remains the routing entry point for general operational
+    questions; the Adelante sub-architecture provides structural depth
+    when the question requires understanding Adelante as it actually is.
+
+  when_to_route_here_vs_operations:
+    operations_first: >
+      General operational reality, day-to-day decisions, current project
+      status, people dynamics, things-that-are-happening-now questions
+      where the answer is in operational context, not in structural depth.
+    adelante_first: >
+      Structural questions about Adelante, growth/scaling questions,
+      vertical integration questions, Ciudad del Valle as a project,
+      organizational design questions, framework-application questions,
+      platform-team and stack-architecture questions. Within the
+      sub-architecture, route to estado for state-of-things questions
+      and to evolución for design-discipline questions.
+
+# ═══════════════════════════════════════════════════════════
+# VERSIONING
+# ═══════════════════════════════════════════════════════════
+
+version_history:
+  v1.0: >
+    Initial three-file structure (base, operacional, ciudad_del_valle).
+    Categorical frame "Adelante = developer-operator of Ciudad del Valle,
+    not a construction company" established.
+
+  v1.1: >
+    Ciudad del Valle layer expanded with Poundbury as primary comparable,
+    community-formation thinkers (Christakis, Schwartz, Noah), New Urbanism
+    network as practitioner resource.
+
+  v2.0: >
+    Architecture reorganized into parallel estado/evolución pattern.
+    Three operational domains (operacional, organizacional, ciudad del
+    valle), each with descriptive and prescriptive surfaces. Organizacional
+    is a new dimension organized around the Dunbar/free-riding/tribal
+    duality as the central organizing problem of Adelante's growth.
+    Total: 1 base + 3 estado/evolución pairs = 7 content files + 1 activator.
+
+  v2.1: >
+    Plataforma added as fourth analytical dimension with estado file and
+    technical companion (stack_architecture). Plataforma evolución pending.
+    Organizacional and operacional estado files materially expanded with
+    real headcount (330), complete cuadrilla chain (12 stations), molécula
+    as proprietary scaling primitive, Tres Amigos ritual with ultra-actividad
+    vocabulary, five-sibling executive layer with rotational history,
+    Sabana Grande de Cartago as project location, commerce already operating
+    (9Round + Pops). Total: 1 base + 3 estado/evolución pairs + 1 plataforma
+    estado + 1 stack architecture = 9 content files + 1 activator.
