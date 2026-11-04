@@ -1,0 +1,765 @@
+/* ============================================================
+   RolesV2 — desktop prototype (R01–R07)
+   ============================================================ */
+
+.rv-shell {
+  width: 1440px;
+  height: 1024px;
+  background: var(--ds-color-surface);
+  font-family: var(--ds-font-family);
+  color: var(--ds-color-black);
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+/* Figma R01: sidebar 147px wide; tabs y=147/251/355 (40+8+(80+24)*n);
+   menu FAB at (32, 924) 80×80 → from sidebar bottom edge: 1024-924=100 → bottom 20+icon80.
+   The sidebar is 147px ALWAYS — collapsed in all R01–R07 spec. */
+.rv-sidebar {
+  background: #2a2a2a;
+  color: var(--ds-color-white);
+  padding: 147px 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.rv-sidebar__menu {
+  position: absolute;
+  left: 32px;
+  bottom: 20px;
+  width: 80px;
+  height: 80px;
+  background: var(--ds-color-black);
+  border: none;
+  cursor: pointer;
+  color: var(--ds-color-white);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--ds-shadow-02-soft);
+  transition: transform 120ms ease;
+}
+.rv-sidebar__menu:hover { transform: translateY(-1px); }
+.rv-sidebar__menu svg   { fill: var(--ds-color-white); }
+
+.rv-sidebar__items {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+}
+
+.rv-sidebar .ds-tabs-menu {
+  align-self: center;
+  overflow: hidden;
+  transition:
+    width 460ms cubic-bezier(0.32, 0.72, 0, 1),
+    min-width 460ms cubic-bezier(0.32, 0.72, 0, 1),
+    height 460ms cubic-bezier(0.32, 0.72, 0, 1),
+    border-radius 460ms cubic-bezier(0.32, 0.72, 0, 1),
+    padding 460ms cubic-bezier(0.32, 0.72, 0, 1),
+    gap 360ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.rv-sidebar .ds-tabs-menu__label {
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    opacity 260ms ease,
+    max-width 360ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.rv-sidebar--expanded .ds-tabs-menu {
+  min-width: 360px;
+  width: 360px;
+  height: 100px;
+  border-radius: 999px;
+  padding: 0 32px;
+  justify-content: flex-start;
+  gap: 16px;
+  transition-delay: 220ms;
+}
+.rv-sidebar--expanded .ds-tabs-menu__label {
+  font-size: 16px;
+  letter-spacing: 0.6px;
+  opacity: 1;
+  max-width: 240px;
+}
+.rv-sidebar--collapsed .ds-tabs-menu {
+  width: 80px;
+  min-width: 80px;
+  height: 80px;
+  border-radius: 999px;
+  padding: 0;
+  justify-content: center;
+  gap: 0;
+}
+.rv-sidebar--collapsed .ds-tabs-menu__label {
+  opacity: 0;
+  max-width: 0;
+  pointer-events: none;
+}
+
+/* ── Main ────────────────────────────────────────────────── */
+/* Figma R01: main column is 1293px wide (1440-147 sidebar). All children
+   absolutely positioned for fidelity to Figma layout coordinates.        */
+
+.rv-main {
+  flex: 1 1 auto;
+  position: relative;
+  min-width: 0;
+  height: 100%;
+}
+
+/* Topbar — ROLES at (173,58), + button at (1310,30).
+   In main-local coords: ROLES at (26,58), + at (1163,30).               */
+.rv-topbar {
+  position: absolute;
+  top: 30px;
+  left: 26px;
+  right: 50px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rv-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  margin: 0;
+}
+
+/* Apps label — sits in own row above the dropdown; total label-row height
+   = 32px so the dropdown below aligns vertically with the detail card top. */
+.rv-subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ds-color-gray-500);
+  margin: 0;
+  padding: 0 0 4px 4px;
+  line-height: 20px;
+}
+
+/* ── Content layout ───────────────────────────────────────── */
+/* Detail card at (479,143) 932×841; left col at (173,111) width 286.
+   In main-local coords: left at x=26, detail at x=332 (479-147=332).
+   Content starts at y=111 (Boletas dropdown) but visually the BLOCK
+   region begins at y=111. We set content top:111 and use absolute
+   positioning for each child. */
+.rv-content {
+  position: absolute;
+  top: 111px;
+  left: 26px;
+  right: 0;
+  bottom: 0;
+}
+
+.rv-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 286px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rv-left .ds-sd { width: 100%; }
+
+.rv-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Group card (NOT-IN-DS) ───────────────────────────────── */
+
+.rv-group {
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-01);
+  overflow: hidden;
+}
+
+.rv-group__head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 70px;
+  padding: 8px 12px 8px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ds-color-black);
+}
+
+.rv-group__title {
+  text-align: left;
+}
+
+.rv-group__items {
+  overflow: hidden;
+}
+
+.rv-group__items-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 16px 16px;
+}
+
+.rv-group-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ds-color-gray-400);
+  transition: background 160ms ease, color 160ms ease;
+}
+.rv-group-item:hover {
+  background: var(--ds-color-gray-100);
+  color: var(--ds-color-black);
+}
+.rv-group-item--active {
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  font-weight: 600;
+}
+.rv-group-item--active:hover {
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+}
+
+/* ── Detail card ──────────────────────────────────────────── */
+/* Figma: 932×841 at (479,143). In content-local coords: left=306, top=32
+   (since content starts at y=111, detail starts at y=143 → 32 from top).
+   Content-local x: 479-147-26 = 306. */
+.rv-detail {
+  position: absolute;
+  left: 306px;
+  top: 32px;
+  width: 932px;
+  height: 841px;
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-01);
+  overflow: hidden;
+}
+
+/* Header — Avatar (32,24) 64×64; "Líder" text (108,23); selectors (108,54). */
+.rv-detail__head {
+  position: absolute;
+  top: 24px;
+  left: 32px;
+  right: 32px;
+  height: 64px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.rv-detail__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-top: 0;
+}
+.rv-detail__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ds-color-black);
+  line-height: 24px;
+  margin: 0;
+}
+
+.rv-detail__selectors {
+  display: flex;
+  gap: 8px;
+}
+
+/* Kebab at (1338,178) → 24px icon, position from card right=29, top=35 */
+.rv-detail__kebab {
+  position: absolute;
+  top: 41px;
+  right: 22px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-gray-500);
+}
+.rv-detail__kebab:hover { background: var(--ds-color-gray-100); }
+.rv-detail__kebab svg { fill: var(--ds-color-black); }
+
+/* Search — position controlled by motion. Collapsed = icon top-right.
+   Expanded = full-width pill above body. See RolesV2.tsx for animate spec. */
+.rv-detail__search {
+  position: absolute;
+  z-index: 2;
+}
+
+/* Body — top controlled by motion (120 collapsed / 210 expanded search). */
+.rv-detail__body {
+  position: absolute;
+  left: 31px;
+  right: 31px;
+  bottom: 120px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* FAB at (1307,881) from frame → from card (828,738). 80×80. */
+.rv-detail__fab {
+  position: absolute;
+  right: 29px;
+  bottom: 23px;
+  z-index: 5;
+}
+
+/* ── Avatar ──────────────────────────────────────────────── */
+
+.rv-avatar {
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--ds-color-gray-200);
+  color: var(--ds-color-gray-400);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.rv-avatar svg { fill: var(--ds-color-gray-400); }
+
+/* ── SmallPill ───────────────────────────────────────────── */
+
+/* Figma selectors: 95×36, font 14px medium */
+/* AddRoleMorph (R08 intermediate green pill) — same position as the +
+   button, expands horizontally on click before the modal opens. */
+/* AddRoleMorph — single shared-element container that morphs from + button
+   to modal. Position is right-anchored to topbar; when it morphs the height
+   grows downward (y +8) into the page area. */
+.rv-add-role-morph {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: var(--ds-color-green-100);
+  border: none;
+  color: var(--ds-color-black);
+  box-shadow: var(--ds-shadow-02-soft);
+  overflow: hidden;
+  white-space: nowrap;
+  z-index: 30;
+}
+.rv-add-role-morph svg { fill: var(--ds-color-black); }
+.rv-add-role-morph--pill { box-shadow: var(--ds-shadow-03-big); }
+
+/* DS pressed state — halo verde 8px (Figma spec). */
+.rv-add-role-morph--closed:active,
+.rv-add-role-morph--pill:active {
+  box-shadow: 0 0 0 8px var(--ds-color-green-200), var(--ds-shadow-03-big);
+}
+.rv-add-role-morph--morph,
+.rv-add-role-morph--modal {
+  box-shadow: var(--ds-shadow-03-big);
+  cursor: default;
+}
+
+.rv-add-role-morph__pill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  pointer-events: none;
+}
+.rv-add-role-morph__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+.rv-add-role-morph__label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ds-color-black);
+  display: inline-block;
+}
+
+.rv-add-role-morph__form {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+.rv-add-role-morph__inner {
+  position: relative;
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+/* Backdrop for the morph — semi-transparent scrim. */
+.rv-morph-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 25;
+}
+
+.rv-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 95px;
+  height: 36px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: none;
+  background: var(--ds-color-gray-100);
+  color: var(--ds-color-gray-400);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease;
+}
+.rv-pill--standard {
+  background: var(--ds-color-gray-100);
+  color: var(--ds-color-gray-400);
+}
+.rv-pill--active {
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+}
+
+/* ── Permission section ──────────────────────────────────── */
+/* Figma: section header 226×44, chevron 24×24 + 10px gap + text 16px.
+   Rows are 576×32 at 24px vertical step (gap 24 between rows). */
+
+.rv-perm-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.rv-perm-section__head {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ds-color-black);
+  align-self: flex-start;
+}
+
+.rv-perm-section__chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+.rv-perm-section__chevron svg { fill: var(--ds-color-black); }
+
+.rv-perm-section__title {
+  white-space: nowrap;
+}
+
+.rv-perm-section__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.rv-perm-row {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 44px;
+  cursor: pointer;
+  border-radius: var(--ds-radius-md);
+  transition: background 140ms ease;
+}
+.rv-perm-row--hover { background: var(--ds-color-gray-100); }
+.rv-perm-row .ds-checkbox { width: 100%; gap: 14px; pointer-events: none; }
+
+/* ── Kebab popover (R02) ─────────────────────────────────── */
+
+.rv-kebab-scrim {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  z-index: 20;
+}
+
+.rv-kebab-pop {
+  position: absolute;
+  top: 56px;
+  right: 0;
+  width: 165px;
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-03-big);
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 60;
+}
+.rv-kebab-scrim { z-index: 55; }
+
+.rv-kebab-pop__row {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 8px 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ds-color-black);
+  text-align: left;
+  transition: background 120ms ease;
+}
+.rv-kebab-pop__row:hover { background: var(--ds-color-gray-100); }
+.rv-kebab-pop__row svg { fill: var(--ds-color-black); }
+
+.rv-kebab-pop__row--disabled {
+  color: var(--ds-color-gray-300);
+  cursor: not-allowed;
+}
+.rv-kebab-pop__row--disabled svg { fill: var(--ds-color-gray-300); }
+.rv-kebab-pop__row--disabled:hover { background: transparent; }
+
+.rv-kebab-pop__divider {
+  height: 1px;
+  background: var(--ds-color-gray-100);
+  margin: 4px 16px;
+}
+
+/* ── Search toggle ───────────────────────────────────────── */
+
+/* Search uses DS SearchBar; the motion.div parent handles position only. */
+
+.rv-search-toggle--open {
+  box-shadow: var(--ds-shadow-03-big);
+}
+
+.rv-search-toggle .ds-search-shell,
+.rv-search-toggle .ds-search {
+  width: 100%;
+}
+
+/* ── Add-perm FAB / pill (R06) ───────────────────────────── */
+
+.rv-add-perm-wrap {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* AddPermFab — anchored bottom-right of the card; grows upward into popover. */
+.rv-add-perm {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  box-shadow: var(--ds-shadow-02-soft);
+  overflow: hidden;
+  white-space: nowrap;
+  border: none;
+  transform-origin: bottom right;
+}
+.rv-add-perm--morph,
+.rv-add-perm--popover {
+  box-shadow: var(--ds-shadow-03-big);
+}
+
+/* DS pressed state — halo negro 8px (Figma spec). */
+.rv-add-perm--fab:active,
+.rv-add-perm--pill:active {
+  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.8), var(--ds-shadow-03-big);
+}
+
+.rv-add-perm__pill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  pointer-events: none;
+}
+.rv-add-perm__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+}
+.rv-add-perm--fab .rv-add-perm__icon svg,
+.rv-add-perm--pill .rv-add-perm__icon svg { fill: var(--ds-color-white); }
+.rv-add-perm--morph .rv-add-perm__icon svg,
+.rv-add-perm--popover .rv-add-perm__icon svg { fill: var(--ds-color-black); }
+.rv-add-perm__label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ds-color-white);
+}
+
+.rv-add-perm__form {
+  position: absolute;
+  inset: 0;
+}
+
+/* SD dentro del popover "Agregar permiso" — el popover crece hacia arriba
+   cuando se abre el SD (height 288 → 600). Los items abren hacia abajo
+   normalmente dentro del popover expandido. */
+
+/* ── Add-perm popover (R07) ──────────────────────────────── */
+
+.rv-add-perm-popover {
+  position: absolute;
+  right: 0;
+  bottom: 96px;
+  width: 405px;
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-03-big);
+  z-index: 10;
+}
+
+.rv-add-perm-popover__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 18px 24px 24px;
+  position: relative;
+}
+
+.rv-add-perm-popover__close {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-black);
+}
+.rv-add-perm-popover__close svg { fill: var(--ds-color-black); }
+
+.rv-add-perm-popover__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ds-color-black);
+  margin-top: 12px;
+}
+
+.rv-add-perm-popover__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* ── Role modal (R04/R05) ────────────────────────────────── */
+
+.rv-role-modal {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  width: 457px;
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-03-big);
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 30;
+}
+
+.rv-role-modal__close {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-black);
+}
+.rv-role-modal__close svg { fill: var(--ds-color-black); }
+
+.rv-role-modal__head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-top: 24px;
+}
+
+.rv-role-modal__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ds-color-black);
+}
+
+.rv-role-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rv-role-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
