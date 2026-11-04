@@ -1,0 +1,27 @@
+<!--
+  Storybook iframe.html <head> injections — these end up inside the
+  iframe that renders each story. iOS Safari reads them when the user
+  taps "Add to Home Screen" on the iframe URL, so the prototype gets a
+  proper homescreen icon instead of a blank screenshot fallback.
+
+  Paths are absolute (`/...`) and resolved against the Storybook deploy
+  root. On gh-pages this is `/adelante-design-system/`, so a `<link
+  href="/apple-touch-icon.png">` would 404. Use the BASE_URL placeholder
+  that Vite substitutes at build time? Easier: rely on the `staticDirs`
+  in `main.ts` to copy `public/` files into the build's root, and use
+  relative paths from the iframe.html file. Since iframe.html is at the
+  Storybook root, `apple-touch-icon.png` (no slash) resolves correctly
+  on both local dev and gh-pages.
+-->
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180" />
+<link rel="manifest" href="manifest.webmanifest" />
+
+<!-- Standalone web-app mode on iOS when added to homescreen. Opens
+     without Safari chrome (URL bar, share button). The status bar sits
+     behind the page; the LosaFlotante screen leaves room at the top. -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Losa Flotante" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="theme-color" content="#BDDE3B" />

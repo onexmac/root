@@ -1,0 +1,670 @@
+/* ============================================================
+   Roles & Permisos — desktop prototype (r01–r05)
+   ============================================================ */
+
+.roles-shell {
+  width: 1440px;
+  height: 1024px;
+  background: var(--ds-color-surface);
+  font-family: var(--ds-font-family);
+  color: var(--ds-color-black);
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+
+.roles-sidebar {
+  background: #2a2a2a;
+  color: var(--ds-color-white);
+  padding: 32px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+/* Plain hamburger toggle — no button bg, rotates 90° on collapse via motion */
+.roles-sidebar__menu {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: var(--ds-color-white);
+  border-radius: var(--ds-radius-md);
+  transition: background 100ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+}
+.roles-sidebar__menu:hover { background: rgba(255, 255, 255, 0.08); }
+.roles-sidebar__menu svg   { fill: var(--ds-color-white); }
+
+.roles-sidebar__items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Sidebar tabs — animación premium ──────────────────────
+   Pill size con cubic-bezier suave (iOS-like). Label desaparece
+   con clip-path (erase right→left), opacity, blur sutil, max-width
+   y staggered por nth-child para que tabs cierren progresivos. */
+
+.roles-sidebar .ds-tabs-menu {
+  align-self: center;
+  overflow: hidden;
+  transition:
+    width          520ms cubic-bezier(0.32, 0.72, 0, 1),
+    min-width      520ms cubic-bezier(0.32, 0.72, 0, 1),
+    height         520ms cubic-bezier(0.32, 0.72, 0, 1),
+    border-radius  520ms cubic-bezier(0.32, 0.72, 0, 1),
+    padding        520ms cubic-bezier(0.32, 0.72, 0, 1),
+    gap            420ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.roles-sidebar .ds-tabs-menu__label {
+  overflow: hidden;
+  white-space: nowrap;
+  will-change: clip-path, opacity, filter, max-width;
+  transition:
+    opacity   320ms cubic-bezier(0.4, 0, 0.2, 1),
+    filter    320ms cubic-bezier(0.4, 0, 0.2, 1),
+    clip-path 420ms cubic-bezier(0.65, 0.05, 0.36, 1),
+    max-width 420ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Expanded ───────────────────────────────────────────────── */
+.roles-sidebar--expanded .ds-tabs-menu {
+  min-width: 256px;
+  width: 256px;
+  height: 80px;
+  border-radius: 999px;
+  padding: 0 32px;
+  justify-content: flex-start;
+  gap: 18px;
+  transition-delay: 280ms;
+}
+.roles-sidebar--expanded .ds-tabs-menu__label {
+  font-size: 16px;
+  letter-spacing: 0.6px;
+  opacity: 1;
+  filter: blur(0);
+  clip-path: inset(0 0% 0 0);
+  max-width: 200px;
+}
+/* Reconstruct L→R: tabs revelan progresivos después que el sidebar abre */
+.roles-sidebar--expanded .ds-tabs-menu:nth-child(1) .ds-tabs-menu__label { transition-delay: 380ms; }
+.roles-sidebar--expanded .ds-tabs-menu:nth-child(2) .ds-tabs-menu__label { transition-delay: 460ms; }
+.roles-sidebar--expanded .ds-tabs-menu:nth-child(3) .ds-tabs-menu__label { transition-delay: 540ms; }
+
+/* Collapsed ──────────────────────────────────────────────── */
+.roles-sidebar--collapsed .ds-tabs-menu {
+  min-width: 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  padding: 0;
+  gap: 0;
+  justify-content: center;
+}
+.roles-sidebar--collapsed .ds-tabs-menu .ds-tabs-menu__icon svg {
+  width: 20px;
+  height: 20px;
+}
+/* Tabs shrink one after another — cascade desde ROLES → CUADRILLAS */
+.roles-sidebar--collapsed .ds-tabs-menu:nth-child(1) { transition-delay: 0ms; }
+.roles-sidebar--collapsed .ds-tabs-menu:nth-child(2) { transition-delay: 70ms; }
+.roles-sidebar--collapsed .ds-tabs-menu:nth-child(3) { transition-delay: 140ms; }
+
+/* Expand reverse cascade — desde abajo hacia arriba */
+.roles-sidebar--expanded .ds-tabs-menu:nth-child(3) { transition-delay: 280ms; }
+.roles-sidebar--expanded .ds-tabs-menu:nth-child(2) { transition-delay: 340ms; }
+.roles-sidebar--expanded .ds-tabs-menu:nth-child(1) { transition-delay: 400ms; }
+.roles-sidebar--collapsed .ds-tabs-menu__label {
+  opacity: 0;
+  filter: blur(3px);
+  clip-path: inset(0 100% 0 0);  /* erase right→left */
+  max-width: 0;
+}
+/* Erase from top-down: ROLES (más arriba) cierra primero, luego los demás. */
+.roles-sidebar--collapsed .ds-tabs-menu:nth-child(1) .ds-tabs-menu__label { transition-delay: 0ms; }
+.roles-sidebar--collapsed .ds-tabs-menu:nth-child(2) .ds-tabs-menu__label { transition-delay: 70ms; }
+.roles-sidebar--collapsed .ds-tabs-menu:nth-child(3) .ds-tabs-menu__label { transition-delay: 140ms; }
+
+/* ── Main column ─────────────────────────────────────────── */
+
+.roles-main {
+  flex: 1 1 auto;
+  padding: 32px 40px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.roles-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.roles-title {
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: 0.4px;
+  margin: 0;
+}
+
+.roles-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.roles-dropdown-wrap {
+  position: relative;
+  width: 372px;
+  height: 70px;          /* closed-state height so the flex row stays aligned */
+}
+.roles-dropdown-wrap .ds-sd {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 372px;
+  z-index: 30;
+}
+
+.roles-category {
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: 0.4px;
+  margin: 56px 0 16px;
+}
+
+/* ── Content (two-card grid) ─────────────────────────────── */
+
+.roles-content {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 26px;
+  align-items: stretch;
+}
+
+.roles-card {
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-01);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 800px;
+}
+
+/* ── Left card — grouped role list ─────────────────────── */
+
+.roles-card--list { gap: 24px; }
+
+.roles-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.roles-group__items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 8px;
+}
+
+/* Group header pill — black rounded chip */
+.roles-grouphead {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  font-size: 14px;
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: 0.4px;
+  height: 40px;
+  padding: 0 24px;
+  border-radius: 999px;
+  margin-bottom: 6px;
+}
+
+/* ── Right card — detail ─────────────────────────────────── */
+
+.roles-card--detail {
+  position: relative;
+}
+
+.roles-detail__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.roles-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--ds-color-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.roles-avatar svg { fill: var(--ds-color-gray-400); }
+
+.roles-detail__title {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 auto;
+}
+
+.roles-detail__name {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.roles-edit-btn-wrap {
+  position: relative;
+  align-self: flex-start;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Edit icon button → DS Button color="black" layout="icon" (md = 56×56) */
+
+.roles-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* ── Permission rows ─────────────────────────────────────── */
+
+.roles-perms {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.roles-perm {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--ds-color-gray-100);
+}
+.roles-perm:last-child { border-bottom: none; }
+
+.roles-perm__main { min-width: 0; }
+.roles-perm__main .ds-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.roles-perm__tags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Bare X delete icon (sin button container, fiel a Figma).
+   Hover muestra el HoverHint "Eliminar" arriba. */
+.roles-perm__delete {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--ds-color-gray-500);
+  border-radius: var(--ds-radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 100ms ease;
+}
+.roles-perm__delete:hover { color: var(--ds-color-black); }
+.roles-perm__delete svg   { fill: currentColor; }
+
+/* ── Detail footer (CTAs) ────────────────────────────────── */
+
+.roles-detail__footer {
+  margin-top: auto;
+  padding-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Add-permission morph — anclado en bottom-right del detail card,
+   crece hacia arriba (transform-origin bottom right). */
+.roles-add-perm-wrap {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  width: 220px;
+  height: 56px;
+  z-index: 5;
+}
+
+.roles-add-perm-morph {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  box-shadow: var(--ds-shadow-03-big);
+  transform-origin: bottom right;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.roles-add-perm-morph--open { align-items: flex-start; }
+
+.roles-add-perm-morph__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--ds-color-black);
+  pointer-events: none;
+  white-space: nowrap;
+}
+.roles-add-perm-morph__label {
+  font-size: var(--ds-font-size-body-md);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-black);
+}
+.roles-add-perm-morph__cta svg { fill: var(--ds-color-black); }
+
+.roles-add-perm-morph__form {
+  width: 100%;
+  height: 100%;
+  padding: 32px 24px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cancelar → DS Button color="white" size="sm" */
+
+/* ── Hover hint (Editar / Eliminar tooltip) ──────────────── */
+
+.roles-hint {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--ds-font-size-label);
+  line-height: var(--ds-line-height-label);
+  font-weight: var(--ds-font-weight-semibold);
+  color: var(--ds-color-black);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.roles-hint--static {
+  position: static;
+  transform: none;
+  font-size: var(--ds-font-size-label);
+}
+
+/* ── Small pill (NOT-IN-DS) ──────────────────────────────── */
+
+.roles-pill {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: var(--ds-font-weight-semibold);
+  letter-spacing: 0.25px;
+  background: var(--ds-color-white);
+  color: var(--ds-color-gray-400);
+  border: 1px solid var(--ds-color-gray-200);
+  cursor: default;
+  white-space: nowrap;
+  transition: background 100ms ease, color 100ms ease, border-color 100ms ease;
+}
+.roles-pill--clickable { cursor: pointer; }
+
+.roles-pill--standard {
+  background: var(--ds-color-white);
+  color: var(--ds-color-gray-400);
+  border-color: var(--ds-color-gray-200);
+}
+.roles-pill--active {
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  border-color: var(--ds-color-black);
+}
+.roles-pill--clickable:hover { filter: brightness(0.96); }
+
+/* ── Modal (r05) ─────────────────────────────────────────── */
+
+.roles-modal__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.32);
+  z-index: 40;
+}
+.roles-modal {
+  position: absolute;
+  right: 40px;
+  bottom: 40px;
+  width: 405px;
+  z-index: 50;
+  background: var(--ds-color-white);
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-03-big);
+  padding: 24px;
+}
+
+.roles-modal__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  padding-top: 16px;
+}
+
+/* Modal close — chevron-down centrado al top, sin button bg (fiel a Figma). */
+.roles-modal__close {
+  align-self: center;
+  background: transparent;
+  border: none;
+  padding: 4px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-gray-400);
+  border-radius: var(--ds-radius-md);
+  transition: color 100ms ease;
+  margin-bottom: 4px;
+}
+.roles-modal__close:hover { color: var(--ds-color-black); }
+.roles-modal__close svg   { fill: currentColor; }
+
+.roles-modal__section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.roles-modal__section-label {
+  font-size: var(--ds-font-size-body-md);
+  line-height: var(--ds-line-height-body-md);
+  color: var(--ds-color-black);
+  font-weight: var(--ds-font-weight-semibold);
+}
+.roles-modal__scope-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* + circular button to add a new scope */
+.roles-modal__add-scope {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ds-color-black);
+  color: var(--ds-color-white);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 100ms ease;
+}
+.roles-modal__add-scope:hover { filter: brightness(1.1); }
+.roles-modal__add-scope svg   { fill: var(--ds-color-white); }
+
+.roles-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.roles-modal .ds-form-field { width: 100%; }
+
+/* ── Add-role morph (r06) ──────────────────────────────────
+   Botón + → barra verde → popover blanco (3-stage morph).
+   Anclado bajo el topbar, sin scrim (fiel a Figma U02 → U03 → U04). */
+
+.roles-add-role-wrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+}
+
+.roles-add-role-morph {
+  position: absolute;
+  top: 0;
+  right: 0;
+  overflow: hidden;
+  box-shadow: var(--ds-shadow-03-big);
+  transform-origin: top right;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.roles-add-role-morph--open {
+  align-items: flex-start;
+  cursor: default;
+}
+
+/* + icon in closed + bar stage */
+.roles-add-role-morph__plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-black);
+  pointer-events: none;
+}
+.roles-add-role-morph__plus svg { fill: var(--ds-color-black); }
+
+/* Form fills the popover content area (only visible when stage = open).
+   El popover crece a 720 cuando el dropdown interno abre, así que NO
+   necesita scroll — todo cabe dentro del card. */
+.roles-add-role-morph__form {
+  width: 100%;
+  height: 100%;
+  padding: 48px 32px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.roles-add-role__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+.roles-add-role__close {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: transparent;
+  border: none;
+  padding: 6px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-color-gray-400);
+  border-radius: var(--ds-radius-md);
+  transition: background 100ms ease, color 100ms ease;
+}
+.roles-add-role__close:hover { color: var(--ds-color-black); }
+.roles-add-role__close:hover { background: var(--ds-color-gray-100); }
+.roles-add-role__close svg   { fill: var(--ds-color-gray-400); }
+
+.roles-add-role__section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.roles-add-role__section-label {
+  font-size: var(--ds-font-size-label);
+  line-height: var(--ds-line-height-label);
+  color: var(--ds-color-gray-500);
+  font-weight: var(--ds-font-weight-semibold);
+}
+
+.roles-add-role__dd-wrap {
+  position: relative;
+  width: 100%;
+}
+/* SD ahora fluye normal: cuando abre empuja la layout y el morph
+   (que es height:auto) crece junto con él. */
+.roles-add-role__dd-wrap .ds-sd {
+  width: 100%;
+}
+/* DS hardcoded width 372px del header card — overrideamos al 100% */
+.roles-add-role__dd-wrap .ds-sd__header-card,
+.roles-add-role__dd-wrap .ds-sd__items-card {
+  width: 100%;
+}
+
+.roles-add-role__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.roles-add-role .ds-form-field { width: 100%; }
