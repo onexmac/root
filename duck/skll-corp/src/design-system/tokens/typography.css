@@ -1,0 +1,25 @@
+:root {
+  --ds-font-sans: 'Roboto', system-ui, sans-serif;
+  --ds-font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+  --ds-text-xs: 10px;
+  --ds-text-sm: 14px;
+  --ds-text-base: 16px;
+  --ds-text-lg: 20px;
+  --ds-text-xl: 24px;
+  --ds-text-2xl: 32px;
+  --ds-text-3xl: 40px;
+
+  --ds-leading-tight: 20px;
+  --ds-leading-normal: 24px;
+  --ds-leading-loose: 40px;
+
+  --ds-tracking-tight: 0.25px;
+  --ds-tracking-normal: 0.4px;
+  --ds-tracking-wide: 0.3em;
+
+  --ds-weight-regular: 400;
+  --ds-weight-medium: 500;
+  --ds-weight-semibold: 600;
+  --ds-weight-bold: 700;
+}

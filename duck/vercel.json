@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd skll-corp && npm install && npm run build",
+  "outputDirectory": "skll-corp/dist",
+  "framework": "vite"
+}
