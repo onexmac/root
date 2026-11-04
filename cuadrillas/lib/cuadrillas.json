@@ -1,0 +1,478 @@
+[
+ {
+  "id": "aceros-franklin-ballestero-weeb",
+  "nombre": "Aceros",
+  "lider": "Franklin Ballestero Weeb",
+  "miembros": [
+   "Andersson Reyes Vilchez",
+   "Franklin Ballestero Weeb",
+   "German Olivar Cardenas",
+   "Henry Madrigal Torres",
+   "Luis Orlando Fernandez Varela",
+   "Moises Barrera Hernandez",
+   "Rodrigo Sanchez Solano"
+  ]
+ },
+ {
+  "id": "apoyo-yoanni-bonilla-torres",
+  "nombre": "Apoyo",
+  "lider": "Yoanni Bonilla Torres",
+  "miembros": [
+   "Freddy Martinez Vega",
+   "Heiner Zarate Perez",
+   "Jesus Romero Flores",
+   "Jose Alberto Pereira Trejos"
+  ]
+ },
+ {
+  "id": "bodega-alondra-arias",
+  "nombre": "Bodega",
+  "lider": "Alondra Arias",
+  "miembros": [
+   "Marvin Alvarado Obando"
+  ]
+ },
+ {
+  "id": "bodega-jerson-montero",
+  "nombre": "Bodega",
+  "lider": "Jerson Montero",
+  "miembros": [
+   "Carlos Hidalgo Brenes",
+   "Carlos Ramirez Chacon",
+   "David Garro Araya",
+   "Johanne Abarca Solano",
+   "Jose Ramon Quiros Robles",
+   "Luis Fernando Jimenez Perez",
+   "Mario Poveda Mora",
+   "Mauricio Cruz Bermudez",
+   "Pedro Bravo Jiron",
+   "Samir Campos Nicaragua"
+  ]
+ },
+ {
+  "id": "bodega-jose-flores",
+  "nombre": "Bodega",
+  "lider": "Jose Flores",
+  "miembros": [
+   "Bryan Arauz Montero",
+   "Jeison Robles Valverde"
+  ]
+ },
+ {
+  "id": "complementarias-franklin-gregorio-gonzalez-solis",
+  "nombre": "Complementarias",
+  "lider": "Franklin Gregorio Gonzalez Solis",
+  "miembros": [
+   "Armel Garcia Reyes",
+   "Elmer Alejandro Quintero Perez",
+   "Fernando Martinez Gutierrez",
+   "Franklin Gregorio Gonzalez Solis",
+   "Gerardo Ramirez Portuguez",
+   "Hivis Quintero Mata",
+   "Marvin Alvarado Obregon",
+   "Ricardo Mercado Guzman",
+   "Roger Ortega Sanchez",
+   "Ronald Arrieta Alvarez",
+   "Tomas Alberto Baez",
+   "Victor Aguilera Valderramos"
+  ]
+ },
+ {
+  "id": "complementarias-2-wilbert-manuel-cerda-barrera",
+  "nombre": "Complementarias 2",
+  "lider": "Wilbert Manuel Cerda Barrera",
+  "miembros": [
+   "Adalberto Vasquez Lanuza",
+   "Carlos Alberto Ramirez Ramirez",
+   "Carlos Solano Romero",
+   "Elyen Melendez Valle",
+   "Francisco Rodriguez Hurtado",
+   "German Eleazar Montenegro Castro",
+   "Jose Ronaldo Cruz Luquez",
+   "Moises Andrades Salinas",
+   "Norlando De la Cruz Ramirez Espinoza",
+   "Wilbert Manuel Cerda Barrera",
+   "Yordis Solis Mendoza"
+  ]
+ },
+ {
+  "id": "electricos-jorge-martinez-granados",
+  "nombre": "Electricos",
+  "lider": "Jorge Martinez Granados",
+  "miembros": [
+   "Alonso Mora Goñi",
+   "Anderson Trejos Acuña",
+   "Brawnie Perez Hernandez",
+   "Edrian Arce Machado",
+   "Esteban Martinez Valderramos",
+   "Frederick Roman Arce",
+   "Javier Escobar Salmeron",
+   "Jose Carlos Bonilla Siles",
+   "Jose Luis Sanabria Flores",
+   "Jose Roberto Obando Cordero",
+   "Juan Carlos Cubillo Perez",
+   "Justin Jimenez Gazo",
+   "Saymon Rodriguez Gomez"
+  ]
+ },
+ {
+  "id": "enchape-olman-maroto-chacon",
+  "nombre": "Enchape",
+  "lider": "Olman Maroto Chacon",
+  "miembros": [
+   "Dario Viquez Madrigal",
+   "Enrique Brenes Moya",
+   "Jordan Castillo Rodriguez",
+   "Olman Maroto Chacon",
+   "Pablo Andres Guillen Garita",
+   "Sebastian Bonilla Gonzalez",
+   "Victor Julio Hernandez Abarca",
+   "Yohan Calderon Brenes"
+  ]
+ },
+ {
+  "id": "fabricacion-muebles-rigoberto-arroyo-ramirez",
+  "nombre": "Fabricación Muebles",
+  "lider": "Rigoberto Arroyo Ramirez",
+  "miembros": [
+   "Dahiana Chaves Sanchez",
+   "Edwin Masis Vargas",
+   "Errol Ramirez Trejos",
+   "Jose Pablo Molina Amador",
+   "Juan Pablo Solano Flores",
+   "Rigoberto Arroyo Ramirez"
+  ]
+ },
+ {
+  "id": "fontaneria-osvaldo-rizo-diaz",
+  "nombre": "Fontaneria",
+  "lider": "Osvaldo Rizo Diaz",
+  "miembros": [
+   "Abelardo Chacon Acuña",
+   "Cesar Enrique Romero Andino",
+   "Cipriano Pastora Gonzalez",
+   "Ever Blandon Lugo",
+   "Gilbert Ramirez Rojas",
+   "Jorge Guadamuz Valle",
+   "Jose Fabian Alvarado Gomez",
+   "Maynor Perez Andrade",
+   "Nicolas Parrales",
+   "Osvaldo Rizo Diaz",
+   "William Missael Ruiz Ruiz"
+  ]
+ },
+ {
+  "id": "formaleta-josue-alonso-zamora-vega",
+  "nombre": "Formaleta",
+  "lider": "Josue Alonso Zamora Vega",
+  "miembros": [
+   "Alex Sequeira Lopez",
+   "Brandon Alvarado Obando",
+   "Brandon Marenco Rodriguez",
+   "Cristhian Mejia Lopez",
+   "Cristian Perez Mora",
+   "Gerardo Galeano",
+   "Isaias Pastora Pastora",
+   "Isidro Fernandez Maliaños",
+   "Jairo Ruiz",
+   "Jesus Gomez Villagra",
+   "Jose Antonio Mairena",
+   "Josue Alonso Zamora Vega",
+   "José Ricardo Vives Mata",
+   "Kendall Centeno Leiva",
+   "Lester Mena Carrillo",
+   "Luis Anibal Barrera Lanuza",
+   "Manfred Zamora Ureña",
+   "Mariano Arauz Hernandez",
+   "Orlando Fernandez Gutierrez",
+   "Roger Obregon Meza",
+   "Teodulo Blandon Gutierrez",
+   "Yordan Gutierrez Ramirez"
+  ]
+ },
+ {
+  "id": "hojalateria-mauricio-zuniga-alvarado",
+  "nombre": "Hojalateria",
+  "lider": "Mauricio Zuñiga Alvarado",
+  "miembros": [
+   "Axel Duarte Ramirez",
+   "Danny Zuñiga Alvarado",
+   "Jeffrey Alberto Zuñiga Alvarado",
+   "Manuel Solano Flores",
+   "Mauricio Zuñiga Alvarado",
+   "Scheineder Zuñiga Alvarez",
+   "Vladimir Leiva Zuñiga"
+  ]
+ },
+ {
+  "id": "infraestructura-jose-emilio-badilla-gomez",
+  "nombre": "Infraestructura",
+  "lider": "Jose Emilio Badilla Gomez",
+  "miembros": [
+   "Carlos Montano Martinez",
+   "Elisandro Trejos Arrieta",
+   "Ever Julian Urbina Diaz",
+   "Geiner Torres Mena",
+   "Jose Emilio Badilla Gomez",
+   "Oscar Gutierrez Perez",
+   "Ronald Navarro Vargas",
+   "Ronald Viquez Sanchez"
+  ]
+ },
+ {
+  "id": "infraestructura-2-jose-mauricio-masis-arrieta",
+  "nombre": "Infraestructura 2",
+  "lider": "Jose Mauricio Masis Arrieta",
+  "miembros": [
+   "David Mejia Martinez",
+   "Elvin Umaña Carrero",
+   "Francisco Castillo Gonzalez",
+   "Israel Cinco Benavidez",
+   "Jessica Cedeño Bonilla",
+   "Jesus Sandoval Castro",
+   "Jonnathan Vargas Vega",
+   "Jose Alberto Brenes Montenegro",
+   "Jose Daniel Alvarado Garro",
+   "Jose Mauricio Masis Arrieta",
+   "Luis Enrique Gomez"
+  ]
+ },
+ {
+  "id": "infraestructura-3-xavier-martin-alvarado-pereira",
+  "nombre": "Infraestructura 3",
+  "lider": "Xavier Martin Alvarado Pereira",
+  "miembros": [
+   "Carlos Bonilla Barquero",
+   "Eddy Laguna Bonilla",
+   "Elidier Ramirez Araya",
+   "Eliezer Vasquez Rios",
+   "Elmer Garcia Perez",
+   "Eric Rodriguez Gomez",
+   "Franklin Antonio Obando Sequeira",
+   "German Baldelomar Sotelo",
+   "Gustavo Pereira Trejos",
+   "Holman Montenegro Acuña",
+   "Jonathan Centeno Perez",
+   "Jorge Tellez",
+   "Jose Reynaldo Gonzalez Caceres",
+   "Kevin Alfaro Valverde",
+   "Leandrino Mora Martinez",
+   "Manuel García Noel",
+   "Marlon Garcia Lopez",
+   "Miguel Ramirez Diaz",
+   "Onniel Navarrete Suarez",
+   "Rafael Alvarez Diaz",
+   "Santos Torrez Gomez",
+   "Xavier Martin Alvarado Pereira"
+  ]
+ },
+ {
+  "id": "instalacion-muebles-bernaldo-espinoza",
+  "nombre": "Instalación Muebles",
+  "lider": "Bernaldo Espinoza",
+  "miembros": [
+   "Allan Montoya Quesada",
+   "Bernaldo Espinoza",
+   "Jesus Chaves Cortes",
+   "Jonathan Brenes Soto",
+   "Nelson Enrique Brenes Soto",
+   "Nelson Ramirez Suarez"
+  ]
+ },
+ {
+  "id": "liviano-bernardo-abarca-aguilar",
+  "nombre": "Liviano",
+  "lider": "Bernardo Abarca Aguilar",
+  "miembros": [
+   "Alan Gaitan Figueroa",
+   "Anderson Paniagua Nuñez",
+   "Anderson Torres Chaves",
+   "Bernardo Abarca Aguilar",
+   "Carlos Manuel Gutierrez Flores",
+   "Darvin Jersson Duarte Puchei",
+   "Diego Hidalgo Fallas",
+   "Dilan Calvo Navarro"
+  ]
+ },
+ {
+  "id": "losa-juan-del-rosario-martines-pozu",
+  "nombre": "Losa",
+  "lider": "Juan Del Rosario Martines Pozu",
+  "miembros": [
+   "Alberto Rojas Reyes",
+   "Edgar Alberto Gomez Mora",
+   "Juan Del Rosario Martines Pozu",
+   "Junior Pastora Meza",
+   "Norlan Martinez Perez"
+  ]
+ },
+ {
+  "id": "losa-2-justin-alfaro-valverde",
+  "nombre": "Losa 2",
+  "lider": "Justin Alfaro Valverde",
+  "miembros": [
+   "Asdrubal Ramirez Ramirez",
+   "Guillermo Delgado Meneses",
+   "Justin Alfaro Valverde",
+   "Luis Evelio Huerta Ruiz"
+  ]
+ },
+ {
+  "id": "losa-sanitaria-pablo-valderamos-montero",
+  "nombre": "Losa Sanitaria",
+  "lider": "Pablo Valderamos Montero",
+  "miembros": [
+   "Pablo Valderamos Montero"
+  ]
+ },
+ {
+  "id": "maderas-y-muebles-jose-flores",
+  "nombre": "Maderas y Muebles",
+  "lider": "Jose Flores",
+  "miembros": [
+   "Alcides Araya Abarca",
+   "Alexander Talavera Rios",
+   "Cristian Quiros Trejos",
+   "Cristopher Gomez Serrano",
+   "Debonith Mora Villalta",
+   "Eleny Montero Quesada",
+   "Elizabeth Pereira Benavides",
+   "Fernelli Brenes Navarro",
+   "Freddy Quiros Monge",
+   "Juan Ramon Silva Rivas",
+   "Pedro Sequeira Urbina"
+  ]
+ },
+ {
+  "id": "maquinaria-mathias-brenes-zuniga",
+  "nombre": "Maquinaria",
+  "lider": "Mathias Brenes Zuñiga",
+  "miembros": [
+   "Angel Miranda Bojorque",
+   "Carlos Cerdas Flores",
+   "Danny Navarro Perez",
+   "Deybis Perez Saenz",
+   "Donald Camacho Campos",
+   "Eddy Solano Gomez",
+   "Emmanuel Calderon Ureña",
+   "Erick Danilo Loría Navarro",
+   "Gabriel Brenes Alvarado",
+   "Hansel Zamora Vega",
+   "Jose Humberto Monge Segura",
+   "Jose Luis Molina Navarro",
+   "Juan Pablo Brenes Navarro",
+   "Julio Mata Solano",
+   "Katherine Fallas Jimenez",
+   "Luis Antonio Paz Suazo",
+   "Michael Brenes Navarro",
+   "Ricardo Fonseca Brenes",
+   "Steven Chacon Alvarez",
+   "Victor Alfonso Romero Hidalgo",
+   "Wilfredo Diaz Perez"
+  ]
+ },
+ {
+  "id": "pintura-yoanni-bonilla-torres",
+  "nombre": "Pintura",
+  "lider": "Yoanni Bonilla Torres",
+  "miembros": [
+   "Alejandro Moya Calderon",
+   "Allan Carrillo Perez",
+   "Andy Ramirez Chacon",
+   "Domingo Molina Navarro",
+   "Jessica Davila",
+   "Jorge David Perez Badilla",
+   "Julio Antonio Muñoz Gaitan",
+   "Junior Enrique Murray Myrie",
+   "Manuel Zarate Quesada",
+   "Nelson Daniel Cordero Aguilar",
+   "Oscar Luis Fonseca Morales",
+   "Ricardo Alonso Leiton Fernandez",
+   "Walter Javier Romero Ortega",
+   "Yoanni Bonilla Torres"
+  ]
+ },
+ {
+  "id": "prefabricados-jose-flores",
+  "nombre": "Prefabricados",
+  "lider": "Jose Flores",
+  "miembros": [
+   "Bryan Jimenez Quiros",
+   "Gerardo Aguilar Sanchez",
+   "Victor Gonzalez Cordero"
+  ]
+ },
+ {
+  "id": "reparaciones-marcos-vinicio-quiros-barquero",
+  "nombre": "Reparaciones",
+  "lider": "Marcos Vinicio Quiros Barquero",
+  "miembros": [
+   "Johel Aguilar Gazo",
+   "Marcos Vinicio Quiros Barquero"
+  ]
+ },
+ {
+  "id": "repello-rigoberto-arce-cardenas",
+  "nombre": "Repello",
+  "lider": "Rigoberto Arce Cardenas",
+  "miembros": [
+   "Agustin Canales Perez",
+   "Aladino Miranda Solano",
+   "Anthony Diaz Mora",
+   "Carlos Alberto Castillo Rojas",
+   "Daniel Olivar Cardena",
+   "Danilo Ramirez Ramirez",
+   "Denis Gorgona Gonzalez",
+   "Esteban Hidalgo Solano",
+   "Francis Gonzalez Delgado",
+   "Francisco Castillo Aguinaga",
+   "Geyner Miranda Marin",
+   "Jairo Sanchez Lacayo",
+   "Juan Carlos Chaves Ureña",
+   "Maycol Brenes Solano",
+   "Norlan Contreras Ortiz",
+   "Ramon Nonnato Estrada Perez",
+   "Rigoberto Arce Cardenas",
+   "Rolando Saenz Mora",
+   "Santos Rivera Vallejos",
+   "Victor Varela Hernandez"
+  ]
+ },
+ {
+  "id": "soldadura-fabrica-felix-arroliga-munoz",
+  "nombre": "Soldadura Fabrica",
+  "lider": "Felix Arroliga Muñoz",
+  "miembros": [
+   "Elieiner Vindas Fuentes",
+   "Felix Arroliga Muñoz",
+   "Jose Ramon Ortiz Mendoza",
+   "Martin Gago Oporta",
+   "Maurin Valerin Gomez"
+  ]
+ },
+ {
+  "id": "soldadura-y-techos-pedro-pablo-rizo-diaz",
+  "nombre": "Soldadura y Techos",
+  "lider": "Pedro Pablo Rizo Diaz",
+  "miembros": [
+   "Andres Rojas Siles",
+   "Andrey Irola Solano",
+   "Angel Marin Lopez",
+   "Angel Narvaez Lopez",
+   "Anthonny Montenegro Granados",
+   "Cesar Lopez Selva",
+   "Gerardo Abarca Montenegro",
+   "Gerardo Blandon Ortiz",
+   "Helyin Lopez",
+   "Jefry Araya Solano",
+   "Jesus Antonio Gomez Viquez",
+   "Johns Carballo Castillo",
+   "Jose Daniel Calvo Artavia",
+   "Justin Mora Vega",
+   "Luis Angel Marin Lopez",
+   "Oscar Danilo Gongora Perez",
+   "Pedro Pablo Rizo Diaz",
+   "William Joel Melendez Guzman"
+  ]
+ }
+]
