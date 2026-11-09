@@ -32,13 +32,15 @@ Todo proyecto de código vive aquí, cada uno en su carpeta: `root/<proyecto>/` 
 
 ## Sistema de diseño
 
+AD Visual (Figma `gAMndOnwTBgC6nZnjY6bgT`, páginas 493:45 y Graveyard 5047:11726): Inter, tooltips en Bitter itálica, listas con líneas finas, versión oscura en `cuadrillas/index.html`.
+
 Losa Flotante. Tokens: `control-usuarios/design-system/DESIGN.md`, `control-usuarios/app/globals.css`; componentes en `adelante-design-system/react/`. Stack de prototipos: Next.js + Tailwind v4 + motion + Phosphor.
 
 ## Proyectos
 
 | Carpeta | Qué es | Vercel |
 |---|---|---|
-| cuadrillas | Tablero de cuadrillas por maestro de obra | cuadrillas |
+| cuadrillas | Tablero de cuadrillas por maestro de obra (HTML estático) | cuadrillas (Framework: Other) |
 | control-usuarios | Prototipo control de usuarios / pedidos | control-usuarios |
 | kpi | KPI Adelante | — |
 | antomap | Antomap | — |

@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Cuadrillas por maestro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bitter:ital,wght@1,400&display=swap">
+<style>
+/* AD Visual: icon rail + white list panels with hairline rows; folders expand to indented children. */
+:root{
+  --canvas:#FFFFFF; --rail:#FFFFFF; --rail-line:#F2F2F2;
+  --panel:#FFFFFF; --panel-libre:#F7F7F7; --raised:#FFFFFF;
+  --line:#E6E6E8; --line-2:#D0D3D8; --hover:#F2F2F2; --sel:#E6E6E8;
+  --fg:#000000; --fg-2:#5D636C; --fg-3:#959CA7; --fg-4:#BDBDBD;
+  --blue:#4986EB; --blue-soft:#B9D6FF; --green:#95C955; --green-ink:#88A024; --red:#EB5757; --yellow:#FFD556;
+  --t-chain:#FFD556; --t-chain-fg:#191C22; --t-serv:#B9D6FF; --t-serv-fg:#191C22; --t-infra:#D1F0DC; --t-infra-fg:#191C22;
+  --t-fab:#F9E3B5; --t-fab-fg:#191C22; --t-warn:#FFC7C1; --t-warn-fg:#B42318; --chip:#E6E6E8; --chip-fg:#5D636C;
+  --badge:#191C22; --badge-fg:#FFFFFF; --tip:#191C22; --tip-fg:#FFFFFF;
+  --softee:0 0 8px rgba(0,0,0,.04),0 0 16px rgba(0,0,0,.04);
+  --mid:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.08);
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif; --note:"Bitter",Georgia,serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --canvas:#0F1114; --rail:#15171B; --rail-line:#1F2227;
+  --panel:#191C22; --panel-libre:#14161A; --raised:#282C33;
+  --line:#282C33; --line-2:#3A404A; --hover:#22262D; --sel:#2E333B;
+  --fg:#F7F7F7; --fg-2:#B4BAC4; --fg-3:#959CA7; --fg-4:#5D636C;
+  --blue:#5B93EE; --blue-soft:#24406B; --green:#95C955; --green-ink:#B5DE7E; --red:#EF6B6B; --yellow:#FFD556;
+  --t-chain:#4D4220; --t-chain-fg:#FFD556; --t-serv:#24406B; --t-serv-fg:#B9D6FF; --t-infra:#1E3B2A; --t-infra-fg:#A6E3BC;
+  --t-fab:#4A3B1C; --t-fab-fg:#F9E3B5; --t-warn:#4D2522; --t-warn-fg:#FFB4AB; --chip:#282C33; --chip-fg:#B4BAC4;
+  --badge:#F7F7F7; --badge-fg:#191C22; --tip:#48505F; --tip-fg:#FFFFFF;
+  --softee:0 0 0 1px #22262D; --mid:0 8px 24px rgba(0,0,0,.5),0 2px 4px rgba(0,0,0,.4);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --canvas:#0F1114; --rail:#15171B; --rail-line:#1F2227;
+  --panel:#191C22; --panel-libre:#14161A; --raised:#282C33;
+  --line:#282C33; --line-2:#3A404A; --hover:#22262D; --sel:#2E333B;
+  --fg:#F7F7F7; --fg-2:#B4BAC4; --fg-3:#959CA7; --fg-4:#5D636C;
+  --blue:#5B93EE; --blue-soft:#24406B; --green:#95C955; --green-ink:#B5DE7E; --red:#EF6B6B; --yellow:#FFD556;
+  --t-chain:#4D4220; --t-chain-fg:#FFD556; --t-serv:#24406B; --t-serv-fg:#B9D6FF; --t-infra:#1E3B2A; --t-infra-fg:#A6E3BC;
+  --t-fab:#4A3B1C; --t-fab-fg:#F9E3B5; --t-warn:#4D2522; --t-warn-fg:#FFB4AB; --chip:#282C33; --chip-fg:#B4BAC4;
+  --badge:#F7F7F7; --badge-fg:#191C22; --tip:#48505F; --tip-fg:#FFFFFF;
+  --softee:0 0 0 1px #22262D; --mid:0 8px 24px rgba(0,0,0,.5),0 2px 4px rgba(0,0,0,.4);
+  color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--canvas);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:20px;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
+svg{display:block}
+
+.app{display:flex;min-height:100%}
+.rail{position:sticky;top:0;height:100vh;width:80px;flex-shrink:0;background:var(--rail);border-right:1px solid var(--rail-line);display:flex;flex-direction:column;align-items:center;gap:20px;padding:24px 0 calc(24px + env(safe-area-inset-bottom,0px));padding-left:env(safe-area-inset-left,0px)}
+.logo{color:var(--green);margin-bottom:28px}
+.rail-btn{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:var(--fg-4)}
+.rail-btn:hover{color:var(--fg-2);background:var(--hover)}
+.rail-btn.on{background:var(--green);color:#4E6A12}
+.rail .sp{flex:1}
+
+main{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px;padding-block:28px 96px;padding-left:max(16px,24px);padding-right:max(16px,env(safe-area-inset-right,0px),24px)}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.top .ttl{display:flex;flex-direction:column;gap:6px;margin-right:auto}
+.eyebrow{font-size:12px;line-height:12px;font-weight:500;color:var(--fg-3)}
+h1{margin:0;font-size:28px;line-height:32px;font-weight:600;letter-spacing:-.2px}
+.search{position:relative;width:min(320px,100%);height:36px;border:1px solid var(--line-2);border-radius:6px;background:var(--panel);display:flex;align-items:center}
+.search input{flex:1;min-width:0;height:100%;border:0;background:none;color:var(--fg);font:inherit;font-size:16px;padding:0 8px}
+.search input::placeholder{color:var(--fg-4)}
+.search input:focus{outline:none}
+.search:focus-within{border-color:var(--blue)}
+.lens{width:28px;height:28px;margin-right:3px;border-radius:5px;background:var(--blue);color:#fff;display:grid;place-items:center;flex-shrink:0}
+.kbd{display:inline-flex;align-items:center;height:14px;padding:0 3px;border:1px solid var(--line-2);border-radius:3px;font-size:8px;line-height:8px;font-weight:600;letter-spacing:.2px;color:var(--fg-3);text-transform:uppercase;white-space:nowrap}
+.search .kbd{margin-right:6px}
+.stats{display:flex;gap:20px;align-items:center}
+.stat{display:flex;flex-direction:column;gap:4px}
+.stat span{font-size:12px;line-height:12px;font-weight:500;color:var(--fg-3)}
+.stat b{font-size:18px;line-height:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.btn{height:36px;padding:0 16px;border-radius:6px;font-size:14px;font-weight:600;background:var(--chip);color:var(--fg)}
+.btn:hover{filter:brightness(.96)}
+.btn.danger{background:var(--red);color:#fff}
+
+.board-wrap{overflow-x:auto;margin-inline:-16px;padding:4px 16px 12px;scroll-snap-type:x proximity}
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(300px,86vw);gap:16px;align-items:start}
+@media (min-width:1180px){.board-wrap{overflow:visible;margin:0;padding:4px 0 0}.board{grid-auto-flow:row;grid-template-columns:repeat(5,minmax(0,1fr))}}
+.col{scroll-snap-align:start;min-width:0;background:var(--panel);border-radius:24px;box-shadow:var(--softee);padding:20px 16px 16px;display:flex;flex-direction:column;gap:12px;min-height:240px;transition:box-shadow .15s}
+.col.libre{background:var(--panel-libre);box-shadow:none;border:1px dashed var(--line-2)}
+.col-h{display:flex;align-items:center;gap:10px;padding:0 4px}
+.col-h h2{margin:0;font-size:20px;line-height:20px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.col-h .sub{font-size:12px;line-height:12px;font-weight:500;color:var(--fg-3);font-variant-numeric:tabular-nums;margin-left:auto;white-space:nowrap}
+.badge{min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--badge);color:var(--badge-fg);font-size:12px;font-weight:600;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.badge.zero{background:var(--line);color:var(--fg-3)}
+.badge.pop{animation:pop .32s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(.7)}to{transform:scale(1)}}
+.list{display:flex;flex-direction:column;flex:1;min-height:80px;border-top:1px solid var(--line);transition:gap .2s}
+.board.mdrag .list{gap:14px;padding-top:6px}
+.empty{flex:1;min-height:96px;display:grid;place-items:center;color:var(--fg-4);font-size:12px;font-weight:500;text-align:center;padding:16px}
+
+/* cuadrilla = folder row */
+.cq{border-bottom:1px solid var(--line);transition:opacity .15s,background .15s,box-shadow .15s}
+.board.mdrag .cq{border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.cq.dim{opacity:.35}
+.cq.lifting{opacity:.3}
+.cq.target{box-shadow:0 0 0 2px var(--blue);border-color:transparent!important;background:var(--panel)}
+.cq-h{display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 4px;border-radius:8px;cursor:pointer;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.cq-h:hover{background:var(--hover)}
+.fold{color:var(--fg-4);flex-shrink:0}
+.cq.open .fold{color:var(--blue-soft)}
+.cq-t{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:center;column-gap:8px;row-gap:4px}
+.cq-t b{font-size:16px;line-height:20px;font-weight:600;overflow-wrap:break-word;min-width:0}
+.cq-t .n{font-size:14px;font-weight:500;color:var(--fg-3);font-variant-numeric:tabular-nums}
+.cq-t input{font:inherit;font-weight:600;font-size:16px;color:var(--fg);background:var(--panel);border:1px solid var(--blue);border-radius:4px;padding:1px 4px;width:100%;min-width:0}
+.tags{display:flex;gap:4px}
+.tag{height:16px;min-width:16px;padding:0 4px;border-radius:3px;font-size:10px;line-height:16px;font-weight:600;text-align:center;font-variant-numeric:tabular-nums;text-transform:uppercase;letter-spacing:.2px}
+.tag.chain{background:var(--t-chain);color:var(--t-chain-fg)}
+.tag.serv{background:var(--t-serv);color:var(--t-serv-fg)}
+.tag.infra{background:var(--t-infra);color:var(--t-infra-fg)}
+.tag.fab{background:var(--t-fab);color:var(--t-fab-fg)}
+.tag.warn{background:var(--t-warn);color:var(--t-warn-fg)}
+.tag.new{background:var(--blue);color:#fff}
+.hdl{width:24px;height:24px;display:grid;place-items:center;color:var(--fg-4);flex-shrink:0;cursor:grab}
+.cq-h:hover .hdl{color:var(--fg-2)}
+.cq-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s cubic-bezier(.2,.8,.2,1)}
+.cq.open .cq-b{grid-template-rows:1fr}
+.cq-b>div{overflow:hidden;min-height:0}
+.rows{padding:0 0 10px 10px;display:flex;flex-direction:column}
+.r{display:flex;align-items:center;gap:8px;min-height:34px;padding:7px 6px;border-radius:8px;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.r .nm{flex:1;min-width:0;font-size:14px;line-height:18px;overflow-wrap:break-word}
+.r .nm b{font-weight:500;color:var(--fg)}
+.r .nm span{color:var(--fg-3)}
+.r .nm mark{background:var(--blue-soft);color:inherit;border-radius:2px}
+.lead{border-bottom:1px solid var(--line);border-radius:0;margin-bottom:4px;padding-bottom:2px}
+.role{font-size:8px;line-height:8px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;padding:3px 4px;border-radius:3px;background:var(--green);color:#2E4207;flex-shrink:0}
+.m{cursor:grab}
+.m:hover{background:var(--hover)}
+.m.sel{background:var(--sel)}
+.m.lifting-row{opacity:.35}
+.ck,.st{width:22px;height:22px;display:grid;place-items:center;flex-shrink:0;border-radius:50%;color:var(--fg-4);opacity:0;transition:opacity .12s,color .12s}
+.m:hover .ck,.m:hover .st,.m.sel .ck,.m.two .st,.board.selecting .ck{opacity:1}
+.ck .ring{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center;transition:background .12s,border-color .12s}
+.ck:hover .ring{border-color:var(--blue)}
+.m.sel .ck .ring{background:var(--blue);border-color:var(--blue);color:#fff}
+.ck .ring svg{opacity:0}
+.m.sel .ck .ring svg{opacity:1}
+.st:hover{color:var(--yellow)}
+.m.two .st{color:var(--yellow)}
+.m.two .st svg path{fill:currentColor}
+.st svg path{fill:none;stroke:currentColor;stroke-width:16;stroke-linejoin:round}
+.none{font-size:12px;color:var(--fg-4);padding:6px}
+@media (hover:none){.ck,.st{opacity:1}}
+
+/* placeholders */
+.ph{border-radius:10px;border:1.5px dashed var(--blue);background:color-mix(in srgb,var(--blue-soft) 35%,transparent);display:grid;place-items:center;color:var(--blue);font-size:12px;font-weight:600;overflow:hidden;height:0;opacity:0;transition:height .22s cubic-bezier(.2,.8,.2,1),opacity .18s;flex-shrink:0}
+.ph.grow{height:56px;opacity:1}
+.ph.slot{border-color:var(--line-2);background:var(--hover);color:var(--fg-3)}
+
+/* ghost */
+#ghost{position:fixed;left:0;top:0;z-index:50;pointer-events:none;will-change:transform}
+.g-card{background:var(--raised);border-radius:10px;box-shadow:var(--mid);padding:10px 14px;min-width:220px;display:flex;align-items:center;gap:10px;font-weight:600}
+.g-stack{position:relative}
+.g-chip{background:var(--raised);border-radius:8px;box-shadow:var(--mid);padding:8px 12px;font-size:14px;white-space:nowrap;display:flex;align-items:center;gap:8px;min-width:200px}
+.g-chip b{font-weight:500}.g-chip span{color:var(--fg-3)}
+.g-under{position:absolute;inset:0;background:var(--raised);border-radius:8px;box-shadow:var(--mid)}
+.g-count{position:absolute;top:-8px;right:-8px;min-width:22px;height:22px;border-radius:11px;background:var(--blue);color:#fff;font-size:12px;font-weight:600;display:grid;place-items:center;padding:0 6px;box-shadow:var(--mid)}
+.dragging,.dragging *{cursor:grabbing!important}
+
+/* tooltip */
+#tip{position:fixed;z-index:60;max-width:240px;background:var(--tip);color:var(--tip-fg);font-family:var(--note);font-style:italic;font-size:15px;line-height:19px;padding:10px 14px;border-radius:10px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .14s,transform .14s;box-shadow:var(--mid)}
+#tip.on{opacity:1;transform:none}
+
+/* selection bar + toast */
+.bar{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,24px);opacity:0;pointer-events:none;z-index:40;display:flex;align-items:center;gap:12px;background:var(--tip);color:var(--tip-fg);border-radius:12px;padding:8px 8px 8px 16px;box-shadow:var(--mid);transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .18s;font-size:14px;white-space:nowrap;max-width:calc(100vw - 32px)}
+.bar.on{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.bar .k{color:var(--fg-4)}
+.bar .kbd{border-color:#5D636C;color:#BDBDBD}
+.bar button{height:28px;padding:0 10px;border-radius:6px;background:rgba(255,255,255,.12);font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.bar button:hover{background:rgba(255,255,255,.2)}
+#toast{bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;font-weight:500;color:var(--fg-3);align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+
+@media (max-width:720px){
+  .app{flex-direction:column}
+  .rail{position:static;height:auto;width:auto;flex-direction:row;padding:12px max(16px,env(safe-area-inset-left,0px));border-right:0;border-bottom:1px solid var(--rail-line)}
+  .logo{margin:0 8px 0 0}.rail-btn{width:40px;height:40px}
+  main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .search{width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <nav class="rail" aria-label="Navegación">
+    <span class="logo" aria-hidden="true"><svg width="40" height="22" viewBox="0 0 40 22" fill="currentColor"><path d="M0 0h10l9 22H9z"/><path d="M12 0h10l9 22H21z" opacity=".75"/><path d="M27 10h13l-4 12H31z" opacity=".55"/></svg></span>
+    <button class="rail-btn on" data-tip="Cuadrillas por maestro de obra" aria-current="page"><svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M104 40H56a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16Zm96 0h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16Zm-96 96H56a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16v-48a16 16 0 0 0-16-16Zm96 0h-48a16 16 0 0 0-16 16v48a16 16 0 0 0 16 16h48a16 16 0 0 0 16-16v-48a16 16 0 0 0-16-16Z"/></svg></button>
+    <span class="sp"></span>
+    <button class="rail-btn" id="theme" data-tip="Cambiar entre modo claro y oscuro" aria-label="Cambiar tema"><svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24Zm8 175.48V56.52a72 72 0 0 1 0 142.96Z"/></svg></button>
+  </nav>
+
+  <main>
+    <header class="top">
+      <div class="ttl"><span class="eyebrow">Ciudad del Valle · Campo</span><h1>Cuadrillas por maestro</h1></div>
+      <label class="search" data-tip="Busca por cuadrilla, líder o integrante">
+        <input id="q" type="search" placeholder="Buscar equipo o persona" autocomplete="off" aria-label="Buscar equipo o persona">
+        <span class="kbd" id="qk">CTRL K</span>
+        <span class="lens" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor"><path d="M232.49 215.51 185 168a92.12 92.12 0 1 0-17 17l47.53 47.54a12 12 0 0 0 17-17ZM44 112a68 68 0 1 1 68 68 68.07 68.07 0 0 1-68-68Z"/></svg></span>
+      </label>
+      <div class="stats">
+        <div class="stat"><span>Asignadas</span><b id="asig">0/0</b></div>
+        <div class="stat"><span>Personas</span><b id="tot">0</b></div>
+      </div>
+      <button class="btn" id="reset" type="button" data-tip="Devuelve todo a la planilla original">Reiniciar</button>
+    </header>
+
+    <div class="legend" aria-label="Leyenda de etiquetas">
+      <span><i class="tag chain">4</i>Estación de la cadena de vivienda</span>
+      <span><i class="tag serv">SERV</i>Servicio horizontal</span>
+      <span><i class="tag infra">INFRA</i>Infraestructura</span>
+      <span><i class="tag fab">FAB</i>Fábrica y bodega</span>
+      <span><i class="tag warn">20+</i>Cerca del techo de ~20</span>
+    </div>
+
+    <div class="board-wrap" id="wrap"><div class="board" id="board"></div></div>
+  </main>
+</div>
+
+<div id="ghost"></div>
+<div id="tip" role="tooltip"></div>
+<div class="bar" id="selbar" aria-live="polite"></div>
+<div class="bar" id="toast" aria-live="polite"></div>
+
+<script>
+const SEED = [{"id": "aceros-franklin-ballestero-weeb", "nombre": "Aceros", "lider": "Franklin Ballestero Weeb", "miembros": ["Andersson Reyes Vilchez", "Franklin Ballestero Weeb", "German Olivar Cardenas", "Henry Madrigal Torres", "Luis Orlando Fernandez Varela", "Moises Barrera Hernandez", "Rodrigo Sanchez Solano"]}, {"id": "apoyo-yoanni-bonilla-torres", "nombre": "Apoyo", "lider": "Yoanni Bonilla Torres", "miembros": ["Freddy Martinez Vega", "Heiner Zarate Perez", "Jesus Romero Flores", "Jose Alberto Pereira Trejos"]}, {"id": "bodega-alondra-arias", "nombre": "Bodega", "lider": "Alondra Arias", "miembros": ["Marvin Alvarado Obando"]}, {"id": "bodega-jerson-montero", "nombre": "Bodega", "lider": "Jerson Montero", "miembros": ["Carlos Hidalgo Brenes", "Carlos Ramirez Chacon", "David Garro Araya", "Johanne Abarca Solano", "Jose Ramon Quiros Robles", "Luis Fernando Jimenez Perez", "Mario Poveda Mora", "Mauricio Cruz Bermudez", "Pedro Bravo Jiron", "Samir Campos Nicaragua"]}, {"id": "bodega-jose-flores", "nombre": "Bodega", "lider": "Jose Flores", "miembros": ["Bryan Arauz Montero", "Jeison Robles Valverde"]}, {"id": "complementarias-franklin-gregorio-gonzalez-solis", "nombre": "Complementarias", "lider": "Franklin Gregorio Gonzalez Solis", "miembros": ["Armel Garcia Reyes", "Elmer Alejandro Quintero Perez", "Fernando Martinez Gutierrez", "Franklin Gregorio Gonzalez Solis", "Gerardo Ramirez Portuguez", "Hivis Quintero Mata", "Marvin Alvarado Obregon", "Ricardo Mercado Guzman", "Roger Ortega Sanchez", "Ronald Arrieta Alvarez", "Tomas Alberto Baez", "Victor Aguilera Valderramos"]}, {"id": "complementarias-2-wilbert-manuel-cerda-barrera", "nombre": "Complementarias 2", "lider": "Wilbert Manuel Cerda Barrera", "miembros": ["Adalberto Vasquez Lanuza", "Carlos Alberto Ramirez Ramirez", "Carlos Solano Romero", "Elyen Melendez Valle", "Francisco Rodriguez Hurtado", "German Eleazar Montenegro Castro", "Jose Ronaldo Cruz Luquez", "Moises Andrades Salinas", "Norlando De la Cruz Ramirez Espinoza", "Wilbert Manuel Cerda Barrera", "Yordis Solis Mendoza"]}, {"id": "electricos-jorge-martinez-granados", "nombre": "Electricos", "lider": "Jorge Martinez Granados", "miembros": ["Alonso Mora Goñi", "Anderson Trejos Acuña", "Brawnie Perez Hernandez", "Edrian Arce Machado", "Esteban Martinez Valderramos", "Frederick Roman Arce", "Javier Escobar Salmeron", "Jose Carlos Bonilla Siles", "Jose Luis Sanabria Flores", "Jose Roberto Obando Cordero", "Juan Carlos Cubillo Perez", "Justin Jimenez Gazo", "Saymon Rodriguez Gomez"]}, {"id": "enchape-olman-maroto-chacon", "nombre": "Enchape", "lider": "Olman Maroto Chacon", "miembros": ["Dario Viquez Madrigal", "Enrique Brenes Moya", "Jordan Castillo Rodriguez", "Olman Maroto Chacon", "Pablo Andres Guillen Garita", "Sebastian Bonilla Gonzalez", "Victor Julio Hernandez Abarca", "Yohan Calderon Brenes"]}, {"id": "fabricacion-muebles-rigoberto-arroyo-ramirez", "nombre": "Fabricación Muebles", "lider": "Rigoberto Arroyo Ramirez", "miembros": ["Dahiana Chaves Sanchez", "Edwin Masis Vargas", "Errol Ramirez Trejos", "Jose Pablo Molina Amador", "Juan Pablo Solano Flores", "Rigoberto Arroyo Ramirez"]}, {"id": "fontaneria-osvaldo-rizo-diaz", "nombre": "Fontaneria", "lider": "Osvaldo Rizo Diaz", "miembros": ["Abelardo Chacon Acuña", "Cesar Enrique Romero Andino", "Cipriano Pastora Gonzalez", "Ever Blandon Lugo", "Gilbert Ramirez Rojas", "Jorge Guadamuz Valle", "Jose Fabian Alvarado Gomez", "Maynor Perez Andrade", "Nicolas Parrales", "Osvaldo Rizo Diaz", "William Missael Ruiz Ruiz"]}, {"id": "formaleta-josue-alonso-zamora-vega", "nombre": "Formaleta", "lider": "Josue Alonso Zamora Vega", "miembros": ["Alex Sequeira Lopez", "Brandon Alvarado Obando", "Brandon Marenco Rodriguez", "Cristhian Mejia Lopez", "Cristian Perez Mora", "Gerardo Galeano", "Isaias Pastora Pastora", "Isidro Fernandez Maliaños", "Jairo Ruiz", "Jesus Gomez Villagra", "Jose Antonio Mairena", "Josue Alonso Zamora Vega", "José Ricardo Vives Mata", "Kendall Centeno Leiva", "Lester Mena Carrillo", "Luis Anibal Barrera Lanuza", "Manfred Zamora Ureña", "Mariano Arauz Hernandez", "Orlando Fernandez Gutierrez", "Roger Obregon Meza", "Teodulo Blandon Gutierrez", "Yordan Gutierrez Ramirez"]}, {"id": "hojalateria-mauricio-zuniga-alvarado", "nombre": "Hojalateria", "lider": "Mauricio Zuñiga Alvarado", "miembros": ["Axel Duarte Ramirez", "Danny Zuñiga Alvarado", "Jeffrey Alberto Zuñiga Alvarado", "Manuel Solano Flores", "Mauricio Zuñiga Alvarado", "Scheineder Zuñiga Alvarez", "Vladimir Leiva Zuñiga"]}, {"id": "infraestructura-jose-emilio-badilla-gomez", "nombre": "Infraestructura", "lider": "Jose Emilio Badilla Gomez", "miembros": ["Carlos Montano Martinez", "Elisandro Trejos Arrieta", "Ever Julian Urbina Diaz", "Geiner Torres Mena", "Jose Emilio Badilla Gomez", "Oscar Gutierrez Perez", "Ronald Navarro Vargas", "Ronald Viquez Sanchez"]}, {"id": "infraestructura-2-jose-mauricio-masis-arrieta", "nombre": "Infraestructura 2", "lider": "Jose Mauricio Masis Arrieta", "miembros": ["David Mejia Martinez", "Elvin Umaña Carrero", "Francisco Castillo Gonzalez", "Israel Cinco Benavidez", "Jessica Cedeño Bonilla", "Jesus Sandoval Castro", "Jonnathan Vargas Vega", "Jose Alberto Brenes Montenegro", "Jose Daniel Alvarado Garro", "Jose Mauricio Masis Arrieta", "Luis Enrique Gomez"]}, {"id": "infraestructura-3-xavier-martin-alvarado-pereira", "nombre": "Infraestructura 3", "lider": "Xavier Martin Alvarado Pereira", "miembros": ["Carlos Bonilla Barquero", "Eddy Laguna Bonilla", "Elidier Ramirez Araya", "Eliezer Vasquez Rios", "Elmer Garcia Perez", "Eric Rodriguez Gomez", "Franklin Antonio Obando Sequeira", "German Baldelomar Sotelo", "Gustavo Pereira Trejos", "Holman Montenegro Acuña", "Jonathan Centeno Perez", "Jorge Tellez", "Jose Reynaldo Gonzalez Caceres", "Kevin Alfaro Valverde", "Leandrino Mora Martinez", "Manuel García Noel", "Marlon Garcia Lopez", "Miguel Ramirez Diaz", "Onniel Navarrete Suarez", "Rafael Alvarez Diaz", "Santos Torrez Gomez", "Xavier Martin Alvarado Pereira"]}, {"id": "instalacion-muebles-bernaldo-espinoza", "nombre": "Instalación Muebles", "lider": "Bernaldo Espinoza", "miembros": ["Allan Montoya Quesada", "Bernaldo Espinoza", "Jesus Chaves Cortes", "Jonathan Brenes Soto", "Nelson Enrique Brenes Soto", "Nelson Ramirez Suarez"]}, {"id": "liviano-bernardo-abarca-aguilar", "nombre": "Liviano", "lider": "Bernardo Abarca Aguilar", "miembros": ["Alan Gaitan Figueroa", "Anderson Paniagua Nuñez", "Anderson Torres Chaves", "Bernardo Abarca Aguilar", "Carlos Manuel Gutierrez Flores", "Darvin Jersson Duarte Puchei", "Diego Hidalgo Fallas", "Dilan Calvo Navarro"]}, {"id": "losa-juan-del-rosario-martines-pozu", "nombre": "Losa", "lider": "Juan Del Rosario Martines Pozu", "miembros": ["Alberto Rojas Reyes", "Edgar Alberto Gomez Mora", "Juan Del Rosario Martines Pozu", "Junior Pastora Meza", "Norlan Martinez Perez"]}, {"id": "losa-2-justin-alfaro-valverde", "nombre": "Losa 2", "lider": "Justin Alfaro Valverde", "miembros": ["Asdrubal Ramirez Ramirez", "Guillermo Delgado Meneses", "Justin Alfaro Valverde", "Luis Evelio Huerta Ruiz"]}, {"id": "losa-sanitaria-pablo-valderamos-montero", "nombre": "Losa Sanitaria", "lider": "Pablo Valderamos Montero", "miembros": ["Pablo Valderamos Montero"]}, {"id": "maderas-y-muebles-jose-flores", "nombre": "Maderas y Muebles", "lider": "Jose Flores", "miembros": ["Alcides Araya Abarca", "Alexander Talavera Rios", "Cristian Quiros Trejos", "Cristopher Gomez Serrano", "Debonith Mora Villalta", "Eleny Montero Quesada", "Elizabeth Pereira Benavides", "Fernelli Brenes Navarro", "Freddy Quiros Monge", "Juan Ramon Silva Rivas", "Pedro Sequeira Urbina"]}, {"id": "maquinaria-mathias-brenes-zuniga", "nombre": "Maquinaria", "lider": "Mathias Brenes Zuñiga", "miembros": ["Angel Miranda Bojorque", "Carlos Cerdas Flores", "Danny Navarro Perez", "Deybis Perez Saenz", "Donald Camacho Campos", "Eddy Solano Gomez", "Emmanuel Calderon Ureña", "Erick Danilo Loría Navarro", "Gabriel Brenes Alvarado", "Hansel Zamora Vega", "Jose Humberto Monge Segura", "Jose Luis Molina Navarro", "Juan Pablo Brenes Navarro", "Julio Mata Solano", "Katherine Fallas Jimenez", "Luis Antonio Paz Suazo", "Michael Brenes Navarro", "Ricardo Fonseca Brenes", "Steven Chacon Alvarez", "Victor Alfonso Romero Hidalgo", "Wilfredo Diaz Perez"]}, {"id": "pintura-yoanni-bonilla-torres", "nombre": "Pintura", "lider": "Yoanni Bonilla Torres", "miembros": ["Alejandro Moya Calderon", "Allan Carrillo Perez", "Andy Ramirez Chacon", "Domingo Molina Navarro", "Jessica Davila", "Jorge David Perez Badilla", "Julio Antonio Muñoz Gaitan", "Junior Enrique Murray Myrie", "Manuel Zarate Quesada", "Nelson Daniel Cordero Aguilar", "Oscar Luis Fonseca Morales", "Ricardo Alonso Leiton Fernandez", "Walter Javier Romero Ortega", "Yoanni Bonilla Torres"]}, {"id": "prefabricados-jose-flores", "nombre": "Prefabricados", "lider": "Jose Flores", "miembros": ["Bryan Jimenez Quiros", "Gerardo Aguilar Sanchez", "Victor Gonzalez Cordero"]}, {"id": "reparaciones-marcos-vinicio-quiros-barquero", "nombre": "Reparaciones", "lider": "Marcos Vinicio Quiros Barquero", "miembros": ["Johel Aguilar Gazo", "Marcos Vinicio Quiros Barquero"]}, {"id": "repello-rigoberto-arce-cardenas", "nombre": "Repello", "lider": "Rigoberto Arce Cardenas", "miembros": ["Agustin Canales Perez", "Aladino Miranda Solano", "Anthony Diaz Mora", "Carlos Alberto Castillo Rojas", "Daniel Olivar Cardena", "Danilo Ramirez Ramirez", "Denis Gorgona Gonzalez", "Esteban Hidalgo Solano", "Francis Gonzalez Delgado", "Francisco Castillo Aguinaga", "Geyner Miranda Marin", "Jairo Sanchez Lacayo", "Juan Carlos Chaves Ureña", "Maycol Brenes Solano", "Norlan Contreras Ortiz", "Ramon Nonnato Estrada Perez", "Rigoberto Arce Cardenas", "Rolando Saenz Mora", "Santos Rivera Vallejos", "Victor Varela Hernandez"]}, {"id": "soldadura-fabrica-felix-arroliga-munoz", "nombre": "Soldadura Fabrica", "lider": "Felix Arroliga Muñoz", "miembros": ["Elieiner Vindas Fuentes", "Felix Arroliga Muñoz", "Jose Ramon Ortiz Mendoza", "Martin Gago Oporta", "Maurin Valerin Gomez"]}, {"id": "soldadura-y-techos-pedro-pablo-rizo-diaz", "nombre": "Soldadura y Techos", "lider": "Pedro Pablo Rizo Diaz", "miembros": ["Andres Rojas Siles", "Andrey Irola Solano", "Angel Marin Lopez", "Angel Narvaez Lopez", "Anthonny Montenegro Granados", "Cesar Lopez Selva", "Gerardo Abarca Montenegro", "Gerardo Blandon Ortiz", "Helyin Lopez", "Jefry Araya Solano", "Jesus Antonio Gomez Viquez", "Johns Carballo Castillo", "Jose Daniel Calvo Artavia", "Justin Mora Vega", "Luis Angel Marin Lopez", "Oscar Danilo Gongora Perez", "Pedro Pablo Rizo Diaz", "William Joel Melendez Guzman"]}];
+const COLS = [["ovet","Ovet"],["gemelo","Gemelo"],["carreno","Carreño"],["joel","Joel"],["libre","Libre"]];
+const KEY = "cuadrillas-v2", THEME_KEY = "cuadrillas-theme";
+const CHAIN = {"Losa":1,"Losa 2":1,"Soldadura y Techos":2,"Aceros":3,"Formaleta":4,"Hojalateria":5,"Repello":6,"Liviano":7,"Complementarias":8,"Complementarias 2":8,"Instalación Muebles":9,"Enchape":10,"Pintura":11,"Reparaciones":12};
+const CHAIN_NAME = {1:"Losa",2:"Soldadura",3:"Aceros",4:"Formaleta",5:"Hojalatería",6:"Repello",7:"Liviano",8:"Complementarias",9:"Instalación",10:"Enchape",11:"Pintura",12:"Reparaciones"};
+const SERV = ["Fontaneria","Electricos","Losa Sanitaria"], INFRA = ["Infraestructura","Infraestructura 2","Infraestructura 3"];
+const FAB = ["Maderas y Muebles","Maquinaria","Prefabricados","Soldadura Fabrica","Fabricación Muebles","Bodega"];
+const CEIL = 20;
+
+const I = {
+  fold:'<svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor"><path d="M216 72h-84.69L104 44.69A15.86 15.86 0 0 0 92.69 40H40a16 16 0 0 0-16 16v144.62A15.4 15.4 0 0 0 39.38 216h177.51A15.13 15.13 0 0 0 232 200.89V88a16 16 0 0 0-16-16Z"/></svg>',
+  dots:'<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="12" cy="12" r="2"/></svg>',
+  minus:'<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="6.5" width="14" height="3" rx="1.5"/></svg>',
+  check:'<svg width="10" height="10" viewBox="0 0 256 256" fill="currentColor"><path d="M232.49 80.49l-128 128a12 12 0 0 1-17 0l-56-56a12 12 0 1 1 17-17L96 183 215.51 63.51a12 12 0 0 1 17 17Z"/></svg>',
+  star:'<svg width="16" height="16" viewBox="0 0 256 256"><path d="M239.18 97.26A16.38 16.38 0 0 0 224.92 86l-59-4.76-22.78-55.09a16.36 16.36 0 0 0-30.27 0L90.11 81.23 31.08 86a16.46 16.46 0 0 0-9.37 28.86l45 38.83L53 211.75a16.38 16.38 0 0 0 24.5 17.82L128 198.49l50.53 31.08A16.4 16.4 0 0 0 203 211.75l-13.76-58.07 45-38.83a16.43 16.43 0 0 0 4.94-17.59Z"/></svg>',
+  undo:'<svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor"><path d="M228 128a100 100 0 0 1-98.66 100H128a99.39 99.39 0 0 1-68.62-27.29 12 12 0 0 1 16.48-17.45 76 76 0 1 0-1.57-109c-.13.13-.25.25-.39.37L54.89 92H72a12 12 0 0 1 0 24H24a12 12 0 0 1-12-12V56a12 12 0 0 1 24 0v20.69l21.63-19.86a100 100 0 0 1 170.37 71.17Z"/></svg>'
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $ = (s, r=document) => r.querySelector(s);
+const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
+const canHover = matchMedia("(hover:hover)").matches;
+
+/* ---------- state ---------- */
+function seed(){
+  const cuads = {}, cols = {}; COLS.forEach(([k]) => cols[k] = []);
+  [...SEED].sort((a,b) => b.miembros.length - a.miembros.length).forEach(c => {
+    cuads[c.id] = {id:c.id, nombre:c.nombre, lider:c.lider, segundo:null, miembros:[...c.miembros], nuevo:false};
+    cols.libre.push(c.id);
+  });
+  return {cols, cuads};
+}
+function valid(s){
+  try{ if(!s||!s.cols||!s.cuads) return false;
+    const seen = new Set(); for(const [k] of COLS){ if(!Array.isArray(s.cols[k])) return false; for(const id of s.cols[k]){ if(!s.cuads[id]||seen.has(id)) return false; seen.add(id);} }
+    return Object.keys(s.cuads).length === seen.size; }catch(e){ return false; }
+}
+function load(){ try{ const s = JSON.parse(localStorage.getItem(KEY)); if(valid(s)) return s; }catch(e){} return seed(); }
+let S = load();
+const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
+const hist = [];
+function commit(fn, msg){
+  hist.push(JSON.stringify(S)); if(hist.length > 60) hist.shift();
+  fn(); save(); render(); if(msg) toast(msg, true);
+}
+function undo(){
+  if(!hist.length) return; S = JSON.parse(hist.pop()); sel.clear(); save(); render(); toast("Cambio deshecho", false);
+}
+
+const open = new Set(), sel = new Set();
+let query = "", renaming = null;
+const ownerOf = name => { for(const id in S.cuads) if(S.cuads[id].miembros.includes(name)) return id; return null; };
+const colOf = id => COLS.find(([k]) => S.cols[k].includes(id))?.[0];
+
+/* ---------- render ---------- */
+function splitName(n){ const p = n.split(" "); return [p[0], p.slice(1).join(" ")]; }
+function hl(t){ if(!query) return esc(t); const i = t.toLowerCase().indexOf(query); if(i<0) return esc(t); return esc(t.slice(0,i))+"<mark>"+esc(t.slice(i,i+query.length))+"</mark>"+esc(t.slice(i+query.length)); }
+function nameHTML(n){ const [a,b] = splitName(n); return `<b>${hl(a)}</b> <span>${hl(b)}</span>`; }
+function tagsHTML(c){
+  const t = [], n = c.miembros.length;
+  if(c.nuevo) t.push(`<i class="tag new" data-tip="Cuadrilla creada aquí. Doble clic en el nombre para renombrarla.">NUEVA</i>`);
+  if(CHAIN[c.nombre]) t.push(`<i class="tag chain" data-tip="Estación ${CHAIN[c.nombre]} de 12 en la cadena de vivienda (${CHAIN_NAME[CHAIN[c.nombre]]}).">${CHAIN[c.nombre]}</i>`);
+  else if(SERV.includes(c.nombre)) t.push(`<i class="tag serv" data-tip="Servicio horizontal: entra a varias estaciones en su momento del ciclo.">SERV</i>`);
+  else if(INFRA.includes(c.nombre)) t.push(`<i class="tag infra" data-tip="Sistema paralelo de infraestructura, organizado por tarea.">INFRA</i>`);
+  else if(FAB.includes(c.nombre)) t.push(`<i class="tag fab" data-tip="Fábrica y bodega.">FAB</i>`);
+  if(n >= CEIL) t.push(`<i class="tag warn" data-tip="${n} personas. Cerca del techo social de ~20: considerá dividirla en dos cuadrillas.">20+</i>`);
+  return t.length ? `<span class="tags">${t.join("")}</span>` : "";
+}
+function matches(c){ if(!query) return true; return c.nombre.toLowerCase().includes(query) || c.lider.toLowerCase().includes(query) || c.miembros.some(m => m.toLowerCase().includes(query)); }
+function memberMatch(c){ return query && c.miembros.some(m => m.toLowerCase().includes(query)); }
+
+function cardHTML(id){
+  const c = S.cuads[id], isOpen = open.has(id) || memberMatch(c), n = c.miembros.length;
+  const otros = c.miembros.filter(m => m !== c.lider).sort((a,b) => (b===c.segundo) - (a===c.segundo));
+  const title = renaming === id
+    ? `<input id="ren" value="${esc(c.nombre)}" aria-label="Nombre de la cuadrilla" maxlength="40">`
+    : `<b data-tip="${canHover ? "Doble clic para renombrar" : ""}">${hl(c.nombre)}</b>`;
+  return `<article class="cq${isOpen?" open":""}${matches(c)?"":" dim"}" data-id="${id}">
+    <div class="cq-h" data-drag="cq" role="button" tabindex="0" aria-expanded="${isOpen}">
+      <span class="fold">${I.fold}</span>
+      <span class="cq-t">${title}<span class="n" data-tip="${n} ${n===1?"persona":"personas"} en la planilla">${n}</span>${tagsHTML(c)}</span>
+      <span class="hdl" data-tip="${isOpen?"Contraer":"Arrastrá para mover la cuadrilla"}">${isOpen?I.minus:I.dots}</span>
+    </div>
+    <div class="cq-b"><div><div class="rows">
+      <div class="r lead"><span class="role" data-tip="Líder de cuadrilla">Líder</span><span class="nm">${nameHTML(c.lider)}</span></div>
+      ${otros.length ? otros.map(m => `<div class="r m${sel.has(m)?" sel":""}${m===c.segundo?" two":""}" data-name="${esc(m)}">
+          <button class="ck" type="button" aria-label="Seleccionar ${esc(m)}" aria-pressed="${sel.has(m)}" data-tip="Seleccionar para mover en grupo"><span class="ring">${I.check}</span></button>
+          <span class="nm">${nameHTML(m)}</span>
+          <button class="st" type="button" aria-label="Segundo al mando" aria-pressed="${m===c.segundo}" data-tip="${m===c.segundo?"Segundo al mando. Clic para quitar.":"Marcar como segundo al mando"}">${I.star}</button>
+        </div>`).join("") : `<div class="none">Sin integrantes además del líder</div>`}
+    </div></div></div>
+  </article>`;
+}
+function render(){
+  const b = $("#board"); const scroll = $("#wrap").scrollLeft;
+  b.innerHTML = COLS.map(([k,nombre]) => {
+    const ids = S.cols[k], p = ids.reduce((s,id) => s + S.cuads[id].miembros.length, 0);
+    return `<section class="col${k==="libre"?" libre":""}" data-col="${k}" aria-label="Columna ${nombre}">
+      <header class="col-h"><h2>${nombre}</h2><span class="badge${ids.length?"":" zero"}" data-k="${k}" data-tip="${ids.length} ${ids.length===1?"cuadrilla":"cuadrillas"}">${ids.length}</span><span class="sub">${p} ${p===1?"persona":"personas"}</span></header>
+      <div class="list" data-col="${k}">${ids.length ? ids.map(cardHTML).join("") : `<div class="empty">Soltá aquí una cuadrilla</div>`}</div>
+    </section>`;
+  }).join("");
+  $("#wrap").scrollLeft = scroll;
+  b.classList.toggle("selecting", sel.size > 0);
+  const total = Object.keys(S.cuads).length, asig = total - S.cols.libre.length;
+  $("#asig").textContent = `${asig}/${total}`;
+  $("#tot").textContent = Object.values(S.cuads).reduce((s,c) => s + c.miembros.length, 0);
+  // pop badges whose count changed
+  document.querySelectorAll(".badge").forEach(el => { const k = el.dataset.k; if(lastCounts[k] !== undefined && lastCounts[k] !== el.textContent){ el.classList.add("pop"); } lastCounts[k] = el.textContent; });
+  selbar();
+  if(renaming){ const inp = $("#ren"); if(inp){ inp.focus(); inp.select(); } }
+}
+const lastCounts = {};
+
+/* ---------- selection bar / toast ---------- */
+function selbar(){
+  const el = $("#selbar");
+  if(!sel.size){ el.classList.remove("on"); return; }
+  el.innerHTML = `<b>${sel.size}</b> ${sel.size===1?"seleccionado":"seleccionados"} <span class="k">· arrastrá cualquiera para mover el grupo</span><button type="button" id="clr">Limpiar <span class="kbd">ESC</span></button>`;
+  el.classList.add("on");
+}
+let toastT;
+function toast(msg, canUndo){
+  const el = $("#toast");
+  el.innerHTML = `<span>${esc(msg)}</span>${canUndo?`<button type="button" id="und">${I.undo} Deshacer <span class="kbd">${isMac?"⌘Z":"CTRL Z"}</span></button>`:""}`;
+  el.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("on"), 4200);
+}
+
+/* ---------- mutations ---------- */
+function moveMembers(names, toId){
+  const to = S.cuads[toId]; let moved = 0;
+  names.forEach(n => { const from = ownerOf(n); if(!from || from === toId) return; detach(n, from); to.miembros.push(n); moved++; });
+  return moved;
+}
+function detach(n, fromId){
+  const f = S.cuads[fromId]; f.miembros = f.miembros.filter(x => x !== n);
+  if(f.segundo === n) f.segundo = null;
+  if(f.nuevo && f.lider === n) f.lider = f.miembros[0] || n;
+  if(f.nuevo && f.miembros.length === 0){ delete S.cuads[fromId]; COLS.forEach(([k]) => S.cols[k] = S.cols[k].filter(x => x !== fromId)); open.delete(fromId); }
+}
+function createWith(names, col, idx){
+  const id = "n" + Date.now().toString(36);
+  const keep = names.filter(n => ownerOf(n));
+  if(!keep.length) return null;
+  S.cuads[id] = {id, nombre:"Nueva cuadrilla", lider:keep[0], segundo:null, miembros:[], nuevo:true};
+  S.cols[col].splice(Math.min(idx, S.cols[col].length), 0, id);
+  keep.forEach(n => { const from = ownerOf(n); detach(n, from); S.cuads[id].miembros.push(n); });
+  return id;
+}
+
+/* ---------- tooltips (desktop) ---------- */
+let tipT, tipEl = null;
+const tip = $("#tip");
+function hideTip(){ clearTimeout(tipT); tip.classList.remove("on"); tipEl = null; }
+if(canHover){
+  document.addEventListener("pointerover", e => {
+    if(drag) return;
+    const t = e.target.closest("[data-tip]");
+    if(t === tipEl) return; hideTip(); if(!t || !t.dataset.tip) return;
+    tipEl = t;
+    tipT = setTimeout(() => {
+      tip.textContent = t.dataset.tip; tip.style.left = "0px"; tip.style.top = "0px"; tip.classList.add("on");
+      const r = t.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+      let x = Math.min(Math.max(8, r.left + r.width/2 - w/2), innerWidth - w - 8);
+      let y = r.top - h - 8; if(y < 8) y = r.bottom + 8;
+      tip.style.left = x + "px"; tip.style.top = y + "px";
+    }, 420);
+  });
+  document.addEventListener("pointerdown", hideTip, true);
+  addEventListener("scroll", hideTip, true);
+}
+
+/* ---------- drag engine ---------- */
+const ghost = $("#ghost");
+let drag = null, pend = null;
+const DWELL = 260;
+
+document.addEventListener("pointerdown", e => {
+  if(e.button !== 0 || renaming) return;
+  if(e.target.closest(".ck,.st,input")) return;
+  const head = e.target.closest('[data-drag="cq"]'), row = e.target.closest(".m");
+  if(!head && !row) return;
+  pend = {x:e.clientX, y:e.clientY, id:e.pointerId, touch:e.pointerType !== "mouse", armed:e.pointerType === "mouse", head, row, src:e.target};
+  if(pend.touch){ pend.timer = setTimeout(() => { if(pend){ pend.armed = true; begin(pend.x, pend.y); try{navigator.vibrate&&navigator.vibrate(8);}catch(_){} } }, 260); }
+});
+document.addEventListener("pointermove", e => {
+  if(pend && !drag){
+    const d = Math.hypot(e.clientX - pend.x, e.clientY - pend.y);
+    if(pend.touch){ if(d > 10){ clearTimeout(pend.timer); pend = null; } return; }
+    if(d > 5) begin(e.clientX, e.clientY);
+  }
+  if(drag){ e.preventDefault(); drag.tx = e.clientX; drag.ty = e.clientY; hover(e.clientX, e.clientY); }
+}, {passive:false});
+document.addEventListener("touchmove", e => { if(drag) e.preventDefault(); }, {passive:false});
+document.addEventListener("pointerup", e => {
+  if(drag){ drop(); return; }
+  if(pend){ clearTimeout(pend.timer); const p = pend; pend = null; click(p); }
+});
+document.addEventListener("pointercancel", () => { if(pend){ clearTimeout(pend.timer); pend = null; } if(drag) cancel(); });
+
+function click(p){
+  if(p.row && !p.src.closest(".ck,.st")){ toggleSel(p.row.dataset.name); return; }
+  if(p.head){ const id = p.head.closest(".cq").dataset.id; if(open.has(id)) open.delete(id); else open.add(id); render(); }
+}
+function toggleSel(n){ if(sel.has(n)) sel.delete(n); else sel.add(n); render(); }
+
+function begin(x, y){
+  const p = pend; pend = null; hideTip();
+  if(p.row){
+    const n = p.row.dataset.name;
+    const names = sel.has(n) ? [...sel] : [n];
+    drag = {type:"m", names, x, y, tx:x, ty:y, gap:null, target:null};
+    ghost.innerHTML = `<div class="g-stack">${names.length>2?'<div class="g-under" style="transform:translate(8px,8px) rotate(3deg)"></div>':""}${names.length>1?'<div class="g-under" style="transform:translate(4px,4px) rotate(1.5deg)"></div>':""}<div class="g-chip" style="position:relative">${nameHTML(names[0])}</div>${names.length>1?`<span class="g-count">${names.length}</span>`:""}</div>`;
+    names.forEach(nm => document.querySelector(`.m[data-name="${CSS.escape(nm)}"]`)?.classList.add("lifting-row"));
+    $("#board").classList.add("mdrag");
+  } else {
+    const card = p.head.closest(".cq"), id = card.dataset.id, c = S.cuads[id];
+    drag = {type:"c", id, x, y, tx:x, ty:y, slot:null};
+    ghost.innerHTML = `<div class="g-card"><span class="fold" style="color:var(--blue-soft)">${I.fold}</span>${esc(c.nombre)}<span class="n" style="color:var(--fg-3);font-weight:500">${c.miembros.length}</span></div>`;
+    card.classList.add("lifting");
+    const ph = document.createElement("div"); ph.className = "ph slot grow"; ph.style.height = "48px"; drag.slot = ph;
+    card.after(ph); card.style.display = "none"; drag.card = card;
+  }
+  document.body.classList.add("dragging");
+  drag.gx = x; drag.gy = y; drag.vx = 0;
+  requestAnimationFrame(follow);
+  hover(x, y);
+}
+function follow(){
+  if(!drag) return;
+  // ghost trails the pointer with a soft lerp, tilting with horizontal speed
+  const k = .28, nx = drag.gx + (drag.tx - drag.gx) * k, ny = drag.gy + (drag.ty - drag.gy) * k;
+  drag.vx = drag.vx * .8 + (nx - drag.gx) * .2; drag.gx = nx; drag.gy = ny;
+  const rot = Math.max(-6, Math.min(6, drag.vx * .6));
+  ghost.style.transform = `translate(${nx + 12}px, ${ny - 14}px) rotate(${rot}deg)`;
+  autoscroll(drag.tx, drag.ty);
+  requestAnimationFrame(follow);
+}
+function autoscroll(x, y){
+  const m = 60, sp = 14;
+  if(y < m) scrollBy(0, -sp); else if(y > innerHeight - m) scrollBy(0, sp);
+  const w = $("#wrap"); if(w.scrollWidth > w.clientWidth){ const r = w.getBoundingClientRect(); if(x < r.left + m) w.scrollLeft -= sp; else if(x > r.right - m) w.scrollLeft += sp; }
+}
+function listAt(x, y){
+  const el = document.elementFromPoint(x, y);
+  let col = el && el.closest(".col");
+  if(!col){ // below a short column: pick the column under the pointer's x
+    col = [...document.querySelectorAll(".col")].find(c => { const r = c.getBoundingClientRect(); return x >= r.left && x <= r.right && y >= r.top; });
+  }
+  return col ? col.querySelector(".list") : null;
+}
+function cardsIn(list){ return [...list.querySelectorAll(":scope > .cq")].filter(c => c.style.display !== "none"); }
+function indexAt(list, y){ const cs = cardsIn(list); let i = 0; for(const c of cs){ const r = c.getBoundingClientRect(); if(y > r.top + r.height/2) i++; } return i; }
+
+function hover(x, y){
+  const list = listAt(x, y);
+  if(drag.type === "c"){
+    if(!list) return;
+    const i = indexAt(list, y), cs = cardsIn(list);
+    list.querySelector(".empty")?.remove();
+    const ref = cs[i] || null;
+    if(drag.slot.parentNode !== list || drag.slot.nextElementSibling !== ref) list.insertBefore(drag.slot, ref);
+    return;
+  }
+  // member drag
+  const el = document.elementFromPoint(x, y);
+  const card = el && el.closest(".cq");
+  document.querySelectorAll(".cq.target").forEach(c => c !== card && c.classList.remove("target"));
+  if(card && !card.classList.contains("lifting")){
+    card.classList.add("target"); drag.target = card.dataset.id;
+    clearGap(); return;
+  }
+  drag.target = null;
+  if(!list){ clearGap(); return; }
+  const onPh = el && el.closest(".ph");
+  const idx = onPh ? drag.gap?.idx : indexAt(list, y);
+  const col = list.dataset.col;
+  if(drag.gap && drag.gap.col === col && drag.gap.idx === idx) return;
+  clearGap();
+  const g = {col, idx, list, el:null};
+  g.timer = setTimeout(() => {
+    const ph = document.createElement("div"); ph.className = "ph";
+    ph.textContent = `Nueva cuadrilla · ${drag.names.length} ${drag.names.length===1?"persona":"personas"}`;
+    list.querySelector(".empty")?.style.setProperty("display","none");
+    list.insertBefore(ph, cardsIn(list)[idx] || null);
+    requestAnimationFrame(() => ph.classList.add("grow"));
+    g.el = ph;
+  }, DWELL);
+  drag.gap = g;
+}
+function clearGap(){
+  const g = drag && drag.gap; if(!g) return;
+  clearTimeout(g.timer);
+  if(g.el){ const ph = g.el; ph.classList.remove("grow"); setTimeout(() => ph.remove(), 220); }
+  if(g.list) { const e = g.list.querySelector(".empty"); if(e) e.style.display = ""; }
+  drag.gap = null;
+}
+function cleanup(){
+  document.body.classList.remove("dragging"); ghost.innerHTML = ""; ghost.style.transform = "";
+  $("#board").classList.remove("mdrag");
+}
+function drop(){
+  const d = drag; drag = null; cleanup();
+  if(d.type === "c"){
+    const list = d.slot.parentNode, col = list.dataset.col;
+    const idx = [...list.children].filter(c => c.classList.contains("cq") && c.style.display !== "none" || c === d.slot).indexOf(d.slot);
+    const fromCol = colOf(d.id), fromIdx = S.cols[fromCol].indexOf(d.id);
+    if(col === fromCol && idx === fromIdx){ render(); return; }
+    const names = COLS.find(([k]) => k === col)[1];
+    commit(() => { S.cols[fromCol] = S.cols[fromCol].filter(x => x !== d.id); S.cols[col].splice(idx, 0, d.id); }, col === fromCol ? `${S.cuads[d.id].nombre} reordenada` : `${S.cuads[d.id].nombre} → ${names}`);
+    return;
+  }
+  const g = d.gap;
+  if(d.target){
+    const to = S.cuads[d.target], count = d.names.filter(n => ownerOf(n) !== d.target).length;
+    if(!count){ render(); return; }
+    commit(() => { moveMembers(d.names, d.target); d.names.forEach(n => sel.delete(n)); open.add(d.target); }, `${count} ${count===1?"persona movida":"personas movidas"} a ${to.nombre}`);
+  } else if(g && g.el){
+    clearTimeout(g.timer);
+    let nid = null;
+    commit(() => { nid = createWith(d.names, g.col, g.idx); d.names.forEach(n => sel.delete(n)); if(nid){ open.add(nid); renaming = nid; } }, `Nueva cuadrilla con ${d.names.length} ${d.names.length===1?"persona":"personas"}`);
+  } else { if(g) clearTimeout(g.timer); render(); }
+}
+function cancel(){ const d = drag; drag = null; if(d && d.gap) clearTimeout(d.gap.timer); cleanup(); render(); }
+
+/* ---------- other events ---------- */
+document.addEventListener("click", e => {
+  const ck = e.target.closest(".ck"); if(ck){ toggleSel(ck.closest(".m").dataset.name); return; }
+  const st = e.target.closest(".st");
+  if(st){ const n = st.closest(".m").dataset.name, id = ownerOf(n), c = S.cuads[id];
+    commit(() => { c.segundo = c.segundo === n ? null : n; }, c.segundo === n ? `${splitName(n)[0]} ya no es segundo al mando` : `${splitName(n)[0]} es segundo al mando en ${c.nombre}`); return; }
+  if(e.target.closest("#clr")){ sel.clear(); render(); return; }
+  if(e.target.closest("#und")){ undo(); return; }
+});
+document.addEventListener("dblclick", e => {
+  const b = e.target.closest(".cq-t b"); if(!b) return;
+  renaming = b.closest(".cq").dataset.id; render();
+});
+document.addEventListener("keydown", e => {
+  const ren = e.target.id === "ren";
+  if(ren){
+    if(e.key === "Enter"){ finishRename(e.target.value); e.preventDefault(); }
+    else if(e.key === "Escape"){ renaming = null; render(); }
+    return;
+  }
+  if(e.key === "Escape"){ if(drag) cancel(); else if(sel.size){ sel.clear(); render(); } else if(document.activeElement === $("#q")){ $("#q").value = ""; query = ""; render(); $("#q").blur(); } }
+  if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k"){ e.preventDefault(); $("#q").focus(); }
+  if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "z" && e.target.tagName !== "INPUT"){ e.preventDefault(); undo(); }
+  if((e.key === "Enter" || e.key === " ") && e.target.matches('[data-drag="cq"]')){ e.preventDefault(); const id = e.target.closest(".cq").dataset.id; open.has(id) ? open.delete(id) : open.add(id); render(); document.querySelector(`.cq[data-id="${id}"] .cq-h`)?.focus(); }
+});
+document.addEventListener("focusout", e => { if(e.target.id === "ren") finishRename(e.target.value); });
+function finishRename(v){
+  const id = renaming; if(!id) return; renaming = null;
+  const name = v.trim(); const c = S.cuads[id];
+  if(c && name && name !== c.nombre) commit(() => { c.nombre = name; }, `Renombrada a ${name}`); else render();
+}
+$("#q").addEventListener("input", e => { query = e.target.value.trim().toLowerCase(); render(); });
+$("#qk").textContent = isMac ? "⌘K" : "CTRL K";
+let armReset = 0;
+$("#reset").addEventListener("click", e => {
+  const b = e.currentTarget;
+  if(Date.now() - armReset < 3000){ commit(() => { S = seed(); sel.clear(); open.clear(); }, "Todo volvió a la planilla original"); b.classList.remove("danger"); b.textContent = "Reiniciar"; armReset = 0; return; }
+  armReset = Date.now(); b.classList.add("danger"); b.textContent = "¿Seguro? Reiniciar";
+  setTimeout(() => { if(Date.now() - armReset >= 2900){ b.classList.remove("danger"); b.textContent = "Reiniciar"; } }, 3000);
+});
+
+/* theme */
+function applyTheme(t){ if(t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme; }
+try{ applyTheme(localStorage.getItem(THEME_KEY)); }catch(e){}
+$("#theme").addEventListener("click", () => {
+  const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const t = dark ? "light" : "dark"; applyTheme(t); try{ localStorage.setItem(THEME_KEY, t); }catch(e){}
+});
+
+render();
+</script>
+
+</body>
+</html>
