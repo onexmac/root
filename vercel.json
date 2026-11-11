@@ -4,5 +4,47 @@
   "installCommand": "true",
   "buildCommand": "bash scripts/build-root.sh",
   "outputDirectory": "dist",
-  "trailingSlash": true
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/usuarios",
+      "destination": "/control-usuarios/usuarios/",
+      "permanent": false
+    },
+    {
+      "source": "/pedido",
+      "destination": "/control-usuarios/pedido/",
+      "permanent": false
+    },
+    {
+      "source": "/movil",
+      "destination": "/control-usuarios/movil/",
+      "permanent": false
+    },
+    {
+      "source": "/p2",
+      "destination": "/control-usuarios/p2/",
+      "permanent": false
+    },
+    {
+      "source": "/usuarios/",
+      "destination": "/control-usuarios/usuarios/",
+      "permanent": false
+    },
+    {
+      "source": "/pedido/",
+      "destination": "/control-usuarios/pedido/",
+      "permanent": false
+    },
+    {
+      "source": "/movil/",
+      "destination": "/control-usuarios/movil/",
+      "permanent": false
+    },
+    {
+      "source": "/p2/",
+      "destination": "/control-usuarios/p2/",
+      "permanent": false
+    }
+  ]
 }
