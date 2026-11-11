@@ -7,14 +7,12 @@ Todo proyecto de código vive aquí, cada uno en su carpeta: `root/<proyecto>/` 
 - **No crear repos nuevos ni clones sueltos.** Un proyecto nuevo es una carpeta nueva en `root/`.
   - Cloud (Claude Code web/app): adjuntar solo `onexmac/root`.
   - Local: `~/git/onexmac/root`.
-- **Un proyecto = una carpeta = un proyecto de Vercel**, con Root Directory = `<proyecto>` y producción en `main`.
-- **Publicar** = push a `main`: `.github/workflows/deploy.yml` publica sola cada carpeta listada en `DEPLOY` (agregar la carpeta ahí al crear un proyecto). Entregar el link `<proyecto>.vercel.app` ya verificado. Antes: desplegar a producción y entregar el link `<proyecto>.vercel.app` ya verificado (que cargue). Con el repo conectado a Vercel, publicar es merge a `main`; si no, desde la carpeta del proyecto:
-
-  ```bash
-  npx -y vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
-  ```
-
-  `VERCEL_TOKEN` viene del environment (secret), nunca escrito en un archivo del repo.
+- **Un solo proyecto de Vercel para todo `root`.** Cada proyecto se publica como subruta: `<dominio>/<carpeta>/`. Nada se configura por proyecto en Vercel.
+  - `vercel.json` (raíz) corre `scripts/build-root.sh`, que arma `dist/` y genera el índice `/`.
+  - Proyecto nuevo = carpeta nueva + agregarla en `scripts/build-root.sh` (`STATIC`, `NEXT` o `VITE`).
+  - Apps Next: `next.config.ts` usa `ROOT_BASE` (export estático + `basePath`). Rutas a archivos de `public/` escritas a mano deben llevar el prefijo (`process.env.NEXT_PUBLIC_BASE`).
+  - Probar antes de subir: `bash scripts/build-root.sh` y revisar `dist/<carpeta>/`.
+- **Publicar** = push a `main`. Entregar el link `<dominio>/<carpeta>/` ya verificado (que cargue).
 - **Merge a `main`**: cuando Marcos pidió el cambio, sin confirmación aparte.
 - **Sin vigilancia de PRs**: no suscribirse ni programar check-ins salvo pedido explícito.
 - Ramas de trabajo: `claude/<tema>`. Cambios a una carpeta no tocan otras.
@@ -38,16 +36,16 @@ Losa Flotante. Tokens: `control-usuarios/design-system/DESIGN.md`, `control-usua
 
 ## Proyectos
 
-| Carpeta | Qué es | Vercel |
+| Carpeta | Qué es | Publicación |
 |---|---|---|
-| cuadrillas | Tablero de cuadrillas por maestro de obra (HTML estático) | cuadrillas (Framework: Other) |
-| control-usuarios | Prototipo control de usuarios / pedidos | control-usuarios |
-| kpi | KPI Adelante | — |
-| antomap | Antomap | — |
-| adelante-web | Web Adelante | — |
-| duck | — | — |
-| histok | — | — |
+| cuadrillas | Tablero de cuadrillas por maestro de obra | `/cuadrillas/` (estático) |
+| control-usuarios | Prototipo control de usuarios / pedidos | `/control-usuarios/` (Next) |
+| kpi | KPI Adelante | `/kpi/` (estático) |
+| antomap | Antomap | `/antomap/` (estático) |
+| adelante-web | Web Adelante / DS overview | `/adelante-web/` (Next) |
+| duck | Duck DS (Vite en `skll-corp/`) | `/duck/` (Vite) |
+| histok | Histok | `/histok/` (Next) |
 | magi | Canon MAGI | no se publica |
-| adelante-design-system | Referencia DS (David) | — |
+| adelante-design-system | Referencia DS (David) | no se publica |
 
 Fuera de root: `plasticle` (privado, aparte) y forks de terceros.

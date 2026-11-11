@@ -1,3 +1,6 @@
+// Prefijo de la subruta cuando se publica dentro de root (ver next.config.ts).
+const B = process.env.NEXT_PUBLIC_BASE ?? "";
+
 /** Un trozo de texto del cuerpo: texto plano, un término del glosario (rojo y
  *  tocable) o el nombre de un personaje histórico (resaltado, no tocable). Los
  *  personajes son materia de examen: el temario pide "características,
@@ -39,7 +42,7 @@ const socialesI: Topic[] = [
   {
     slug: "imperialismo-europeo",
     label: "Imperialismo Europeo",
-    thumbnail: "/images/imperialismo.jpg",
+    thumbnail: B + "/images/imperialismo.jpg",
     glossary: {
       imperialismo:
         "Política de un Estado poderoso de extender su dominio sobre otros territorios y pueblos, controlando su economía, su política y sus recursos.",
@@ -54,12 +57,12 @@ const socialesI: Topic[] = [
     },
     slides: [
       {
-        image: "/images/imperialismo.jpg",
+        image: B + "/images/imperialismo.jpg",
         title: "Imperialismo Europeo",
         info: "Ceremonia imperial británica en la India (un Durbar de Delhi): tropas y multitudes rodean el pabellón real, símbolo del poder colonial. Fotografía de inicios del siglo XX.",
       },
       {
-        image: "/images/imp-rhodes.jpg",
+        image: B + "/images/imp-rhodes.jpg",
         title: "¿Qué fue el imperialismo?",
         body: [
           "Durante los siglos XIX y XX, las potencias europeas se expandieron por África, Asia y Oceanía. El ",
@@ -69,7 +72,7 @@ const socialesI: Topic[] = [
         info: "«El Coloso de Rhodes»: caricatura de Cecil Rhodes a horcajadas sobre África, de El Cabo a El Cairo. Revista Punch, 10 de diciembre de 1892.",
       },
       {
-        image: "/images/imp-delacroix.jpg",
+        image: B + "/images/imp-delacroix.jpg",
         title: "Colonialismo y nacionalismo",
         body: [
           "El ",
@@ -81,7 +84,7 @@ const socialesI: Topic[] = [
         info: "«La libertad guiando al pueblo», de Eugène Delacroix (1830). Alegoría de la Revolución de Julio en Francia; ilustra el nacionalismo. Museo del Louvre, París.",
       },
       {
-        image: "/images/imp-menzel.jpg",
+        image: B + "/images/imp-menzel.jpg",
         title: "El motor: la Revolución Industrial",
         body: [
           "La ",
@@ -91,7 +94,7 @@ const socialesI: Topic[] = [
         info: "«La fábrica de laminado de hierro» («Eisenwalzwerk»), de Adolph Menzel (1872-1875). Retrata el trabajo industrial de la época. Alte Nationalgalerie, Berlín.",
       },
       {
-        image: "/images/imp-berlin.jpg",
+        image: B + "/images/imp-berlin.jpg",
         title: "El reparto del mundo",
         body: [
           "En la ",
@@ -105,7 +108,7 @@ const socialesI: Topic[] = [
   {
     slug: "primera-guerra-mundial",
     label: "Primera Guerra Mundial",
-    thumbnail: "/images/primera-guerra.jpg",
+    thumbnail: B + "/images/primera-guerra.jpg",
     glossary: {
       nacionalismo:
         "La idea de que una nación debe defenderse y valorarse por encima de las demás; llevado al extremo, alimenta rivalidades y conflictos.",
@@ -120,12 +123,12 @@ const socialesI: Topic[] = [
     },
     slides: [
       {
-        image: "/images/primera-guerra.jpg",
+        image: B + "/images/primera-guerra.jpg",
         title: "Primera Guerra Mundial",
         info: "Fotografía aérea de una red de trincheras del frente occidental, con anotaciones en inglés («dugouts», «communication trench»). Primera Guerra Mundial (1914-1918).",
       },
       {
-        image: "/images/pgm-dreadnought.jpg",
+        image: B + "/images/pgm-dreadnought.jpg",
         title: "Las causas de fondo",
         body: [
           "Rivalidades imperialistas, ",
@@ -139,7 +142,7 @@ const socialesI: Topic[] = [
         info: "El acorazado británico HMS Dreadnought (1906), cuyo diseño revolucionario desató la carrera naval anglo-alemana previa a la guerra.",
       },
       {
-        image: "/images/pgm-princip.jpg",
+        image: B + "/images/pgm-princip.jpg",
         title: "La chispa (1914)",
         body: [
           "El asesinato del archiduque Francisco Fernando en Sarajevo fue la causa inmediata: en pocas semanas, las alianzas arrastraron a toda Europa a la guerra.",
@@ -147,7 +150,7 @@ const socialesI: Topic[] = [
         info: "Sarajevo, 28 de junio de 1914: la policía detiene a un sospechoso tras el atentado contra Francisco Fernando. Durante años se creyó que era Gavrilo Princip, pero era otro detenido.",
       },
       {
-        image: "/images/pgm-trincheras.jpg",
+        image: B + "/images/pgm-trincheras.jpg",
         title: "Las fases",
         body: [
           "Empezó con una guerra de movimientos rápida, pero se estancó en una larga ",
@@ -157,7 +160,7 @@ const socialesI: Topic[] = [
         info: "Soldados del Regimiento de Cheshire en una trinchera del Somme; un centinela vigila mientras sus compañeros descansan. Julio de 1916.",
       },
       {
-        image: "/images/tratado-versalles.jpg",
+        image: B + "/images/tratado-versalles.jpg",
         title: "Tratados y consecuencias",
         body: [
           "El ",
@@ -171,7 +174,7 @@ const socialesI: Topic[] = [
   {
     slug: "revolucion-rusa",
     label: "Revolución Rusa",
-    thumbnail: "/images/revolucion-rusa.jpg",
+    thumbnail: B + "/images/revolucion-rusa.jpg",
     glossary: {
       zar: "Título del emperador que gobernaba Rusia con poder absoluto antes de la revolución.",
       "Primera Guerra Mundial":
@@ -189,12 +192,12 @@ const socialesI: Topic[] = [
     },
     slides: [
       {
-        image: "/images/revolucion-rusa.jpg",
+        image: B + "/images/revolucion-rusa.jpg",
         title: "Revolución Rusa",
         info: "Lenin arenga a las tropas del Ejército Rojo en la plaza Sverdlov de Moscú, 5 de mayo de 1920. Trotsky aparece junto a la tribuna (luego borrado en versiones estalinistas).",
       },
       {
-        image: "/images/rr-zar.jpg",
+        image: B + "/images/rr-zar.jpg",
         title: "La Rusia de los zares",
         body: [
           "Rusia era un imperio atrasado gobernado por el ",
@@ -206,7 +209,7 @@ const socialesI: Topic[] = [
         info: "El zar Nicolás II de Rusia con uniforme militar, en un retrato firmado y fechado en 1898.",
       },
       {
-        image: "/images/rr-1917.jpg",
+        image: B + "/images/rr-1917.jpg",
         title: "1917: dos revoluciones",
         body: [
           "En febrero cae el zar. En octubre, los ",
@@ -220,7 +223,7 @@ const socialesI: Topic[] = [
         info: "La multitud huye tras la represión con ametralladoras en la avenida Nevski de Petrogrado, durante las Jornadas de Julio, 4 de julio de 1917.",
       },
       {
-        image: "/images/rr-stalin.jpg",
+        image: B + "/images/rr-stalin.jpg",
         title: "Nace la URSS",
         body: [
           "En 1922 se crea la ",
@@ -236,7 +239,7 @@ const socialesI: Topic[] = [
   {
     slug: "gran-depresion",
     label: "La Gran Depresión",
-    thumbnail: "/images/gran-depresion.jpg",
+    thumbnail: B + "/images/gran-depresion.jpg",
     glossary: {
       bursátil:
         "Todo lo relacionado con la Bolsa de valores, el lugar donde se compran y venden las acciones de las empresas.",
@@ -249,12 +252,12 @@ const socialesI: Topic[] = [
     },
     slides: [
       {
-        image: "/images/gran-depresion.jpg",
+        image: B + "/images/gran-depresion.jpg",
         title: "La Gran Depresión",
         info: "Fila del pan frente a la panadería Fleischmann en Nueva York, 2 de enero de 1908 (colección Bain, Biblioteca del Congreso de EE. UU.).",
       },
       {
-        image: "/images/gd-crack.jpg",
+        image: B + "/images/gd-crack.jpg",
         title: "El crack del 29",
         body: [
           "El 29 de octubre de 1929, la Bolsa de Nueva York se desplomó y millones perdieron sus ahorros en el mercado ",
@@ -266,7 +269,7 @@ const socialesI: Topic[] = [
         info: "Multitudes se agolpan en Wall Street, junto a la Bolsa de Nueva York, durante el crac bursátil de octubre de 1929.",
       },
       {
-        image: "/images/gd-impacto.jpg",
+        image: B + "/images/gd-impacto.jpg",
         title: "El impacto",
         body: [
           "Llegaron el desempleo masivo, la ",
@@ -278,7 +281,7 @@ const socialesI: Topic[] = [
         info: "«Madre migrante»: Florence Owens Thompson, jornalera de 32 años, y sus hijos en Nipomo, California. Foto de Dorothea Lange, marzo de 1936.",
       },
       {
-        image: "/images/gd-consecuencias.jpg",
+        image: B + "/images/gd-consecuencias.jpg",
         title: "Consecuencias",
         body: [
           "Filas para conseguir comida, desconfianza en el sistema económico y un clima de desesperación que facilitó el ascenso de líderes autoritarios.",
@@ -290,7 +293,7 @@ const socialesI: Topic[] = [
   {
     slug: "segunda-guerra-mundial",
     label: "Segunda Guerra Mundial",
-    thumbnail: "/images/cover-wwii.jpg",
+    thumbnail: B + "/images/cover-wwii.jpg",
     glossary: {
       "Benito Mussolini":
         "Líder del Partido Fascista italiano y jefe de gobierno de Italia entre 1922 y 1943. Aliado de Hitler durante la Segunda Guerra Mundial.",
@@ -305,12 +308,12 @@ const socialesI: Topic[] = [
     },
     slides: [
       {
-        image: "/images/cover-wwii.jpg",
+        image: B + "/images/cover-wwii.jpg",
         title: "Segunda Guerra Mundial",
         info: "«Hacia las fauces de la muerte»: soldados de EE. UU. desembarcan bajo fuego en la playa Omaha, Normandía, el Día D, 6 de junio de 1944.",
       },
       {
-        image: "/images/fascismo-nazismo.jpg",
+        image: B + "/images/fascismo-nazismo.jpg",
         title: "El ascenso del fascismo y el nazismo",
         body: [
           "Regímenes como el de ",
@@ -324,7 +327,7 @@ const socialesI: Topic[] = [
         info: "Mussolini (izq.) y Hitler pasan revista a las tropas: los líderes del fascismo italiano y del nazismo alemán, aliados del Eje.",
       },
       {
-        image: "/images/sgm-jjoo.jpg",
+        image: B + "/images/sgm-jjoo.jpg",
         title: "Caso: los Juegos Olímpicos de 1936",
         body: [
           "Hitler usó los Juegos de Berlín como propaganda del ",
@@ -334,7 +337,7 @@ const socialesI: Topic[] = [
         info: "Jesse Owens, atleta afroamericano de EE. UU. que ganó cuatro medallas de oro en los Juegos Olímpicos de Berlín 1936.",
       },
       {
-        image: "/images/invasion-polonia.jpg",
+        image: B + "/images/invasion-polonia.jpg",
         title: "La chispa (1939)",
         body: [
           "El 1 de setiembre de 1939, Alemania invadió Polonia sin declaración previa. Dos días después, Francia y el Reino Unido le declararon la guerra.",
@@ -342,7 +345,7 @@ const socialesI: Topic[] = [
         info: "Soldados alemanes rompen la barrera fronteriza con Polonia el 1 de septiembre de 1939: comienza la Segunda Guerra Mundial. (Foto propagandística escenificada.)",
       },
       {
-        image: "/images/sgm-consecuencias.jpg",
+        image: B + "/images/sgm-consecuencias.jpg",
         title: "Consecuencias",
         body: [
           "Decenas de millones de muertos, el horror del ",
@@ -356,7 +359,7 @@ const socialesI: Topic[] = [
   {
     slug: "guerra-fria",
     label: "Guerra Fría",
-    thumbnail: "/images/guerra-fria.jpg",
+    thumbnail: B + "/images/guerra-fria.jpg",
     glossary: {
       capitalismo:
         "Sistema económico basado en la propiedad privada y el mercado, donde empresas y personas compiten libremente para obtener ganancias.",
@@ -373,12 +376,12 @@ const socialesI: Topic[] = [
     },
     slides: [
       {
-        image: "/images/guerra-fria.jpg",
+        image: B + "/images/guerra-fria.jpg",
         title: "Guerra Fría",
         info: "Reapertura de la Puerta de Brandeburgo en Berlín, 22 de diciembre de 1989, bajo la lluvia: el símbolo del fin de la división de la Guerra Fría.",
       },
       {
-        image: "/images/gf-bipolar.jpg",
+        image: B + "/images/gf-bipolar.jpg",
         title: "Un mundo bipolar",
         body: [
           "Estados Unidos (",
@@ -392,7 +395,7 @@ const socialesI: Topic[] = [
         info: "Obreros de Alemania Oriental construyen el Muro de Berlín con una grúa, 1961. La ciudad quedó dividida entre los dos bloques.",
       },
       {
-        image: "/images/gf-conflictos.jpg",
+        image: B + "/images/gf-conflictos.jpg",
         title: "Conflictos indirectos",
         body: [
           "Los bloques chocaron en otros países: la Guerra de Corea, la de Vietnam, la ",
@@ -402,7 +405,7 @@ const socialesI: Topic[] = [
         info: "Helicópteros UH-1 «Huey» y soldados estadounidenses en la Guerra de Vietnam, 1966: un conflicto indirecto de la Guerra Fría.",
       },
       {
-        image: "/images/gf-abismo.jpg",
+        image: B + "/images/gf-abismo.jpg",
         title: "Al borde del abismo",
         body: [
           "Durante trece días de octubre de 1962, Kennedy y Jruschov negociaron por telegrama mientras sus ejércitos esperaban la orden. De ahí salió la ",
@@ -412,7 +415,7 @@ const socialesI: Topic[] = [
         info: "Foto aérea de EE. UU. de un emplazamiento de misiles soviéticos en Cuba (Los Palacios), octubre de 1962: la Crisis de los Misiles.",
       },
       {
-        image: "/images/gf-espacial.jpg",
+        image: B + "/images/gf-espacial.jpg",
         title: "La carrera espacial",
         body: [
           "La ",
@@ -439,23 +442,23 @@ const socialesI: Topic[] = [
 // NOTE: the Banco Central file is misnamed "National Bank of Costa Rica" on
 // Commons; the building's own inscription reads BANCO CENTRAL, which is what the
 // caption says.
-const CIV_CORTE = "/images/civ-constitucionalismo.jpg";
-const CIV_PRESIDENCIAL = "/images/civ-consti-2.jpg";
-const CIV_CASA_AMARILLA = "/images/civ-consti-3.jpg";
-const CIV_MUNICIPALIDAD = "/images/civ-consti-4.jpg";
-const CIV_TEATRO = "/images/civ-consti-5.jpg";
-const CIV_MUSEO = "/images/civ-ejercito.jpg";
-const CIV_FIGUERES = "/images/civ-ejercito-2.jpg";
-const CIV_ARMAS = "/images/civ-ejercito-3.jpg";
-const CIV_MONUMENTO = "/images/civ-ejercito-4.jpg";
-const CIV_ASAMBLEA = "/images/civ-estado.jpg";
-const CIV_HOSPITAL = "/images/civ-estado-2.jpg";
-const CIV_MARCHA = "/images/civ-estado-3.jpg";
-const CIV_BANCO = "/images/civ-estado-4.jpg";
-const CIV_TSE = "/images/civ-cultura.jpg";
-const CIV_SANTAMARIA = "/images/civ-cultura-2.jpg";
-const CIV_MORAZAN = "/images/civ-cultura-3.jpg";
-const CIV_INDIGENA = "/images/civ-cultura-4.jpg";
+const CIV_CORTE = B + "/images/civ-constitucionalismo.jpg";
+const CIV_PRESIDENCIAL = B + "/images/civ-consti-2.jpg";
+const CIV_CASA_AMARILLA = B + "/images/civ-consti-3.jpg";
+const CIV_MUNICIPALIDAD = B + "/images/civ-consti-4.jpg";
+const CIV_TEATRO = B + "/images/civ-consti-5.jpg";
+const CIV_MUSEO = B + "/images/civ-ejercito.jpg";
+const CIV_FIGUERES = B + "/images/civ-ejercito-2.jpg";
+const CIV_ARMAS = B + "/images/civ-ejercito-3.jpg";
+const CIV_MONUMENTO = B + "/images/civ-ejercito-4.jpg";
+const CIV_ASAMBLEA = B + "/images/civ-estado.jpg";
+const CIV_HOSPITAL = B + "/images/civ-estado-2.jpg";
+const CIV_MARCHA = B + "/images/civ-estado-3.jpg";
+const CIV_BANCO = B + "/images/civ-estado-4.jpg";
+const CIV_TSE = B + "/images/civ-cultura.jpg";
+const CIV_SANTAMARIA = B + "/images/civ-cultura-2.jpg";
+const CIV_MORAZAN = B + "/images/civ-cultura-3.jpg";
+const CIV_INDIGENA = B + "/images/civ-cultura-4.jpg";
 
 const civicaII: Topic[] = [
   {
@@ -723,49 +726,49 @@ const civicaII: Topic[] = [
 //   · Fin del socialismo Real (presentación)
 // Dictaduras, Centroamérica y derechos civiles no tienen presentación: salen
 // del temario.
-const SII_DESC_1 = "/images/sii-desc-1.jpg";
-const SII_DESC_2 = "/images/sii-desc-2.jpg";
-const SII_DESC_ASIA = "/images/sii-desc-asia.jpg";
-const SII_DESC_AFRICA = "/images/sii-desc-africa.jpg";
-const SII_DESC_SUBSAHARA = "/images/sii-desc-subsahara.jpg";
-const SII_DESC_5 = "/images/sii-desc-5.jpg";
-const SII_CASOS = "/images/sii-casos.jpg";
-const SII_DESC_4 = "/images/sii-desc-4.jpg";
-const SII_DESC_SIRIA = "/images/sii-desc-siria.jpg";
-const SII_DESC_3 = "/images/sii-desc-3.jpg";
-const SII_PER_GADAFI = "/images/sii-per-gadafi.jpg";
-const SII_PER_IDRIS = "/images/sii-per-idris.jpg";
-const SII_PER_BOURGUIBA = "/images/sii-per-bourguiba.jpg";
-const SII_PER_QUWATLI = "/images/sii-per-quwatli.jpg";
-const SII_PER_GANDHI = "/images/sii-per-gandhi.jpg";
-const SII_DICT_1 = "/images/sii-dict-1.jpg";
-const SII_DICT_GF = "/images/sii-dict-gf.jpg";
-const SII_DICTADORES = "/images/sii-dictadores.svg";
-const SII_DICT_2 = "/images/sii-dict-2.jpg";
-const SII_DICT_3 = "/images/sii-dict-3.jpg";
-const SII_DICT_4 = "/images/sii-dict-4.jpg";
-const SII_DICT_CONDOR = "/images/sii-dict-condor.jpg";
-const SII_CONDOR_COMO = "/images/sii-condor-como.jpg";
-const SII_CONDOR_MEMORIA = "/images/sii-condor-memoria.jpg";
-const SII_DICT_5 = "/images/sii-dict-5.jpg";
-const SII_CA_GUERRAS = "/images/sii-ca-guerras.jpg";
-const SII_CA_ESQUIPULAS = "/images/sii-ca-esquipulas.jpg";
-const SII_CIV_1 = "/images/sii-civ-1.jpg";
-const SII_CIV_2 = "/images/sii-civ-2.jpg";
-const SII_CIV_3 = "/images/sii-civ-3.jpg";
-const SII_CIV_4 = "/images/sii-civ-4.jpg";
-const SII_ECO_1 = "/images/sii-eco-1.jpg";
-const SII_ECO_2 = "/images/sii-eco-2.jpg";
-const SII_ECO_KEYNES = "/images/sii-eco-keynes.jpg";
-const SII_ECO_BIENESTAR = "/images/sii-eco-bienestar.jpg";
-const SII_ECO_3 = "/images/sii-eco-3.jpg";
-const SII_ECO_PLANES = "/images/sii-eco-planes.jpg";
-const SII_ECO_4 = "/images/sii-eco-4.jpg";
-const SII_FIN_GORBACHOV = "/images/sii-fin-gorbachov.jpg";
-const SII_FIN_REFORMAS = "/images/sii-fin-reformas.jpg";
-const SII_FIN_URSS = "/images/sii-fin-urss.jpg";
-const SII_FIN_YUGO = "/images/sii-fin-yugoslavia.jpg";
-const SII_FIN_BLOQUE = "/images/sii-fin-bloque.jpg";
+const SII_DESC_1 = B + "/images/sii-desc-1.jpg";
+const SII_DESC_2 = B + "/images/sii-desc-2.jpg";
+const SII_DESC_ASIA = B + "/images/sii-desc-asia.jpg";
+const SII_DESC_AFRICA = B + "/images/sii-desc-africa.jpg";
+const SII_DESC_SUBSAHARA = B + "/images/sii-desc-subsahara.jpg";
+const SII_DESC_5 = B + "/images/sii-desc-5.jpg";
+const SII_CASOS = B + "/images/sii-casos.jpg";
+const SII_DESC_4 = B + "/images/sii-desc-4.jpg";
+const SII_DESC_SIRIA = B + "/images/sii-desc-siria.jpg";
+const SII_DESC_3 = B + "/images/sii-desc-3.jpg";
+const SII_PER_GADAFI = B + "/images/sii-per-gadafi.jpg";
+const SII_PER_IDRIS = B + "/images/sii-per-idris.jpg";
+const SII_PER_BOURGUIBA = B + "/images/sii-per-bourguiba.jpg";
+const SII_PER_QUWATLI = B + "/images/sii-per-quwatli.jpg";
+const SII_PER_GANDHI = B + "/images/sii-per-gandhi.jpg";
+const SII_DICT_1 = B + "/images/sii-dict-1.jpg";
+const SII_DICT_GF = B + "/images/sii-dict-gf.jpg";
+const SII_DICTADORES = B + "/images/sii-dictadores.svg";
+const SII_DICT_2 = B + "/images/sii-dict-2.jpg";
+const SII_DICT_3 = B + "/images/sii-dict-3.jpg";
+const SII_DICT_4 = B + "/images/sii-dict-4.jpg";
+const SII_DICT_CONDOR = B + "/images/sii-dict-condor.jpg";
+const SII_CONDOR_COMO = B + "/images/sii-condor-como.jpg";
+const SII_CONDOR_MEMORIA = B + "/images/sii-condor-memoria.jpg";
+const SII_DICT_5 = B + "/images/sii-dict-5.jpg";
+const SII_CA_GUERRAS = B + "/images/sii-ca-guerras.jpg";
+const SII_CA_ESQUIPULAS = B + "/images/sii-ca-esquipulas.jpg";
+const SII_CIV_1 = B + "/images/sii-civ-1.jpg";
+const SII_CIV_2 = B + "/images/sii-civ-2.jpg";
+const SII_CIV_3 = B + "/images/sii-civ-3.jpg";
+const SII_CIV_4 = B + "/images/sii-civ-4.jpg";
+const SII_ECO_1 = B + "/images/sii-eco-1.jpg";
+const SII_ECO_2 = B + "/images/sii-eco-2.jpg";
+const SII_ECO_KEYNES = B + "/images/sii-eco-keynes.jpg";
+const SII_ECO_BIENESTAR = B + "/images/sii-eco-bienestar.jpg";
+const SII_ECO_3 = B + "/images/sii-eco-3.jpg";
+const SII_ECO_PLANES = B + "/images/sii-eco-planes.jpg";
+const SII_ECO_4 = B + "/images/sii-eco-4.jpg";
+const SII_FIN_GORBACHOV = B + "/images/sii-fin-gorbachov.jpg";
+const SII_FIN_REFORMAS = B + "/images/sii-fin-reformas.jpg";
+const SII_FIN_URSS = B + "/images/sii-fin-urss.jpg";
+const SII_FIN_YUGO = B + "/images/sii-fin-yugoslavia.jpg";
+const SII_FIN_BLOQUE = B + "/images/sii-fin-bloque.jpg";
 
 const socialesII: Topic[] = [
   {
@@ -1364,33 +1367,33 @@ const socialesII: Topic[] = [
 // Los gráficos son SVG dibujados para la app (fondo azul oscuro, trazo neón),
 // no fotos: van con `diagram: true` para que se vean enteros. Se generan a
 // mano; el original de cada uno está en el propio archivo.
-const BIO_PORTADA = "/images/bio-portada.svg";
-const BIO_NUCLEOTIDO = "/images/bio-nucleotido.svg";
-const BIO_BASES = "/images/bio-bases.svg";
-const BIO_ANTIPARALELO = "/images/bio-antiparalelo.svg";
-const BIO_HORQUILLA = "/images/bio-horquilla.svg";
-const BIO_DOGMA = "/images/bio-dogma.svg";
-const BIO_ADN_ARN = "/images/bio-adn-arn.svg";
-const BIO_TIPOS_ARN = "/images/bio-tipos-arn.svg";
-const BIO_SPLICING = "/images/bio-splicing.svg";
-const BIO_TRADUCCION = "/images/bio-traduccion.svg";
-const BIO_MUTAGENOS = "/images/bio-mutagenos.svg";
-const BIO_CLASIFICACION = "/images/bio-clasificacion.svg";
-const BIO_MARCO = "/images/bio-marco.svg";
-const BIO_MUTACIONES = "/images/bio-mutaciones.svg";
-const BIO_VARIABILIDAD = "/images/bio-variabilidad.svg";
-const BIO_CROMOSOMAS = "/images/bio-cromosomas.svg";
-const BIO_NODISYUNCION = "/images/bio-nodisyuncion.svg";
-const BIO_SINDROMES = "/images/bio-sindromes.svg";
-const BIO_GENOMA = "/images/bio-genoma.svg";
-const BIO_BIOTECNOLOGIA = "/images/bio-biotecnologia.svg";
-const BIO_RIESGOS = "/images/bio-riesgos.svg";
-const BIO_VOCABULARIO = "/images/bio-vocabulario.svg";
-const BIO_MENDEL = "/images/bio-mendel.svg";
-const BIO_DOMINANCIA = "/images/bio-dominancia.svg";
-const BIO_ABO = "/images/bio-abo.svg";
-const BIO_PEDIGRI = "/images/bio-pedigri.svg";
-const BIO_PUNNETT = "/images/bio-punnett.svg";
+const BIO_PORTADA = B + "/images/bio-portada.svg";
+const BIO_NUCLEOTIDO = B + "/images/bio-nucleotido.svg";
+const BIO_BASES = B + "/images/bio-bases.svg";
+const BIO_ANTIPARALELO = B + "/images/bio-antiparalelo.svg";
+const BIO_HORQUILLA = B + "/images/bio-horquilla.svg";
+const BIO_DOGMA = B + "/images/bio-dogma.svg";
+const BIO_ADN_ARN = B + "/images/bio-adn-arn.svg";
+const BIO_TIPOS_ARN = B + "/images/bio-tipos-arn.svg";
+const BIO_SPLICING = B + "/images/bio-splicing.svg";
+const BIO_TRADUCCION = B + "/images/bio-traduccion.svg";
+const BIO_MUTAGENOS = B + "/images/bio-mutagenos.svg";
+const BIO_CLASIFICACION = B + "/images/bio-clasificacion.svg";
+const BIO_MARCO = B + "/images/bio-marco.svg";
+const BIO_MUTACIONES = B + "/images/bio-mutaciones.svg";
+const BIO_VARIABILIDAD = B + "/images/bio-variabilidad.svg";
+const BIO_CROMOSOMAS = B + "/images/bio-cromosomas.svg";
+const BIO_NODISYUNCION = B + "/images/bio-nodisyuncion.svg";
+const BIO_SINDROMES = B + "/images/bio-sindromes.svg";
+const BIO_GENOMA = B + "/images/bio-genoma.svg";
+const BIO_BIOTECNOLOGIA = B + "/images/bio-biotecnologia.svg";
+const BIO_RIESGOS = B + "/images/bio-riesgos.svg";
+const BIO_VOCABULARIO = B + "/images/bio-vocabulario.svg";
+const BIO_MENDEL = B + "/images/bio-mendel.svg";
+const BIO_DOMINANCIA = B + "/images/bio-dominancia.svg";
+const BIO_ABO = B + "/images/bio-abo.svg";
+const BIO_PEDIGRI = B + "/images/bio-pedigri.svg";
+const BIO_PUNNETT = B + "/images/bio-punnett.svg";
 
 const biologiaI: Topic[] = [
   {
