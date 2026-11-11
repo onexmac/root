@@ -8,7 +8,7 @@ Todo proyecto de código vive aquí, cada uno en su carpeta: `root/<proyecto>/` 
   - Cloud (Claude Code web/app): adjuntar solo `onexmac/root`.
   - Local: `~/git/onexmac/root`.
 - **Un proyecto = una carpeta = un proyecto de Vercel**, con Root Directory = `<proyecto>` y producción en `main`.
-- **Publicar** = desplegar a producción y entregar el link `<proyecto>.vercel.app` ya verificado (que cargue). Con el repo conectado a Vercel, publicar es merge a `main`; si no, desde la carpeta del proyecto:
+- **Publicar** = push a `main`: `.github/workflows/deploy.yml` publica sola cada carpeta listada en `DEPLOY` (agregar la carpeta ahí al crear un proyecto). Entregar el link `<proyecto>.vercel.app` ya verificado. Antes: desplegar a producción y entregar el link `<proyecto>.vercel.app` ya verificado (que cargue). Con el repo conectado a Vercel, publicar es merge a `main`; si no, desde la carpeta del proyecto:
 
   ```bash
   npx -y vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"

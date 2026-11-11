@@ -1,0 +1,43 @@
+# Publica a Vercel (producción) cada carpeta de la lista DEPLOY que cambió en el push a main.
+# Requiere el secret VERCEL_TOKEN en github.com/onexmac/root/settings/secrets/actions.
+# Cada carpeta queda como su propio proyecto de Vercel con el mismo nombre → <carpeta>.vercel.app
+name: deploy
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      folder:
+        description: "Carpeta a publicar (vacío = todas las de la lista)"
+        required: false
+
+env:
+  DEPLOY: "cuadrillas"   # carpetas publicables, separadas por espacio. magi nunca va aquí.
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 2 }
+      - name: Elegir carpetas
+        id: pick
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            want="${{ inputs.folder }}"; [ -z "$want" ] && want="$DEPLOY"
+          else
+            changed=$(git diff --name-only HEAD~1 HEAD | cut -d/ -f1 | sort -u)
+            want=""; for f in $DEPLOY; do echo "$changed" | grep -qx "$f" && want="$want $f"; done
+          fi
+          echo "folders=$want" >> "$GITHUB_OUTPUT"
+          echo "Carpetas: ${want:-ninguna}"
+      - name: Publicar
+        if: steps.pick.outputs.folders != ''
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          [ -z "$VERCEL_TOKEN" ] && { echo "::error::Falta el secret VERCEL_TOKEN en el repo"; exit 1; }
+          for f in ${{ steps.pick.outputs.folders }}; do
+            url=$(npx -y vercel@latest deploy --prod --yes --cwd "$f" --token "$VERCEL_TOKEN" | tail -1)
+            echo "- **$f** → https://$f.vercel.app (deploy: $url)" >> "$GITHUB_STEP_SUMMARY"
+          done
