@@ -19,7 +19,7 @@ Todo proyecto de código vive aquí, cada uno en su carpeta: `root/<proyecto>/` 
 
 ## Carpetas especiales
 
-- **`magi/`** — canon de MAGI. Solo se modifica cuando la tarea es sobre MAGI. Su `CLAUDE.md` rige dentro de la carpeta. Nunca se publica a Vercel.
+- **MAGI no vive aquí.** Su canon está en el repo privado `onexmac/magi`. No copiar archivos de MAGI a `root`.
 - **`adelante-design-system/`** — copia de `DavidpcAD/adelante-design-system` para referencia (sistema de diseño **Losa Flotante**). No se edita aquí; se actualiza con:
 
   ```bash
@@ -45,7 +45,6 @@ Losa Flotante. Tokens: `control-usuarios/design-system/DESIGN.md`, `control-usua
 | adelante-web | Web Adelante / DS overview | `/adelante-web/` (Next) |
 | duck | Duck DS (Vite en `skll-corp/`) | `/duck/` (Vite) |
 | histok | Histok | `/histok/` (Next) |
-| magi | Canon MAGI | no se publica |
 | adelante-design-system | Referencia DS (David) | no se publica |
 
 Fuera de root: `plasticle` (privado, aparte) y forks de terceros.
