@@ -1,12 +1,16 @@
-# root — monorepo de Marcos (onexmac)
+# root — LEGADO. No se trabaja aquí.
 
-Todo proyecto de código vive aquí, cada uno en su carpeta: `root/<proyecto>/` (kebab-case).
+> **Desde el 14-nov-2026 Marcos usa solo dos repos:**
+> - **`onexmac/ad`** (público): el portal MAGI en **https://magi0s.vercel.app**. Toda app vive ahí en `/<sección>/<app>`, con dos secciones: **`/ad`** (Adelante) y **`/kit`** (personal). Agregar una app = entrada en `lib/apps.json` + código en `app/<sección>/<slug>/`. Publicar = push a `main` (integración GitHub de Vercel, sin token). Las reglas están en el `CLAUDE.md` de ese repo.
+> - **`onexmac/magi`** (privado): canon de MAGI.
+>
+> **No crear proyectos, carpetas ni apps nuevas en `root`.** No crear una app que Marcos no haya pedido construir.
+> `control-usuarios.vercel.app` es el proyecto de Vercel viejo de este repo; no es el link a compartir. El link es siempre `magi0s.vercel.app/<sección>/<app>`. Algunas apps de `ad` todavía redirigen (`external` en `lib/apps.json`) a deploys viejos hasta que su código se mueva a `onexmac/ad`.
+>
+> Lo que sigue describe cómo funcionaba `root` antes y se conserva como referencia.
 
-## Reglas
+## Reglas (históricas)
 
-- **No crear repos nuevos ni clones sueltos.** Un proyecto nuevo es una carpeta nueva en `root/`.
-  - Cloud (Claude Code web/app): adjuntar solo `onexmac/root`.
-  - Local: `~/git/onexmac/root`.
 - **Un solo proyecto de Vercel para todo `root`.** Cada proyecto se publica como subruta: `<dominio>/<carpeta>/`. Nada se configura por proyecto en Vercel.
   - `vercel.json` (raíz) corre `scripts/build-root.sh`, que arma `dist/` y genera el índice `/`.
   - Proyecto nuevo = carpeta nueva + agregarla en `scripts/build-root.sh` (`STATIC`, `NEXT` o `VITE`).
