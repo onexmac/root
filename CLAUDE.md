@@ -45,7 +45,6 @@ Losa Flotante. Tokens: `control-usuarios/design-system/DESIGN.md`, `control-usua
 | adelante-web | Web Adelante / DS overview | `/adelante-web/` (Next) |
 | duck | Duck DS (Vite en `skll-corp/`) | `/duck/` (Vite) |
 | histok | Histok | `/histok/` (Next) |
-| forms | Forms | `/forms/` (estático) |
 | adelante-design-system | Referencia DS (David) | no se publica |
 
 Fuera de root: `plasticle` (privado, aparte) y forks de terceros.

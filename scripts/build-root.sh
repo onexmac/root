@@ -3,7 +3,7 @@
 # Vercel corre esto (ver vercel.json). Local: bash scripts/build-root.sh && npx serve dist
 set -uo pipefail
 cd "$(dirname "$0")/.."
-STATIC="cuadrillas kpi antomap forms"                   # HTML sin build
+STATIC="cuadrillas kpi antomap"                      # HTML sin build
 NEXT="control-usuarios adelante-web histok"           # Next.js, exportado con basePath
 VITE="duck/skll-corp:duck"                            # carpeta-con-build:ruta-publica
 rm -rf dist && mkdir -p dist
