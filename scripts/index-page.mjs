@@ -1,6 +1,6 @@
 // Genera dist/index.html: el índice de proyectos de root.
 import { writeFileSync } from "node:fs";
-const names = { cuadrillas: "Cuadrillas por maestro", kpi: "KPI Adelante", antomap: "Antomap", "control-usuarios": "Control de usuarios", "adelante-web": "Adelante web", histok: "Histok", duck: "Duck" };
+const names = { cuadrillas: "Cuadrillas por maestro", kpi: "KPI Adelante", antomap: "Antomap", "control-usuarios": "Control de usuarios", "adelante-web": "Adelante web", histok: "Histok", duck: "Duck", forms: "Forms" };
 const items = process.argv.slice(2).map(d => `<a href="/${d}/"><b>${names[d] || d}</b><span>/${d}</span></a>`).join("\n");
 writeFileSync("dist/index.html", `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>root · onexmac</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
